@@ -34,4 +34,6 @@ Currently this is a proof of concept. If you scan your invoices, this could easi
 
 Planned features:
 
-- 
+- integrate with online OCR
+- try to 'guess' parameters for new invoice formats
+- can apply machine learning to guess new parameters?
