@@ -27,7 +27,7 @@ templates = [
                 },
                 {'keyword': 'Amazon Web Services',
                  'data': [
-                         ('amount', r'TOTAL AMOUNT DUE ON August.*\$(\d+\.\d+)'),
+                         ('amount', r'TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)'),
                          ('invoice_number', r'Invoice Number:\s+(\d+)'),
                          ('date', r'Invoice Date:\s+([a-zA-Z]+ \d+ , \d+)')
                         ]
