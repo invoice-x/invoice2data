@@ -29,7 +29,7 @@ def str2date(date_string):
     date_string = re.sub(r'\s+', ' ', date_string)
     for fmt in dateformats():
         try:
-            for l in ['de_DE.UTF-8', 'en_US.UTF-8']:
+            for l in ['en_US.UTF-8']:
                 with setlocale(l):
                     return datetime.strptime(date_string, fmt)
         except ValueError:
