@@ -27,9 +27,16 @@ def str2date(date_string):
     date_string = date_string.replace('.', '').replace("/", ' ').replace(",", ' ')
     date_string = ''.join([c if c in string.printable else ' ' for c in date_string])
     date_string = re.sub(r'\s+', ' ', date_string)
+    locale_list = ['en_US.UTF-8']
+    # Add default locale
+    dft_locale = locale.getdefaultlocale()
+    if dft_locale and dft_locale[0] and dft_locale[1]:
+        dft_locale = '%s.%s' % dft_locale
+        if dft_locale not in locale_list:
+            locale_list.append(dft_locale)
     for fmt in dateformats():
         try:
-            for l in ['en_US.UTF-8']:
+            for l in locale_list:
                 with setlocale(l):
                     return datetime.strptime(date_string, fmt)
         except ValueError:
