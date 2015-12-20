@@ -39,4 +39,19 @@ templates = [
                          ('date', r'Lieferdatum/Rechnungsdatum.*(\d{1,2}\. \w+ \d{4})')
                         ]
                 },
+                {'keyword': 'FR58512277450',  # https://www.captaintrain.com/ TODO in progress
+                 'data': [
+                         ('invoice_number', r'Billet ([A-Z0-9]+)'),
+                        ]
+                },
+                {'keyword': 'FR 71 343059564',  # http://www.sfr.fr/
+                 'data': [
+                         ('invoice_number', r'N° facture : ([A-Z0-9\-]+)'),
+                         ('date', r'Date de facture : (\d{2}/\d{2}/\d{4})'),
+                         ('amount', r'(\d+,\d{2}) € TTC'),
+                         ('amount_untaxed', r'(\d+,\d{2}) € HT'),
+                         ('description', r'(abonnements, forfaits et options du \d{2}/\d{2} au \d{2}/\d{2})'),
+                         ('vat', r'(FR 71 343059564)'),
+                        ]
+                },
 ]
