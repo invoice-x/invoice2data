@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # from wand.image import Image as WandImage
 from PIL import Image
 import pytesseract

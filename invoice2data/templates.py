@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # TODO: replace with mighty AI, when ready.
@@ -66,5 +65,24 @@ templates = [
                         ('date_due', r'\d{2}/\d{2}/\d{4}.+(\d{2}/\d{2}/\d{4})'),
                         ('siren', r'(792 377 731)'),
                         ]
+                },
+                {'keyword': 'FR25499247138',  # Free mobile
+                 'data': [
+                    ('vat', r'(FR25499247138)'),
+                    ('amount_untaxed', r'Total de la facture HT\s+(\d+.\d{2})'),
+                    ('amount', r'Somme à payer TTC\*\s+(\d+.\d{2})'),
+                    ('date', r'Facture no \d+ du (\d+ .+ \d{4})'),
+                    ('invoice_number', r'Facture no (\d+)'),
+                    ]
+                },
+                {'keyword': 'FR 604 219 388 61',  # Free SAS
+                 'data': [
+                    ('vat', r'(FR 604 219 388 61)'),
+                    ('amount_untaxed', r'Total facture\s+(\d+.\d{2})'),
+                    ('amount', r'Total facture\s+\d+.\d{2}\s+\d+.\d{2}\s+(\d+.\d{2})'),
+                    ('date', r'Facture n°\d+ du (\d+ .+ \d{4})'),
+                    ('date_due', r'Date limite de paiement le (\d+ .+ \d{4})'),
+                    ('invoice_number', r'Facture n°(\d+)'),
+                    ]
                 },
 ]
