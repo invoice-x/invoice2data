@@ -85,7 +85,7 @@ templates = [
                     ('invoice_number', r'Facture no (\d+)'),
                     ]
                 },
-                {'keyword': 'FR 604 219 388 61',  # Free SAS
+                {'keyword': 'FR 604 219 388 61',  # Free SAS (xDSL/Fiber)
                  'data': [
                     ('vat', r'(FR 604 219 388 61)'),
                     ('amount_untaxed', r'Total facture\s+(\d+.\d{2})'),
@@ -102,6 +102,26 @@ templates = [
                     ('amount', r'Montant de la facture soumis à TVA\s+\d+,\d{2}\s+(\d+,\d{2})'),
                     ('date', r'Date de facture\s+:\s+(\d{2}/\d{2}/\d{4})'),
                     ('invoice_number', r'N° de facture\s+:\s+(\d+)'),
+                    ]
+                },
+                {'keyword': 'sosh.fr',  # Sosh.fr (tested with an invoice of 2013)
+                                        # I can't use the SIREN as keyword because
+                                        # Orange SA has too many different invoice layouts
+                'data': [
+                    ('siren', r'(380\s?129\s?866)'),
+                    ('invoice_number', r'facture n°\s*(\d+)'),
+                    ('date', r'émise le (\d{2}/\d{2}/\d{4})'),
+                    ('amount_untaxed', r'total facture\s+(\d+,\d{2})'),
+                    ('amount', r'total facture\s+\d+,\d{2}\s+(\d+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'Orange - service clients La fibre',  # Orange fibre
+                'data': [
+                    ('siren', r'(380\s?129\s?866)'),
+                    ('invoice_number', r'n° de facture\s+:\s+(.+)'),
+                    ('date', r'date de facture\s+:\s+(\d{2}/\d{2}/\d{2})'),
+                    ('amount_untaxed', r'total auprès d\'Orange\s+(\d+,\d{2})'),
+                    ('amount', r'total auprès d\'Orange\s+\d+,\d{2}\s+(\d+,\d{2})'),
                     ]
                 },
 ]
