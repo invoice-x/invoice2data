@@ -28,6 +28,7 @@ def extract_data(file, debug=True):
 
     for t in templates:
         if t['keyword'] in str:
+            if debug: print("keyword=%s" % t['keyword'])
             for k, v in t['data']:
                 if debug: print("regexp=%s"% v)
                 res_find = re.findall(v, str)

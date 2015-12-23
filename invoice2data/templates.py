@@ -61,8 +61,8 @@ templates = [
                  'data': [
                          ('invoice_number', r'N° de Facture\s:\s(\d+)'),
                          ('date', r'Facture du (\d{2}/\d{2}/\d{4})'),
-                         ('amount', r'Total facturé.+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})'),
-                         ('amount_untaxed', r'Total facturé.+(\d+,\d{2})'),
+                         ('amount', r'Total facturé pour l’ensemble de votre compte\s+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})'),
+                         ('amount_untaxed', r'Total facturé pour l’ensemble de votre compte\s+(\d+,\d{2})'),
                          ('vat', r'(FR 71 343 059 564)'),
                         ]
                 },
