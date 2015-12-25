@@ -6,36 +6,43 @@ templates = [
                 {'keyword': 'QualityHosting',
                  'data': [
                          ('amount', r'Total EUR\s+(\d+,\d+)'),
-                         ('invoice_number', r'Rechnung\s+(\d{8})'),
-                         ('date', r'\s{2,}(\d+\. .+ \d{4})\s{2,}')
+                         ('amount_untaxed', r'Total EUR\s+(\d+,\d+)'),
+                         ('invoice_number', r'Rechnungsnr\.\s+(\d+)'),
+                         ('date', r'\s{2,}(\d+\. .+ \d{4})\s{2,}'),
+                         ('vat', r'(DE 232 446 240)'),
                         ]
                 },
                 {'keyword': 'Nodisto',
                  'data': [
                          ('amount', r'Amount.*\n.*\$(\d+\.\d+) USD'),
                          ('invoice_number', r'Invoice #(\d+)'),
-                         ('date', r'Invoice Date:\s+(\d+/\d+/\d+)')
+                         ('date', r'Invoice Date:\s+(\d+/\d+/\d+)'),
                         ]
                 },
                 {'keyword': 'Envato',
                  'data': [
                          ('amount', r'Invoice Total: \$(\d+.\d{2})'),
+                         ('amount_untaxed', r'Invoice Total: \$(\d+.\d{2})'),
                          ('invoice_number', r'Invoice No. (\d+)'),
-                         ('date', r'Order date: (\d+ \w+ \d+)')
+                         ('date', r'Order date: (\d+ \w+ \d+)'),
+                         ('partner_name', r'(Envato)'),
                         ]
                 },
                 {'keyword': 'Amazon Web Services',
                  'data': [
                          ('amount', r'TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)'),
+                         ('amount_untaxed', r'TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)'),
                          ('invoice_number', r'Invoice Number:\s+(\d+)'),
-                         ('date', r'Invoice Date:\s+([a-zA-Z]+ \d+ , \d+)')
+                         ('date', r'Invoice Date:\s+([a-zA-Z]+ \d+ , \d+)'),
+                         ('partner_name', r'(Amazon Web Services, Inc\.)'),
                         ]
                 },
-                {'keyword': 'Amazon EU',
+                {'keyword': 'Amazon EU',  # TODO : adapt for Odoo import
+                                          # TODO fix keyword to match only DE
                  'data': [
                          ('amount', r'EUR (\d+,\d+)\n\nMit dieser Warenlieferung'),
                          ('invoice_number', r'Rechnungsnr\. ([A-Z0-9\-]+)'),
-                         ('date', r'Lieferdatum/Rechnungsdatum.*(\d{1,2}\. \w+ \d{4})')
+                         ('date', r'Lieferdatum/Rechnungsdatum.*(\d{1,2}\. \w+ \d{4})'),
                         ]
                 },
                 {'keyword': 'FR58512277450',  # https://www.captaintrain.com/ TODO in progress
