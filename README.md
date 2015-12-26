@@ -29,7 +29,7 @@ sudo apt-get install xpdf
 Install the lib using pip
 
 ```
-pip install git+https://github.com/akretion/invoice2data.git@odoo-pdf-import --upgrade
+pip install invoice2data
 ```
 
 Optionally this uses `pdfminer`, but `pdftotext` works better. You can choose which module to use. No special Python packages are necessary at the moment, except for `pdftotext`.
