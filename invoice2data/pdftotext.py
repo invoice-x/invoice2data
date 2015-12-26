@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import subprocess
 
 def to_text(path):

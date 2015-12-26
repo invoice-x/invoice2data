@@ -18,6 +18,20 @@ Go from PDF files to this:
 
 ## Installation
 
+Install pdftotext
+
+For ubuntu:
+
+```
+sudo apt-get install xpdf
+```
+
+Install the lib using pip
+
+```
+pip install git+https://github.com/akretion/invoice2data.git@odoo-pdf-import --upgrade
+```
+
 Optionally this uses `pdfminer`, but `pdftotext` works better. You can choose which module to use. No special Python packages are necessary at the moment, except for `pdftotext`.
 
 There is also `tesseract` integration as a fallback, if no text can be extracted. But it may be more reliable to use 
@@ -32,6 +46,14 @@ Processes a single file and dumps whole file for debugging (useful when adding n
 
 Recognize test invoices:
 `python -m invoice2data.main invoice2data/test/pdfs --debug`
+
+If you want to use it as a lib just do
+
+```
+from invoice2data import extract_data
+
+result = extract_data('path/to/my/file.pdf')
+```
 
 ## Template system
 

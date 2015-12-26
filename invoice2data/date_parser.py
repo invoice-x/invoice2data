@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import locale
 import threading
 import re
@@ -22,18 +23,28 @@ def setlocale(name):
 
 # http://code.activestate.com/recipes/578245-flexible-datetime-parsing/
 def str2date(date_string):
-    "Parse a date_string into a datetime object."
 
+    "Parse a date_string into a datetime object."
     date_string = date_string.replace('.', '').replace("/", ' ').replace(",", ' ')
-    date_string = ''.join([c if c in string.printable else ' ' for c in date_string])
+    # The line below remove the accents, which is not good for French
+    #date_string = ''.join([c if c in string.printable else ' ' for c in date_string])
+    # Dirty hack to fix Free's wrong char in dates
+    date_string = date_string.replace('é', 'é')
     date_string = re.sub(r'\s+', ' ', date_string)
+    locale_list = ['en_US.UTF-8']
+    # Add default locale
+    dft_locale = locale.getdefaultlocale()
+    if dft_locale and dft_locale[0] and dft_locale[1]:
+        dft_locale = '%s.%s' % dft_locale
+        if dft_locale not in locale_list:
+            locale_list.append(dft_locale)
     for fmt in dateformats():
-        try:
-            for l in ['de_DE.UTF-8', 'en_US.UTF-8']:
+        for l in locale_list:
+            try:
                 with setlocale(l):
                     return datetime.strptime(date_string, fmt)
-        except ValueError:
-            pass
+            except ValueError:
+                pass
 
     raise ValueError("'%s' is not a recognized date/time" % date_string)
 

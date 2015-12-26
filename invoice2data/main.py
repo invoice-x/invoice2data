@@ -24,18 +24,22 @@ def extract_data(file, debug=True):
     # Try OCR, when we get an almost empty str.
     if len(str) < 10:
         str = image_to_text.to_text(file)
-    # if debug: print(str)
+    if debug: print(str)
 
     for t in templates:
         if t['keyword'] in str:
+            if debug: print("keyword=%s" % t['keyword'])
             for k, v in t['data']:
-                if k == 'date':
-                    raw_date = re.findall(v, str)[0]
+                if debug: print("regexp=%s"% v)
+                res_find = re.findall(v, str)
+                if debug: print("res_find=%s" % res_find)
+                if k.startswith('date'):
+                    raw_date = res_find[0]
                     output[k] = str2date(raw_date)
-                elif k == 'amount':
-                    output[k] = float(re.findall(v, str)[0].replace(',', '.'))
+                elif k.startswith('amount'):
+                    output[k] = float(res_find[0].replace(',', '.'))
                 else:
-                    output[k] = re.findall(v, str)[0]
+                    output[k] = res_find[0]
 
             output['desc'] = 'Invoice %s from %s' % (output['invoice_number'], t['keyword'])
             if debug: print(output)
