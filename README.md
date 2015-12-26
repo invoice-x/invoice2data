@@ -68,3 +68,6 @@ Planned features:
 - integrate with online OCR
 - try to 'guess' parameters for new invoice formats
 - can apply machine learning to guess new parameters?
+
+## Contributors
+- Alexis de Lattre: Add setup.py for Pypi, fix locale bug, add templates for new invoice types.
