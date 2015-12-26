@@ -5,7 +5,7 @@ setup(
     name='invoice2data',
     version=version,
     author='Manuel Riel',
-    author_email='which email should we use?',
+    author_email='github@snapdragon.cc',
     url='https://github.com/manuelRiel/invoice2data',
     description='Python parser for extracting data from pdf invoice',
     license="We need to define a licence",
