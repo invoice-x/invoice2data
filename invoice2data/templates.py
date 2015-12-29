@@ -158,4 +158,40 @@ templates = [
                     ('amount', r'TOTAL TTC EUR\s+(\d+,\d{2})'),
                     ]
                 },
+                {'keyword': 'FR 53 572 139 996',  # VINCI Autoroutes
+                'data': [
+                    ('vat', r'(FR 53 572 139 996)'),
+                    ('date', r'Emise le (\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'Facture n°\s+(\w+)'),
+                    ('amount_untaxed', r'TVA \(code 1\)\s+(\d+,\d{2})'),  # I'm not sure this line will always work well... experience will tell
+                    ('amount', r'NET A PAYER TTC\s+(\d+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR 28 339 379 984',  # http://www.saur.com/
+                'data': [
+                    ('vat', r'(FR 28 339 379 984)'),
+                    ('date', r'FACTURE.+\n.+(\d{2}\s.+\s\d{4})'),
+                    ('invoice_number', r'FACTURE N°\s+(\d+)'),
+                    ('amount_untaxed', r'HT soumis à TVA\s+:\s+([\d ]+,\d{2})'),
+                    ('amount', r'Total facture TTC\s+([\d ]+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR 39 356 000 000',  # La Poste SA
+                'data': [
+                    ('vat', r'(FR 39 356 000 000)'),
+                    ('date', r'FACTURE\s+(\d{2}/\d{2}/\d{2})'),
+                    ('invoice_number', r'FACTURE\s+\d{2}/\d{2}/\d{2}\s+(\d+)'),
+                    ('amount_untaxed', r'Total HT:\s+(\d+,\d{2})'),
+                    ('amount', r'Total TTC:\s+(\d+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR 72 997 506 407',  # http://www.jpg.fr/
+                'data': [
+                    ('vat', r'(FR 72 997 506 407)'),
+                    ('date', r'(\d\d?/\d\d?/\d{4})'),
+                    ('invoice_number', r'FACTURE N°\s+(\d+\.\s\d+\.\d+)'),
+                    ('amount_untaxed', r'\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})\s+\d+,\d{2}\s+\d+,\d{2}'),
+                    ('amount', r'\d+,\d{2}\s+\d+,\d{2}\s+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})'),
+                    ]
+                },
 ]
