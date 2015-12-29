@@ -131,6 +131,24 @@ templates = [
                     ('amount', r'total auprès d\'Orange\s+\d+,\d{2}\s+(\d+,\d{2})'),
                     ]
                 },
+                {'keyword': '1015 : SAV en cas de panne de ligne fixe',  # Orange ligne fixe
+                'data': [
+                    ('siren', r'(380\s?129\s?866)'),
+                    ('date', r'date de facture\s+:\s+(\d{2}/\d{2}/\d{2})'),
+                    ('invoice_number', r'n° de facture\s+:\s+(.+)'),
+                    ('amount_untaxed', r'total des abonnements et achats\s+(\d+,\d{2})'),
+                    ('amount', r'total des abonnements et achats\s+\d+,\d{2}\s+(\d+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR 86419735741',  # http://www.coriolis.com
+                'data': [
+                    ('vat', r'(FR 86419735741)'),
+                    ('invoice_number', 'Facture nº\s+(\d+)'),
+                    ('date', 'Date facture\s+(\d{2}/\d{2}/\d{4})'),
+                    ('amount_untaxed', r'TOTAL HT\s+(\d+,\d{2})'),
+                    ('amount', r'TOTAL FACTURE TTC\s+(\d+,\d{2})'),
+                    ]
+                },
                 {'keyword': 'FR68582018966',  # www.finagaz.fr
                 'data': [
                     ('vat', r'(FR68582018966)'),
