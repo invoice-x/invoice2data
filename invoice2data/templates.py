@@ -194,4 +194,13 @@ templates = [
                     ('amount', r'\d+,\d{2}\s+\d+,\d{2}\s+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})'),
                     ]
                 },
+                {'keyword': 'EDF Entreprises',  # EDF Entreprises
+                'data': [
+                    ('vat', r'(FR 03 552 081 317)'),
+                    ('date', r'Facture \d+ du (\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'Facture (\d+)'),
+                    ('amount_untaxed', r'Montant Hors T.V.A. :\s+([\d ]+,\d{2})'),
+                    ('amount', r'Total TTC en euros \(détails au verso\) :\s+([\d ]+,\d{2})'),
+                    ]
+                },
 ]
