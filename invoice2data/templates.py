@@ -131,4 +131,13 @@ templates = [
                     ('amount', r'total auprès d\'Orange\s+\d+,\d{2}\s+(\d+,\d{2})'),
                     ]
                 },
+                {'keyword': 'FR68582018966',  # www.finagaz.fr
+                'data': [
+                    ('vat', r'(FR68582018966)'),
+                    ('date', r'Du\s+(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'Du\s+\d{2}/\d{2}/\d{4}\s+N°\s+(\d+)'),
+                    ('amount_untaxed', r'TOTAL soumis à TVA\s+(\d+,\d{2})'),
+                    ('amount', r'TOTAL TTC EUR\s+(\d+,\d{2})'),
+                    ]
+                },
 ]
