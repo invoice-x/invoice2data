@@ -141,9 +141,10 @@ templates = [
                     ]
                 },
                 {'keyword': 'FR 86419735741',  # http://www.coriolis.com
+                 # Designed to work on the 2 invoice models: mobile phone and Internet
                 'data': [
                     ('vat', r'(FR 86419735741)'),
-                    ('invoice_number', 'Facture nº\s+(\d+)'),
+                    ('invoice_number', 'Facture\s[nº\s]+(\d+)'),
                     ('date', 'Date facture\s+(\d{2}/\d{2}/\d{4})'),
                     ('amount_untaxed', r'TOTAL HT\s+(\d+,\d{2})'),
                     ('amount', r'TOTAL FACTURE TTC\s+(\d+,\d{2})'),
