@@ -37,7 +37,7 @@ def extract_data(file, debug=True):
                     raw_date = res_find[0]
                     output[k] = str2date(raw_date)
                 elif k.startswith('amount'):
-                    output[k] = float(res_find[0].replace(',', '.'))
+                    output[k] = float(res_find[0].replace(',', '.').replace(' ', ''))
                 else:
                     output[k] = res_find[0]
 
