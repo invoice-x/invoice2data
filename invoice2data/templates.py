@@ -204,4 +204,22 @@ templates = [
                     ('amount', r'Total TTC en euros \(détails au verso\) :\s+([\d ]+,\d{2})'),
                     ]
                 },
+                {'keyword': 'FR 35 433 115 904',  # Online SAS
+                'data': [
+                    ('vat', r'(FR 35 433 115 904)'),
+                    ('date', r'Date de facturation\s+:\s+(\d{2}\s.+\s\d{4})'),
+                    ('invoice_number', r'Facture n°\s+(\d+)'),
+                    ('amount_untaxed', r'(\d+,\d{2})\sEuros\s+\d+,\d{2}\s\%\s+\d+,\d{2}\sEuros\s+\d+,\d{2}\sEuros'),
+                    ('amount', r'\d+,\d{2}\sEuros\s+\d+,\d{2}\s\%\s+\d+,\d{2}\sEuros\s+(\d+,\d{2})\sEuros'),
+                    ]
+                },
+                {'keyword': 'FR 83 538 645 227',  # My Flying box
+                'data': [
+                    ('vat', 'FR 83 538 645 227'),
+                    ('date', r'DATE\s+(\d{2}/\d{2}/\d{2})'),
+                    ('invoice_number', r'N° DE FACTURE\s+(\d+)'),
+                    ('amount_untaxed', r'(\d+,\d{2})\s€\s+\d+,\d{2}\s€\s+\d+,\d{2}\s€'),
+                    ('amount', r'\d+,\d{2}\s€\s+\d+,\d{2}\s€\s+(\d+,\d{2})\s€'),
+                    ]
+                },
 ]
