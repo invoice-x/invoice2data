@@ -222,4 +222,13 @@ templates = [
                     ('amount', r'\d+,\d{2}\s€\s+\d+,\d{2}\s€\s+(\d+,\d{2})\s€'),
                     ]
                 },
+                {'keyword': 'Coordonnées bancaires Futur',  # Futur Telecom
+                'data': [
+                    ('static_vat', 'FR 92 444 172 274'),
+                    ('date', r'Date facture\s+(\d{2}\s.+\s\d{4})'),
+                    ('invoice_number', r'N° facture\s+(\d+)'),
+                    ('amount_untaxed', r'Total H.T.\s+(\d+,\d{2})'),
+                    ('amount', r'Total T.T.C. \(€\)\s+(\d+,\d{2})'),
+                    ]
+                },
 ]

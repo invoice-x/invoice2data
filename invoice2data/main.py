@@ -30,16 +30,20 @@ def extract_data(file, debug=True):
         if t['keyword'] in str:
             if debug: print("keyword=%s" % t['keyword'])
             for k, v in t['data']:
-                if debug: print("regexp=%s"% v)
-                res_find = re.findall(v, str)
-                if debug: print("res_find=%s" % res_find)
-                if k.startswith('date'):
-                    raw_date = res_find[0]
-                    output[k] = str2date(raw_date)
-                elif k.startswith('amount'):
-                    output[k] = float(res_find[0].replace(',', '.').replace(' ', ''))
+                if k.startswith('static_'):
+                    if debug: print("field=%s | static value=%s"% (k, v))
+                    output[k.replace('static_', '')] = v
                 else:
-                    output[k] = res_find[0]
+                    if debug: print("field=%s | regexp=%s"% (k, v))
+                    res_find = re.findall(v, str)
+                    if debug: print("res_find=%s" % res_find)
+                    if k.startswith('date'):
+                        raw_date = res_find[0]
+                        output[k] = str2date(raw_date)
+                    elif k.startswith('amount'):
+                        output[k] = float(res_find[0].replace(',', '.').replace(' ', ''))
+                    else:
+                        output[k] = res_find[0]
 
             output['desc'] = 'Invoice %s from %s' % (output['invoice_number'], t['keyword'])
             if debug: print(output)
