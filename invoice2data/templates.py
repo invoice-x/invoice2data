@@ -87,8 +87,14 @@ templates = [
                  'data': [
                     ('vat', r'(FR25499247138)'),
                     ('amount_untaxed', r'Total de la facture HT\s+(\d+.\d{2})'),
-                    ('amount', r'Somme à payer TTC\*\s+(\d+.\d{2})'),
+                    ('amount', r'\spayer TTC\*\s+(\d+.\d{2})'),
+                    # for amount, I avoid the 'à' which is not extracted the same
+                    # way depending on the version of poppler-utils
                     ('date', r'Facture no \d+ du (\d+ .+ \d{4})'),
+                    # for date to work on months with accents, you need a recent
+                    # version of poppler-utils. For example, it works with
+                    # version 0.33.0-0ubuntu3, but it doesn't work with version
+                    # 0.24.5-2ubuntu4.3
                     ('invoice_number', r'Facture no (\d+)'),
                     ]
                 },
