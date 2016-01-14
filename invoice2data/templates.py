@@ -237,4 +237,13 @@ templates = [
                     ('amount', r'Total T.T.C. \(€\)\s+(\d+,\d{2})'),
                     ]
                 },
+                {'keyword': 'FR-50440585297',  # PRIVIANET SARL
+                'data': [
+                    ('static_vat', 'FR50440585297'),
+                    ('date', r'Nyons,\sle\s\w+\s(\d{2}\s.+\s\d{4})'),
+                    ('invoice_number', r'Facture\sn°\s([\d-]+)'),
+                    ('amount_untaxed', r'Total HT\s+(\d+.\d{2})'),
+                    ('amount', r'Total TTC\s+(\d+.\d{2})'),
+                    ]
+                },
 ]
