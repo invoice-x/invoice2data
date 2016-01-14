@@ -22,7 +22,10 @@ def extract_data(file, debug=True):
     str = pdftotext.to_text(file)
 
     # Try OCR, when we get an almost empty str.
-    if len(str) < 10:
+    charcount = len(str.replace(' ', ''))
+    if debug: print('number of char in pdf2text extract: %d' % charcount)
+    if charcount < 40:
+        if debug: print('Starting OCR')
         str = image_to_text.to_text(file)
     if debug: print(str)
 

@@ -137,6 +137,15 @@ templates = [
                     ('amount', r'total auprès d\'Orange\s+\d+,\d{2}\s+(\d+,\d{2})'),
                     ]
                 },
+                {'keyword': 'internet pro',  # Orange Pro ADSL
+                'data': [
+                    ('siren', r'(380\s?129\s?866)'),
+                    ('date', r'date de facture\s+:\s+(\d{2}/\d{2}/\d{2})'),
+                    ('invoice_number', r'n° de facture\s+:\s+(.+)'),
+                    ('amount_untaxed', r'votre facture du \d{2}\.\d{2}\.\d{4}\s+(\d+,\d{2})'),
+                    ('amount', r'votre facture du \d{2}\.\d{2}\.\d{4}\s+\d+,\d{2}\s€\sHT\s+(\d+.\d{2})'),
+                    ]
+                },
                 {'keyword': '1015 : SAV en cas de panne de ligne fixe',  # Orange ligne fixe
                 'data': [
                     ('siren', r'(380\s?129\s?866)'),
@@ -246,4 +255,32 @@ templates = [
                     ('amount', r'Total TTC\s+(\d+.\d{2})'),
                     ]
                 },
+                {'keyword': 'FR 29775649965',  # Transports Jean Besson
+                'data': [
+                    ('static_vat', 'FR29775649965'),
+                    ('date', r'(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'FACTURE\sN°\s?(\d+)'),
+                    ('amount_untaxed', r'MONTANT HT APRES MAJORATION\s+:\s+(\d+.\d{2})'),
+                    ('amount', r'MONTANT TTC A REGLER EN EUROS\s+(\d+.\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR85444740336',  # SAT2Way
+                'data': [
+                    ('static_vat', 'FR85444740336'),
+                    ('date', r'Date\sde\sfacturation\s?:\s+(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'Facture\snum\s?:\s+(\w+)'),
+                    ('amount_untaxed', r'Sous-total\s+:\s+(\d+.\d{2})'),
+                    ('amount', r'Total\s+:\s+(\d+.\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR23380353235',  # Exaprint, with OCR...
+                'data': [
+                    ('static_vat', 'FR23380353235'),
+                    ('date', r'Date\s+(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'Numéro\s+(\d+)'),
+                    ('amount_untaxed', r'20\s\%\s(\d+.\d{2})'),
+                    ('amount', r'Montant\s+T.T.C.\s+(\d+.\d{2})'),
+                    ]
+                },
+
 ]
