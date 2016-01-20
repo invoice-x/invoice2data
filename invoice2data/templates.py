@@ -128,6 +128,15 @@ templates = [
                     ('amount', r'total facture\s+\d+,\d{2}\s+(\d+,\d{2})'),
                     ]
                 },
+                {'keyword': 'www.orange-business.com/ece',  # Orange Business Services
+                'data': [
+                    ('siren', r'(380\s?129\s?866)'),
+                    ('invoice_number', r'n°\sde\sfacture\s+:\s+(.+)'),
+                    ('date', r'date\sde\sfacture\s+:\s+(\d{2}/\d{2}/\d{2})'),
+                    ('amount_untaxed', r'total\sfacture\s\(EUR\sHT\)\s+(\d+,\d{2})'),
+                    ('amount', r'somme\sà\spayer\s\(EUR\sTTC\)\s+(\d+,\d{2})'),
+                    ]
+                },
                 {'keyword': 'Orange - service clients La fibre',  # Orange fibre
                 'data': [
                     ('siren', r'(380\s?129\s?866)'),
@@ -281,6 +290,15 @@ templates = [
                     ('amount_untaxed', r'20\s\%\s(\d+.\d{2})'),
                     ('amount', r'Montant\s+T.T.C.\s+(\d+.\d{2})'),
                     ]
+                },
+                {'keyword': 'IE6364992H',  # Adobe Ireland
+                'data': [
+                    ('static_vat', 'IE6364992H'),
+                    ('date', r'Date\sde\sla\sfacture\s?:\s+(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'Numéro\sde\sfacture\s?:\s+(\w+)'),
+                    ('amount_untaxed', r'Montant net\s+TVA\s+Marchandises\s+\d+.\d{2}\s+(\d+.\d{2})'),
+                    ('amount', r'Montant\sTTC\s+(\d+.\d{2})'),
+                ]
                 },
 
 ]
