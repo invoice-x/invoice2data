@@ -133,6 +133,7 @@ templates = [
                     ('siren', r'(380\s?129\s?866)'),
                     ('invoice_number', r'n°\sde\sfacture\s+:\s+(.+)'),
                     ('date', r'date\sde\sfacture\s+:\s+(\d{2}/\d{2}/\d{2})'),
+                    ('date_due', r'prélevé\sà\spartir\sdu\s(\d{2}/\d{2}/\d{4})'),
                     ('amount_untaxed', r'total\sfacture\s\(EUR\sHT\)\s+(\d+,\d{2})'),
                     ('amount', r'somme\sà\spayer\s\(EUR\sTTC\)\s+(\d+,\d{2})'),
                     ]
@@ -298,7 +299,91 @@ templates = [
                     ('invoice_number', r'Numéro\sde\sfacture\s?:\s+(\w+)'),
                     ('amount_untaxed', r'Montant net\s+TVA\s+Marchandises\s+\d+.\d{2}\s+(\d+.\d{2})'),
                     ('amount', r'Montant\sTTC\s+(\d+.\d{2})'),
-                ]
+                    ]
                 },
-
+                {'keyword': 'EU826021784',  # Hootsuite
+                'data': [
+                    ('static_vat', 'EU826021784'),
+                    ('date', r'Date\sde\sfacture\s?:\s+(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'N°\sde\sfacture\s?:\s+(\w+)'),
+                    ('amount_untaxed', r'Montant payé\s?:\s+€(\d+,\d{2})'),
+                    ('amount', r'Montant payé\s?:\s+€(\d+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR 93 422 721 274',  # Moneo Resto
+                'data': [
+                    ('static_vat', 'FR93422721274'),
+                    ('date', r'Date\sFacture\s?:\s+(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'Facture\s+(.+)'),
+                    ('amount_tax', r'Montant\sde\sla\sTVA\s\(20\s?%\)\s+(\d+,\d{2})'),
+                    ('amount', r'Total\sTTC\s+(\d+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR91500631932',  # Mediapart
+                'data': [
+                    ('static_vat', 'FR91500631932'),
+                    ('date', r'DATE\s+CLIENT\s+\d\/\d\s+(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'Facture\sen\s€\sN°\s+:\s+(\w+)'),
+                    ('amount_untaxed', r'H\.T\.\s+:\s+(\d+.\d{2})'),
+                    ('amount', r'TOTAL\sTTC\s+(\d+.\d{2})'),
+                    ]
+                },
+                {'keyword': 'Office TIMELINE',   # Office TIMELINE
+                'data': [
+                    # we don't have any VAT number on the invoice :-(
+                    ('static_partner_name', 'Office TIMELINE'),
+                    ('date', r'Date\sd’achat\s?:\s+\w+\s(\d+\s.+\d{4})'),
+                    ('invoice_number', r'Facture\s+(\w+)'),
+                    ('currency_iso', r'Total\spayé\s\((\w{3})\)'),
+                    ('amount_tax', r'TVA\s+\$(\d+)'),
+                    ('amount', r'Total\spayé\s\(\w{3}\)\s+\$(\d+)'),
+                    ]
+                },
+                {'keyword': 'IE 8256796 U',   # Microsoft Irlande
+                'data': [
+                    ('static_vat', 'IE8256796U'),
+                    ('date', r'Date\sdu\sdocument\s?:\s+(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'N°\sde\sfacture\s?:\s+(\w+)'),
+                    ('amount_untaxed', r'Total\sdes\sfrais\savant\simpôt\s+(\d+,\d{2})'),
+                    ('amount', r'Total\sdes\sfrais\sactuels\s+(\d+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'FR 34790841266',   # Mention Solutions SAS
+                'data': [
+                    ('static_vat', 'FR34790841266'),
+                    ('date', r'Date\s:\s+(\d{2}/\d{2}/\d{2})'),
+                    ('invoice_number', r'Facture\s+\#([\w-]+)'),
+                    ('amount_untaxed', r'Total\s\(excl\.\sVAT\)\s+(\d+,\d{2})'),
+                    ('amount', r'Total\s\(incl\.\sVAT\)\s+(\d+,\d{2})'),
+                    ]
+                },
+                {'keyword': 'EU826010755',   # Go Daddy
+                'data': [
+                    ('static_vat', 'EU826010755'),
+                    ('date', r'(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'reçu\s?:\s+(\w+)'),
+                    ('amount_tax', r'Taxe\s?:\s+(\d+,\d{2})'),
+                    ('amount', r'Total\s?:\s+(\d+,\d{2})'),
+                    ]
+                },
+                #{'keyword': 'support@browserstack.com',   # BrowserStack, by BinaryLife Inc.
+                #'data': [
+                #    ('static_partner_name', 'BinaryLife'),
+                #    ('date', r'Dated\s?:\s+(\d+\s\w+,\s\d{4})'),  # we have the issue of th
+                #    ('invoice_number', r'Invoice\sID:\s+(\w+)'),
+                #    ('amount_untaxed', r'Total\s?:\s+\$(\d+.\d{2})'),
+                #    ('amount', r'Total\s?:\s+\$(\d+.\d{2})'),
+                #    ('currency_iso', r'all\sprices\sin\s(\w{3})'),
+                #    ]
+                #},
+                {'keyword': '487530099',   # Nexity
+                'data': [
+                    ('static_siren', '487530099'),
+                    ('date', r',\sle\s(\d{2}/\d{2}/\d{4})'),
+                    ('invoice_number', r'N°\sDE\sCOUPON\s:\s+(\w+)'),
+                    ('amount', r'SOLDE\sÀ\sPAYER\s\(en\s€\)\s+([\d ]+,\d{2})'),
+                    ('date_start', r'Période\sdu\s(\d{2}/\d{2}/\d{4})\sau\s'),
+                    ('date_end', r'Période\sdu\s\d{2}/\d{2}/\d{4}\sau\s(\d{2}/\d{2}/\d{4})'),
+                    ]
+                },
 ]
