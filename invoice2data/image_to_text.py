@@ -6,11 +6,20 @@ import os
 import subprocess
 import tempfile
 
+
 def to_text(path):
 
     tiff_file = tempfile.NamedTemporaryFile(suffix='.tiff')
     FNULL = open(os.devnull, 'w')
-    subprocess.call(["convert", "-density", "350", path, "-depth", "8", tiff_file.name], stdout=FNULL, stderr=subprocess.STDOUT)
+    subprocess.call([
+        "convert",
+        "-density",
+        "350",
+        path,
+        "-depth",
+        "8",
+        tiff_file.name
+        ], stdout=FNULL, stderr=subprocess.STDOUT)
 
     # TODO: find a way to do this in python?
     # with WandImage(filename=path, resolution=200) as img:

@@ -2,7 +2,6 @@
 import locale
 import threading
 import re
-import string
 
 from datetime import datetime
 from contextlib import contextmanager
@@ -10,6 +9,7 @@ from contextlib import contextmanager
 from itertools import permutations
 
 LOCALE_LOCK = threading.Lock()
+
 
 @contextmanager
 def setlocale(name):
@@ -25,9 +25,8 @@ def setlocale(name):
 def str2date(date_string):
 
     "Parse a date_string into a datetime object."
-    date_string = date_string.replace('.', '').replace("/", ' ').replace(",", ' ')
-    # The line below remove the accents, which is not good for French
-    #date_string = ''.join([c if c in string.printable else ' ' for c in date_string])
+    date_string = date_string.replace('.', '').replace("/", ' ')
+    date_string = date_string.replace(",", ' ')
     # Dirty hack to fix Free's wrong char in dates
     date_string = date_string.replace('é', 'é')
     date_string = re.sub(r'\s+', ' ', date_string)
