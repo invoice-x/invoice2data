@@ -21,7 +21,7 @@ FILENAME = "{date} {desc}.pdf"
 
 def extract_data(invoicefile, debug=True):
     if debug:
-        logging.basicConfig(level=DEBUG)
+        logging.basicConfig(level=logging.DEBUG)
     output = {}
     extracted_str = pdftotext.to_text(invoicefile)
 
@@ -34,8 +34,8 @@ def extract_data(invoicefile, debug=True):
     logger.debug(extracted_str)
 
     for t in templates:
-        if t['keyword'] in extracted_str:
-            logger.debug("keyword=%s", t['keyword'])
+        if all([keyword in extracted_str for keyword in t['keywords']]):
+            logger.debug("keywords=%s", t['keywords'])
             for k, v in t['data']:
                 if k.startswith('static_'):
                     logger.debug("field=%s | static value=%s", k, v)
@@ -54,7 +54,7 @@ def extract_data(invoicefile, debug=True):
                         output[k] = res_find[0]
 
             output['desc'] = 'Invoice %s from %s' % (
-                output['invoice_number'], t['keyword'])
+                output['invoice_number'], t['keywords'][0])
             logger.debug(output)
             return output
 
