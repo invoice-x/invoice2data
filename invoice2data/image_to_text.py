@@ -18,8 +18,8 @@ def to_text(path):
     #     img.format='png'
     #     img.save(filename=tempfile)
 
-    str = pytesseract.image_to_string(Image.open(tiff_file))
+    extracted_str = pytesseract.image_to_string(Image.open(tiff_file))
     tiff_file.close()
-    return str
+    return extracted_str
 
     # convert -density 300 file.pdf -depth 8 file.tiff

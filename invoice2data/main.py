@@ -17,20 +17,20 @@ from .output import invoices_to_csv
 
 FILENAME = "{date} {desc}.pdf"
 
-def extract_data(file, debug=True):
+def extract_data(invoicefile, debug=True):
     output = {}
-    str = pdftotext.to_text(file)
+    extracted_str = pdftotext.to_text(invoicefile)
 
     # Try OCR, when we get an almost empty str.
-    charcount = len(str.replace(' ', ''))
+    charcount = len(extracted_str.replace(' ', ''))
     if debug: print('number of char in pdf2text extract: %d' % charcount)
     if charcount < 40:
         if debug: print('Starting OCR')
-        str = image_to_text.to_text(file)
-    if debug: print(str)
+        extracted_str = image_to_text.to_text(invoicefile)
+    if debug: print(extracted_str)
 
     for t in templates:
-        if t['keyword'] in str:
+        if t['keyword'] in extracted_str:
             if debug: print("keyword=%s" % t['keyword'])
             for k, v in t['data']:
                 if k.startswith('static_'):
@@ -38,7 +38,7 @@ def extract_data(file, debug=True):
                     output[k.replace('static_', '')] = v
                 else:
                     if debug: print("field=%s | regexp=%s"% (k, v))
-                    res_find = re.findall(v, str)
+                    res_find = re.findall(v, extracted_str)
                     if debug: print("res_find=%s" % res_find)
                     if k.startswith('date'):
                         raw_date = res_find[0]
@@ -51,8 +51,8 @@ def extract_data(file, debug=True):
             output['desc'] = 'Invoice %s from %s' % (output['invoice_number'], t['keyword'])
             if debug: print(output)
             return output
-    
-    print('No template for %s' % file)
+
+    print('No template for %s' % invoicefile)
     if debug: print(output)
     return False
 
@@ -88,9 +88,3 @@ if __name__ == '__main__':
                 print('Error with %s' % f)
 
         invoices_to_csv(output, 'invoices-output.csv')
-
- 
-
-
-
-
