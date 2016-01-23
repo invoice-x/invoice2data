@@ -1,6 +1,8 @@
 # Data extractor for PDF invoices - invoice2data
 
-I wrote this package to support my accounting process.
+[![Circle CI](https://circleci.com/gh/manuelRiel/invoice2data.svg?style=svg)](https://circleci.com/gh/manuelRiel/invoice2data)
+
+A Python library to support your accounting process.
 
 - extracts text from PDF files
 - searches for regex in the result
@@ -39,13 +41,13 @@ There is also `tesseract` integration as a fallback, if no text can be extracted
 ## Usage
 
 Processes a folder of invoices and copies renamed invoices to new folder.
-`python -m invoice2data.main folder_with_invoices --copy new_folder`
+`invoice2data --copy new_folder folder_with_invoices/*.pdf`
 
 Processes a single file and dumps whole file for debugging (useful when adding new templates in templates.py)
-`python -m invoice2data.main --debug my_invoice.pdf`
+`invoice2data --debug my_invoice.pdf`
 
 Recognize test invoices:
-`python -m invoice2data.main invoice2data/test/pdfs --debug`
+`invoice2data invoice2data/test/pdfs/* --debug`
 
 If you want to use it as a lib just do
 
@@ -57,7 +59,25 @@ result = extract_data('path/to/my/file.pdf')
 
 ## Template system
 
-See `invoice2data/templates.py` for existing templates. Just extend the list to add your own. If deployed by a bigger organisation, there should be an interface to edit templates for new suppliers. 80-20 rule.
+See `invoice2data/templates` for existing templates. Just extend the list to add your own. If deployed by a bigger organisation, there should be an interface to edit templates for new suppliers. 80-20 rule.
+
+Templates are based on Yaml. They define one or more keywords to find the right template and regexp for fields to be extracted. They could also be a static value, like the full company name.
+
+We may extend them to feature options to be used during invoice processing.
+
+Example:
+
+```
+keywords:
+- Amazon Web Services
+fields:
+  amount: TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)
+  amount_untaxed: TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)
+  date: Invoice Date:\s+([a-zA-Z]+ \d+ , \d+)
+  invoice_number: Invoice Number:\s+(\d+)
+  partner_name: (Amazon Web Services, Inc\.)
+
+```
 
 ## Roadmap
 

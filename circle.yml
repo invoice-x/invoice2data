@@ -4,6 +4,10 @@ machine:
 
 dependencies:
   pre:
-    - sudo apt-get install tesseract
-    - pyenv local 2.7.9 2.7.10 3.4.3 3.5.0
+    - sudo apt-get install tesseract-ocr xpdf
 
+test:
+  override:
+    - pyenv global 2.7.9 && python setup.py install && nosetests
+    - pyenv global 3.5.0 && python setup.py install && nosetests
+    - pyenv global 3.4.3 && python setup.py install && nosetests

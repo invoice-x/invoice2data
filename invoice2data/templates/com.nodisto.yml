@@ -1,3 +1,4 @@
+issuer: Nodisto
 fields:
   amount: Amount.*\n.*\$(\d+\.\d+) USD
   date: Invoice Date:\s+(\d+/\d+/\d+)

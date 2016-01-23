@@ -1,8 +1,9 @@
+issuer: Amazon AWS
 fields:
   amount: Total EUR\s+(\d+,\d+)
   amount_untaxed: Total EUR\s+(\d+,\d+)
   date: \s{2,}(\d+\. .+ \d{4})\s{2,}
-  invoice_number: Rechnung\s+(\d{8})
+  invoice_number: Rechnung(snr\.)?\s+(\d{8})
   vat: DE 232 446 240
 keywords:
 - QualityHosting

@@ -55,9 +55,14 @@ def extract_data(invoicefile, templates, debug=False):
                         else:
                             output[k] = res_find[0]
                             logger.debug("res_find=%s", res_find)
-
+            
+            # TODO remove after all templates have issuer set.
+            if 'issuer' not in t.keys():
+                identifier = t['keywords'][0]
+            else:
+                identifier = t['issuer']
             output['desc'] = 'Invoice %s from %s' % (
-                output['invoice_number'], t['keywords'][0])
+                output['invoice_number'], identifier)
             logger.debug(output)
             return output
 
@@ -73,10 +78,10 @@ def main():
     parser.add_argument('--debug', dest='debug', action='store_true',
                         help='Print debug information.')
     
-    parser.add_argument('--copy', dest='copy',
+    parser.add_argument('--copy', '-c', dest='copy',
                         help='Copy renamed PDFs to specified folder.')
     
-    parser.add_argument('--template-folder', dest='template_folder', 
+    parser.add_argument('--template-folder', '-t', dest='template_folder', 
                         default=pkg_resources.resource_filename('invoice2data', 'templates'),
                         help='Folder containing invoice templates in yml file. Required.')
     
