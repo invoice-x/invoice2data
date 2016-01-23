@@ -9,6 +9,13 @@ A Python library to support your accounting process.
 - saves results as CSV
 - optionally renames PDF files to match the content
 
+With the flexible template system you can:
+
+- precisely match PDF files
+- define static fields that are the same for every invoice
+- have multiple regex per field (if layout or wording changes)
+- define currency
+
 Go from PDF files to this:
 
 ```
@@ -20,15 +27,10 @@ Go from PDF files to this:
 
 ## Installation
 
-Install pdftotext
+1. Install pdftotext
+We need the latest verion of `xpdf` because support for table layouts was only recenlty added. You can download the binary files from www.foolabs.com/xpdf/download.html
 
-For ubuntu:
-
-```
-sudo apt-get install xpdf
-```
-
-Install the lib using pip
+2. Install `invoice2data` using pip
 
 ```
 pip install invoice2data
