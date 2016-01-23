@@ -13,29 +13,29 @@
 
 import unittest
 import pkg_resources
-from os import listdir
-from os.path import isfile, join
+import os
 
-from ..main import extract_data
-
+from invoice2data.main import extract_data
+from invoice2data.templates import read_templates
 
 class TestExtraction(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.templates = read_templates(
+            pkg_resources.resource_filename('invoice2data', 'templates'))
 
-    def test_sample_pdfs(self):
-        pass
+    def test_external_pdfs(self):
+        file_folder = os.getenv('EXTERNAL_PDFS', None)
+        if file_folder:
+            for path, subdirs, files in os.walk(file_folder):
+                for file in files:
+                    extract_data(os.path.join(path, file), self.templates)            
 
-    def test_extraction(self):
+    def test_internal_pdfs(self):
         file_folder = pkg_resources.resource_filename(__name__, 'pdfs')
-        pdfs = [
-            join(file_folder, f) for f in listdir(file_folder)
-            if isfile(join(file_folder, f))
-            ]
-
-        for pdf in pdfs:
-            print extract_data(pdf)
+        for path, subdirs, files in os.walk(file_folder):
+            for file in files:
+                extract_data(os.path.join(path, file), self.templates)          
 
 if __name__ == '__main__':
     unittest.main()

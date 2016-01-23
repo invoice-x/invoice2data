@@ -1,0 +1,9 @@
+fields:
+  amount: Total\s\(incl\.\sVAT\)\s+(\d+,\d{2})
+  amount_untaxed: Total\s\(excl\.\sVAT\)\s+(\d+,\d{2})
+  date: Date\s:\s+(\d{2}/\d{2}/\d{2})
+  invoice_number: Facture\s+\#([\w-]+)
+  static_vat: FR34790841266
+keywords:
+- FR 34790841266
+- Facture

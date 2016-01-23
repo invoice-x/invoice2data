@@ -1,0 +1,8 @@
+fields:
+  amount: NET A PAYER TTC\s+(\d+,\d{2})
+  amount_untaxed: TVA \(code 1\)\s+(\d+,\d{2})
+  date: Emise le (\d{2}/\d{2}/\d{4})
+  invoice_number: Facture n°\s+(\w+)
+  vat: (FR 53 572 139 996)
+keywords:
+- FR 53 572 139 996

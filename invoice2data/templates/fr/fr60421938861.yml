@@ -1,0 +1,9 @@
+fields:
+  amount: Total facture\s+\d+.\d{2}\s+\d+.\d{2}\s+(\d+.\d{2})
+  amount_untaxed: Total facture\s+(\d+.\d{2})
+  date: Facture n°\d+ du (\d+ .+ \d{4})
+  date_due: Date limite de paiement le (\d+ .+ \d{4})
+  invoice_number: Facture n°(\d+)
+  vat: (FR 604 219 388 61)
+keywords:
+- FR 604 219 388 61

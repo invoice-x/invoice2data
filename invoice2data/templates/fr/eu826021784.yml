@@ -1,0 +1,9 @@
+fields:
+  amount: Montant payé\s?:\s+€(\d+,\d{2})
+  amount_untaxed: Montant payé\s?:\s+€(\d+,\d{2})
+  date: Date\sde\sfacture\s?:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: N°\sde\sfacture\s?:\s+(\w+)
+  static_vat: EU826021784
+keywords:
+- EU826021784
+- Détails de la facturation

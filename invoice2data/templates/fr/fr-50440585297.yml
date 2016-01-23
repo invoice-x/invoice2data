@@ -1,0 +1,8 @@
+fields:
+  amount: Total TTC\s+(\d+.\d{2})
+  amount_untaxed: Total HT\s+(\d+.\d{2})
+  date: Nyons,\sle\s\w+\s(\d{2}\s.+\s\d{4})
+  invoice_number: Facture\sn°\s([\d-]+)
+  static_vat: FR50440585297
+keywords:
+- FR-50440585297

@@ -1,3 +1,5 @@
 pytesseract
-pdfminer
+pdfminer3k
 pillow
+pyyaml
+dateparser

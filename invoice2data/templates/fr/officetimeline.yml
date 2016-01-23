@@ -1,0 +1,10 @@
+fields:
+  amount: Total\spayé\s\(\w{3}\)\s+\$(\d+)
+  amount_tax: TVA\s+\$(\d+)
+  currency_iso: Total\spayé\s\((\w{3})\)
+  date: Date\sd’achat\s?:\s+\w+\s(\d+\s.+\d{4})
+  invoice_number: Facture\s+(\w+)
+  static_partner_name: Office TIMELINE
+keywords:
+- Office TIMELINE
+- Facture

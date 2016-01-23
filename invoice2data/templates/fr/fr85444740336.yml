@@ -1,0 +1,8 @@
+fields:
+  amount: Total\s+:\s+(\d+.\d{2})
+  amount_untaxed: Sous-total\s+:\s+(\d+.\d{2})
+  date: Date\sde\sfacturation\s?:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Facture\snum\s?:\s+(\w+)
+  static_vat: FR85444740336
+keywords:
+- FR85444740336

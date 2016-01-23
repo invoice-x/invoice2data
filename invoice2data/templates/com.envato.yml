@@ -1,0 +1,8 @@
+fields:
+  amount: Invoice Total: \$(\d+.\d{2})
+  amount_untaxed: Invoice Total: \$(\d+.\d{2})
+  date: Order date: (\d+ \w+ \d+)
+  invoice_number: Invoice No. (\d+)
+  partner_name: (Envato)
+keywords:
+- Envato

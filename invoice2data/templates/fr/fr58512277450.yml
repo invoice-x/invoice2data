@@ -1,0 +1,8 @@
+fields:
+  amount: (\d+,\d{2})
+  amount_untaxed: (\d+,\d{2})
+  date: \d+,\d{2}\D+(\d+\s.+\s\d{4})
+  description: Billet [A-Z]+ − ([^\s{5}])
+  invoice_number: Billet ([A-Z]+)
+keywords:
+- FR58512277450

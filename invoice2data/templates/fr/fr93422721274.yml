@@ -1,0 +1,8 @@
+fields:
+  amount: Total\sTTC\s+(\d+,\d{2})
+  amount_tax: Montant\sde\sla\sTVA\s\(20\s?%\)\s+(\d+,\d{2})
+  date: Date\sFacture\s?:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Facture\s+(.+)
+  static_vat: FR93422721274
+keywords:
+- FR 93 422 721 274

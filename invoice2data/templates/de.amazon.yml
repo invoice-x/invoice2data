@@ -1,0 +1,6 @@
+fields:
+  amount: EUR (\d+,\d+)\n\nMit dieser Warenlieferung
+  date: Lieferdatum/Rechnungsdatum.*(\d{1,2}\. \w+ \d{4})
+  invoice_number: Rechnungsnr\. ([A-Z0-9\-]+)
+keywords:
+- Amazon EU

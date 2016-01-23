@@ -1,0 +1,8 @@
+fields:
+  amount: MONTANT TTC A REGLER EN EUROS\s+(\d+.\d{2})
+  amount_untaxed: MONTANT HT APRES MAJORATION\s+:\s+(\d+.\d{2})
+  date: (\d{2}/\d{2}/\d{4})
+  invoice_number: FACTURE\sN°\s?(\d+)
+  static_vat: FR29775649965
+keywords:
+- FR 29775649965

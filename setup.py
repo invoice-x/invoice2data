@@ -11,6 +11,10 @@ setup(
     description='Python parser to extract data from pdf invoice',
     license="MIT",
     long_description=open('README.md').read(),
+    package_data = {
+        'invoice2data': ['templates/*.yml', 'templates/fr/*.yml'],
+        'invoice2data.test': ['pdfs/*.pdf']
+        },
     packages=find_packages(),
     install_requires=[
         r.strip() for r in open('requirements.txt').read().splitlines()],

@@ -1,0 +1,9 @@
+fields:
+  amount: Total TTC :\s+(\d+,\d{2})
+  amount_untaxed: Total HT :\s+(\d+,\d{2})
+  date: (\d{2}/\d{2}/\d{4})
+  date_due: \d{2}/\d{2}/\d{4}.+(\d{2}/\d{2}/\d{4})
+  invoice_number: Facture (\w+)
+  siren: (792 377 731)
+keywords:
+- 792 377 731

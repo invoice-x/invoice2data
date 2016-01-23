@@ -1,0 +1,8 @@
+fields:
+  amount: Montant de la facture soumis à TVA\s+\d+,\d{2}\s+(\d+,\d{2})
+  amount_untaxed: Montant de la facture soumis à TVA\s+(\d+,\d{2})
+  date: Date de facture\s+:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: N° de facture\s+:\s+(\d+)
+  vat: (FR 74 397 480 930)
+keywords:
+- FR 74 397 480 930

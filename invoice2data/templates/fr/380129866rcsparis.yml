@@ -1,0 +1,9 @@
+fields:
+  amount: total auprès d\'Orange\s+\d+,\d{2}\s+(\d+,\d{2})
+  amount_untaxed: total auprès d\'Orange\s+(\d+,\d{2})
+  date: date de facture\s+:\s+(\d{2}/\d{2}/\d{2})
+  invoice_number: n° de facture\s+:\s+(.+)
+  static_siren: '380129866'
+keywords:
+- 380 129 866 RCS Paris
+- service clients La fibre
