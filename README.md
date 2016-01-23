@@ -40,6 +40,13 @@ There is also `tesseract` integration as a fallback, if no text can be extracted
 
 ## Usage
 
+Basic usage. Process PDF files and write result to CSV.
+- `invoice2data invoice.pdf`
+- `invoice2data *.pdf`
+
+Specify folder with yml templates. (e.g. your suppliers)
+`invoice2data --template-folder ACME-templates invoice.pdf`
+
 Processes a folder of invoices and copies renamed invoices to new folder.
 `invoice2data --copy new_folder folder_with_invoices/*.pdf`
 
@@ -68,6 +75,7 @@ We may extend them to feature options to be used during invoice processing.
 Example:
 
 ```
+issuer: Amazon Web Services, Inc.
 keywords:
 - Amazon Web Services
 fields:
