@@ -20,15 +20,10 @@ Go from PDF files to this:
 
 ## Installation
 
-Install pdftotext
+1. Install pdftotext
+We need the latest verion of `xpdf` because support for table layouts was only recenlty added. You can download the binary files from www.foolabs.com/xpdf/download.html
 
-For ubuntu:
-
-```
-sudo apt-get install xpdf
-```
-
-Install the lib using pip
+Install `invoice2data` using pip
 
 ```
 pip install invoice2data
