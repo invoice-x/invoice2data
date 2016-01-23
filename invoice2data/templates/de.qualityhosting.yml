@@ -1,4 +1,4 @@
-issuer: Amazon AWS
+issuer: QualityHosting AG
 fields:
   amount: Total EUR\s+(\d+,\d+)
   amount_untaxed: Total EUR\s+(\d+,\d+)

@@ -1,7 +1,10 @@
-issuer: Nodisto
+issuer: Nodisto IT
 fields:
-  amount: Amount.*\n.*\$(\d+\.\d+) USD
-  date: Invoice Date:\s+(\d+/\d+/\d+)
-  invoice_number: 'Invoice #(\d+)'
+  amount: Total\$(\d+\.\d+)USD
+  date: InvoiceDate:(\d+/\d+/\d+)
+  invoice_number: 'Invoice#(\d+)'
 keywords:
 - Nodisto
+options:
+  remove_whitespace: true
+  currency: USD

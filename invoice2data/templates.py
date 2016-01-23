@@ -9,6 +9,7 @@ def read_templates(folder):
         for name in files:
             if name.endswith('.yml'):
                 tpl = yaml.load(open(os.path.join(path, name)).read())
+                tpl['template_name'] = name
 
                 # Test if all required fields are in template:
                 assert 'keywords' in tpl.keys(), 'Missing keywords field.'

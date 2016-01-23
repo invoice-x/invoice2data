@@ -6,7 +6,7 @@ import argparse
 import shutil
 from os import listdir
 from os.path import isfile, isdir, join
-
+import locale
 import dateparser
 import pkg_resources
 import invoice2data.pdftotext as pdftotext
@@ -14,10 +14,17 @@ import invoice2data.image_to_text as image_to_text
 from invoice2data.templates import read_templates
 from invoice2data.output import invoices_to_csv
 import logging
+locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' ) 
 
 logger = logging.getLogger(__name__)
 
 FILENAME = "{date} {desc}.pdf"
+
+OPTIONS_DEFAULT = {
+    'remove_whitespace': False,
+    'lowercase': False,
+    'currency': 'EUR'
+}
 
 def extract_data(invoicefile, templates, debug=False):
     if debug:
@@ -31,27 +38,50 @@ def extract_data(invoicefile, templates, debug=False):
     if charcount < 40:
         logger.debug('Starting OCR')
         extracted_str = image_to_text.to_text(invoicefile)
-    logger.debug(extracted_str)
 
     logger.debug('Testing {} template files'.format(len(templates)))
     for t in templates:
-        if all([keyword in extracted_str for keyword in t['keywords']]):
+        
+        # Merge template-specific options with defaults
+        run_options = OPTIONS_DEFAULT.copy()
+        if 'options' in t:
+            run_options.update(t['options'])
+
+        # Remove withspace
+        if run_options['remove_whitespace']:
+            optimized_str = re.sub(' +', '', extracted_str)
+        else:
+            optimized_str = extracted_str
+        
+
+        if all([keyword in optimized_str for keyword in t['keywords']]):
+            logger.debug('Matched template %s', t['template_name'])
             logger.debug("keywords=%s", t['keywords'])
+            logger.debug(run_options)
+            logger.debug(optimized_str)
+
             for k, v in t['fields'].items():
                 if k.startswith('static_'):
                     logger.debug("field=%s | static value=%s", k, v)
                     output[k.replace('static_', '')] = v
                 else:
                     logger.debug("field=%s | regexp=%s", k, v)
-                    res_find = re.findall(v, extracted_str)
+                    
+                    # Fields can have multiple expressions
+                    if type(v) is list:
+                        for v_option in v:
+                            res_find = re.findall(v_option, optimized_str)
+                            if res_find:
+                                break
+                    else:
+                        res_find = re.findall(v, optimized_str)
                     if res_find:
                         if k.startswith('date'):
                             raw_date = res_find[0]
                             output[k] = dateparser.parse(raw_date)
                             logger.debug("res_find=%s", output[k])
                         elif k.startswith('amount'):
-                            output[k] = float(
-                                res_find[0].replace(',', '.').replace(' ', ''))
+                            output[k] = locale.atof(res_find[0])
                         else:
                             output[k] = res_find[0]
                             logger.debug("res_find=%s", res_find)
@@ -61,12 +91,20 @@ def extract_data(invoicefile, templates, debug=False):
                 identifier = t['keywords'][0]
             else:
                 identifier = t['issuer']
-            output['desc'] = 'Invoice %s from %s' % (
-                output['invoice_number'], identifier)
-            logger.debug(output)
-            return output
 
-    logger.warning('No template for %s', invoicefile)
+            output['currency'] = run_options['currency']
+
+            if len(output.keys()) >= 4:
+                output['desc'] = 'Invoice %s from %s' % (
+                    output['invoice_number'], identifier)
+                logger.debug(output)
+                return output
+            else:
+                logger.error('Missing some fields for file %s', invoicefile)
+                logger.error(output)
+                return None
+            
+    logger.error('No template for %s', invoicefile)
     logger.debug(output)
     return False
 

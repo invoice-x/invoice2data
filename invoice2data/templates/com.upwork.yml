@@ -1,0 +1,11 @@
+issuer: Upwork
+fields:
+  amount: TOTALAMOUNT:\$(\d{1,2}?,?\d{2,3}.\d{2})
+  date: DATE(\w+,\d{4})
+  invoice_number: INVOICE#(\w+)
+keywords:
+  - MountainView,CA94043
+  - 441LogueAve.
+options:
+  currency: USD
+  remove_whitespace: true

@@ -1,0 +1,10 @@
+issuer: Usersnap GmbH
+fields:
+  amount: Totalamount:USD(\d+.\d+)
+  date: Perg,(\d{4}-\d{2}-\d{2}) 
+  invoice_number: Invoice(\w+)
+keywords:
+- ATU67824857
+options:
+  remove_whitespace: true
+  currency: USD
