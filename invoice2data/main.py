@@ -23,7 +23,8 @@ FILENAME = "{date} {desc}.pdf"
 OPTIONS_DEFAULT = {
     'remove_whitespace': False,
     'lowercase': False,
-    'currency': 'EUR'
+    'currency': 'EUR',
+    'date_formats': [],
 }
 
 def extract_data(invoicefile, templates, debug=False):
@@ -78,7 +79,8 @@ def extract_data(invoicefile, templates, debug=False):
                     if res_find:
                         if k.startswith('date'):
                             raw_date = res_find[0]
-                            output[k] = dateparser.parse(raw_date)
+                            output[k] = dateparser.parse(raw_date, 
+                                date_formats=run_options['date_formats'])
                             logger.debug("res_find=%s", output[k])
                         elif k.startswith('amount'):
                             output[k] = locale.atof(res_find[0])

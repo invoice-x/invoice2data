@@ -84,7 +84,11 @@ fields:
   date: Invoice Date:\s+([a-zA-Z]+ \d+ , \d+)
   invoice_number: Invoice Number:\s+(\d+)
   partner_name: (Amazon Web Services, Inc\.)
-
+options:
+  remove_whitespace: false
+  currency: HKD
+  date_formats:
+    - '%d/%m/%Y'
 ```
 
 ## Roadmap
