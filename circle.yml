@@ -5,8 +5,8 @@ machine:
 dependencies:
   pre:
     - sudo apt-get install tesseract-ocr xpdf
-    - wget ftp://ftp.foolabs.com/pub/xpdf/xpdfbin-linux-3.04.tar.gz
-    - tar xvf xpdfbin-linux-3.04.tar.gz
+    - cd ~; wget ftp://ftp.foolabs.com/pub/xpdf/xpdfbin-linux-3.04.tar.gz
+    - cd ~; tar xvf xpdfbin-linux-3.04.tar.gz
     - sudo rm /usr/bin/pdftotext
     - sudo ln -s /home/ubuntu/xpdfbin-linux-3.04/bin64/pdftotext /usr/bin/pdftotext
 
