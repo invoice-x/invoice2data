@@ -18,5 +18,10 @@ setup(
     packages=find_packages(),
     install_requires=[
         r.strip() for r in open('requirements.txt').read().splitlines()],
-    zip_safe=False
+    zip_safe=False,
+    entry_points = {
+              'console_scripts': [
+                  'invoice2data = invoice2data.main:main',                  
+              ],              
+          },
 )

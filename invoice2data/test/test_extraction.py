@@ -24,18 +24,19 @@ class TestExtraction(unittest.TestCase):
         self.templates = read_templates(
             pkg_resources.resource_filename('invoice2data', 'templates'))
 
-    def test_external_pdfs(self):
-        file_folder = os.getenv('EXTERNAL_PDFS', None)
-        if file_folder:
-            for path, subdirs, files in os.walk(file_folder):
-                for file in files:
-                    extract_data(os.path.join(path, file), self.templates)            
-
-    def test_internal_pdfs(self):
-        file_folder = pkg_resources.resource_filename(__name__, 'pdfs')
-        for path, subdirs, files in os.walk(file_folder):
+    def _run_test_on_folder(self, folder):
+        for path, subdirs, files in os.walk(folder):
             for file in files:
-                extract_data(os.path.join(path, file), self.templates)          
+                extract_data(os.path.join(path, file), self.templates)            
+
+    def test_external_pdfs(self):
+        folder = os.getenv('EXTERNAL_PDFS', None)
+        if folder:
+            self._run_test_on_folder(folder)
+        
+    def test_internal_pdfs(self):
+        folder = pkg_resources.resource_filename(__name__, 'pdfs')
+        self._run_test_on_folder(folder)       
 
 if __name__ == '__main__':
     unittest.main()

@@ -7,14 +7,13 @@ def read_templates(folder):
     output = []
     for path, subdirs, files in os.walk(folder):
         for name in files:
-            print(os.path.join(path, name))
             if name.endswith('.yml'):
                 tpl = yaml.load(open(os.path.join(path, name)).read())
 
                 # Test if all required fields are in template:
                 assert 'keywords' in tpl.keys(), 'Missing keywords field.'
                 required_fields = ['date', 'amount', 'invoice_number']
-                assert len(required_fields & tpl['fields'].keys()) == len(required_fields), \
+                assert len(set(required_fields).intersection(tpl['fields'].keys())) == len(required_fields), \
                     'Missing required key in template {} {}. Found {}'.format(name, path, tpl['fields'].keys())
                 
                 # Keywords as list, if only one.

@@ -8,6 +8,7 @@ from os import listdir
 from os.path import isfile, isdir, join
 
 import dateparser
+import pkg_resources
 import invoice2data.pdftotext as pdftotext
 import invoice2data.image_to_text as image_to_text
 from invoice2data.templates import read_templates
@@ -32,6 +33,7 @@ def extract_data(invoicefile, templates, debug=False):
         extracted_str = image_to_text.to_text(invoicefile)
     logger.debug(extracted_str)
 
+    logger.debug('Testing {} template files'.format(len(templates)))
     for t in templates:
         if all([keyword in extracted_str for keyword in t['keywords']]):
             logger.debug("keywords=%s", t['keywords'])
@@ -63,7 +65,7 @@ def extract_data(invoicefile, templates, debug=False):
     logger.debug(output)
     return False
 
-if __name__ == '__main__':
+def main():
     "Take folder or single file and analyze each."
 
     parser = argparse.ArgumentParser(description='Process some integers.')
@@ -96,4 +98,7 @@ if __name__ == '__main__':
                     desc=res['desc'])
                 shutil.copyfile(f.name, join(args.copy, filename))
     invoices_to_csv(output, 'invoices-output.csv')
+
+if __name__ == '__main__':
+    main()
 
