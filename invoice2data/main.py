@@ -27,10 +27,13 @@ OPTIONS_DEFAULT = {
     'date_formats': [],
 }
 
-def extract_data(invoicefile, templates, debug=False):
+def extract_data(invoicefile, templates=None, debug=False):
     if debug:
         logging.basicConfig(level=logging.DEBUG)
     output = {}
+    if templates is None:
+        templates = read_templates(
+            pkg_resources.resource_filename('invoice2data', 'templates'))
     extracted_str = pdftotext.to_text(invoicefile).decode('utf-8')
 
     # Try OCR, when we get an almost empty str.
@@ -53,7 +56,6 @@ def extract_data(invoicefile, templates, debug=False):
             optimized_str = re.sub(' +', '', extracted_str)
         else:
             optimized_str = extracted_str
-        
 
         if all([keyword in optimized_str for keyword in t['keywords']]):
             logger.debug('Matched template %s', t['template_name'])
