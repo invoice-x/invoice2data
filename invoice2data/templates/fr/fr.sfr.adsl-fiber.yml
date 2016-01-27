@@ -1,8 +1,16 @@
+# -*- coding: utf-8 -*-
+issuer: SFR
 fields:
   amount: Total facturé pour l’ensemble de votre compte\s+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})
   amount_untaxed: Total facturé pour l’ensemble de votre compte\s+(\d+,\d{2})
   date: Facture du (\d{2}/\d{2}/\d{4})
   invoice_number: N° de Facture\s:\s(\d+)
-  vat: (FR 71 343 059 564)
+  static_vat: FR71343059564
 keywords:
-- FR 71 343 059 564
+  - FR 71 343 059 564
+  - facture
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'

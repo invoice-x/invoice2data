@@ -3,3 +3,4 @@ pdfminer3k
 pillow
 pyyaml
 dateparser
+unidecode

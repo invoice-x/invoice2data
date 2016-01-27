@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+issuer: SFR
+fields:
+  amount: (\d+,\d{2}) € TTC
+  amount_untaxed: (\d+,\d{2}) € HT
+  date: Date\sde\sfacture\s:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: N°\sfacture\s:\s+([A-Z0-9\-]+)
+  static_vat: FR71343059564
+keywords:
+  - FR 71 343059564
+  - facture
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'

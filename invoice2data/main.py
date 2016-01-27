@@ -14,6 +14,7 @@ import invoice2data.image_to_text as image_to_text
 from invoice2data.templates import read_templates
 from invoice2data.output import invoices_to_csv
 import logging
+from unidecode import unidecode
 locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' ) 
 
 logger = logging.getLogger(__name__)
@@ -22,9 +23,11 @@ FILENAME = "{date} {desc}.pdf"
 
 OPTIONS_DEFAULT = {
     'remove_whitespace': False,
+    'remove_accents': False,
     'lowercase': False,
     'currency': 'EUR',
     'date_formats': [],
+    'languages': [],
 }
 
 def extract_data(invoicefile, templates=None, debug=False):
@@ -56,9 +59,19 @@ def extract_data(invoicefile, templates=None, debug=False):
             optimized_str = re.sub(' +', '', extracted_str)
         else:
             optimized_str = extracted_str
+        # Remove accents
+        if run_options['remove_accents']:
+            optimized_str = unidecode(optimized_str)
 
         if all([keyword in optimized_str for keyword in t['keywords']]):
             logger.debug('Matched template %s', t['template_name'])
+            date_formats = run_options['date_formats']
+            languages = run_options['languages']
+            for lang in languages:
+                assert len(lang) == 2, 'lang code must have 2 letters'
+            logger.debug(
+                'Date parsing: languages=%s date_formats=%s',
+                languages, date_formats)
             logger.debug("keywords=%s", t['keywords'])
             logger.debug(run_options)
             logger.debug(optimized_str)
@@ -79,17 +92,24 @@ def extract_data(invoicefile, templates=None, debug=False):
                     else:
                         res_find = re.findall(v, optimized_str)
                     if res_find:
+                        logger.debug("res_find=%s", res_find)
                         if k.startswith('date'):
                             raw_date = res_find[0]
-                            output[k] = dateparser.parse(raw_date, 
-                                date_formats=run_options['date_formats'])
-                            logger.debug("res_find=%s", output[k])
+                            output[k] = dateparser.parse(
+                                raw_date, date_formats=date_formats,
+                                languages=languages)
+                            logger.debug("result of date parsing=%s", output[k])
+                            if not output[k]:
+                                logger.error(
+                                    "Date parsing failed on date '%s'", raw_date)
+                                return None
                         elif k.startswith('amount'):
                             output[k] = locale.atof(res_find[0])
                         else:
                             output[k] = res_find[0]
-                            logger.debug("res_find=%s", res_find)
-            
+                    else:
+                        logger.warning("regexp for field %s didn't match", k)
+
             # TODO remove after all templates have issuer set.
             if 'issuer' not in t.keys():
                 identifier = t['keywords'][0]
