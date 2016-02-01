@@ -28,6 +28,7 @@ OPTIONS_DEFAULT = {
     'date_formats': [],
     'languages': [],
     'decimal_separator': '.',
+    'replace': [],  # example: see templates/fr/fr.free.mobile.yml
 }
 
 def extract_data(invoicefile, templates=None, debug=False):
@@ -47,8 +48,8 @@ def extract_data(invoicefile, templates=None, debug=False):
         extracted_str = image_to_text.to_text(invoicefile)
 
     logger.debug('Testing {} template files'.format(len(templates)))
+
     for t in templates:
-        
         # Merge template-specific options with defaults
         run_options = OPTIONS_DEFAULT.copy()
         if 'options' in t:
@@ -62,6 +63,11 @@ def extract_data(invoicefile, templates=None, debug=False):
         # Remove accents
         if run_options['remove_accents']:
             optimized_str = unidecode(optimized_str)
+
+        # specific replace
+        for replace in run_options['replace']:
+            assert len(replace) == 2, 'A replace should be a list of 2 items'
+            optimized_str = optimized_str.replace(replace[0], replace[1])
 
         if all([keyword in optimized_str for keyword in t['keywords']]):
             logger.debug('Matched template %s', t['template_name'])
@@ -84,7 +90,7 @@ def extract_data(invoicefile, templates=None, debug=False):
                     output[k.replace('static_', '')] = v
                 else:
                     logger.debug("field=%s | regexp=%s", k, v)
-                    
+
                     # Fields can have multiple expressions
                     if type(v) is list:
                         for v_option in v:
@@ -139,7 +145,7 @@ def extract_data(invoicefile, templates=None, debug=False):
                 logger.error('Missing some fields for file %s', invoicefile)
                 logger.error(output)
                 return None
-            
+
     logger.error('No template for %s', invoicefile)
     logger.debug(output)
     return False
@@ -148,17 +154,17 @@ def main():
     "Take folder or single file and analyze each."
 
     parser = argparse.ArgumentParser(description='Process some integers.')
-    
+
     parser.add_argument('--debug', dest='debug', action='store_true',
                         help='Print debug information.')
-    
+
     parser.add_argument('--copy', '-c', dest='copy',
                         help='Copy renamed PDFs to specified folder.')
-    
-    parser.add_argument('--template-folder', '-t', dest='template_folder', 
+
+    parser.add_argument('--template-folder', '-t', dest='template_folder',
                         default=pkg_resources.resource_filename('invoice2data', 'templates'),
                         help='Folder containing invoice templates in yml file. Required.')
-    
+
     parser.add_argument('input_files', type=argparse.FileType('r'), nargs='+',
                         help='File or directory to analyze.')
 

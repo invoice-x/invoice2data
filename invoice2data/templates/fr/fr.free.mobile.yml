@@ -16,3 +16,5 @@ options:
   languages:
     - fr
   decimal_separator: '.'
+  replace:
+    - ['e´ ', 'é']
