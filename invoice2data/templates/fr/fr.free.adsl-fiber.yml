@@ -17,3 +17,4 @@ options:
       - '%d %B %Y'
   languages:
     - fr
+  decimal_separator: '.'

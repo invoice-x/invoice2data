@@ -15,7 +15,6 @@ from invoice2data.templates import read_templates
 from invoice2data.output import invoices_to_csv
 import logging
 from unidecode import unidecode
-locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' ) 
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +27,7 @@ OPTIONS_DEFAULT = {
     'currency': 'EUR',
     'date_formats': [],
     'languages': [],
+    'decimal_separator': '.',
 }
 
 def extract_data(invoicefile, templates=None, debug=False):
@@ -67,11 +67,13 @@ def extract_data(invoicefile, templates=None, debug=False):
             logger.debug('Matched template %s', t['template_name'])
             date_formats = run_options['date_formats']
             languages = run_options['languages']
+            decimal_sep = run_options['decimal_separator']
             for lang in languages:
                 assert len(lang) == 2, 'lang code must have 2 letters'
             logger.debug(
                 'Date parsing: languages=%s date_formats=%s',
                 languages, date_formats)
+            logger.debug('Float parsing: decimal separator=%s', decimal_sep)
             logger.debug("keywords=%s", t['keywords'])
             logger.debug(run_options)
             logger.debug(optimized_str)
@@ -104,7 +106,17 @@ def extract_data(invoicefile, templates=None, debug=False):
                                     "Date parsing failed on date '%s'", raw_date)
                                 return None
                         elif k.startswith('amount'):
-                            output[k] = locale.atof(res_find[0])
+                            assert res_find[0].count(decimal_sep) < 2,\
+                                'Decimal separator cannot be present several times'
+                            # replace decimal separator by a |
+                            amount_pipe = res_find[0].replace(decimal_sep, '|')
+                            # remove all possible thousands separators
+                            amount_pipe_no_thousand_sep = re.sub(
+                                '[.,\s]', '', amount_pipe)
+                            # put dot as decimal sep
+                            amount_regular = amount_pipe_no_thousand_sep.replace('|', '.')
+                            # it is now safe to convert to float
+                            output[k] = float(amount_regular)
                         else:
                             output[k] = res_find[0]
                     else:
