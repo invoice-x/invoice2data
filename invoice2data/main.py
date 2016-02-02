@@ -43,9 +43,9 @@ def extract_data(invoicefile, templates=None, debug=False):
     # Try OCR, when we get an almost empty str.
     charcount = len(extracted_str)
     logger.debug('number of char in pdf2text extract: %d', charcount)
-    if charcount < 40:
-        logger.info('Starting OCR')
-        extracted_str = image_to_text.to_text(invoicefile)
+    #if charcount < 40:
+        #logger.info('Starting OCR')
+        #extracted_str = image_to_text.to_text(invoicefile)
 
     logger.debug('Testing {} template files'.format(len(templates)))
 
@@ -124,7 +124,7 @@ def extract_data(invoicefile, templates=None, debug=False):
                             # it is now safe to convert to float
                             output[k] = float(amount_regular)
                         else:
-                            output[k] = res_find[0]
+                            output[k] = res_find[-1]
                     else:
                         logger.warning("regexp for field %s didn't match", k)
 

@@ -8,3 +8,5 @@ keywords:
 options:
   remove_whitespace: true
   currency: USD
+  date_formats:
+    - '%d.%m.%Y'
