@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: La Poste (Coliposte)
+fields:
+  amount: Total TTC:\s+(\d+,\d{2})
+  amount_untaxed: Total HT:\s+(\d+,\d{2})
+  date: FACTURE\s+(\d{2}/\d{2}/\d{2})
+  invoice_number: FACTURE\s+\d{2}/\d{2}/\d{2}\s+(\d+)
+  static_vat: FR39356000000
+keywords:
+  - FR 39 356 000 000
+  - FACTURE
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

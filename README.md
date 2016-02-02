@@ -1,7 +1,6 @@
 # Data extractor for PDF invoices - invoice2data
 
-[![Circle CI](https://circleci.com/gh/manuelRiel/invoice2data.svg?style=svg)](https://circleci.com/gh/manuelRiel/invoice2data)
-
+[![Circle CI](https://circleci.com/gh/m3nu/invoice2data.svg?style=svg)](https://circleci.com/gh/m3nu/invoice2data)
 A Python library to support your accounting process.
 
 - extracts text from PDF files

@@ -1,8 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: FINAGAZ
 fields:
   amount: TOTAL TTC EUR\s+(\d+,\d{2})
   amount_untaxed: TOTAL soumis à TVA\s+(\d+,\d{2})
   date: Du\s+(\d{2}/\d{2}/\d{4})
   invoice_number: Du\s+\d{2}/\d{2}/\d{4}\s+N°\s+(\d+)
-  vat: (FR68582018966)
+  static_vat: FR68582018966
 keywords:
-- FR68582018966
+  - FR68582018966
+  - FACTURE
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

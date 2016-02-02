@@ -1,8 +1,0 @@
-fields:
-  amount: Total TTC:\s+(\d+,\d{2})
-  amount_untaxed: Total HT:\s+(\d+,\d{2})
-  date: FACTURE\s+(\d{2}/\d{2}/\d{2})
-  invoice_number: FACTURE\s+\d{2}/\d{2}/\d{2}\s+(\d+)
-  vat: (FR 39 356 000 000)
-keywords:
-- FR 39 356 000 000

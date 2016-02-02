@@ -15,3 +15,4 @@ options:
   currency: EUR
   date_formats:
     - '%d/%m/%Y'
+  decimal_separator: ','
