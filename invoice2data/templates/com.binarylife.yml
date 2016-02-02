@@ -2,8 +2,10 @@
 issuer: BinaryLife Inc.
 fields:
   amount: Total\s?:\s+\$(\d+\.\d{2})
+  amount_untaxed: Total\s?:\s+\$(\d+\.\d{2})
   date: Dated\s?:\s+(\d{2}.+,\s\d{4})
   invoice_number: Invoice\sID\s?:\s+(\d+)
+  static_partner_name: BinaryLife
 keywords:
   - support@browserstack.com
   - BinaryLife
