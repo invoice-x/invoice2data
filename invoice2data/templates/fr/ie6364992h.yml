@@ -1,9 +1,0 @@
-fields:
-  amount: Montant\sTTC\s+(\d+.\d{2})
-  amount_untaxed: Montant net\s+TVA\s+Marchandises\s+\d+.\d{2}\s+(\d+.\d{2})
-  date: Date\sde\sla\sfacture\s?:\s+(\d{2}/\d{2}/\d{4})
-  invoice_number: Numéro\sde\sfacture\s?:\s+(\w+)
-  static_vat: IE6364992H
-keywords:
-- IE6364992H
-- Facture

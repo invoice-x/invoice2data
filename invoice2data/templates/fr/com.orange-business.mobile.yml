@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: Orange Business Services
+fields:
+  amount: somme\sà\spayer\s\(EUR\sTTC\)\s+(\d+,\d{2})
+  amount_untaxed: total\sfacture\s\(EUR\sHT\)\s+(\d+,\d{2})
+  date: date\s+de\s+facture\s+:\s+(\d{2}/\d{2}/\d{2})
+  invoice_number: n°\s+de\s+facture\s+:\s+(.+)
+  static_siren: '380129866'
+  static_vat: FR89380129866
+keywords:
+  - FR 89 380 129 866
+  - www.orange-business.com/ece
+  - facture
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%y'
+  decimal_separator: ','

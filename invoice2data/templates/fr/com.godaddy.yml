@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+issuer: Go Daddy
 fields:
   amount: Total\s?:\s+(\d+,\d{2})
   amount_tax: Taxe\s?:\s+(\d+,\d{2})
@@ -5,5 +7,11 @@ fields:
   invoice_number: reçu\s?:\s+(\w+)
   static_vat: EU826010755
 keywords:
-- EU826010755
-- FACTURE
+  - EU826010755
+  - FACTURE
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
