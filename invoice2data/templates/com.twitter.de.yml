@@ -10,3 +10,4 @@ keywords:
 options:
   remove_whitespace: true
   currency: EUR
+  locale: de_DE.UTF-8

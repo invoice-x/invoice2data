@@ -15,7 +15,6 @@ from invoice2data.templates import read_templates
 from invoice2data.output import invoices_to_csv
 import logging
 from unidecode import unidecode
-locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' ) 
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +27,7 @@ OPTIONS_DEFAULT = {
     'currency': 'EUR',
     'date_formats': [],
     'languages': [],
+    'locale': 'en_US.UTF-8',
 }
 
 def extract_data(invoicefile, templates=None, debug=False):
@@ -42,10 +42,7 @@ def extract_data(invoicefile, templates=None, debug=False):
     # Try OCR, when we get an almost empty str.
     charcount = len(extracted_str)
     logger.debug('number of char in pdf2text extract: %d', charcount)
-    if charcount < 40:
-        logger.debug('Starting OCR')
-        extracted_str = image_to_text.to_text(invoicefile)
-
+ 
     logger.debug('Testing {} template files'.format(len(templates)))
     for t in templates:
         
@@ -104,9 +101,10 @@ def extract_data(invoicefile, templates=None, debug=False):
                                     "Date parsing failed on date '%s'", raw_date)
                                 return None
                         elif k.startswith('amount'):
-                            output[k] = locale.atof(res_find[0])
+                            locale.setlocale( locale.LC_ALL, run_options['locale'] ) 
+                            output[k] = locale.atof(res_find[-1])
                         else:
-                            output[k] = res_find[0]
+                            output[k] = res_find[-1]
                     else:
                         logger.warning("regexp for field %s didn't match", k)
 
