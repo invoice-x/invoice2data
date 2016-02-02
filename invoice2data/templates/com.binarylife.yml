@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+issuer: BinaryLife Inc.
+fields:
+  amount: Total\s?:\s+\$(\d+\.\d{2})
+  date: Dated\s?:\s+(\d{2}.+,\s\d{4})
+  invoice_number: Invoice\sID\s?:\s+(\d+)
+keywords:
+  - support@browserstack.com
+  - BinaryLife
+  - $
+  - Invoice
+options:
+  currency: USD
+  date_formats:
+    - '%d %B %Y'
+  languages:
+    - en
+  replace:
+    - ['t h', 'th']
+  decimal_separator: '.'
