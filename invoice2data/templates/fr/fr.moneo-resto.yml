@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+issuer: Moneo Resto
 fields:
   amount: Total\sTTC\s+(\d+,\d{2})
   amount_tax: Montant\sde\sla\sTVA\s\(20\s?%\)\s+(\d+,\d{2})
@@ -5,4 +7,11 @@ fields:
   invoice_number: Facture\s+(.+)
   static_vat: FR93422721274
 keywords:
-- FR 93 422 721 274
+  - FR 93 422 721 274
+  - Facture
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

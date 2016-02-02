@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+issuer: Hootsuite Media Inc.
 fields:
   amount: Montant payé\s?:\s+€(\d+,\d{2})
   amount_untaxed: Montant payé\s?:\s+€(\d+,\d{2})
@@ -5,5 +7,11 @@ fields:
   invoice_number: N°\sde\sfacture\s?:\s+(\w+)
   static_vat: EU826021784
 keywords:
-- EU826021784
-- Détails de la facturation
+  - EU826021784
+  - facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%m/%d/%Y'
+  decimal_separator: ','

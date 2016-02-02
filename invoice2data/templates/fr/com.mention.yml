@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+issuer: Mention Solutions SAS
 fields:
   amount: Total\s\(incl\.\sVAT\)\s+(\d+,\d{2})
   amount_untaxed: Total\s\(excl\.\sVAT\)\s+(\d+,\d{2})
@@ -5,5 +7,11 @@ fields:
   invoice_number: Facture\s+\#([\w-]+)
   static_vat: FR34790841266
 keywords:
-- FR 34790841266
-- Facture
+  - FR 34790841266
+  - Facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%y'
+  decimal_separator: ','
