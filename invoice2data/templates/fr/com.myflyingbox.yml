@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: My Flying Box
+fields:
+  amount: \d+,\d{2}\s+€\s+\d+,\d{2}\s+€\s+(\d+,\d{2})\s+€
+  amount_untaxed: (\d+,\d{2})\s+€\s+\d+,\d{2}\s+€\s+\d+,\d{2}\s+€
+  date: DATE\s+(\d{2}/\d{2}/\d{2})
+  invoice_number: N° DE FACTURE\s+(\d+)
+  vat: FR 83 538 645 227
+keywords:
+  - FR 83 538 645 227
+  - FACTURE
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%y'
+  decimal_separator: ','
