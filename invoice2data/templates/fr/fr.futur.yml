@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Futur Telecom SAS
+fields:
+  amount: Total T.T.C.\s+\(€\)\s+(\d+,\d{2})
+  amount_untaxed: Total H.T.\s+(\d+,\d{2})
+  date: Date Facture\s+:\s+(\d{2}\s.+\s\d{4})
+  invoice_number: N° Facture\s+:\s+(\d+)
+  static_vat: FR 92 444 172 274
+keywords:
+  - Coordonnées bancaires Futur
+  - Facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d %b %Y'
+  decimal_separator: ','
