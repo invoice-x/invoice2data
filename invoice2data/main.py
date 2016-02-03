@@ -124,7 +124,7 @@ def extract_data(invoicefile, templates=None, debug=False):
                             # it is now safe to convert to float
                             output[k] = float(amount_regular)
                         else:
-                            output[k] = res_find[-1]
+                            output[k] = res_find[0]
                     else:
                         logger.warning("regexp for field %s didn't match", k)
 
