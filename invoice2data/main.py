@@ -68,6 +68,7 @@ def extract_data(invoicefile, templates=None, debug=False):
         for replace in run_options['replace']:
             assert len(replace) == 2, 'A replace should be a list of 2 items'
             optimized_str = optimized_str.replace(replace[0], replace[1])
+        logger.debug(optimized_str)
 
         if all([keyword in optimized_str for keyword in t['keywords']]):
             logger.debug('Matched template %s', t['template_name'])
@@ -82,7 +83,6 @@ def extract_data(invoicefile, templates=None, debug=False):
             logger.debug('Float parsing: decimal separator=%s', decimal_sep)
             logger.debug("keywords=%s", t['keywords'])
             logger.debug(run_options)
-            logger.debug(optimized_str)
 
             for k, v in t['fields'].items():
                 if k.startswith('static_'):

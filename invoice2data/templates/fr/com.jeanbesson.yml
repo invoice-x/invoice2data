@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+issuer: Transports Jean Besson
+fields:
+  amount: MONTANT\s+TTC\s+A\s+REGLER\s+EN\s+EUROS\s+(\d+.\d{2})
+  amount_untaxed: MONTANT\s+HT\s+APRES\s+MAJORATION\s+:\s+(\d+.\d{2})
+  date: (\d{2}/\d{2}/\d{4})
+  invoice_number: FACTURE\s+N°\s?(\d+)
+  static_vat: FR29775649965
+keywords:
+  - FR     29775649965
+  - FACTURE
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: '.'
