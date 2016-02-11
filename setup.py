@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
+<<<<<<< HEAD
 from os import path
+=======
+import sys
+
+if sys.version_info[0] == 2:
+    pdfminer = "pdfminer"
+elif sys.version_info[0] == 3:
+    pdfminer = "pdfminer3k"
 
 setup(
     name='invoice2data',
@@ -16,7 +24,7 @@ setup(
         'invoice2data.test': ['pdfs/*.pdf']
         },
     packages=find_packages(),
-    install_requires=[
+    install_requires=[pdfminer] + [
         r.strip() for r in open(path.join(path.dirname(__file__), 'requirements.txt')).read().splitlines()],
     zip_safe=False,
     entry_points = {
