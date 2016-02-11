@@ -46,6 +46,9 @@ def extract_data(invoicefile, templates=None, debug=False):
     #if charcount < 40:
         #logger.info('Starting OCR')
         #extracted_str = image_to_text.to_text(invoicefile)
+    logger.debug('START pdftotext result ===========================')
+    logger.debug(extracted_str)
+    logger.debug('END pdftotext result =============================')
 
     logger.debug('Testing {} template files'.format(len(templates)))
 
@@ -68,10 +71,12 @@ def extract_data(invoicefile, templates=None, debug=False):
         for replace in run_options['replace']:
             assert len(replace) == 2, 'A replace should be a list of 2 items'
             optimized_str = optimized_str.replace(replace[0], replace[1])
-        logger.debug(optimized_str)
 
         if all([keyword in optimized_str for keyword in t['keywords']]):
             logger.debug('Matched template %s', t['template_name'])
+            logger.debug('START optimized_str ========================')
+            logger.debug(optimized_str)
+            logger.debug('END optimized_str ==========================')
             date_formats = run_options['date_formats']
             languages = run_options['languages']
             decimal_sep = run_options['decimal_separator']
