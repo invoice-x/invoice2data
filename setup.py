@@ -23,9 +23,8 @@ setup(
         'invoice2data.test': ['pdfs/*.pdf']
         },
     packages=find_packages(),
-    install_requires=[
-        r.strip() for r in open('requirements.txt').read().splitlines(),
-        pdfminer,
+    install_requires=[pdfminer] + [
+        r.strip() for r in open('requirements.txt').read().splitlines()
         ],
     zip_safe=False,
     entry_points = {
