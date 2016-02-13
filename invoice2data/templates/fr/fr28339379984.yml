@@ -1,8 +1,0 @@
-fields:
-  amount: Total facture TTC\s+([\d ]+,\d{2})
-  amount_untaxed: HT soumis à TVA\s+:\s+([\d ]+,\d{2})
-  date: FACTURE.+\n.+(\d{2}\s.+\s\d{4})
-  invoice_number: FACTURE N°\s+(\d+)
-  vat: (FR 28 339 379 984)
-keywords:
-- FR 28 339 379 984

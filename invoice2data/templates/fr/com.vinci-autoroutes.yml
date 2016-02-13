@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Vinci Autoroutes
+fields:
+  amount: NET A PAYER TTC\s+(\d+,\d{2})
+  amount_untaxed: TVA \(code 1\)\s+(\d+,\d{2})
+  date: Emise le (\d{2}/\d{2}/\d{4})
+  invoice_number: Facture n°\s+(\w+)
+  static_vat: FR53572139996
+keywords:
+  - FR 53 572 139 996
+  - Facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
