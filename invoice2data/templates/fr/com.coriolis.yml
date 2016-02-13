@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+# Designed to work on the 2 invoice models: mobile phone and Internet
+issuer: Coriolis Telecom
+fields:
+  amount: TOTAL FACTURE TTC\s+(\d+,\d{2})
+  amount_untaxed: TOTAL HT\s+(\d+,\d{2})
+  date: Date facture\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Facture\s[nº\s]+(\d+)
+  static_vat: FR86419735741
+keywords:
+  - FR 86419735741
+  - FACTURE
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

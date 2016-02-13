@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+issuer: Orange (Fibre optique)
 fields:
   amount: total auprès d\'Orange\s+\d+,\d{2}\s+(\d+,\d{2})
   amount_untaxed: total auprès d\'Orange\s+(\d+,\d{2})
@@ -5,5 +7,12 @@ fields:
   invoice_number: n° de facture\s+:\s+(.+)
   static_siren: '380129866'
 keywords:
-- 380 129 866 RCS Paris
-- service clients La fibre
+  - 380 129 866 RCS Paris
+  - service clients La fibre
+  - facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%y'
+  decimal_separator: ','
