@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: MAAF Assurances SA
+fields:
+  amount: VOTRE\sCOTISATION\sANNUELLE\s+\d{4}\s+(\d+,\d{2})
+  date: à\sla\sdate\sdu\s+(\d{2}\s.+\s\d{4})
+  date_start: Période\sdu\s(\d{2}/\d{2}/\d{4})\sau\s\d{2}/\d{2}/\d{4}
+  date_end: Période\sdu\s\d{2}/\d{2}/\d{4}\sau\s(\d{2}/\d{2}/\d{4})
+  invoice_number: Votre\sn°\sfacture\s+:\s+(\d+)
+  static_vat: FR38542073580
+keywords:
+  - FR 38 542 073 580
+  - AVIS
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: ','
