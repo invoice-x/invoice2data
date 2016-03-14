@@ -6,6 +6,7 @@ fields:
   date: Dated\s?:\s+(\d{2}.+,\s\d{4})
   invoice_number: Invoice\sID\s?:\s+(\d+)
   static_partner_name: BinaryLife
+  static_partner_email: support@browserstack.com
 keywords:
   - support@browserstack.com
   - BinaryLife
