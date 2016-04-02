@@ -10,7 +10,7 @@ elif sys.version_info[0] == 3:
 
 setup(
     name='invoice2data',
-    version='0.2.10',
+    version='0.2.11',
     author='Manuel Riel',
     author_email='github@snapdragon.cc',
     url='https://github.com/m3nu/invoice2data',
