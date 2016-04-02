@@ -1,10 +1,14 @@
 issuer: Google Asia Pacific Pte. Ltd.
 fields:
-  amount: PaymentamountHK\$(\d+?,?\d+\.\d+)
+  amount: 
+   - PaymentamountHK\$(\d+?,?\d+\.\d+)
+   - Payment\s*amountHK\$(\d+?,?\d+\.\d+)
   date:
     - Paymentdate(\w+\d{1,2},\d{4})
+    - Payment\s*date(\w+\s*\d+,\s*\d{4})
   invoice_number:
     - BillingID([\d\-]+)
+    - Billing\s*ID([\d\-]+)
 keywords:
 - 200817984R
 options:

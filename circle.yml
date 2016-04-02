@@ -4,14 +4,32 @@ machine:
 
 dependencies:
   pre:
+    - git config --global user.email $GIT_EMAIL
+    - git config --global user.name $GIT_NAME
+    - git config --global push.default matching
     - sudo apt-get install tesseract-ocr xpdf
     - cd ~; wget ftp://ftp.foolabs.com/pub/xpdf/xpdfbin-linux-3.04.tar.gz
     - cd ~; tar xvf xpdfbin-linux-3.04.tar.gz
     - sudo rm /usr/bin/pdftotext
     - sudo ln -s /home/ubuntu/xpdfbin-linux-3.04/bin64/pdftotext /usr/bin/pdftotext
+    - pip install -U bumpversion twine tox
 
 test:
   override:
-    - pyenv global 2.7.9 && python setup.py install && nosetests
-    - pyenv global 3.5.0 && python setup.py install && nosetests
-    - pyenv global 3.4.3 && python setup.py install && nosetests
+    - tox:
+        timeout: 1200
+
+# test:
+#   override:
+#     - pyenv global 2.7.9 && python setup.py install && nosetests
+#     - pyenv global 3.5.0 && python setup.py install && nosetests
+#     - pyenv global 3.4.3 && python setup.py install && nosetests
+
+deployment:
+  pypi_prod:
+    branch: master
+    commands:
+      - bumpversion patch
+      - git push
+      - python setup.py sdist bdist_egg
+      - twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD dist/*
