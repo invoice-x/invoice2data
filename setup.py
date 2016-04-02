@@ -13,7 +13,7 @@ setup(
     version='0.2.7',
     author='Manuel Riel',
     author_email='github@snapdragon.cc',
-    url='https://github.com/manuelRiel/invoice2data',
+    url='https://github.com/m3nu/invoice2data',
     description='Python parser to extract data from pdf invoice',
     license="MIT",
     long_description=open(path.join(path.dirname(__file__), 'README.md')).read(),
