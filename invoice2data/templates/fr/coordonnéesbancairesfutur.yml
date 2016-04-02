@@ -1,8 +1,0 @@
-fields:
-  amount: Total T.T.C. \(€\)\s+(\d+,\d{2})
-  amount_untaxed: Total H.T.\s+(\d+,\d{2})
-  date: Date facture\s+(\d{2}\s.+\s\d{4})
-  invoice_number: N° facture\s+(\d+)
-  static_vat: FR 92 444 172 274
-keywords:
-- Coordonnées bancaires Futur

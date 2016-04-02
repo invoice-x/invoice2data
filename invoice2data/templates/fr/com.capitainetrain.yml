@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: Capitaine Train
+fields:
+  amount: (\d+,\d{2}) €
+  amount_untaxed: (\d+,\d{2}) €
+  date: \d+,\d{2}\D+(\d+\s.+\s\d{4})
+  description: Billet [A-Z]+ − (.+?(?=\s{3}))
+  invoice_number: Billet ([A-Z]+)
+  static_vat: FR58512277450
+keywords:
+  - FR58512277450
+  - PAIEMENT
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: ','

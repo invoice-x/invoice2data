@@ -1,8 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: JPG
 fields:
   amount: \d+,\d{2}\s+\d+,\d{2}\s+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})
   amount_untaxed: \d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})\s+\d+,\d{2}\s+\d+,\d{2}
   date: (\d\d?/\d\d?/\d{4})
   invoice_number: FACTURE N°\s+(\d+\.\s\d+\.\d+)
-  vat: (FR 72 997 506 407)
+  static_vat: FR72997506407
 keywords:
-- FR 72 997 506 407
+  - FR 72 997 506 407
+  - FACTURE
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

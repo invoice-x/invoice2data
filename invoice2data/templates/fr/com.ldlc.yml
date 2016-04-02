@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: LDLC.com
+fields:
+  amount: Montant TTC\s+(\d+,\d{2})
+  amount_untaxed: Montant HT\s+(\d+,\d{2})
+  date: Date de facture\s+:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: N° de facture\s+:\s+(\w+)
+  static_vat: FR26403554181
+keywords:
+  - FR 26403554181
+  - facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+issuer: PRIVIANET SARL
 fields:
   amount: Total TTC\s+(\d+.\d{2})
   amount_untaxed: Total HT\s+(\d+.\d{2})
@@ -5,4 +7,11 @@ fields:
   invoice_number: Facture\sn°\s([\d-]+)
   static_vat: FR50440585297
 keywords:
-- FR-50440585297
+  - FR-50440585297
+  - Facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: '.'

@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Greffe du tribunal de commerce de Lyon
+fields:
+  amount: TOTAL\s+TTC\s?:\s+(\d+,\d{2})
+  amount_tax: Total\s+TVA\s+%\s+\(1\)\s?:\s+(\d+,\d{2})
+  date: du\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Facture\s+N°\s+([\w-]+)
+  static_vat: FR67482531142
+keywords:
+  - FR67482531142
+  - Facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

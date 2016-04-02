@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Microsoft Ireland Operations Ltd
+fields:
+  amount: Total\sdes\sfrais\sactuels\s+(\d+,\d{2})
+  amount_untaxed: Total\sdes\sfrais\savant\simpôt\s+(\d+,\d{2})
+  date: Date\sdu\sdocument\s?:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: N°\s?de\sfacture\s?:\s+(\w+)
+  static_vat: IE8256796U
+keywords:
+  - IE 8256796 U
+  - FACTURE
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

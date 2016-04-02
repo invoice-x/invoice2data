@@ -46,6 +46,9 @@ def extract_data(invoicefile, templates=None, debug=False):
     #if charcount < 40:
         #logger.info('Starting OCR')
         #extracted_str = image_to_text.to_text(invoicefile)
+    logger.debug('START pdftotext result ===========================')
+    logger.debug(extracted_str)
+    logger.debug('END pdftotext result =============================')
 
     logger.debug('Testing {} template files'.format(len(templates)))
 
@@ -71,6 +74,9 @@ def extract_data(invoicefile, templates=None, debug=False):
 
         if all([keyword in optimized_str for keyword in t['keywords']]):
             logger.debug('Matched template %s', t['template_name'])
+            logger.debug('START optimized_str ========================')
+            logger.debug(optimized_str)
+            logger.debug('END optimized_str ==========================')
             date_formats = run_options['date_formats']
             languages = run_options['languages']
             decimal_sep = run_options['decimal_separator']
@@ -82,7 +88,6 @@ def extract_data(invoicefile, templates=None, debug=False):
             logger.debug('Float parsing: decimal separator=%s', decimal_sep)
             logger.debug("keywords=%s", t['keywords'])
             logger.debug(run_options)
-            logger.debug(optimized_str)
 
             for k, v in t['fields'].items():
                 if k.startswith('static_'):
@@ -124,7 +129,7 @@ def extract_data(invoicefile, templates=None, debug=False):
                             # it is now safe to convert to float
                             output[k] = float(amount_regular)
                         else:
-                            output[k] = res_find[-1]
+                            output[k] = res_find[0]
                     else:
                         logger.warning("regexp for field %s didn't match", k)
 

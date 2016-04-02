@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: Nexity
+fields:
+  amount: SOLDE\sÀ\sPAYER\s+\(en\s€\)\s+([\d ]+,\d{2})
+  date: ',\sle\s(\d{2}/\d{2}/\d{4})'
+  date_end: Période\sdu\s+\d{2}/\d{2}/\d{4}\sau\s(\d{2}/\d{2}/\d{4})
+  date_start: Période\sdu\s+(\d{2}/\d{2}/\d{4})\sau\s
+  invoice_number: N°\sDE\sCOUPON\s:\s+(\w+)
+  static_siren: '487530099'
+keywords:
+  - '487530099'
+  - NEXITY
+  - APPEL DE LOYER
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

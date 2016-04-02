@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+# Doesn't work with the new version of pdftotext : Copying of text from this document is not allowed.
+issuer: Saur
+fields:
+  amount: Total facture TTC\s+([\d ]+,\d{2})
+  amount_untaxed: HT soumis à TVA\s+:\s+([\d ]+,\d{2})
+  date: FACTURE.+\n.+(\d{2}\s.+\s\d{4})
+  invoice_number: FACTURE N°\s+(\d+)
+  vat: (FR 28 339 379 984)
+keywords:
+  - FR 28 339 379 984
+  - FACTURE
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

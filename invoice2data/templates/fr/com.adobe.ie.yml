@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Adobe Systems Software
+fields:
+  amount: Montant\s+TTC\s+(\d+.\d{2})
+  amount_tax: (\d+.\d{2})\s+TVA
+  date: Date\s+de\s+la\s+facture\s?:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Numéro\s+de\s+facture\s?:\s+(\w+)
+  static_vat: IE6364992H
+keywords:
+  - IE6364992H
+  - Facture
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: '.'

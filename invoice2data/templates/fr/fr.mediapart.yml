@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Mediapart
+fields:
+  amount: TOTAL\sTTC\s+(\d+.\d{2})
+  amount_untaxed: H\.T\.\s+:\s+(\d+.\d{2})
+  date: DATE\s+CLIENT\s+\d\/\d\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Facture\s+en\s+€\s+N°\s+:\s+(\w+)
+  static_vat: FR91500631932
+keywords:
+  - FR91500631932
+  - Facture
+  - EUROS
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: '.'
