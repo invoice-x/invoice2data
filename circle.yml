@@ -9,17 +9,11 @@ dependencies:
     - sudo rm /usr/bin/pdftotext
     - sudo ln -s /home/ubuntu/xpdfbin-linux-3.04/bin64/pdftotext /usr/bin/pdftotext
     - pip install -U bumpversion twine tox
+    - pyenv global 2.7.9 3.5.0 3.4.3
 
 test:
   override:
     - tox:
-        timeout: 1200
-
-# test:
-#   override:
-#     - pyenv global 2.7.9 && python setup.py install && nosetests
-#     - pyenv global 3.5.0 && python setup.py install && nosetests
-#     - pyenv global 3.4.3 && python setup.py install && nosetests
 
 deployment:
   pypi_prod:
