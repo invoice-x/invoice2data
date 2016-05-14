@@ -8,7 +8,7 @@ dependencies:
     # - cd ~; tar xvf xpdfbin-linux-3.04.tar.gz
     # - sudo rm /usr/bin/pdftotext
     # - sudo ln -s /home/ubuntu/xpdfbin-linux-3.04/bin64/pdftotext /usr/bin/pdftotext
-    - pyenv global 2.7.9 3.5.0 3.4.3
+    - pyenv global 2.7.11 3.5.1 3.4.4
     - pip install -U bumpversion twine tox
 
 test:
