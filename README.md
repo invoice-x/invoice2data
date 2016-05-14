@@ -2,7 +2,7 @@
 
 [![Circle CI](https://circleci.com/gh/m3nu/invoice2data.svg?style=svg)](https://circleci.com/gh/m3nu/invoice2data)
 
-A Python library to support your accounting process.
+A Python library to support your accounting process. Tested on Python 2.7, 3.4 and 3.5
 
 - extracts text from PDF files
 - searches for regex in the result
@@ -28,6 +28,7 @@ Go from PDF files to this:
 ## Installation
 
 1. Install pdftotext
+
 If possible get the latest xpdf/poppler-utils version. It's included with OSX Homebrew, Debian Sid and Ubuntu 16.04. Without it, `pdftotext` won't parse tables in PDF correctly.
 
 2. Install `invoice2data` using pip
