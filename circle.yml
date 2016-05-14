@@ -4,10 +4,10 @@ dependencies:
     - git config --global user.name $GIT_NAME
     - git config --global push.default matching
     - sudo apt-get install tesseract-ocr xpdf
-    - cd ~; wget ftp://ftp.foolabs.com/pub/xpdf/xpdfbin-linux-3.04.tar.gz
-    - cd ~; tar xvf xpdfbin-linux-3.04.tar.gz
-    - sudo rm /usr/bin/pdftotext
-    - sudo ln -s /home/ubuntu/xpdfbin-linux-3.04/bin64/pdftotext /usr/bin/pdftotext
+    # - cd ~; wget ftp://ftp.foolabs.com/pub/xpdf/xpdfbin-linux-3.04.tar.gz
+    # - cd ~; tar xvf xpdfbin-linux-3.04.tar.gz
+    # - sudo rm /usr/bin/pdftotext
+    # - sudo ln -s /home/ubuntu/xpdfbin-linux-3.04/bin64/pdftotext /usr/bin/pdftotext
     - pyenv global 2.7.9 3.5.0 3.4.3
     - pip install -U bumpversion twine tox
 
