@@ -68,13 +68,15 @@ def main():
 
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     output = []
     templates = read_templates(args.template_folder)
     for f in args.input_files:
         res = extract_data(f.name, templates=templates)
         if res:
-            print(res)
+            logger.info(res)
             output.append(res)
             if args.copy:
                 filename = FILENAME.format(
