@@ -16,7 +16,7 @@ import pkg_resources
 import os
 
 from invoice2data.main import extract_data
-from invoice2data.template import InvoiceTemplate, read_templates
+from invoice2data.template import read_templates
 
 class TestExtraction(unittest.TestCase):
 

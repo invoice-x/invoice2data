@@ -3,17 +3,12 @@
 
 import argparse
 import shutil
-import re
-from os import listdir
-from os.path import isfile, isdir, join
-import locale
+from os.path import join
 import pkg_resources
 import invoice2data.pdftotext as pdftotext
-import invoice2data.image_to_text as image_to_text
-from invoice2data.template import InvoiceTemplate, read_templates
+from invoice2data.template import read_templates
 from invoice2data.output import invoices_to_csv
 import logging
-from unidecode import unidecode
 
 logger = logging.getLogger(__name__)
 

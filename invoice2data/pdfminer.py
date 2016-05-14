@@ -11,10 +11,9 @@ def to_text(path):
     retstr = StringIO()
     codec = 'utf-8'
     laparams = LAParams()
-    print laparams
     laparams.all_texts = True
     device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
-    fp = file(path, 'rb')
+    fp = open(path, 'rb')
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     password = ""
     maxpages = 0

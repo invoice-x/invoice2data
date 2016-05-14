@@ -2,6 +2,7 @@ import yaml
 import os
 import re
 import dateparser
+from unidecode import unidecode
 import logging as logger
 
 OPTIONS_DEFAULT = {
@@ -159,7 +160,6 @@ class InvoiceTemplate(dict):
             logger.debug(output)
             return output
         else:
-            logger.error('Missing some fields for file %s', invoicefile)
             logger.error(output)
             return None
 
