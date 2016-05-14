@@ -3,7 +3,7 @@ dependencies:
     - git config --global user.email $GIT_EMAIL
     - git config --global user.name $GIT_NAME
     - git config --global push.default matching
-    - sudo apt-get install tesseract-ocr xpdf
+    - sudo apt-get update && sudo apt-get install tesseract-ocr xpdf
     # - cd ~; wget ftp://ftp.foolabs.com/pub/xpdf/xpdfbin-linux-3.04.tar.gz
     # - cd ~; tar xvf xpdfbin-linux-3.04.tar.gz
     # - sudo rm /usr/bin/pdftotext
