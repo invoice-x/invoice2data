@@ -79,12 +79,15 @@ To add a new template, we recommend this workflow:
 
 ###1. Copy existing template to new file
 
-Find a template that is roughly similar to what you need and copy it to a new file. It's good practice to use reverse domain notation. E.g. `country.company.division.language` or `fr.mobile.enterprise.french.yml`. Language is not always needed. Template folder are searched recursively for files ending in `.yml`.
+Find a template that is roughly similar to what you need and copy it to a new file. It's good practice to use reverse domain notation. E.g. `country.company.division.language.yml` or `fr.mobile.enterprise.french.yml`. Language is not always needed. Template folder are searched recursively for files ending in `.yml`.
 
-### 2. Change invoice issuer.
+### 2. Change invoice issuer
+Just used in the output. Best to use the company name.
 
 ### 3. Set keyword
 Look at the invoice and find the best identifying string. Tax number + company name are good options. Remember, *all* keywords need to be found for the template to be used.
+
+Keywords are compared *after* processing the extracted text. So if you use lowercase or remove-whitespace processing, adapt keywords accordingly.
 
 ### 4. First test run
 Now we're ready to see how far we are off. Run `invoice2data` with the following debug command to see if your keywords match and how much work is needed for dates, etc.

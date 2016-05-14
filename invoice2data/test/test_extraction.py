@@ -16,7 +16,7 @@ import pkg_resources
 import os
 
 from invoice2data.main import extract_data
-from invoice2data.templates import read_templates
+from invoice2data.template import InvoiceTemplate, read_templates
 
 class TestExtraction(unittest.TestCase):
 
@@ -27,7 +27,8 @@ class TestExtraction(unittest.TestCase):
     def _run_test_on_folder(self, folder):
         for path, subdirs, files in os.walk(folder):
             for file in files:
-                extract_data(os.path.join(path, file), self.templates)            
+                res = extract_data(os.path.join(path, file), self.templates)   
+                print(file, res)         
 
     def test_external_pdfs(self):
         folder = os.getenv('EXTERNAL_PDFS', None)
