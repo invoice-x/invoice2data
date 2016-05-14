@@ -27,7 +27,7 @@ Go from PDF files to this:
 ## Installation
 
 1. Install pdftotext
-We need the latest verion of `xpdf` because support for table layouts was only recenlty added. You can download the binary files from www.foolabs.com/xpdf/download.html
+If possible get the latest xpdf/poppler-utils version. It's included with OSX Homebrew, Debian Sid and Ubuntu 16.04. Without it, `pdftotext` won't parse tables in PDF correctly.
 
 2. Install `invoice2data` using pip
 
@@ -67,7 +67,7 @@ result = extract_data('path/to/my/file.pdf')
 
 ## Template system
 
-See `invoice2data/templates` for existing templates. Just extend the list to add your own. If deployed by a bigger organisation, there should be an interface to edit templates for new suppliers. 80-20 rule.
+See `invoice2data/templates` for existing templates. Just extend the list to add your own. If deployed by a bigger organisation, there should be an interface to edit templates for new suppliers. 80-20 rule. For a short tutorial on how to add new templates, see [TUTORIAL.md](TUTORIAL.md).
 
 Templates are based on Yaml. They define one or more keywords to find the right template and regexp for fields to be extracted. They could also be a static value, like the full company name.
 
