@@ -20,6 +20,6 @@ deployment:
     branch: master
     commands:
       - bumpversion patch
-      - git push --follow-tags
+      - git push origin --tags
       - python setup.py sdist bdist_egg
       - twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD dist/*
