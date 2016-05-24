@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: Prestaclic
+fields:
+  amount: TOTAL\s+TTC\s+([\d ]+,\d{2})
+  amount_untaxed: Total\s+HT\s+([\d ]+,\d{2})
+  date: Date\s+:\s+(\d+\s+.+\s+\d{4})
+  invoice_number: FACTURE\s+N°\s+(\w+)
+  static_vat: 'FR69803518919'
+keywords:
+  - FR69803518919
+  - PRESTACLIC
+  - FACTURE
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d %b %Y'
+  decimal_separator: ','
