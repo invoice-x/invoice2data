@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Easytrip France
+fields:
+  amount: TOTAL\s+A\s+PAYER\s+[\d ]+,\d{2}\s+[\d ]+,\d{2}\s+([\d ]+,\d{2})
+  amount_untaxed: TOTAL\s+A\s+PAYER\s+([\d ]+,\d{2})
+  date: Votre\s+facture\s+du\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Facture\s+n°:\s+(\d+)
+  static_vat: 'FR12793875451'
+keywords:
+  - FR 127 93 87 54 51
+  - easytrip
+  - Facture
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
