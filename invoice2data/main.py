@@ -3,6 +3,7 @@
 
 import argparse
 import shutil
+import os
 from os.path import join
 import pkg_resources
 import invoice2data.pdftotext as pdftotext
@@ -53,9 +54,11 @@ def main():
                         help='Copy renamed PDFs to specified folder.')
 
     parser.add_argument('--template-folder', '-t', dest='template_folder',
-                        default=pkg_resources.resource_filename('invoice2data', 'templates'),
-                        help='Folder containing invoice templates in yml file. Required.')
-
+                        help='Folder containing invoice templates in yml file. Always adds built-in templates.')
+    
+    parser.add_argument('--exclude-built-in-templates', dest='exclude_built_in_templates',
+                        default=False, help='Ignore built-in templates.', action="store_true")
+    
     parser.add_argument('input_files', type=argparse.FileType('r'), nargs='+',
                         help='File or directory to analyze.')
 
@@ -66,8 +69,17 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
+    templates = []
+    
+    # Load templates from external folder if set.
+    if args.template_folder:
+        templates += read_templates(os.path.abspath(args.template_folder))
+
+    # Load internal templates, if not disabled.
+    if not args.exclude_built_in_templates:
+        templates += read_templates(pkg_resources.resource_filename('invoice2data', 'templates'))
+    
     output = []
-    templates = read_templates(args.template_folder)
     for f in args.input_files:
         res = extract_data(f.name, templates=templates)
         if res:

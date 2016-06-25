@@ -50,6 +50,9 @@ Basic usage. Process PDF files and write result to CSV.
 Specify folder with yml templates. (e.g. your suppliers)
 `invoice2data --template-folder ACME-templates invoice.pdf`
 
+Only use your own templates and exclude built-ins
+`invoice2data --exclude-built-in-templates --template-folder ACME-templates invoice.pdf`
+
 Processes a folder of invoices and copies renamed invoices to new folder.
 `invoice2data --copy new_folder folder_with_invoices/*.pdf`
 
