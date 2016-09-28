@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Packt Publishing
+fields:
+  amount: Total\s+\d+\s+€(\d+.\d{2})
+  amount_untaxed: Total\s+\d+\s+€(\d+.\d{2})
+  date: Invoice\s+Date\s+(\d{1,2}.+\s+\d{4})
+  invoice_number: Invoice\s+Ref\s+(\d+)
+  static_vat: GB825446718
+keywords:
+  - 825 44 6718
+  - €
+  - INVOICE
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: '.'
