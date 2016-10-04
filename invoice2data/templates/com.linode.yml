@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: Linode
+fields:
+  amount: Invoice\s+Total:\$(\d+.\d{2})
+  amount_untaxed: Invoice\s+Total:\$(\d+.\d{2})
+  date: Invoice\s+Date:\s+(\d{4}-\d{2}-\d{2})
+  invoice_number: Invoice:\s+#(\d+)
+  static_partner_website: www.linode.com
+keywords:
+  - 855-454-6633
+  - Linode
+  - Invoice
+  - $
+options:
+  currency: USD
+  date_formats:
+    - '%Y/%m/%d'
+  decimal_separator: '.'
