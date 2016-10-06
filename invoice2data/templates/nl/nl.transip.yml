@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: TransIP BV
+fields:
+  amount: Totaal\s+€\s+(\d+,\d{2})
+  amount_untaxed: Subtotaal\s+\(excl\s+BTW\)\s+€\s+(\d+,\d{2})
+  date: Datum:\s+(\d{1,2}-\d{1,2}-\d{4})
+  invoice_number: Factuurnummer:\s+(.+)
+  static_vat: NL812334966B01
+keywords:
+  - NL812334966B01
+  - Factuurnummer
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d-%m-%Y'
+  languages:
+    - nl
+  decimal_separator: ','
