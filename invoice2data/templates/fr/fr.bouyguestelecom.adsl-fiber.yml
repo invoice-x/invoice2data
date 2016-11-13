@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: Bouygues Telecom (ADSL/Fibre)
+fields:
+  amount: Montant total de cette facture\s+(\d+.\d{2})
+  amount_untaxed: Montant hors TVA .+\s(\d+.\d{2})
+  date: votre facture du\s+(\d{1,2}\s.+\s+\d{4})
+  invoice_number: N°:\s+(\w+/\w+-\w+-\w+)
+  static_vat: FR74397480930
+keywords:
+  - €
+  - voici votre facture du
+  - Bbox
+  - Vos abonnements forfaits et options
+  # The SIREN and VAT are image-based in the PDF and there is not even the word "Bouygues" as text in the PDF... that's why I match on other things
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: '.'

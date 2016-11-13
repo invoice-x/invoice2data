@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-issuer: Bouygues Telecom
+issuer: Bouygues Telecom (Mobile)
 fields:
   amount: Montant de la facture soumis à TVA\s+\d+,\d{2}\s+(\d+,\d{2})
   amount_untaxed: Montant de la facture soumis à TVA\s+(\d+,\d{2})
@@ -10,6 +10,7 @@ keywords:
   - FR 74 397 480 930
   - €
   - facture
+  - mobile
 options:
   currency: EUR
   date_formats:
