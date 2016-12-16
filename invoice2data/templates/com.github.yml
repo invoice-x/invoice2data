@@ -1,0 +1,12 @@
+issuer: Github, Inc.
+fields:
+  amount: AmountUSD\$(\d+\.\d+)
+  date: Date(\d{4}\-\d{1,2}\-\d{1,2})
+  invoice_number: TransactionID(\w+)
+keywords:
+- support@github.com
+options:
+  remove_whitespace: true
+  currency: USD
+  date_formats:
+    - '%Y-%m-%d'

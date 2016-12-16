@@ -1,0 +1,13 @@
+issuer: Textmaster SA
+fields:
+  amount: Total\$(\d+\.\d+)
+  date:
+    - DateofIssue:(\w{1,10}\d+,\d{4})
+  invoice_number:
+    - InvoiceNumber:([\w\-]+)
+keywords:
+- BE0837387439
+- TextMaster
+options:
+  remove_whitespace: true
+  currency: USD

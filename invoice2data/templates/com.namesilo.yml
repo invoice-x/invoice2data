@@ -1,0 +1,13 @@
+issuer: Namecheap, Inc.
+fields:
+  amount: Total\$(\d+\.\d+)
+  date:
+    - OrderDate:(\d+/\d+/\d{4})
+  invoice_number:
+    - OrderNumber:(\d+)
+keywords:
+- Namecheap
+- support@namecheap.com
+options:
+  remove_whitespace: true
+  currency: USD

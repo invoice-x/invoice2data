@@ -1,0 +1,15 @@
+issuer: Namecheap, Inc.
+fields:
+  amount: Ordertotal\$(\d+\.\d+)
+  date:
+    - Orderdate(\d+\­\d+\­\d{2})
+  invoice_number:
+    - Ordernumber(\d+)
+keywords:
+- NameSilo
+- 0818922
+options:
+  remove_whitespace: true
+  currency: USD
+  date_formats:
+    - '%Y-%m-%d'

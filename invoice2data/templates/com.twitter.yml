@@ -1,0 +1,16 @@
+issuer: Twitter International Company
+fields:
+  amount: Total\$(\d+\.\d+)
+  date:
+    - Invoicedate(\d{1,2}\w+,\d{4})
+    - Issuedate(\d{1,2}\w+,\d{4})
+  invoice_number:
+    - Invoicenumber(\d+)
+    - InvoiceId(\d+)
+keywords:
+- 9803175Q
+- Twitter
+- USD
+options:
+  remove_whitespace: true
+  currency: USD
