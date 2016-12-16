@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Teledec.fr - LPI Conseil SAS
+fields:
+  amount: Total\s+TTC\s+:\s+(\d+,\d{2})
+  amount_untaxed: Total\s+HT\s+:\s+(\d+,\d{2})
+  date: mise\s+le\s+:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Numéro\s+de\s+facture\s+:\s+(.+)
+  static_vat: FR03527571939
+keywords:
+  - FR03527571939
+  - €
+  - Facture
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
