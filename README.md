@@ -29,7 +29,7 @@ Go from PDF files to this:
 
 1. Install pdftotext
 
-If possible get the latest xpdf/poppler-utils version. It's included with OSX Homebrew, Debian Sid and Ubuntu 16.04. Without it, `pdftotext` won't parse tables in PDF correctly.
+If possible get the latest [xpdf/poppler-utils](https://poppler.freedesktop.org/) version. It's included with OSX Homebrew, Debian Sid and Ubuntu 16.04. Without it, `pdftotext` won't parse tables in PDF correctly.
 
 2. Install `invoice2data` using pip
 
