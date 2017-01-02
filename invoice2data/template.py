@@ -23,6 +23,8 @@ OPTIONS_DEFAULT = {
     'languages': [],
     'decimal_separator': '.',
     'replace': [],  # example: see templates/fr/fr.free.mobile.yml
+    'field_separator': r'\s+',
+    'line_separator': r'\n',
 }
 
 def read_templates(folder):
@@ -46,7 +48,12 @@ def read_templates(folder):
                 if type(tpl['keywords']) is not list:
                     tpl['keywords'] = [tpl['keywords']]
 
-                output.append(InvoiceTemplate(tpl.items()))
+                if 'lines' in tpl:
+                    assert 'start' in tpl['lines'], 'Lines start regex missing'
+                    assert 'end' in tpl['lines'], 'Lines end regex missing'
+                    assert 'line' in tpl['lines'], 'Line regex missing'
+
+                output.append(InvoiceTemplate(tpl))
     return output
 
 
@@ -161,6 +168,9 @@ class InvoiceTemplate(OrderedDict):
                 else:
                     logger.warning("regexp for field %s didn't match", k)
 
+        if 'lines' in self:
+            self.extract_lines(optimized_str, output)
+
         output['currency'] = self.options['currency']
 
         if len(output.keys()) >= 4:
@@ -171,3 +181,66 @@ class InvoiceTemplate(OrderedDict):
         else:
             logger.error(output)
             return None
+
+    def extract_lines(self, content, output):
+        """Try to extract lines from the invoice"""
+        start = re.search(self['lines']['start'], content)
+        end = re.search(self['lines']['end'], content)
+        if not start or not end:
+            logger.warning('no lines found - start %s, end %s', start, end)
+            return
+        if 'first_line' not in self['lines']:
+            self['lines']['first_line'] = self['lines']['line']
+        if 'last_line' not in self['lines']:
+            self['lines']['last_line'] = self['lines']['line']
+        content = content[start.end():end.start()]
+        lines = []
+        current_row = {}
+        for line in re.split(self.options['line_separator'], content):
+            match = re.search(self['lines']['first_line'], line)
+            if match:
+                if current_row:
+                    lines.append(current_row)
+                current_row = {
+                    field: value.strip()
+                    for field, value in match.groupdict().iteritems()
+                }
+                continue
+            match = re.search(self['lines']['line'], line)
+            if match:
+                for field, value in match.groupdict().iteritems():
+                    current_row[field] = '%s\n%s' % (
+                        current_row.get(field), value.strip()
+                    )
+                continue
+            match = re.search(self['lines']['last_line'], line)
+            if match:
+                for field, value in match.groupdict().iteritems():
+                    current_row[field] = '%s\n%s' % (
+                        current_row.get(field), value.strip()
+                    )
+                lines.append(current_row)
+                current_row = {}
+                continue
+            logger.warning(
+                'ignoring *%s* because it doesn\'t match anything', line
+            )
+        if current_row:
+            lines.append(current_row)
+
+        if lines:
+            output['lines'] = lines
+
+
+def dict_to_yml(dict_in, identifier):
+    "Convert old templates to new yml format."
+
+    dict_in['fields'] = {t[0]: t[1] for t in dict_in['data']}
+    dict_in.pop('data')
+    yaml_str = yaml.dump(dict_in, default_flow_style=False, allow_unicode=True)
+    with open('templates/{}.yml'.format(identifier), 'w') as f:
+        f.write(yaml_str)
+    
+if __name__ == '__main__':
+    for t in templates:
+        dict_to_yml(t, t['keywords'][0].lower().replace(' ', ''))
