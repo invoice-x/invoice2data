@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import yaml
 import os
 import re
@@ -16,6 +17,25 @@ OPTIONS_DEFAULT = {
     'replace': [],  # example: see templates/fr/fr.free.mobile.yml
 }
 
+
+# borrowed from http://stackoverflow.com/a/21912744
+def ordered_load(
+        stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict
+):
+    class OrderedLoader(Loader):
+        pass
+
+    def construct_mapping(loader, node):
+        loader.flatten_mapping(node)
+        return object_pairs_hook(loader.construct_pairs(node))
+
+    OrderedLoader.add_constructor(
+        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+        construct_mapping)
+
+    return yaml.load(stream, OrderedLoader)
+
+
 def read_templates(folder):
     """
     Load yaml templates from template folder. Return list of dicts.
@@ -24,7 +44,7 @@ def read_templates(folder):
     for path, subdirs, files in os.walk(folder):
         for name in files:
             if name.endswith('.yml'):
-                tpl = yaml.load(open(os.path.join(path, name)).read())
+                tpl = ordered_load(open(os.path.join(path, name)).read())
                 tpl['template_name'] = name
 
                 # Test if all required fields are in template:
@@ -37,17 +57,17 @@ def read_templates(folder):
                 if type(tpl['keywords']) is not list:
                     tpl['keywords'] = [tpl['keywords']]
 
-                output.append(InvoiceTemplate(tpl))
+                output.append(InvoiceTemplate(tpl.iteritems()))
     return output
 
 
-class InvoiceTemplate(dict):
+class InvoiceTemplate(OrderedDict):
     """
     Represents single template files that live as .yml files on the disk.
     """
 
     def __init__(self, *args, **kwargs):
-        self.update(*args, **kwargs)
+        super(InvoiceTemplate, self).__init__(*args, **kwargs)
 
         # Merge template-specific options with defaults
         self.options = OPTIONS_DEFAULT.copy()
