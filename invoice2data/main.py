@@ -6,9 +6,9 @@ import shutil
 import os
 from os.path import join
 import pkg_resources
-import invoice2data.pdftotext as pdftotext
+import invoice2data.in_pdftotext as pdftotext
 from invoice2data.template import read_templates
-from invoice2data.output import invoices_to_csv
+from invoice2data.out_csv import invoices_to_csv
 import logging
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ def extract_data(invoicefile, templates=None, debug=False):
 
     charcount = len(extracted_str)
     logger.debug('number of char in pdf2text extract: %d', charcount)
-    # Disable OCR for now.
+    # Disable Tesseract for now.
     #if charcount < 40:
         #logger.info('Starting OCR')
         #extracted_str = image_to_text.to_text(invoicefile)

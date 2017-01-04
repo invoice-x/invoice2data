@@ -97,15 +97,17 @@ options:
     - '%d/%m/%Y'
 ```
 
-## Roadmap
+## Roadmap and open tasks
 
-Currently this is a proof of concept. If you scan your invoices, this could easily be connected to an OCR system. Biggest weakness is the need to manually enter new regexes. I don't see an easy way to make it "learn" new patterns.
-
-Planned features:
-
-- integrate with online OCR
-- try to 'guess' parameters for new invoice formats
+- tutorial and documentation for template options.
+- parse invoice items.
+- integrate with online OCR?
+- try to 'guess' parameters for new invoice formats.
 - can apply machine learning to guess new parameters?
 
-## Contributors
-- Alexis de Lattre: Add setup.py for Pypi, fix locale bug, add templates for new invoice types.
+## Maintainers
+- [Manuel Riel](https://github.com/m3nu)
+- [Alexis de Lattre](https://github.com/alexis-via): Add setup.py for Pypi, fix locale bug, add templates for new invoice types.
+
+## Other Contributors
+- [Holger Brunn](https://github.com/hbrunn): Add support for parsing invoice items.

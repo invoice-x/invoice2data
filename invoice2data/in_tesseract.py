@@ -8,6 +8,7 @@ import tempfile
 
 
 def to_text(path):
+    """Wraps Tesseract OCR. Not reliable at the moment."""
 
     tiff_file = tempfile.NamedTemporaryFile(suffix='.tiff')
     FNULL = open(os.devnull, 'w')

@@ -7,6 +7,7 @@ from cStringIO import StringIO
 
 
 def to_text(path):
+    "Wrapper around pdfminer."
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
     codec = 'utf-8'

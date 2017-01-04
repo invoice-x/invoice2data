@@ -7,7 +7,7 @@ from distutils import spawn #py2 compat
 
 def to_text(path):
     """
-    Wrapper around pdftotext.
+    Wrapper around Poppler pdftotext.
     """
 
     if spawn.find_executable("pdftotext"): #shutil.which('pdftotext'):

@@ -1,10 +1,18 @@
-from collections import OrderedDict
+"""
+This module abstracts templates for invoice providers. 
+
+Templates are initially read from .yml files and then kept as class.
+"""
+
 import yaml
 import os
 import re
 import dateparser
 from unidecode import unidecode
 import logging as logger
+from collections import OrderedDict
+
+from invoice2data.utils import ordered_load
 
 OPTIONS_DEFAULT = {
     'remove_whitespace': False,
@@ -16,25 +24,6 @@ OPTIONS_DEFAULT = {
     'decimal_separator': '.',
     'replace': [],  # example: see templates/fr/fr.free.mobile.yml
 }
-
-
-# borrowed from http://stackoverflow.com/a/21912744
-def ordered_load(
-        stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict
-):
-    class OrderedLoader(Loader):
-        pass
-
-    def construct_mapping(loader, node):
-        loader.flatten_mapping(node)
-        return object_pairs_hook(loader.construct_pairs(node))
-
-    OrderedLoader.add_constructor(
-        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
-        construct_mapping)
-
-    return yaml.load(stream, OrderedLoader)
-
 
 def read_templates(folder):
     """
@@ -57,7 +46,7 @@ def read_templates(folder):
                 if type(tpl['keywords']) is not list:
                     tpl['keywords'] = [tpl['keywords']]
 
-                output.append(InvoiceTemplate(tpl.iteritems()))
+                output.append(InvoiceTemplate(tpl.items()))
     return output
 
 
@@ -182,17 +171,3 @@ class InvoiceTemplate(OrderedDict):
         else:
             logger.error(output)
             return None
-
-
-def dict_to_yml(dict_in, identifier):
-    "Convert old templates to new yml format."
-
-    dict_in['fields'] = {t[0]: t[1] for t in dict_in['data']}
-    dict_in.pop('data')
-    yaml_str = yaml.dump(dict_in, default_flow_style=False, allow_unicode=True)
-    with open('templates/{}.yml'.format(identifier), 'w') as f:
-        f.write(yaml_str)
-    
-if __name__ == '__main__':
-    for t in templates:
-        dict_to_yml(t, t['keywords'][0].lower().replace(' ', ''))

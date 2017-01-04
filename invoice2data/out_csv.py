@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 import csv
-
 
 def invoices_to_csv(data, path):
     with open(path, "w") as csv_file:
