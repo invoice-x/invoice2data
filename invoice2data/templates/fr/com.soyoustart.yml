@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+issuer: So you Start (OVH)
+fields:
+  amount: TOTAL\s+TTC\s+(\d+.\d{2})
+  amount_untaxed: PRIX\s+HT\s+(\d+.\d{2})
+  date: Date\s+:\s+(\d+ .+ \d{4})
+  invoice_number: Facture\s+:\s+(\w+)
+  static_vat: FR22424761419
+keywords:
+  - FR22424761419
+  - Facture
+  - €
+  - So you Start
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  languages:
+    - fr
+  decimal_separator: '.'
