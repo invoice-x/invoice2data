@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: Easyjet
+fields:
+  amount: MONTANT TOTAL\s+([\d ]+,\d{2})
+  amount_untaxed: MONTANT TOTAL\s+([\d ]+,\d{2})
+  date: Facture.+mission\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: N° DE LA FACTURE\s+(\w+)
+  static_vat: FR51453172470
+keywords:
+  - FR 51453172470
+  - FACTURE
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  languages:
+    - fr
+  decimal_separator: ','
