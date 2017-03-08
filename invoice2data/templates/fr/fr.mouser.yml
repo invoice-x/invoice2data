@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+# The PDF invoice has the 2 languages: French and English
+issuer: Mouser Electronic
+fields:
+  amount: Montant à régler\s+EUR\s+([\d,]+.\d{2})
+  amount_tax: Montant à régler\s+EUR\s+[\d,]+.\d{2}\s+[\d,]+.\d{2}\s+[\d,]+.\d{2}\s+[\d,]+.\d{2}\s+([\d,]+.\d{2}\s+)
+  date: Code SWIFT:\s+CHASGB2L\s+\d+\s+(\d{2}-\w+-\d{2})
+  invoice_number: Code SWIFT:\s+CHASGB2L\s+(\d+)
+  static_vat: FR27512466913
+keywords:
+  - FR 27512466913
+  - Facture
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d-%b-%y'
+  languages:
+    - fr
+  decimal_separator: '.'
