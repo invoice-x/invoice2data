@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Atelier Copy Service
+fields:
+  amount: Total TTC\s+([\d ]+.\d{2})
+  amount_untaxed: Total HT\s+([\d ]+.\d{2})
+  invoice_number: FACTURE n° (\w+)
+  date: Date : (\d{2}/\d{2}/\d{4})
+  static_vat: FR7442210554400015
+keywords:
+  - FR 7442210554400015
+  - FACTURE
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: '.'

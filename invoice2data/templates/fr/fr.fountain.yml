@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+issuer: fountain.fr
+fields:
+  amount: Montant total\s+([\d ]+,\d{2})
+  amount_untaxed: Montant total HTVA\s+([\d ]+,\d{2})
+  date: Date de facturation:\s+(\d{2}.\d{2}.\d{4})
+  date_due: Date d'échéance:\s+(\d{2}.\d{2}.\d{4})
+  invoice_number: N° de facture:\s+(\w+)
+  static_vat: FR81411858046
+keywords:
+  - FR 81 411 858 046
+  - Facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d.%m.%Y'
+  languages:
+    - fr
+  decimal_separator: ','
