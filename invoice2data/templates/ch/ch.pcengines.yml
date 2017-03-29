@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+issuer: PC Engines GmbH
+fields:
+  amount: Total\s+EUR\s+([\d,]+.\d{2})
+  amount_untaxed: Subtotal\s+EUR\s+([\d,]+.\d{2})
+  date: Date:\s+(\d{1,2}\.\d{1,2}\.\d{4})
+  invoice_number: Invoice\s+(\w+)
+  static_vat: CHE-109.825.964
+  static_partner_email: orders@pcengines.ch
+keywords:
+  - CHE-109.825.964
+  - Invoice
+  - EUR
+  - pcengines.ch
+options:
+  currency: EUR
+  date_formats:
+    - '%d.%m.%Y'
+  languages:
+    - en
+  decimal_separator: '.'
