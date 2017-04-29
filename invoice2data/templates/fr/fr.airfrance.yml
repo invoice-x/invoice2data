@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: Air France
+fields:
+  amount: NET A PAYER\s+([\d ]+.\d{2})
+  amount_untaxed: NET A PAYER\s+([\d ]+.\d{2})
+  date: FACTURE \w+ du (\d{2}/\d{2}/\d{4})
+  invoice_number: FACTURE (\w+)
+  static_vat: FR61420495178
+keywords:
+  - FR 61 420 495 178
+  - FACTURE
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  languages:
+    - fr
+  decimal_separator: '.'

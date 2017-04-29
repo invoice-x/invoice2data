@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Amazon France
+fields:
+  amount: TOTAL:\s+([\d ]+,\d{2})
+  amount_untaxed: ([\d ]+,\d{2})\s€\s+[\d ]+,\d{2}\s€\s+[\d ]+,\d{2}\s€
+  date: Date de la facture.+(\d{2}\.\d{2}\.\d{4})
+  invoice_number: ([\w-]+)\s*\n\s*Date de la commande
+  static_vat: FR 12487773327
+keywords:
+  - FR 12487773327
+  - €
+  - FACTURE
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+issuer: Google Ireland Limited
+fields:
+  amount: Montant dû en EUR\s+:\s+([\d ]+,\d{2})
+  amount_untaxed: Sous-total en EUR\s+:\s+([\d ]+,\d{2})
+  date: Date d'émission\s+:\s+(\d{1,2} .+ \d{4})
+  invoice_number: Numéro de la facture :\s+([\d-]+)
+  static_vat: IE6388047V
+keywords:
+  - Google Ireland
+  - Facture
+  - IE 6388047V
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  languages:
+    - fr
+  decimal_separator: ','

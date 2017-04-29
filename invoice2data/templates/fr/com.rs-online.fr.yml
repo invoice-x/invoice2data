@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: RadioSpares
+fields:
+  amount: TOTAL TTC - EUR\s+([\d ]+,\d{2})
+  amount_untaxed: TOTAL NET H\.T\.\s+([\d ]+,\d{2})
+  date: Date de Facture\s+(\d{2}\.\d{2}\.\d{4})
+  date_due: échéance.+(\d{2}\.\d{2}\.\d{4})
+  invoice_number: Numero de Facture\s+(\w+)
+  static_vat: FR 68 334 534 039
+keywords:
+  - FR 68 334 534 039
+  - EUR
+  - FACTURE
+options:
+  currency: EUR
+  date_formats:
+    - '%d.%m.%Y'
+  decimal_separator: ','

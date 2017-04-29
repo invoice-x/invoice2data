@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+# The Datadog invoices are really not nice!
+# So this invoice template is pretty weak. I hope Datadog will improve their
+# invoices in the future...
+issuer: Datadog
+fields:
+  amount: Charged\s\$(\d+)\sto
+  amount_untaxed: Charged $(\d+)\sto
+  date: \son\s+(.+,\s\d{4}) at
+  invoice_number: (\w+)\s+Notes:\s
+  static_partner_name: Datadog
+  static_partner_email: billing@datadoghq.com
+keywords:
+  - billing@datadoghq.com
+  - $
+  - Invoice
+options:
+  currency: USD
+  date_formats:
+    - '%B %d, %Y'
+  languages:
+    - en
+  decimal_separator: '.'

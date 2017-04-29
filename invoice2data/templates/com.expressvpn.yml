@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: ExpressVPN
+fields:
+  amount: Grand Total:\s+\$([\d,]+.\d{2})
+  amount_untaxed: Subtotal:\s+\$([\d,]+.\d{2})
+  date: Upon Payment\s+(\d{4}-\d{2}-\d{2})
+  invoice_number: Invoice No. \#(\d+)
+  static_partner_name: ExpressVPN
+keywords:
+  - ExpressVPN
+  - Invoice
+  - $
+options:
+  currency: USD
+  date_formats:
+    - '%Y-%m-%d'
+  languages:
+    - en
+  decimal_separator: '.'
