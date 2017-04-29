@@ -1,0 +1,12 @@
+issuer: Online SAS
+fields:
+  amount: Total:\$(\d+\.\d+)
+  date: DateIssued:(\w{3,}\d{1,2},\d{4})
+  invoice_number:  InvoiceNumber:(\d+)
+keywords:
+- EU528002224
+options:
+  remove_whitespace: true
+  currency: USD
+  date_formats:
+    - '%B%d,%Y'
