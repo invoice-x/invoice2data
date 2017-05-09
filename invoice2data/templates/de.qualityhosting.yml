@@ -10,6 +10,9 @@ lines:
   end: 'Total EUR'
   first_line: '\s+(?P<pos>\d+)\s+(?P<qty>\d+)\s+(?P<desc>.{,70})\s+(?P<price>\d+,\d+)'
   line: '^\s+(?P<desc>.+)$'
+  types:
+      qty: float
+      price: float
 keywords:
 - QualityHosting
 options:
