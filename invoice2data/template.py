@@ -248,17 +248,3 @@ class InvoiceTemplate(OrderedDict):
 
         if lines:
             output['lines'] = lines
-
-
-def dict_to_yml(dict_in, identifier):
-    "Convert old templates to new yml format."
-
-    dict_in['fields'] = {t[0]: t[1] for t in dict_in['data']}
-    dict_in.pop('data')
-    yaml_str = yaml.dump(dict_in, default_flow_style=False, allow_unicode=True)
-    with open('templates/{}.yml'.format(identifier), 'w') as f:
-        f.write(yaml_str)
-    
-if __name__ == '__main__':
-    for t in templates:
-        dict_to_yml(t, t['keywords'][0].lower().replace(' ', ''))
