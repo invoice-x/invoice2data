@@ -95,12 +95,17 @@ options:
   currency: HKD
   date_formats:
     - '%d/%m/%Y'
+lines:
+    start: Detail
+    end: \* May include estimated US sales tax
+    first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
+    line: (.*)\$(\d+\.\d+)
+    last_line: VAT \*\*
 ```
 
 ## Roadmap and open tasks
 
 - tutorial and documentation for template options.
-- parse invoice items.
 - integrate with online OCR?
 - try to 'guess' parameters for new invoice formats.
 - can apply machine learning to guess new parameters?

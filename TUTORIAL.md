@@ -36,6 +36,43 @@ All the regex `fields` you need extracted. Required fields are `amount`, `date`,
 
 You will need to understand regular expressions to find the right values. If you didn't need them in your life up until now (lucky you), you can learn about them [here](http://www.zytrax.com/tech/web/regex.htm) or [test them here](http://www.regexr.com/). We use [Python's regex engine](https://docs.python.org/2/library/re.html). It won't matter for the simple expressions we need, but sometimes there are subtle differences when e.g. coming from Perl.
 
+### Lines
+The `lines` key allows you to parse invoice items. Mandatory are regexes `start` and `end` to figure out where in the stream the item table is located. Then the regex `line` is applied, and supposed to contain named capture groups. The names of the capture groups will be the field names for the parsed item. If we have an invoice that looks like
+
+```
+some header text
+
+the address, etc.
+
+  Item        Discount      Price
+
+ 1st item     0.0 %           42.00
+ 2nd item     10.0 %          37.80
+
+                      Total   79.80
+
+A footer
+```
+
+your lines definition should look like
+
+```
+lines:
+    start: Item\s+Discount\s+Price$
+    end: \s+Total
+    line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price>\d+\d+)
+```
+
+Then if you want the parser to coerce the fields to numeric types (by default, they are strings), you can add a `types` key below `lines`:
+
+```
+    types:
+        discount: float
+        price: float
+```
+
+The example above is very simplistic, most invoices at least potentially can have multiple lines per invoice item. In order to parse this correctly, you can also give a `first_line` and/or `last_line` regex. For every line, the parser will check if `first_line` matches, if yes, it's a new line. If not, it checks if `last_line` matches, if yes, the current line is commited, if not, `line` regex is checked, and if this one doesn't match either, this line is ignored. This implies that you need to take care that the `first_line` regex is the most specific one, and `line` the least specific.
+
 ### Options
 
 Everything under `options` is optional. We expect to add more options in the future to handle edge cases we find. Currently the most important options and their defaults are:
