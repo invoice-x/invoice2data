@@ -201,38 +201,40 @@ class InvoiceTemplate(OrderedDict):
         if not start or not end:
             logger.warning('no lines found - start %s, end %s', start, end)
             return
-        if 'first_line' not in self['lines']:
-            self['lines']['first_line'] = self['lines']['line']
-        if 'last_line' not in self['lines']:
-            self['lines']['last_line'] = self['lines']['line']
         content = content[start.end():end.start()]
         lines = []
         current_row = {}
         for line in re.split(self.options['line_separator'], content):
-            match = re.search(self['lines']['first_line'], line)
-            if match:
-                if current_row:
+            if 'first_line' in self['lines']:
+                match = re.search(self['lines']['first_line'], line)
+                if match:
+                    if current_row:
+                        lines.append(current_row)
+                    current_row = {
+                        field: value.strip()
+                        for field, value in match.groupdict().iteritems()
+                    }
+                    continue
+            if 'last_line' in self['lines']:
+                match = re.search(self['lines']['last_line'], line)
+                if match:
+                    for field, value in match.groupdict().iteritems():
+                        current_row[field] = '%s%s%s' % (
+                            current_row.get(field, ''),
+                            current_row.get(field, '') and '\n' or '',
+                            value.strip()
+                        )
                     lines.append(current_row)
-                current_row = {
-                    field: value.strip()
-                    for field, value in match.groupdict().iteritems()
-                }
-                continue
+                    current_row = {}
+                    continue
             match = re.search(self['lines']['line'], line)
             if match:
                 for field, value in match.groupdict().iteritems():
-                    current_row[field] = '%s\n%s' % (
-                        current_row.get(field), value.strip()
+                    current_row[field] = '%s%s%s' % (
+                        current_row.get(field, ''),
+                        current_row.get(field, '') and '\n' or '',
+                        value.strip()
                     )
-                continue
-            match = re.search(self['lines']['last_line'], line)
-            if match:
-                for field, value in match.groupdict().iteritems():
-                    current_row[field] = '%s\n%s' % (
-                        current_row.get(field), value.strip()
-                    )
-                lines.append(current_row)
-                current_row = {}
                 continue
             logger.warning(
                 'ignoring *%s* because it doesn\'t match anything', line
