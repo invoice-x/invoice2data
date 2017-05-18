@@ -19,7 +19,7 @@ With the flexible template system you can:
 Go from PDF files to this:
 
 ```
-{'date': (2014, 5, 7), 'invoice_number': '30064443', 'amount': 34.73, 'desc': 'Invoice 30064443 from QualityHosting'}
+{'date': (2014, 5, 7), 'invoice_number': '30064443', 'amount': 34.73, 'desc': 'Invoice 30064443 from QualityHosting', 'lines': [{'price': 42.0, 'desc': u'Small Business StandardExchange 2010\nGrundgeb\xfchr pro Einheit\nDienst: OUDJQ_office\n01.05.14-31.05.14\n', 'pos': u'7', 'qty': 1.0}]}
 {'date': (2014, 6, 4), 'invoice_number': 'EUVINS1-OF5-DE-120725895', 'amount': 35.24, 'desc': 'Invoice EUVINS1-OF5-DE-120725895 from Amazon EU'}
 {'date': (2014, 8, 3), 'invoice_number': '42183017', 'amount': 4.11, 'desc': 'Invoice 42183017 from Amazon Web Services'}
 {'date': (2015, 1, 28), 'invoice_number': '12429647', 'amount': 101.0, 'desc': 'Invoice 12429647 from Envato'}
@@ -95,12 +95,17 @@ options:
   currency: HKD
   date_formats:
     - '%d/%m/%Y'
+lines:
+    start: Detail
+    end: \* May include estimated US sales tax
+    first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
+    line: (.*)\$(\d+\.\d+)
+    last_line: VAT \*\*
 ```
 
 ## Roadmap and open tasks
 
 - tutorial and documentation for template options.
-- parse invoice items.
 - integrate with online OCR?
 - try to 'guess' parameters for new invoice formats.
 - can apply machine learning to guess new parameters?

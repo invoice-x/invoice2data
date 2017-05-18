@@ -11,6 +11,12 @@ keywords:
   - Amazon Web Services
   - $
   - Invoice
+lines:
+    start: Detail
+    end: \* May include estimated US sales tax
+    first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
+    line: (.*)\$(\d+\.\d+)
+    last_line: VAT \*\*
 options:
   currency: USD
   date_formats:

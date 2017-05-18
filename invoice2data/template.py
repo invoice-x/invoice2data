@@ -23,6 +23,8 @@ OPTIONS_DEFAULT = {
     'languages': [],
     'decimal_separator': '.',
     'replace': [],  # example: see templates/fr/fr.free.mobile.yml
+    'field_separator': r'\s+',
+    'line_separator': r'\n',
 }
 
 def read_templates(folder):
@@ -46,7 +48,12 @@ def read_templates(folder):
                 if type(tpl['keywords']) is not list:
                     tpl['keywords'] = [tpl['keywords']]
 
-                output.append(InvoiceTemplate(tpl.items()))
+                if 'lines' in tpl:
+                    assert 'start' in tpl['lines'], 'Lines start regex missing'
+                    assert 'end' in tpl['lines'], 'Lines end regex missing'
+                    assert 'line' in tpl['lines'], 'Line regex missing'
+
+                output.append(InvoiceTemplate(tpl))
     return output
 
 
@@ -100,6 +107,28 @@ class InvoiceTemplate(OrderedDict):
             logger.debug('Matched template %s', self['template_name'])
             return True
 
+    def parse_number(self, value):
+        assert value.count(self.options['decimal_separator']) < 2,\
+            'Decimal separator cannot be present several times'
+        # replace decimal separator by a |
+        amount_pipe = value.replace(self.options['decimal_separator'], '|')
+        # remove all possible thousands separators
+        amount_pipe_no_thousand_sep = re.sub(
+            '[.,\s]', '', amount_pipe)
+        # put dot as decimal sep
+        return float(amount_pipe_no_thousand_sep.replace('|', '.'))
+
+    def coerce_type(self, value, target_type):
+        if target_type == 'int':
+            if not value.strip():
+                return 0
+            return int(self.parse_number(value))
+        elif target_type == 'float':
+            if not value.strip():
+                return 0.0
+            return float(self.parse_number(value))
+        assert False, 'Unknown type'
+
     def extract(self, optimized_str):
         """
         Given a template file and a string, extract matching data fields.
@@ -145,21 +174,14 @@ class InvoiceTemplate(OrderedDict):
                                 "Date parsing failed on date '%s'", raw_date)
                             return None
                     elif k.startswith('amount'):
-                        assert res_find[0].count(self.options['decimal_separator']) < 2,\
-                            'Decimal separator cannot be present several times'
-                        # replace decimal separator by a |
-                        amount_pipe = res_find[0].replace(self.options['decimal_separator'], '|')
-                        # remove all possible thousands separators
-                        amount_pipe_no_thousand_sep = re.sub(
-                            '[.,\s]', '', amount_pipe)
-                        # put dot as decimal sep
-                        amount_regular = amount_pipe_no_thousand_sep.replace('|', '.')
-                        # it is now safe to convert to float
-                        output[k] = float(amount_regular)
+                        output[k] = self.parse_number(res_find[0])
                     else:
                         output[k] = res_find[0]
                 else:
                     logger.warning("regexp for field %s didn't match", k)
+
+        if 'lines' in self:
+            self.extract_lines(optimized_str, output)
 
         output['currency'] = self.options['currency']
 
@@ -171,3 +193,60 @@ class InvoiceTemplate(OrderedDict):
         else:
             logger.error(output)
             return None
+
+    def extract_lines(self, content, output):
+        """Try to extract lines from the invoice"""
+        start = re.search(self['lines']['start'], content)
+        end = re.search(self['lines']['end'], content)
+        if not start or not end:
+            logger.warning('no lines found - start %s, end %s', start, end)
+            return
+        content = content[start.end():end.start()]
+        lines = []
+        current_row = {}
+        for line in re.split(self.options['line_separator'], content):
+            if 'first_line' in self['lines']:
+                match = re.search(self['lines']['first_line'], line)
+                if match:
+                    if current_row:
+                        lines.append(current_row)
+                    current_row = {
+                        field: value.strip()
+                        for field, value in match.groupdict().iteritems()
+                    }
+                    continue
+            if 'last_line' in self['lines']:
+                match = re.search(self['lines']['last_line'], line)
+                if match:
+                    for field, value in match.groupdict().iteritems():
+                        current_row[field] = '%s%s%s' % (
+                            current_row.get(field, ''),
+                            current_row.get(field, '') and '\n' or '',
+                            value.strip()
+                        )
+                    lines.append(current_row)
+                    current_row = {}
+                    continue
+            match = re.search(self['lines']['line'], line)
+            if match:
+                for field, value in match.groupdict().iteritems():
+                    current_row[field] = '%s%s%s' % (
+                        current_row.get(field, ''),
+                        current_row.get(field, '') and '\n' or '',
+                        value.strip()
+                    )
+                continue
+            logger.warning(
+                'ignoring *%s* because it doesn\'t match anything', line
+            )
+        if current_row:
+            lines.append(current_row)
+
+        types = self['lines'].get('types', [])
+        for row in lines:
+            for name in row.keys():
+                if name in types:
+                    row[name] = self.coerce_type(row[name], types[name])
+
+        if lines:
+            output['lines'] = lines
