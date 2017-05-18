@@ -212,13 +212,13 @@ class InvoiceTemplate(OrderedDict):
                         lines.append(current_row)
                     current_row = {
                         field: value.strip()
-                        for field, value in match.groupdict().iteritems()
+                        for field, value in match.groupdict().items()
                     }
                     continue
             if 'last_line' in self['lines']:
                 match = re.search(self['lines']['last_line'], line)
                 if match:
-                    for field, value in match.groupdict().iteritems():
+                    for field, value in match.groupdict().items():
                         current_row[field] = '%s%s%s' % (
                             current_row.get(field, ''),
                             current_row.get(field, '') and '\n' or '',
@@ -229,7 +229,7 @@ class InvoiceTemplate(OrderedDict):
                     continue
             match = re.search(self['lines']['line'], line)
             if match:
-                for field, value in match.groupdict().iteritems():
+                for field, value in match.groupdict().items():
                     current_row[field] = '%s%s%s' % (
                         current_row.get(field, ''),
                         current_row.get(field, '') and '\n' or '',
