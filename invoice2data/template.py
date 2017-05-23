@@ -1,5 +1,5 @@
 """
-This module abstracts templates for invoice providers. 
+This module abstracts templates for invoice providers.
 
 Templates are initially read from .yml files and then kept as class.
 """
@@ -33,7 +33,7 @@ def read_templates(folder):
     """
     output = []
     for path, subdirs, files in os.walk(folder):
-        for name in files:
+        for name in sorted(files):
             if name.endswith('.yml'):
                 tpl = ordered_load(open(os.path.join(path, name)).read())
                 tpl['template_name'] = name
@@ -43,7 +43,7 @@ def read_templates(folder):
                 required_fields = ['date', 'amount', 'invoice_number']
                 assert len(set(required_fields).intersection(tpl['fields'].keys())) == len(required_fields), \
                     'Missing required key in template {} {}. Found {}'.format(name, path, tpl['fields'].keys())
-                
+
                 # Keywords as list, if only one.
                 if type(tpl['keywords']) is not list:
                     tpl['keywords'] = [tpl['keywords']]
@@ -88,7 +88,7 @@ class InvoiceTemplate(OrderedDict):
             optimized_str = re.sub(' +', '', extracted_str)
         else:
             optimized_str = extracted_str
-        
+
         # Remove accents
         if self.options['remove_accents']:
             optimized_str = unidecode(optimized_str)

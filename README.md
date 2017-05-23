@@ -76,6 +76,8 @@ See `invoice2data/templates` for existing templates. Just extend the list to add
 
 Templates are based on Yaml. They define one or more keywords to find the right template and regexp for fields to be extracted. They could also be a static value, like the full company name.
 
+Template files are tried in alphabetical order.
+
 We may extend them to feature options to be used during invoice processing.
 
 Example:
