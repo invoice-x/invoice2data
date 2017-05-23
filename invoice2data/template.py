@@ -93,6 +93,10 @@ class InvoiceTemplate(OrderedDict):
         if self.options['remove_accents']:
             optimized_str = unidecode(optimized_str)
 
+        # convert to lower case
+        if self.options['lowercase']:
+            optimized_str = optimized_str.lower()
+
         # specific replace
         for replace in self.options['replace']:
             assert len(replace) == 2, 'A replace should be a list of 2 items'
