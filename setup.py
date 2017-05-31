@@ -15,6 +15,7 @@ setup(
     package_data = {
         'invoice2data': [
             'templates/*.yml',
+            'templates/es/*.yml',
             'templates/fr/*.yml',
             'templates/nl/*.yml',
             'templates/ch/*.yml'],

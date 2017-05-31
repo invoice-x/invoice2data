@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: PepePhone (Mobile & Internet)
+fields:
+  amount: Total\sfactura\s+(\d+,\d{2})
+  amount_untaxed: Total\s\(base\simponible\)\s+(\d+,\d{2})
+  date: Fecha\sde\semisión:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Número\sde\sfactura:\s+(\d+)
+  static_vat: ESB85033470
+keywords:
+  - ESB85033470
+  - €
+  - factura
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
