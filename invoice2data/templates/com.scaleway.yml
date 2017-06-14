@@ -5,6 +5,7 @@ fields:
   invoice_number: Invoice#(\d+)
 keywords:
 - FR35433115904
+- Invoice
 options:
   remove_whitespace: true
   currency: EUR
