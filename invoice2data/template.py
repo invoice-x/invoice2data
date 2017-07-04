@@ -150,6 +150,8 @@ class InvoiceTemplate(OrderedDict):
 
         # Try to find data for each field.
         output = {}
+        output['issuer'] = self['issuer']
+        
         for k, v in self['fields'].items():
             if k.startswith('static_'):
                 logger.debug("field=%s | static value=%s", k, v)
@@ -189,7 +191,7 @@ class InvoiceTemplate(OrderedDict):
 
         output['currency'] = self.options['currency']
 
-        if len(output.keys()) >= 4:
+        if len(output.keys()) >= 5:
             output['desc'] = 'Invoice %s from %s' % (
                 output['invoice_number'], self['issuer'])
             logger.debug(output)
