@@ -217,7 +217,7 @@ class InvoiceTemplate(OrderedDict):
                     if current_row:
                         lines.append(current_row)
                     current_row = {
-                        field: value.strip()
+                        field: value.strip() if value else ''
                         for field, value in match.groupdict().items()
                     }
                     continue
@@ -228,7 +228,7 @@ class InvoiceTemplate(OrderedDict):
                         current_row[field] = '%s%s%s' % (
                             current_row.get(field, ''),
                             current_row.get(field, '') and '\n' or '',
-                            value.strip()
+                            value.strip() if value else ''
                         )
                     lines.append(current_row)
                     current_row = {}
@@ -239,7 +239,7 @@ class InvoiceTemplate(OrderedDict):
                     current_row[field] = '%s%s%s' % (
                         current_row.get(field, ''),
                         current_row.get(field, '') and '\n' or '',
-                        value.strip()
+                        value.strip() if value else ''
                     )
                 continue
             logger.warning(
