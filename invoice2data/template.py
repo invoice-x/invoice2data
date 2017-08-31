@@ -242,7 +242,7 @@ class InvoiceTemplate(OrderedDict):
                         value.strip()
                     )
                 continue
-            logger.warning(
+            logger.debug(
                 'ignoring *%s* because it doesn\'t match anything', line
             )
         if current_row:
