@@ -210,10 +210,16 @@ class InvoiceTemplate(OrderedDict):
         content = content[start.end():end.start()]
         lines = []
         current_row = {}
+        if 'first_line' not in self['lines'] and\
+                'last_line' not in self['lines']:
+            self['lines']['first_line'] = self['lines']['line']
         for line in re.split(self.options['line_separator'], content):
             if 'first_line' in self['lines']:
                 match = re.search(self['lines']['first_line'], line)
                 if match:
+                    if 'last_line' not in self['lines']:
+                        lines.append(current_row)
+                        current_row = {}
                     if current_row:
                         lines.append(current_row)
                     current_row = {
