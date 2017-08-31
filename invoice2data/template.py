@@ -122,6 +122,13 @@ class InvoiceTemplate(OrderedDict):
         # put dot as decimal sep
         return float(amount_pipe_no_thousand_sep.replace('|', '.'))
 
+    def parse_date(self, value):
+        res = dateparser.parse(
+            value, date_formats=self.options['date_formats'],
+            languages=self.options['languages'])
+        logger.debug("result of date parsing=%s", res)
+        return res
+
     def coerce_type(self, value, target_type):
         if target_type == 'int':
             if not value.strip():
@@ -131,6 +138,8 @@ class InvoiceTemplate(OrderedDict):
             if not value.strip():
                 return 0.0
             return float(self.parse_number(value))
+        elif target_type == 'date':
+            return self.parse_date(value)
         assert False, 'Unknown type'
 
     def extract(self, optimized_str):
@@ -170,11 +179,7 @@ class InvoiceTemplate(OrderedDict):
                 if res_find:
                     logger.debug("res_find=%s", res_find)
                     if k.startswith('date'):
-                        raw_date = res_find[0]
-                        output[k] = dateparser.parse(
-                            raw_date, date_formats=self.options['date_formats'],
-                            languages=self.options['languages'])
-                        logger.debug("result of date parsing=%s", output[k])
+                        output[k] = self.parse_date(res_find[0])
                         if not output[k]:
                             logger.error(
                                 "Date parsing failed on date '%s'", raw_date)
