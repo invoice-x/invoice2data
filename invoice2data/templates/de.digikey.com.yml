@@ -1,0 +1,59 @@
+# This template works for Digi Key invoices from Digi Key Germany
+# It only works when the invoice was paid by credit card!
+issuer: Digi Key
+fields:
+  amount_untaxed: 'Warenwert total\s*(\d+.\d+)'
+  amount: 'TOTAL CHARGED TO CREDIT CARD\s*(\d+.\d+)'
+  # the invoice date appears in the text as e.g.:
+  # ZZZY/15-MAY-2016
+  # AUOT/ 3-JUL-2017
+  date: '[A-Z,0-9]{4}\/([\s,\d]+-[A-Z,a-z]{3}-\d{4})'
+  invoice_number: 'Rechnungsnr\.\s*(\d+)'
+  static_vat: DE239975861
+keywords:
+  - 'www.digikey.de'
+  - 'CREDIT CARD'
+  - 'DIGI-KEY USt-IdNr.: DE239975861'
+lines:
+  # example line:
+  #           7           1              1               0            1 296-27750-1-ND                                                             3.27000                       3.27 T
+  #                                                                    IC REG LDO NEG ADJ 0.2A 8MSOP
+  #                                                                    HTSUS: 8542.39.0001      ECCN: EAR99
+  #                                                                    LEAD: LEAD FREE     ROHS: ROHS COMP   REACH:                 REACH UNAFFECTED              Jun-2016
+  #                                                                    COUNTRY/ORIGIN: THAILAND
+  #                                                                    CAGE: 01295
+  # note:
+  # - sometimes the line with 'CAGE: ****' is missing
+  # - the 6th column in the first line contains Digi Keys order number,
+  #   the text immediately below it is the product name
+  start: 'Idx\s+Box\s+Bestellt\s+Storniert\s+Versendet\s+Artikelnummer / Beschreibung\s+Lieferrück-\s+Stückpreis\s+Betrag'
+  end: 'PACKAGE TRACKING #: '
+  first_line: '^\s+\d+\s+\d+\s+\d+\s+\d+\s+(?P<qty>\d+) (?P<code>[\-,\w,\d,\.,\*-,\/]+)\s{2,}(?P<price_unit>\d*\.\d*)\s+(?P<amount>\d*\.\d*) T'
+  # matches everything except consecutive whitespaces
+  line: '^\s+(\S+(?:(?!\s{2}).)+)$'
+  #last_line: 'COUNTRY\/ORIGIN\: .+|^\s+CAGE\: .*'
+  types:
+    qty: float
+    price_unit: float
+    amount: float
+options:
+  remove_whitespace: false
+  currency: EUR
+  date_formats:
+    - '%d-%b-%Y'
+  languages:
+    - de
+  decimal_seperator: '.'
+  replace:
+    - ['JAN', 'Jan']
+    - ['FEB', 'Feb']
+    - ['MAR', 'Mar']
+    - ['APR', 'Apr']
+    - ['MAY', 'May']
+    - ['JUN', 'Jun']
+    - ['JUL', 'Jul']
+    - ['AUG', 'Aug']
+    - ['SEP', 'Sep']
+    - ['OCT', 'Oct']
+    - ['NOV', 'Nov']
+    - ['DEZ', 'Dez']
