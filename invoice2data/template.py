@@ -216,7 +216,8 @@ class InvoiceTemplate(OrderedDict):
                 match = re.search(self['lines']['first_line'], line)
                 if match:
                     if 'last_line' not in self['lines']:
-                        lines.append(current_row)
+                        if current_row:
+                            lines.append(current_row)
                         current_row = {}
                     if current_row:
                         lines.append(current_row)
@@ -234,7 +235,8 @@ class InvoiceTemplate(OrderedDict):
                             current_row.get(field, '') and '\n' or '',
                             value.strip()
                         )
-                    lines.append(current_row)
+                    if current_row:
+                        lines.append(current_row)
                     current_row = {}
                     continue
             match = re.search(self['lines']['line'], line)
