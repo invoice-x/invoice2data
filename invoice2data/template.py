@@ -212,6 +212,9 @@ class InvoiceTemplate(OrderedDict):
                 'last_line' not in self['lines']:
             self['lines']['first_line'] = self['lines']['line']
         for line in re.split(self.options['line_separator'], content):
+            # if the line has empty lines in it , skip them
+            if  re.search(r'''^\s*\n$''', line) or not line:
+                continue
             if 'first_line' in self['lines']:
                 match = re.search(self['lines']['first_line'], line)
                 if match:
