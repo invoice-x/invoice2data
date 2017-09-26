@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+issuer: EDF
+fields:
+  amount: Facture TTC\s+([\d ]+,\d{2})
+  amount_untaxed: Montant Hors TVA\s+([\d ]+,\d{2})
+  date: Facture.+ du (\d{2}/\d{2}/\d{4})
+  invoice_number: n° (\d+)
+  static_vat: FR 03 552 081 317
+keywords:
+  - EDF
+  - RC PME
+  - FR 03 552 081 317
+  - Facture
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  languages:
+    - fr
+  decimal_separator: ','
