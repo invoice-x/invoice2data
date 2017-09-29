@@ -178,7 +178,7 @@ class InvoiceTemplate(OrderedDict):
                     res_find = re.findall(v, optimized_str)
                 if res_find:
                     logger.debug("res_find=%s", res_find)
-                    if k.startswith('date'):
+                    if k.startswith('date') or k.endswith('date'):
                         output[k] = self.parse_date(res_find[0])
                         if not output[k]:
                             logger.error(
