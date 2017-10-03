@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: supplies24.es
+fields:
+  amount: Importe total:\s+(\d+,\d{2})
+  amount_untaxed: Suma sin IVA:\s+(\d+,\d{2})
+  date: Número de factura\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Número de factura\s+\d{2}/\d{2}/\d{4}\s+(\w+)
+  static_vat: DE230466785
+keywords:
+  - DE230466785
+  - €
+  - Factura
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
