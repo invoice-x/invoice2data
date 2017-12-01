@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: GE IROISE
+fields:
+  amount: Total\s+T.T.C.\s+([\d\s]+,\d{2})
+  amount_untaxed: Total\s+H.T.\s+([\d\s]+,\d{2})
+  date: DATE\s+:\s+(\d{2}\/\d{2}\/\d{4})
+  invoice_number: FACTURE\s+N°\s+(\d+)
+  static_vat: FR38422294488
+keywords:
+  - FR38422294488
+  - FACTURE
+  - €
+  - IROISE
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

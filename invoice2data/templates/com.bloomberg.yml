@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Bloomberg
+fields:
+  amount: TOTAL \(USD \)\s+([\d,]+\.\d{2})
+  amount_untaxed: SUBTOTAL\s+([\d,]+\.\d{2})
+  date: INVOICE NUMBER\s+INVOICE DATE\s+ACCOUNT NUMBER\s+\d+\s+(\d{2}\/\d{2}\/\d{4})
+  invoice_number: INVOICE NUMBER\s+INVOICE DATE\s+ACCOUNT NUMBER\s+(\d+)
+  static_partner_name: Bloomberg
+keywords:
+  - INVOICE
+  - USD
+  - bloomberg.com
+options:
+  currency: USD
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: '.'

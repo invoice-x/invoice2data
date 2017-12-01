@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+issuer: leCab
+fields:
+  amount: Montant\s+total\s+à\s+régler\s+([\d\s]+,\d{2})
+  amount_tax: TVA\s+à\s+20%\s+([\d\s]+,\d{2})
+  date: Date\s+de\s+facture\s+:\s(\d{2}.+\d{4})
+  invoice_number: Numéro\s+de\s+facture\s+:\s+(\d+)
+  date_start: Période\s+de\s+facturation\s+du\s+(\d{2}\/\d{2}\/\d{4})
+  date_end: Période\s+de\s+facturation\s+du\s+\d{2}\/\d{2}\/\d{4}\s+au\s+(\d{2}\/\d{2}\/\d{4})
+  static_vat: FR50534912365
+keywords:
+  - FR 50 534 912 365
+  - FACTURE
+  - €
+  - lecab.fr
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

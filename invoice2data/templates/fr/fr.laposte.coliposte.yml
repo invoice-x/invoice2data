@@ -10,6 +10,7 @@ keywords:
   - FR 39 356 000 000
   - FACTURE
   - EUR
+  - ColiPoste
 options:
   currency: EUR
   date_formats:
