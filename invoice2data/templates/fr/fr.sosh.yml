@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 issuer: Sosh by Orange
 fields:
-  amount: total facture\s+\d+,\d{2}\s+(\d+,\d{2})
-  amount_untaxed: total facture\s+(\d+,\d{2})
+  amount: total auprès d\'Orange\s+\d+,\d{2}\s+(\d+,\d{2})
+  amount_untaxed: total auprès d\'Orange\s+(\d+,\d{2})
   date: émise le (\d{2}/\d{2}/\d{4})
-  invoice_number: facture n°\s*(\d+)
+  invoice_number: n° de facture\:\s*(\d+)
   siren: (380\s?129\s?866)
   static_vat: FR89380129866
 keywords:
