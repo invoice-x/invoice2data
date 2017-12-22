@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 issuer: SFR
 fields:
-  amount: Total\s+facturé\s.+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})
-  amount_untaxed: Total\s+facturé\s.+\s(\d+,\d{2})\s+\d+,\d{2}\s+\d+,\d{2}
+  amount: TOTAL\s+prestations\s+facturées\s.+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})
+  amount_untaxed: TOTAL\s+prestations\s+facturées\s.+\s(\d+,\d{2})\s+\d+,\d{2}\s+\d+,\d{2}
   date: Facture du (\d{2}/\d{2}/\d{4})
-  invoice_number: N° de Facture\s:\s(\d+)
+  invoice_number: Facture N°\s(\d+)
   static_vat: FR71343059564
 keywords:
   - FR 71 343 059 564
