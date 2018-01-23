@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: Napsis (Iperlink)
+fields:
+  amount: TOTAL TTC À PAYER\s+(\d+,\d{2})
+  amount_untaxed: TOTAL HT\s+(\d+,\d{2})
+  date: Facture du\s+:\s+(\d{1,2}/\d{2}/\d{4})
+  date_due: Date d’échéance :\s+(\d{1,2}/\d{2}/\d{4})
+  invoice_number: Référence facture\s+:\s*(\w+)
+  static_vat: FR75491282323
+keywords:
+  - FR75 491 282 323
+  - €
+  - facture
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
