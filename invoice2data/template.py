@@ -182,7 +182,7 @@ class InvoiceTemplate(OrderedDict):
                         output[k] = self.parse_date(res_find[0])
                         if not output[k]:
                             logger.error(
-                                "Date parsing failed on date '%s'", raw_date)
+                                "Date parsing failed on date '%s'", res_find[0])
                             return None
                     elif k.startswith('amount'):
                         output[k] = self.parse_number(res_find[0])
