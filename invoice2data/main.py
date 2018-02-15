@@ -61,6 +61,9 @@ def main():
     
     parser.add_argument('input_files', type=argparse.FileType('r'), nargs='+',
                         help='File or directory to analyze.')
+    
+    parser.add_argument('--output', '-o', 
+                        help="output CSV file.")
 
     args = parser.parse_args()
 
@@ -90,7 +93,10 @@ def main():
                     date=res['date'].strftime('%Y-%m-%d'),
                     desc=res['desc'])
                 shutil.copyfile(f.name, join(args.copy, filename))
-    invoices_to_csv(output, 'invoices-output.csv')
+    if args.output:
+        invoices_to_csv(output, args.output)
+    else:
+        invoices_to_csv(output, 'invoices-output.csv')
 
 if __name__ == '__main__':
     main()
