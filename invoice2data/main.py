@@ -93,8 +93,9 @@ def main():
                     date=res['date'].strftime('%Y-%m-%d'),
                     desc=res['desc'])
                 shutil.copyfile(f.name, join(args.copy, filename))
-    if '.csv' not in args.change_csv_name:
-        args.change_csv_name = args.change_csv_name + '.csv'
+    if args.change_csv_name:
+        if '.csv' not in args.change_csv_name:
+            args.change_csv_name = args.change_csv_name + '.csv'
 
     if args.change_csv_name:
         invoices_to_csv(output, args.change_csv_name)
