@@ -28,7 +28,7 @@ options:
 
 Let's look at each field:
 
-- `issuer`: The name of the invoice issuer. Can the company name and country.
+- `issuer`: The name of the invoice issuer. Can have the company name and country.
 - `keywords`: Also a required field. These are used to pick the correct template. Be as specific as possible. As we add more templates, we need to avoid duplicate matches. Using the VAT number, email, website, phone, etc are generally good choices. ALL keywords need to match to use the template.
 
 ### Fields
