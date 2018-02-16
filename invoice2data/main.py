@@ -58,9 +58,13 @@ def main():
     
     parser.add_argument('--exclude-built-in-templates', dest='exclude_built_in_templates',
                         default=False, help='Ignore built-in templates.', action="store_true")
-    
+
+    parser.add_argument('--csv-output', '-o', dest='csv_output_name', default='invoices-output.csv',
+                        help='Custom name for output CSV.')
+
     parser.add_argument('input_files', type=argparse.FileType('r'), nargs='+',
                         help='File or directory to analyze.')
+
 
     args = parser.parse_args()
 
@@ -90,7 +94,7 @@ def main():
                     date=res['date'].strftime('%Y-%m-%d'),
                     desc=res['desc'])
                 shutil.copyfile(f.name, join(args.copy, filename))
-    invoices_to_csv(output, 'invoices-output.csv')
+    invoices_to_csv(output, csv_output_name)
 
 if __name__ == '__main__':
     main()
