@@ -62,7 +62,7 @@ def main():
     parser.add_argument('input_files', type=argparse.FileType('r'), nargs='+',
                         help='File or directory to analyze.')
 
-    parser.add_argument('--csv-name', '-n', dest='change_csv_name',
+    parser.add_argument('--csv-name', '-n', dest='change_csv_name', default='invoices-output.csv',
                         help='Custom name for csv to be saved.')
 
     args = parser.parse_args()
@@ -96,11 +96,7 @@ def main():
     if args.change_csv_name:
         if '.csv' not in args.change_csv_name:
             args.change_csv_name = args.change_csv_name + '.csv'
-
-    if args.change_csv_name:
-        invoices_to_csv(output, args.change_csv_name)
-    else:
-        invoices_to_csv(output, 'invoices-output.csv')
+        invoices_to_csv(output, args.change_csv_name)    
 
 
 if __name__ == '__main__':
