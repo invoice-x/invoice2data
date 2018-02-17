@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-def to_text(path):
-    import subprocess
-    import logging as logger
-    import shutil
-    from distutils import spawn #py2 compat
+import subprocess
+import logging as logger
+import shutil
+from distutils import spawn #py2 compat
 
+
+def to_text(path):
     """
     Wrapper around Poppler pdftotext.
     """

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import subprocess
+
+
 def to_text(path):
     """Wraps Tesseract OCR."""
-    import subprocess
 
     convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
     p1 = subprocess.Popen(convert.split(' '), stdout=subprocess.PIPE)

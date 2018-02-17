@@ -12,6 +12,8 @@ from unidecode import unidecode
 import logging as logger
 from collections import OrderedDict
 
+from invoice2data.utils import ordered_load
+
 OPTIONS_DEFAULT = {
     'remove_whitespace': False,
     'remove_accents': False,
@@ -25,13 +27,43 @@ OPTIONS_DEFAULT = {
     'line_separator': r'\n',
 }
 
-class BaseInvoiceTemplate(OrderedDict):
+def read_templates(folder):
+    """
+    Load yaml templates from template folder. Return list of dicts.
+    """
+    output = []
+    for path, subdirs, files in os.walk(folder):
+        for name in sorted(files):
+            if name.endswith('.yml'):
+                tpl = ordered_load(open(os.path.join(path, name)).read())
+                tpl['template_name'] = name
+
+                # Test if all required fields are in template:
+                assert 'keywords' in tpl.keys(), 'Missing keywords field.'
+                required_fields = ['date', 'amount', 'invoice_number']
+                assert len(set(required_fields).intersection(tpl['fields'].keys())) == len(required_fields), \
+                    'Missing required key in template {} {}. Found {}'.format(name, path, tpl['fields'].keys())
+
+                # Keywords as list, if only one.
+                if type(tpl['keywords']) is not list:
+                    tpl['keywords'] = [tpl['keywords']]
+
+                if 'lines' in tpl:
+                    assert 'start' in tpl['lines'], 'Lines start regex missing'
+                    assert 'end' in tpl['lines'], 'Lines end regex missing'
+                    assert 'line' in tpl['lines'], 'Line regex missing'
+
+                output.append(InvoiceTemplate(tpl))
+    return output
+
+
+class InvoiceTemplate(OrderedDict):
     """
     Represents single template files that live as .yml files on the disk.
     """
 
     def __init__(self, *args, **kwargs):
-        super(BaseInvoiceTemplate, self).__init__(*args, **kwargs)
+        super(InvoiceTemplate, self).__init__(*args, **kwargs)
 
         # Merge template-specific options with defaults
         self.options = OPTIONS_DEFAULT.copy()
@@ -159,6 +191,9 @@ class BaseInvoiceTemplate(OrderedDict):
                 else:
                     logger.warning("regexp for field %s didn't match", k)
 
+        if 'lines' in self:
+            self.extract_lines(optimized_str, output)
+
         output['currency'] = self.options['currency']
 
         if len(output.keys()) >= 5:
@@ -169,3 +204,71 @@ class BaseInvoiceTemplate(OrderedDict):
         else:
             logger.error(output)
             return None
+
+    def extract_lines(self, content, output):
+        """Try to extract lines from the invoice"""
+        start = re.search(self['lines']['start'], content)
+        end = re.search(self['lines']['end'], content)
+        if not start or not end:
+            logger.warning('no lines found - start %s, end %s', start, end)
+            return
+        content = content[start.end():end.start()]
+        lines = []
+        current_row = {}
+        if 'first_line' not in self['lines'] and\
+                'last_line' not in self['lines']:
+            self['lines']['first_line'] = self['lines']['line']
+        for line in re.split(self.options['line_separator'], content):
+            # if the line has empty lines in it , skip them
+            if not line.strip('').strip('\n') or not line:
+                continue
+            if 'first_line' in self['lines']:
+                match = re.search(self['lines']['first_line'], line)
+                if match:
+                    if 'last_line' not in self['lines']:
+                        if current_row:
+                            lines.append(current_row)
+                        current_row = {}
+                    if current_row:
+                        lines.append(current_row)
+                    current_row = {
+                        field: value.strip() if value else ''
+                        for field, value in match.groupdict().items()
+                    }
+                    continue
+            if 'last_line' in self['lines']:
+                match = re.search(self['lines']['last_line'], line)
+                if match:
+                    for field, value in match.groupdict().items():
+                        current_row[field] = '%s%s%s' % (
+                            current_row.get(field, ''),
+                            current_row.get(field, '') and '\n' or '',
+                            value.strip() if value else ''
+                        )
+                    if current_row:
+                        lines.append(current_row)
+                    current_row = {}
+                    continue
+            match = re.search(self['lines']['line'], line)
+            if match:
+                for field, value in match.groupdict().items():
+                    current_row[field] = '%s%s%s' % (
+                        current_row.get(field, ''),
+                        current_row.get(field, '') and '\n' or '',
+                        value.strip() if value else ''
+                    )
+                continue
+            logger.debug(
+                'ignoring *%s* because it doesn\'t match anything', line
+            )
+        if current_row:
+            lines.append(current_row)
+
+        types = self['lines'].get('types', [])
+        for row in lines:
+            for name in row.keys():
+                if name in types:
+                    row[name] = self.coerce_type(row[name], types[name])
+
+        if lines:
+            output['lines'] = lines

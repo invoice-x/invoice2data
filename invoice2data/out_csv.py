@@ -1,6 +1,6 @@
 import csv
 
-def write_to_file(data, path):
+def invoices_to_csv(data, path):
     with open(path, "w") as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
 

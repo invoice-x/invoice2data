@@ -16,12 +16,13 @@ import pkg_resources
 import os
 
 from invoice2data.main import extract_data
-from invoice2data.extract.loader import read_templates
+from invoice2data.template import read_templates
 
 class TestExtraction(unittest.TestCase):
 
     def setUp(self):
-        self.templates = read_templates()
+        self.templates = read_templates(
+            pkg_resources.resource_filename('invoice2data', 'templates'))
 
     def _run_test_on_folder(self, folder):
         for path, subdirs, files in os.walk(folder):
