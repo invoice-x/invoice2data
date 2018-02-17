@@ -1,4 +1,0 @@
-Added xml output feature with pretty printing
-Added json output feature with pretty printing
-changed `csv.py` to `to_csv.py` to remove ambiguity
-changed `csv.py` to `to_csv.py` to remove ambiguity
