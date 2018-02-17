@@ -17,6 +17,7 @@ import invoice2data.output.to_csv as output_csv
 import invoice2data.output.to_json as output_json
 import invoice2data.output.to_xml as output_xml
 
+
 logger = logging.getLogger(__name__)
 
 FILENAME = "{date} {desc}.pdf"
@@ -58,6 +59,7 @@ def main():
         'csv': output_csv,
         'json': output_json,
         'xml': output_xml,
+
         'none': None
         }
     parser.add_argument('--output-format', choices=output_mapping.keys(),
