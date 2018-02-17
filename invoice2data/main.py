@@ -94,7 +94,7 @@ def main():
                     date=res['date'].strftime('%Y-%m-%d'),
                     desc=res['desc'])
                 shutil.copyfile(f.name, join(args.copy, filename))
-    invoices_to_csv(output, csv_output_name)
+    invoices_to_csv(output, args.csv_output_name)
 
 if __name__ == '__main__':
     main()
