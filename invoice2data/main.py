@@ -13,8 +13,8 @@ import input.tesseract as tesseract
 
 from extract.loader import read_templates
 
-import output.csv as output_csv
-import output.json as output_json
+import output.out_csv as output_csv
+import output.out_json as output_json
 
 logger = logging.getLogger(__name__)
 
