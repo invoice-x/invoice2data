@@ -5,7 +5,7 @@ import sys
 
 setup(
     name='invoice2data',
-    version='0.2.72',
+    version='0.2.74',
     author='Manuel Riel',
     author_email='github@snapdragon.cc',
     url='https://github.com/m3nu/invoice2data',
@@ -13,8 +13,9 @@ setup(
     license="MIT",
     long_description=open(path.join(path.dirname(__file__), 'README.md')).read(),
     package_data = {
-        'invoice2data': [
-            'templates/*.yml',
+        'invoice2data.extract': [
+            'templates/com/*.yml',
+            'templates/de/*.yml',
             'templates/es/*.yml',
             'templates/fr/*.yml',
             'templates/nl/*.yml',
@@ -23,7 +24,10 @@ setup(
         },
     packages=find_packages(),
     install_requires=[
-        r.strip() for r in open(path.join(path.dirname(__file__), 'requirements.txt')).read().splitlines()],
+        r.strip() for r in open(
+            path.join(path.dirname(__file__), 'requirements.txt')
+                ).read().splitlines() if not r.startswith('#')
+        ],
     zip_safe=False,
     entry_points = {
               'console_scripts': [
