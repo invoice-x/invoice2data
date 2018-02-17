@@ -2,19 +2,20 @@
 
 [![Circle CI](https://circleci.com/gh/m3nu/invoice2data.svg?style=svg)](https://circleci.com/gh/m3nu/invoice2data)
 
-A Python library to support your accounting process. Tested on Python 2.7, 3.4 and 3.5
+A modular Python library to support your accounting process. Tested on Python 2.7 and 3.4+. Main steps:
 
-- extracts text from PDF files
-- searches for regex in the result
-- saves results as CSV
-- optionally renames PDF files to match the content
+1. extracts text from PDF files using different techniques, like `pdftotext`, `pdfminer` or `tesseract` OCR.
+2. searches for regex in the result using a YAML-based template system
+3. saves results as CSV, JSON or XML or renames PDF files to match the content.
 
 With the flexible template system you can:
 
-- precisely match PDF files
+- precisely match content PDF files
 - define static fields that are the same for every invoice
+- define custom fields needed in your organisation or process
 - have multiple regex per field (if layout or wording changes)
 - define currency
+- extract invoice-items using the `lines`-plugin developed by [Holger Brunn](https://github.com/hbrunn)
 
 Go from PDF files to this:
 
@@ -36,10 +37,6 @@ If possible get the latest [xpdf/poppler-utils](https://poppler.freedesktop.org/
 ```
 pip install invoice2data
 ```
-
-Optionally this uses `pdfminer`, but `pdftotext` works better. You can choose which module to use. No special Python packages are necessary at the moment, except for `pdftotext`.
-
-There is also `tesseract` integration as a fallback, if no text can be extracted. But it may be more reliable to use 
 
 ## Usage
 
@@ -105,9 +102,11 @@ lines:
     last_line: VAT \*\*
 ```
 
+## Development
+If you are interested in improving this project, have a look at our [developer guide](TUTORIAL.md) to get you started quickly.
+
 ## Roadmap and open tasks
 
-- tutorial and documentation for template options.
 - integrate with online OCR?
 - try to 'guess' parameters for new invoice formats.
 - can apply machine learning to guess new parameters?
