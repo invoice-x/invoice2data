@@ -1,6 +1,6 @@
-pytesseract
+#pytesseract
+#pdfminer.six
 pillow
 pyyaml
 dateparser
 unidecode
-pdfminer.six
