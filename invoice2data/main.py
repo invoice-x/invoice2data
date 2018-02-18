@@ -7,15 +7,15 @@ import os
 from os.path import join
 import logging
 
-import input.pdftotext as pdftotext
-import input.pdfminer as pdfminer
-import input.tesseract as tesseract
+import invoice2data.input.pdftotext as pdftotext
+import invoice2data.input.pdfminer as pdfminer
+import invoice2data.input.tesseract as tesseract
 
-from extract.loader import read_templates
+from invoice2data.extract.loader import read_templates
 
-import output.to_csv as output_csv
-import output.to_json as output_json
-import output.to_xml as output_xml
+import invoice2data.output.to_csv as output_csv
+import invoice2data.output.to_json as output_json
+import invoice2data.output.to_xml as output_xml
 
 
 logger = logging.getLogger(__name__)

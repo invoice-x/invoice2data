@@ -39,7 +39,7 @@ def read_templates(folder=None):
     output = []
 
     if folder is None:
-        folder = pkg_resources.resource_filename('extract', 'templates')
+        folder = pkg_resources.resource_filename(__name__, 'templates')
 
     for path, subdirs, files in os.walk(folder):
         for name in sorted(files):
