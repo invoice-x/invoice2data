@@ -9,8 +9,7 @@ import yaml
 import pkg_resources
 from collections import OrderedDict
 import logging as logger
-from .base_template import BaseInvoiceTemplate
-from .line_template import LineInvoiceTemplate
+from .invoice_template import InvoiceTemplate
 
 # borrowed from http://stackoverflow.com/a/21912744
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
@@ -58,11 +57,5 @@ def read_templates(folder=None):
                 if type(tpl['keywords']) is not list:
                     tpl['keywords'] = [tpl['keywords']]
 
-                if 'lines' in tpl:
-                    assert 'start' in tpl['lines'], 'Lines start regex missing'
-                    assert 'end' in tpl['lines'], 'Lines end regex missing'
-                    assert 'line' in tpl['lines'], 'Line regex missing'
-                    output.append(LineInvoiceTemplate(tpl))
-                else:
-                    output.append(BaseInvoiceTemplate(tpl))
+                output.append(InvoiceTemplate(tpl))
     return output

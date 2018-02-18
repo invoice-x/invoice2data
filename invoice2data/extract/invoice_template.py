@@ -11,6 +11,7 @@ import dateparser
 from unidecode import unidecode
 import logging as logger
 from collections import OrderedDict
+from invoice2data.extract.plugins import lines
 
 OPTIONS_DEFAULT = {
     'remove_whitespace': False,
@@ -21,17 +22,19 @@ OPTIONS_DEFAULT = {
     'languages': [],
     'decimal_separator': '.',
     'replace': [],  # example: see templates/fr/fr.free.mobile.yml
-    'field_separator': r'\s+',
-    'line_separator': r'\n',
 }
 
-class BaseInvoiceTemplate(OrderedDict):
+PLUGIN_MAPPING = {
+    'lines': lines
+}
+
+class InvoiceTemplate(OrderedDict):
     """
     Represents single template files that live as .yml files on the disk.
     """
 
     def __init__(self, *args, **kwargs):
-        super(BaseInvoiceTemplate, self).__init__(*args, **kwargs)
+        super(InvoiceTemplate, self).__init__(*args, **kwargs)
 
         # Merge template-specific options with defaults
         self.options = OPTIONS_DEFAULT.copy()
@@ -161,11 +164,17 @@ class BaseInvoiceTemplate(OrderedDict):
 
         output['currency'] = self.options['currency']
 
-        if len(output.keys()) >= 5:
+        # Run plugins:
+        for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
+            if plugin_keyword in self.keys():
+                plugin_func.extract(self, optimized_str, output)
+
+        # If required fields were found, return output, else log error.
+        if set(['date', 'amount', 'invoice_number', 'issuer']).issubset(output.keys()):
             output['desc'] = 'Invoice %s from %s' % (
                 output['invoice_number'], self['issuer'])
             logger.debug(output)
             return output
         else:
-            logger.error(output)
+            logger.error('Unable to match some fields:', output)
             return None
