@@ -7,15 +7,15 @@ import os
 from os.path import join
 import logging
 
-import invoice2data.input.pdftotext as pdftotext
-import invoice2data.input.pdfminer as pdfminer
-import invoice2data.input.tesseract as tesseract
+from .input import pdftotext
+from .input import pdfminer
+from .input import tesseract
 
 from invoice2data.extract.loader import read_templates
 
-import invoice2data.output.to_csv as output_csv
-import invoice2data.output.to_json as output_json
-import invoice2data.output.to_xml as output_xml
+from .output import to_csv
+from .output import to_json
+from .output import to_xml
 
 
 logger = logging.getLogger(__name__)
@@ -56,9 +56,9 @@ def main():
                         default='pdftotext', help='Choose text extraction function. Default: pdftotext')
 
     output_mapping = {
-        'csv': output_csv,
-        'json': output_json,
-        'xml': output_xml,
+        'csv': to_csv,
+        'json': to_json,
+        'xml': to_xml,
 
         'none': None
         }

@@ -11,7 +11,7 @@ import dateparser
 from unidecode import unidecode
 import logging as logger
 from collections import OrderedDict
-from invoice2data.extract.plugins import lines
+from .plugins import lines
 
 OPTIONS_DEFAULT = {
     'remove_whitespace': False,
