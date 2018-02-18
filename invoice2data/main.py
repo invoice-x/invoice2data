@@ -42,7 +42,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
     logger.error('No template for %s', invoicefile)
     return False
 
-def main():
+def create_parser():
     "Take folder or single file and analyze each."
 
     parser = argparse.ArgumentParser(description='Extract structured data from PDF files and save to CSV or JSON.')
@@ -83,7 +83,11 @@ def main():
     parser.add_argument('input_files', type=argparse.FileType('r'), nargs='+',
                         help='File or directory to analyze.')
 
+    return parser
 
+def main():
+
+    parser = create_parser()
     args = parser.parse_args()
 
     if args.debug:
