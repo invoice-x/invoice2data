@@ -14,18 +14,17 @@ def to_text(path):
     laparams = LAParams()
     laparams.all_texts = True
     device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
-    fp = open(path, 'rb')
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
-    password = ""
-    maxpages = 0
-    caching = True
-    pagenos = set()
-    pages = PDFPage.get_pages(
-        fp, pagenos, maxpages=maxpages, password=password,
-        caching=caching, check_extractable=True)
-    for page in pages:
-        interpreter.process_page(page)
-    fp.close()
+    with open(path, 'rb') as fp:
+        interpreter = PDFPageInterpreter(rsrcmgr, device)
+        password = ""
+        maxpages = 0
+        caching = True
+        pagenos = set()
+        pages = PDFPage.get_pages(
+            fp, pagenos, maxpages=maxpages, password=password,
+            caching=caching, check_extractable=True)
+        for page in pages:
+            interpreter.process_page(page)
     device.close()
     str = retstr.getvalue()
     retstr.close()

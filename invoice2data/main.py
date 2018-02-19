@@ -22,6 +22,20 @@ logger = logging.getLogger(__name__)
 
 FILENAME = "{date} {desc}.pdf"
 
+input_mapping = {
+    'pdftotext': pdftotext,
+    'tesseract': tesseract,
+    'pdfminer': pdfminer,
+    }
+
+output_mapping = {
+    'csv': to_csv,
+    'json': to_json,
+    'xml': to_xml,
+
+    'none': None
+    }
+
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
     if templates is None:
         templates = read_templates()
@@ -47,21 +61,10 @@ def create_parser():
 
     parser = argparse.ArgumentParser(description='Extract structured data from PDF files and save to CSV or JSON.')
 
-    input_mapping = {
-        'pdftotext': pdftotext,
-        'tesseract': tesseract,
-        'pdfminer': pdfminer,
-        }
     parser.add_argument('--input-reader', choices=input_mapping.keys(),
                         default='pdftotext', help='Choose text extraction function. Default: pdftotext')
 
-    output_mapping = {
-        'csv': to_csv,
-        'json': to_json,
-        'xml': to_xml,
 
-        'none': None
-        }
     parser.add_argument('--output-format', choices=output_mapping.keys(),
                         default='none', help='Choose output format. Default: none')
 
@@ -85,11 +88,8 @@ def create_parser():
 
     return parser
 
-def main():
+def main(args):
     '''Take folder or single file and analyze each.'''
-
-    parser = create_parser()
-    args = parser.parse_args()
 
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
@@ -125,5 +125,7 @@ def main():
         output_module.write_to_file(output, args.output_name)
 
 if __name__ == '__main__':
-    main()
+    parser = create_parser()
+    args = parser.parse_args()
+    main(args)
 

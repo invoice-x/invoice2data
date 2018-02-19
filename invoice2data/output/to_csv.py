@@ -1,7 +1,12 @@
 import csv
 
 def write_to_file(data, path):
-    with open(path, "w") as csv_file:
+    if path.endswith('.csv'):
+        filename = path
+    else:
+        filename = path + '.csv'
+        
+    with open(filename, "w") as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
 
         writer.writerow(['date', 'desc', 'amount'])
