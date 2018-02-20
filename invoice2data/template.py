@@ -35,7 +35,9 @@ def read_templates(folder):
     for path, subdirs, files in os.walk(folder):
         for name in sorted(files):
             if name.endswith('.yml'):
-                tpl = ordered_load(open(os.path.join(path, name)).read())
+                with open(os.path.join(path, name), "r") as f:
+                    tpl = ordered_load(f.read())
+                    # tpl = ordered_load(open(os.path.join(path, name)).read())
                 tpl['template_name'] = name
 
                 # Test if all required fields are in template:
