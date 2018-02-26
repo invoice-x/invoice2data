@@ -88,8 +88,11 @@ def create_parser():
 
     return parser
 
-def main(args):
+def main(args=None):
     '''Take folder or single file and analyze each.'''
+    if args is None:
+        parser = create_parser()
+        args = parser.parse_args()
 
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
@@ -125,7 +128,5 @@ def main(args):
         output_module.write_to_file(output, args.output_name)
 
 if __name__ == '__main__':
-    parser = create_parser()
-    args = parser.parse_args()
-    main(args)
+    main()
 
