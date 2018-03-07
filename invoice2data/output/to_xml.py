@@ -17,10 +17,12 @@ def write_to_file(data, path):
         tag_item = ET.SubElement(tag_data, 'item')
         tag_date = ET.SubElement(tag_item, 'date')
         tag_desc = ET.SubElement(tag_item, 'desc')
+        tag_currency = ET.SubElement(tag_item, 'currency')
         tag_amount = ET.SubElement(tag_item, 'amount')
         tag_item.set('id', str(i))
         tag_date.text = line['date'].strftime('%d/%m/%Y')
         tag_desc.text = line['desc']
+        tag_currency.text = line['currency']
         tag_amount.text = str(line['amount'])
 
     xml_file.write(prettify(tag_data))

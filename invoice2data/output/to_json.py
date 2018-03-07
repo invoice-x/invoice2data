@@ -5,6 +5,7 @@ def write_to_file(data, path):
         for line in data:
             json.dump({'date':line['date'].strftime('%d/%m/%Y'),
                       'desc':line['desc'],
+                      'currency':line['currency'],
                       'amount':line['amount']},json_file, indent = 4)
             json_file.write('\n')
             
