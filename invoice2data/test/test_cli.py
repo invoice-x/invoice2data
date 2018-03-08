@@ -79,16 +79,6 @@ class TestCLI(unittest.TestCase):
         self.assertTrue(filecmp.cmp(test_files, cmp_file, shallow=False))
         os.remove(test_files)
 
-    # def test_content(self):
-    #     folder_output = pkg_resources.resource_filename(__name__, 'outputFile')
-    #     for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'pdfs')):
-    #         for file in files:
-    #             if file.endswith(".pdf"):
-    #                 # out_files.append()
-    #                 args = self.parser.parse_args(['--output-format', 'csv'] + os.path.join(path, file))
-    #                 main(args)
-    #                 filecmp.cmp('invoices-output')
-
     # def test_copy(self):
     #     parser = create_parser()
     #     folder = pkg_resources.resource_filename(__name__, 'pdfs')      
