@@ -9,8 +9,13 @@ def prettify(elem):
     return reparsed.toprettyxml(indent="  ")
 
 def write_to_file(data, path):
+    if path.endswith('.xml'):
+        filename = path
+    else:
+        filename = path + '.xml'
+
     tag_data = ET.Element('data')
-    xml_file = open(path, "w")
+    xml_file = open(filename, "w")
     i = 0
     for line in data:
         i += 1

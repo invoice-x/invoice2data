@@ -1,7 +1,12 @@
 import json
 
 def write_to_file(data, path):
-    with open(path, "w") as json_file:
+    if path.endswith('.json'):
+        filename = path
+    else:
+        filename = path + '.json'
+
+    with open(filename, "w") as json_file:
         for line in data:
             json.dump({'date':line['date'].strftime('%d/%m/%Y'),
                       'desc':line['desc'],
