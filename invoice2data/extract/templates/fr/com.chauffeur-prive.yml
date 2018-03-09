@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 issuer: Chauffeur Privé (TRANSOPCO France SAS)
 fields:
-  amount: Total\s+facturé\s+([\d ]+,\d{2})
+  amount: Totalfacturé([\d ]+,\d{2})
   sum_amount_tax:
-  - TVA\s+10%\*\*\*\s+([\d ]+,\d{2})
-  - TVA\s+20%\*\*\s+([\d ]+,\d{2})
-  date: Date\s+de\s+facture\s+:\s+(\d{2}/\d{2}/\d{4})
-  invoice_number: Facture\s+N\s+o\s+(.+)
+  - TVA10%\*\*\*([\d ]+,\d{2})
+  - TVA20%\*\*([\d ]+,\d{2})
+  date: Datedefacture:(\d{2}/\d{2}/\d{4})
+  invoice_number: FactureNo(.+)
   static_vat: FR 11 807978119
 keywords:
   - Facture
@@ -16,6 +16,6 @@ options:
   currency: EUR
   date_formats:
     - '%d/%m/%Y'
-  languages:
-    - fr
   decimal_separator: ','
+  replace:
+    - ['	', '']
