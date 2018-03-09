@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 issuer: TSX Inc.
 fields:
-  amount: TOTAL\s+AMOUNT\s+DUE\s+\*\*\s+US\s+\$([\d,]+\.\d{2})
-  amount_untaxed: PRE\s+TAX\s+TOTAL\s+\*\s+([\d,]+\.\d{2})
-  date: INVOICE\s+DATE:\s+(\d{2}-\w+-\d{4})
-  invoice_number: INVOICE:\s+(\w+)
+  amount: Total\s+Amount\s+Due\s+USD\s+\$([\d,]+\.\d{2})
+  amount_untaxed: Pre-Tax\s+Total\s+([\d,]+\.\d{2})
+  date: Invoice\s+Date\s+(\d{2}\s\w+\s\d{4})
+  invoice_number: Invoice\s+Number\s+(\w+)
   static_partner_name: TSX Inc.
 keywords:
-  - INVOICE
-  - US $
+  - Invoice
+  - USD
   - payments@tmx.com
 options:
   currency: USD
