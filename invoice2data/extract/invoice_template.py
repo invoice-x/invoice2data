@@ -139,12 +139,21 @@ class InvoiceTemplate(OrderedDict):
             else:
                 logger.debug("field=%s | regexp=%s", k, v)
 
+                sum_field = False
+                if k.startswith('sum_amount') and type(v) is list:
+                    k = k[4:]  # remove 'sum_' prefix
+                    sum_field = True
                 # Fields can have multiple expressions
                 if type(v) is list:
+                    res_find = []
                     for v_option in v:
-                        res_find = re.findall(v_option, optimized_str)
-                        if res_find:
-                            break
+                        res_val = re.findall(v_option, optimized_str)
+                        if res_val:
+                            if sum_field:
+                                res_find += res_val
+                            else:
+                                res_find = res_val
+                                break
                 else:
                     res_find = re.findall(v, optimized_str)
                 if res_find:
@@ -156,7 +165,12 @@ class InvoiceTemplate(OrderedDict):
                                 "Date parsing failed on date '%s'", res_find[0])
                             return None
                     elif k.startswith('amount'):
-                        output[k] = self.parse_number(res_find[0])
+                        if sum_field:
+                            output[k] = 0
+                            for amount_to_parse in res_find:
+                                output[k] += self.parse_number(amount_to_parse)
+                        else:
+                            output[k] = self.parse_number(res_find[0])
                     else:
                         output[k] = res_find[0]
                 else:
