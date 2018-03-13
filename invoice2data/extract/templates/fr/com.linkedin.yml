@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: LinkedIn Ireland Unlimited
+fields:
+  amount: Facture\s*:\s+([\d\s]+,\d{2})
+  amount_untaxed: Sous-total\s*:\s+([\d\s]+,\d{2})
+  date: Date\s*:\s+(\d+/\d+/\d{4})
+  invoice_number: N° de facture\s*:\s+(\w+)
+  static_vat: IE9740425P
+keywords:
+  - IE9740425P
+  - EUR
+  - Facture
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

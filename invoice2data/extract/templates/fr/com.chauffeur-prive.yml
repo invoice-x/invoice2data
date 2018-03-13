@@ -7,6 +7,8 @@ fields:
   - TVA20%\*\*([\d ]+,\d{2})
   date: Datedefacture:(\d{2}/\d{2}/\d{4})
   invoice_number: FactureNo(.+)
+  date_start: Périodedu:(\d{2}/\d{2}/\d{4})
+  date_end: Périodedu:\d{2}/\d{2}/\d{4}au(\d{2}/\d{2}/\d{4})
   static_vat: FR 11 807978119
 keywords:
   - Facture

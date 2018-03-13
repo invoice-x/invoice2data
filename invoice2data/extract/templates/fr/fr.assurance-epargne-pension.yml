@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: AEP - ASSURANCE EPARGNE PENSION
+fields:
+  amount: Soit un net à payer de :\s+([\d\s]+,\d{2})
+  amount_untaxed: Soit un net à payer de :\s+([\d\s]+,\d{2})
+  date: Paris\, le \w+ (\d{1,2}.+\d{4})
+  invoice_number: N°\s*(\w+)
+  static_siren: 732028154
+keywords:
+  - 732 028 154 RCS Paris
+  - €
+  - FACTURE
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: ','
