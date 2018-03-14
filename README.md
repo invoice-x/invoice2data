@@ -34,6 +34,8 @@ If possible get the latest [xpdf/poppler-utils](https://poppler.freedesktop.org/
 
 2. Install `invoice2data` using pip
 
+For usage with `teeseract`, libraries like `imagemagick` are to be installed as well to prevent unforeseen errors.
+
 ```
 pip install invoice2data
 ```
