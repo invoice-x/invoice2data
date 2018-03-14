@@ -1,0 +1,16 @@
+issuer: Flipkart
+fields:
+  amount: GrandTotal(\d+\.\d+)
+  date: InvoiceDate:(\d{1,4}\-\d{1,2}\-\d{1,4})
+  #invoice_number: InvoiceNo:(\W\w+)
+  invoice_number: InvoiceNo:(\S+)
+  order_id: OrderID:(\w{2}\d{16,18})
+keywords:
+- flipkart
+- WSRetail
+- OD
+
+
+options:
+  currency: INR
+  remove_whitespace: true
