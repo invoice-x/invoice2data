@@ -1,0 +1,14 @@
+issuer: OYO
+fields:
+  amount: GrandTotalRs(\d+)
+  date: Date:(\d{1,2}\/\d{1,2}\/\d{1,4})
+  invoice_number: ([A-Z0-9]+)CashatHotel
+keywords:
+  - OYO
+  - Oravel
+  - Stays
+
+options:
+  currency: INR
+  decimal_separator: '.'
+  remove_whitespace: true
