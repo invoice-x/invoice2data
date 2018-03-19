@@ -10,6 +10,8 @@ import pkg_resources
 from collections import OrderedDict
 import logging as logger
 from .invoice_template import InvoiceTemplate
+import codecs
+import chardet
 
 # borrowed from http://stackoverflow.com/a/21912744
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
@@ -43,7 +45,7 @@ def read_templates(folder=None):
     for path, subdirs, files in os.walk(folder):
         for name in sorted(files):
             if name.endswith('.yml'):
-                with open(os.path.join(path, name)) as template_file:
+                with codecs.open(os.path.join(path, name), encoding=chardet.detect(open(os.path.join(path, name), 'rb').read())['encoding']) as template_file:
                     tpl = ordered_load(template_file.read())
                 tpl['template_name'] = name
 
