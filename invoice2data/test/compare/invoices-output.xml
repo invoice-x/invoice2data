@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<data>
+  <item id="1">
+    <date>03/08/2014</date>
+    <desc>Invoice 42183017 from Amazon Web Services</desc>
+    <currency>USD</currency>
+    <amount>4.11</amount>
+  </item>
+  <item id="2">
+    <date>02/07/2015</date>
+    <desc>Invoice 562044387 from Free</desc>
+    <currency>EUR</currency>
+    <amount>29.99</amount>
+  </item>
+  <item id="3">
+    <date>28/01/2015</date>
+    <desc>Invoice 12429647 from Envato</desc>
+    <currency>EUR</currency>
+    <amount>101.0</amount>
+  </item>
+  <item id="4">
+    <date>07/05/2014</date>
+    <desc>Invoice 30064443 from QualityHosting AG</desc>
+    <currency>EUR</currency>
+    <amount>34.73</amount>
+  </item>
+</data>
