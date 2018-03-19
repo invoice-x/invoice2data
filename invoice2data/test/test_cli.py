@@ -18,11 +18,17 @@ class TestCLI(unittest.TestCase):
         self.parser = create_parser()
 
     def _get_test_file_path(self):
-        out_files = []
+        out_files = [None]*4
         for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'pdfs')):
             for file in files:
-                if file.endswith(".pdf"):
-                    out_files.append(os.path.join(path, file))
+                if file == "2014-05-07 Invoice 30064443 from QualityHosting.pdf":
+                    out_files[0] = os.path.join(path, file)
+                elif file == "2014-08-03 SALES Amazon Web Services  aws.amazon.coUS.pdf":
+                    out_files[1] = os.path.join(path, file)
+                elif file == "2015-01-29 PAYPAL ENVATO MKPL EN 4029357733 AU.pdf":
+                    out_files[2] = os.path.join(path, file)
+                elif file == "2015-07-02-invoice_free_fiber.pdf":
+                    out_files[3] = os.path.join(path, file)        
         return out_files
 
     def _get_test_file_content():
