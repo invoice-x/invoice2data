@@ -1,3 +1,4 @@
+chardet
 #pytesseract
 #pdfminer.six
 pillow
