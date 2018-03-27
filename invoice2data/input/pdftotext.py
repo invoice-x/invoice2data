@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def to_text(path):
+def to_text(path, API_KEY=None):
     import subprocess
     import logging as logger
     import shutil

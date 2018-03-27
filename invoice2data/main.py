@@ -10,6 +10,7 @@ import logging
 from .input import pdftotext
 from .input import pdfminer
 from .input import tesseract
+from .input import googlecloudvision
 
 from invoice2data.extract.loader import read_templates
 
@@ -26,6 +27,7 @@ input_mapping = {
     'pdftotext': pdftotext,
     'tesseract': tesseract,
     'pdfminer': pdfminer,
+    'googlecloudvision': googlecloudvision,
     }
 
 output_mapping = {
@@ -36,11 +38,11 @@ output_mapping = {
     'none': None
     }
 
-def extract_data(invoicefile, templates=None, input_module=pdftotext):
+def extract_data(invoicefile, templates=None, input_module=pdftotext, API_KEY=""):
     if templates is None:
         templates = read_templates()
 
-    extracted_str = input_module.to_text(invoicefile).decode('utf-8')
+    extracted_str = input_module.to_text(invoicefile, API_KEY=API_KEY).decode('utf-8')
 
     logger.debug('START pdftotext result ===========================')
     logger.debug(extracted_str)
@@ -79,7 +81,7 @@ def create_parser():
 
     parser.add_argument('--template-folder', '-t', dest='template_folder',
                         help='Folder containing invoice templates in yml file. Always adds built-in templates.')
-    
+
     parser.add_argument('--exclude-built-in-templates', dest='exclude_built_in_templates',
                         default=False, help='Ignore built-in templates.', action="store_true")
 
@@ -103,7 +105,7 @@ def main(args=None):
     output_module = output_mapping[args.output_format]
 
     templates = []
-    
+
     # Load templates from external folder if set.
     if args.template_folder:
         templates += read_templates(os.path.abspath(args.template_folder))
@@ -111,7 +113,7 @@ def main(args=None):
     # Load internal templates, if not disabled.
     if not args.exclude_built_in_templates:
         templates += read_templates()
-    
+
     output = []
     for f in args.input_files:
         res = extract_data(f.name, templates=templates, input_module=input_module)

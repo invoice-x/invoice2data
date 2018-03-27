@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def to_text(path):
+def to_text(path, API_KEY=None):
     """Wraps Tesseract OCR."""
     import subprocess
 
@@ -10,6 +10,6 @@ def to_text(path):
                           stdin=p1.stdout, stdout=subprocess.PIPE)
     out, err = p2.communicate()
 
-    extracted_str = out.decode('utf-8')
+    extracted_str = out
 
     return extracted_str

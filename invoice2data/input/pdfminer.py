@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def to_text(path):
+def to_text(path, API_KEY=None):
     "Wrapper around pdfminer."
 
     from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
