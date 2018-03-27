@@ -32,6 +32,7 @@ setup(
     entry_points = {
               'console_scripts': [
                   'invoice2data = invoice2data.main:main',
+                  'invoice2data-gui = invoice2data_gui.main:main',
               ],
           },
 )
