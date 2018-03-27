@@ -1,4 +1,0 @@
-from tkinter import *
-from tkinter import ttk
-from invoice2data import extract_data
-from tkFileDialog import askopenfilename
