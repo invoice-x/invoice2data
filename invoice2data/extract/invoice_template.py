@@ -169,6 +169,10 @@ class InvoiceTemplate(OrderedDict):
             if plugin_keyword in self.keys():
                 plugin_func.extract(self, optimized_str, output)
 
+        # apply type coercion for fields if specified
+        for typed_field in (field for field in output if field in self.get('types', {})):
+            output[typed_field] = self.coerce_type(output[typed_field], self['types'][typed_field])
+
         # If required fields were found, return output, else log error.
         if set(['date', 'amount', 'invoice_number', 'issuer']).issubset(output.keys()):
             output['desc'] = 'Invoice %s from %s' % (
