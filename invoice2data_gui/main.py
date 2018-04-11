@@ -3,6 +3,7 @@ import json
 import getpass
 from os.path import join
 from tkinter.filedialog import askopenfilename
+from tkinter import filedialog
 from tkinter import StringVar
 from tkinter import Tk
 from tkinter import ttk
@@ -19,11 +20,19 @@ def draw_gui():
         filename = askopenfilename()
         input_entry.delete(0, "")
         input_entry.insert(0, filename)
+
+    def output_path_com():
+        Tk().withdraw()
+        output_folder = filedialog.askdirectory()
+        folder_entry.delete(0, "")
+        folder_entry.insert(0, output_folder)
 #Function to process data and save it on Desktop
     def submit_com():
         filename = input_entry.get()
         status_entry.delete(0, "")
         status_entry.insert(0, "Cheking for file")
+
+        path = folder_entry.get()
 
         content = extract_data(filename)
 
@@ -40,14 +49,13 @@ def draw_gui():
                 content = dicttoxml(content, custom_root='test', attr_type=False)
 
                 try:
-                    username = getpass.getuser()
-                    path = "/home/" + username + "/Desktop"
                     out_file_open = open(join(path, file_name), 'w')
                     out_file_open.write(str(content))
                     out_file_open.close()
                     status_entry.delete(0, "")
-                    status_entry.insert(0, "Check Desktop")
+                    status_entry.insert(0, "Check Folder")
                     input_entry.delete(0, "")
+                    print join(path, file_name)
 
                 except:
                     out_file_open = open((file_name), 'w')
@@ -59,14 +67,12 @@ def draw_gui():
 
             if file_type == "csv":
                 try:
-                    username = getpass.getuser()
-                    path = "/home/" + username + "/Desktop"
                     with open(join(path, file_name), 'wb') as file_opner:  # Just use 'w' mode in 3.x
                         file_csv = csv.DictWriter(file_opner, content.keys())
                         file_csv.writeheader()
                         file_csv.writerow(content)
                     status_entry.delete(0, "")
-                    status_entry.insert(0, "Check Desktop")
+                    status_entry.insert(0, "Check Folder")
                     input_entry.delete(0, "")
 
                 except:
@@ -80,13 +86,11 @@ def draw_gui():
 
             if file_type == "json":
                 try:
-                    username = getpass.getuser()
-                    path = "/home/" + username + "/Desktop"
                     out_file_open = open(join(path, file_name), 'w')
                     out_file_open.write(str(content))
                     out_file_open.close()
                     status_entry.delete(0, "")
-                    status_entry.insert(0, "Check Desktop")
+                    status_entry.insert(0, "Check floder")
                     input_entry.delete(0, "")
 
                 except:
@@ -105,22 +109,31 @@ def draw_gui():
     input_entry.grid(row=0, column=1)
     input_ent_but.grid(row=0, column=2)
 
+    folder_label = ttk.Label(root, text="Output Folder:")
+    folder_entry = ttk.Entry(root, width=20)
+    folder_ent_but = ttk.Button(root, text="Select")
+    folder_ent_but.config(command=output_path_com)
+    folder_label.grid(row=1, column=0)
+    folder_entry.grid(row=1, column=1)
+    folder_ent_but.grid(row=1, column=2)
+
+
     sample1_label = ttk.Label(root, text=" ")
-    sample1_label.grid(row=1, column=0)
+    sample1_label.grid(row=2, column=0)
 
     output_label = ttk.Label(root, text="Output Format")
     list_option = StringVar(root)
     list_option.set("JSON")
     output_type = ttk.OptionMenu(root, list_option, 'JSON', 'JSON', 'CSV', 'XML')
-    output_label.grid(row=2, column=0)
-    output_type.grid(row=2, column=1)
+    output_label.grid(row=3, column=0)
+    output_type.grid(row=3, column=1)
 
     sample2_label = ttk.Label(root, text=" ")
-    sample2_label.grid(row=3, column=0)
+    sample2_label.grid(row=4, column=0)
 
     submit_but = ttk.Button(root, text="Extract")
     submit_but.config(command=submit_com)
-    submit_but.grid(row=4, column=1)
+    submit_but.grid(row=5, column=1)
 
     sample3_label = ttk.Label(root, text=" ")
     sample3_label.grid(row=6, column=0)
