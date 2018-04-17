@@ -3,7 +3,8 @@ import json
 import getpass
 from os.path import join
 from tkinter.filedialog import askopenfilename
-from tkinter import filedialog
+import tkFileDialog as filedialog
+#from tkinter import filedialog
 from tkinter import StringVar
 from tkinter import Tk
 from tkinter import ttk
