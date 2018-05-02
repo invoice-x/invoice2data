@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+issuer: Hiscox Europe
+fields:
+  amount: Prime TTC\s+([\d ]+,\d{2})
+  date: Date\s+Prime TTC\s+(\d{2}/\d{2}/\d{4})
+  date_start: Pour la période du\s+(\d{1,2}\s[A-Za-zéû]+\s\d{4})
+  date_end: Pour la période du \d{1,2}\s[A-Za-zéû]+\s\d{4} au (\d{1,2}\s[A-Za-zéû]+\s\d{4})
+  invoice_number: APPEL DE PRIME N°\s*(\d+)
+  static_vat: FR55524737681
+keywords:
+  - Hiscox
+  - FR55524737681
+  - APPEL
+  - Euros
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  languages:
+    - fr
+  decimal_separator: ','

@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: dirafi.fr
+fields:
+  amount: Total TTC\s+([\d\s]+,\d{2})
+  amount_untaxed: Total HT\s+([\d\s]+,\d{2})
+  date: FA\d+\s+(\d{2}/\d{2}/\d{4})\s+\d{2}/\d{2}/\d{4}
+  invoice_number: (FA\d+)\s+\d{2}/\d{2}/\d{4}\s+\d{2}/\d{2}/\d{4}
+  static_vat: FR77449189885
+keywords:
+  - FR77449189885
+  - Euros
+  - Facture
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

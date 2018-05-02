@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: FTSE Russel
+fields:
+  amount_untaxed: Net Total\s+EUR\s+€([\d,]+\.\d{2})
+  amount: Amount\s+EUR\s+€([\d,]+\.\d{2})
+  date: INVOICE DATE\s+(\d{2}-\w+-\d{4})
+  invoice_number: INVOICE NO:\s+(\w+)
+  static_vat: GB524922449
+keywords:
+  - INVOICE
+  - EUR
+  - GB524922449
+options:
+  currency: EUR
+  date_formats:
+    - '%d-%b-%Y'
+  decimal_separator: '.'

@@ -36,6 +36,29 @@ All the regex `fields` you need extracted. Required fields are `amount`, `date`,
 
 You will need to understand regular expressions to find the right values. If you didn't need them in your life up until now (lucky you), you can learn about them [here](http://www.zytrax.com/tech/web/regex.htm) or [test them here](http://www.regexr.com/). We use [Python's regex engine](https://docs.python.org/2/library/re.html). It won't matter for the simple expressions we need, but sometimes there are subtle differences when e.g. coming from Perl.
 
+For non-text fields, the name of the field is important:
+
+- the name of the field for date fields should start with **date**
+- the name of the field for float fields should start with **amount**
+
+There are also special prefixes that you can add to your field name:
+
+- **static_**: it will return the defined value (no regular expression is executed)
+- **sum_**: combined with a list of several regexps, it will return the sum of the amounts caught by each regexp (instead of returning the amount caught by the first regexp that caught something)
+
+Note that these special prefix for field names are removed when returning the result.
+
+Example with the *sum_* prefix:
+
+```
+fields:
+  sum_amount_tax:
+    - VAT\s+10%\s+(\d+,\d{2})
+    - VAT\s+20%\s+(\d+,\d{2})
+```
+
+If the first regexp for VAT 10% catches 1.5 and the second regexp for VAT 20% catches 4.0, the result will be {'amount_tax': 5.50, 'date': ...} (the *sum_* prefix is removed).
+
 ### Lines
 The `lines` key allows you to parse invoice items. Mandatory are regexes `start` and `end` to figure out where in the stream the item table is located. Then the regex `line` is applied, and supposed to contain named capture groups. The names of the capture groups will be the field names for the parsed item. If we have an invoice that looks like
 

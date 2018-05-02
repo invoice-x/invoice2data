@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Pixartprinting SpA
+fields:
+  amount: \d+\.\d+\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+([\d,]+\.\d{2})
+  amount_untaxed: \d+\.\d+\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+([\d,]+\.\d{2})\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}
+  date: SALES INVOICE\s+N.\s*[\w/]+\s+OF\s+(\d{2}-\d{2}-\d{4})
+  invoice_number: SALES INVOICE\s+N.\s*([\w/]+)
+  static_vat: IT04061550275
+keywords:
+  - INVOICE
+  - EUR
+  - IT04061550275
+options:
+  currency: EUR
+  date_formats:
+    - '%d-%m-%Y'
+  decimal_separator: '.'
