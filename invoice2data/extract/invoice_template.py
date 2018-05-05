@@ -170,11 +170,17 @@ class InvoiceTemplate(OrderedDict):
                 plugin_func.extract(self, optimized_str, output)
 
         # If required fields were found, return output, else log error.
-        if set(['date', 'amount', 'invoice_number', 'issuer']).issubset(output.keys()):
-            output['desc'] = 'Invoice %s from %s' % (
-                output['invoice_number'], self['issuer'])
-            logger.debug(output)
-            return output
+        if 'required-fields' not in self.keys():
+            required_fields = ['date', 'amount', 'invoice_number', 'issuer']
         else:
-            logger.error('Unable to match some fields:', output)
-            return None
+            required_fields = []
+            for v in self['required-fields']:
+                required_fields.append(v)
+        if set(required_fields).issubset(output.keys()):
+                output['desc'] = 'Invoice %s from %s' % (
+                    output['invoice_number'], self['issuer'])
+                logger.debug(output)
+                return output
+            else:
+                logger.error('Unable to match some fields:', output)
+                return None
