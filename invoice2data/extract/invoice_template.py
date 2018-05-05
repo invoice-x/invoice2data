@@ -176,11 +176,12 @@ class InvoiceTemplate(OrderedDict):
             required_fields = []
             for v in self['required-fields']:
                 required_fields.append(v)
+        
         if set(required_fields).issubset(output.keys()):
                 output['desc'] = 'Invoice %s from %s' % (
                     output['invoice_number'], self['issuer'])
                 logger.debug(output)
                 return output
-            else:
-                logger.error('Unable to match some fields:', output)
-                return None
+        else:
+            logger.error('Unable to match some fields:', output)
+            return None
