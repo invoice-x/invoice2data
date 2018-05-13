@@ -1,6 +1,7 @@
 import os
 import glob
 import filecmp
+import sys
 
 try:
     from StringIO import StringIO
@@ -77,10 +78,20 @@ class TestCLI(unittest.TestCase):
         os.remove(test_files)
 
     def test_content_json(self):
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-            for file in files:
-                if file.endswith(".json"):
-                    cmp_file = os.path.join(path, file)
+        if (sys.version_info > (3, 0)):
+            for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
+                for file in files:
+                    if file.endswith("py3.json"):
+                        cmp_file = os.path.join(path, file)
+        else:
+            for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
+                for file in files:
+                    if file.endswith("py2.json"):
+                        cmp_file = os.path.join(path, file)
+        # for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
+        #     for file in files:
+        #         if file.endswith(".json"):
+        #             cmp_file = os.path.join(path, file)
 
         test_files = 'inv_test.json'
         args = self.parser.parse_args(['--output-name', test_files, '--output-format', 'json'] + self._get_test_file_path())

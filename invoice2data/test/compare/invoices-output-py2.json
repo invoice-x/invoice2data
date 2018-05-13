@@ -1,0 +1,24 @@
+{
+    "amount": 34.73, 
+    "currency": "EUR", 
+    "date": "07/05/2014", 
+    "desc": "Invoice 30064443 from QualityHosting AG"
+}
+{
+    "amount": 4.11, 
+    "currency": "USD", 
+    "date": "03/08/2014", 
+    "desc": "Invoice 42183017 from Amazon Web Services"
+}
+{
+    "amount": 101.0, 
+    "currency": "EUR", 
+    "date": "28/01/2015", 
+    "desc": "Invoice 12429647 from Envato"
+}
+{
+    "amount": 29.99, 
+    "currency": "EUR", 
+    "date": "02/07/2015", 
+    "desc": "Invoice 562044387 from Free"
+}

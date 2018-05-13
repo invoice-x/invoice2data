@@ -11,6 +11,6 @@ def write_to_file(data, path):
             json.dump({'date':line['date'].strftime('%d/%m/%Y'),
                       'desc':line['desc'],
                       'currency':line['currency'],
-                      'amount':line['amount']},json_file, indent = 4,  sort_keys=True )
+                      'amount':line['amount']},json_file, indent = 4, sort_keys=True )
             json_file.write('\n')
             
