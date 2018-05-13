@@ -36,18 +36,28 @@ output_mapping = {
     'none': None
     }
 
+
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
     if templates is None:
         templates = read_templates()
 
-    extracted_str = input_module.to_text(invoicefile).decode('utf-8')
-
-    logger.debug('START pdftotext result ===========================')
-    logger.debug(extracted_str)
-    logger.debug('END pdftotext result =============================')
-
-    logger.debug('Testing {} template files'.format(len(templates)))
     for t in templates:
+        # logger.debug("Inside template loop")
+        if input_module == pdftotext:
+            extract_layout = t.get_extract_layout()
+            # print(str(t) +' ' + extract_layout)
+            logger.debug(extract_layout)
+            extracted_str = input_module.to_text(invoicefile, extract_layout).decode('utf-8')
+        else:
+            extracted_str = input_module.to_text(invoicefile).decode('utf-8')
+    # logger.debug(extract_layout)
+        logger.debug('START pdftotext result ===========================')
+        logger.debug(extracted_str)
+        logger.debug('END pdftotext result =============================')
+
+        # logger.debug('Testing {} template files'.format(len(templates)))
+    # for t in templates:
+
         optimized_str = t.prepare_input(extracted_str)
 
         if t.matches_input(optimized_str):
@@ -56,6 +66,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
     logger.error('No template for %s', invoicefile)
     return False
 
+
 def create_parser():
     '''Returns argument parser '''
 
@@ -63,7 +74,6 @@ def create_parser():
 
     parser.add_argument('--input-reader', choices=input_mapping.keys(),
                         default='pdftotext', help='Choose text extraction function. Default: pdftotext')
-
 
     parser.add_argument('--output-format', choices=output_mapping.keys(),
                         default='none', help='Choose output format. Default: none')
@@ -87,6 +97,7 @@ def create_parser():
                         help='File or directory to analyze.')
 
     return parser
+
 
 def main(args=None):
     '''Take folder or single file and analyze each.'''
@@ -126,6 +137,7 @@ def main(args=None):
 
     if output_module is not None:
         output_module.write_to_file(output, args.output_name)
+
 
 if __name__ == '__main__':
     main()
