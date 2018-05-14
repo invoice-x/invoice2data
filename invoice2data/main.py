@@ -37,6 +37,17 @@ output_mapping = {
     }
 
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
+    """Function to extract data from e-invoices
+
+    Note: Import all required module when using as a library
+        Example: If you want to use pdfminer
+            >>> from invoice2data.main import pdfminer
+
+    :param invoicefile: path of invoice
+    :param templates: load templates (template name)
+    :param input_module: input module to use out of input_mapping dict. (default pdftotext)
+    :return: dict of extracted and matched fields, False if no template matches
+    """
     if templates is None:
         templates = read_templates()
 
@@ -57,7 +68,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
     return False
 
 def create_parser():
-    '''Returns argument parser '''
+    """Returns argument parser """
 
     parser = argparse.ArgumentParser(description='Extract structured data from PDF files and save to CSV or JSON.')
 
@@ -89,7 +100,7 @@ def create_parser():
     return parser
 
 def main(args=None):
-    '''Take folder or single file and analyze each.'''
+    """Take folder or single file and analyze each."""
     if args is None:
         parser = create_parser()
         args = parser.parse_args()
