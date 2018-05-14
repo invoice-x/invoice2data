@@ -124,7 +124,8 @@ def main(args=None):
                     desc=res['desc'])
                 shutil.copyfile(f.name, join(args.copy, filename))
 
-    output_module.write_to_file(output, args.output_name)
+    if output_module is not None:
+        output_module.write_to_file(output, args.output_name)
 
 
 if __name__ == '__main__':
