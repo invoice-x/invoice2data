@@ -75,6 +75,13 @@ class InvoiceTemplate(OrderedDict):
 
         return optimized_str
 
+    def get_extract_layout(self):
+        if 'extract-layout' not in self.keys():
+            extract_layout = "-layout"
+        else:
+            extract_layout = self['extract-layout']
+        return extract_layout
+
     def matches_input(self, optimized_str):
         """See if string matches keywords set in template file"""
 

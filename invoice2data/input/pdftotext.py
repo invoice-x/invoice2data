@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def to_text(path):
+def to_text(path, extract_layout):
     import subprocess
     import logging as logger
     import shutil
@@ -11,7 +11,7 @@ def to_text(path):
 
     if spawn.find_executable("pdftotext"): #shutil.which('pdftotext'):
         out, err = subprocess.Popen(
-            ["pdftotext", '-layout', '-enc', 'UTF-8', path, '-'],
+            ["pdftotext", extract_layout, '-enc', 'UTF-8', path, '-'],
             stdout=subprocess.PIPE).communicate()
         return out
     else:
