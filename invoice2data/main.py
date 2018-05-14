@@ -127,6 +127,7 @@ def main(args=None):
     if output_module is not None:
         output_module.write_to_file(output, args.output_name)
 
+
 if __name__ == '__main__':
     main()
 

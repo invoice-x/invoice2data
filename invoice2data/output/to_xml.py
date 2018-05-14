@@ -8,7 +8,9 @@ def prettify(elem):
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
+
 def write_to_file(data, path):
+
     if path.endswith('.xml'):
         filename = path
     else:
