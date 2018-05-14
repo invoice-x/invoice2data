@@ -2,6 +2,8 @@
 
 [![Circle CI](https://circleci.com/gh/m3nu/invoice2data.svg?style=svg)](https://circleci.com/gh/m3nu/invoice2data)
 
+This project has been selected for [GSoC 2018](https://developers.google.com/open-source/gsoc/). Read more [here](https://wiki.debian.org/SummerOfCode2018/Projects/ExtractingDataFromPDFInvoicesAndBillsDetails).
+
 A modular Python library to support your accounting process. Tested on Python 2.7 and 3.4+. Main steps:
 
 1. extracts text from PDF files using different techniques, like `pdftotext`, `pdfminer` or `tesseract` OCR.
@@ -128,7 +130,8 @@ If you are interested in improving this project, have a look at our [developer g
 
 ## Maintainers
 - [Manuel Riel](https://github.com/m3nu)
-- [Alexis de Lattre](https://github.com/alexis-via): Add setup.py for Pypi, fix locale bug, add templates for new invoice types.
+- [Alexis de Lattre](https://github.com/alexis-via)
 
-## Other Contributors
+## Contributors
+- [Harshit Joshi](https://github.com/duskybomb): As Google Summer of Code student.
 - [Holger Brunn](https://github.com/hbrunn): Add support for parsing invoice items.
