@@ -94,6 +94,7 @@ class InvoiceTemplate(OrderedDict):
         return float(amount_pipe_no_thousand_sep.replace('|', '.'))
 
     def parse_date(self, value):
+        """Parses date and returns date after parsing"""
         res = dateparser.parse(
             value, date_formats=self.options['date_formats'],
             languages=self.options['languages'])

@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 def to_text(path):
-    "Wrapper around pdfminer."
+    """Wrapper around pdfminer.
+
+    :param path: string containing path of e-invoice in pdf form
+    :return: returns extracted text from pdf
+    """
 
     from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
     from pdfminer.converter import TextConverter

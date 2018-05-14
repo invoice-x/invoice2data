@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 def to_text(path):
+    """Wrapper around Poppler pdftotext.
+
+    :param path: string containing path of e-invoice in pdf form
+    :return: returns extracted text from pdf
+    """
     import subprocess
     import logging as logger
     import shutil
     from distutils import spawn #py2 compat
 
-    """
-    Wrapper around Poppler pdftotext.
-    """
+
 
     if spawn.find_executable("pdftotext"): #shutil.which('pdftotext'):
         out, err = subprocess.Popen(

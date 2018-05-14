@@ -15,7 +15,10 @@ import chardet
 
 # borrowed from http://stackoverflow.com/a/21912744
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
-
+    """
+    loader to load mappings and ordered mappings into the Python 2.7+ OrderedDict type,
+    instead of the vanilla dict and the list of pairs it currently uses.
+    """
     class OrderedLoader(Loader):
         pass
 
@@ -35,6 +38,11 @@ def read_templates(folder=None):
     Load yaml templates from template folder. Return list of dicts.
 
     Use built-in templates if no folder is set.
+
+    :param folder: user defined folder where they stores their files, if None uses built-in templates
+        Example: >>> read_template("~/home/duskybomb/invoice-templates/")
+    :return: template which match based on keywords
+
     """
 
     output = []

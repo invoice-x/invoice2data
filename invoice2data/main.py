@@ -36,16 +36,26 @@ output_mapping = {
     'none': None
     }
 
+
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
-    """Function to extract data from e-invoices
+    """extract data from e-invoices
+     * reads template if no template assigned
+     * text is extracted from invoice using input module and stored in extracted_str
+     * extracted text is sent for optimization in prepare_input()
+     * required fields are matches from templates
 
     Note: Import all required module when using as a library
         Example: If you want to use pdfminer
             >>> from invoice2data.main import pdfminer
+            >>> extract_data("/home/duskybomb/pdf/invoice.pdf", "com.aws-invoice.yaml", pdfminer)
 
-    :param invoicefile: path of invoice
+    :param invoicefile: path of invoice in form of string (example: "/home/duskybomb/pdf/invoice.pdf")
     :param templates: load templates (template name)
     :param input_module: input module to use out of input_mapping dict. (default pdftotext)
+
+    :var extracted_str: saves extracted text from input module
+    :var optimized_str: stores optimized string after passing extracted_str to prepare_input()
+
     :return: dict of extracted and matched fields, False if no template matches
     """
     if templates is None:
@@ -75,7 +85,6 @@ def create_parser():
     parser.add_argument('--input-reader', choices=input_mapping.keys(),
                         default='pdftotext', help='Choose text extraction function. Default: pdftotext')
 
-
     parser.add_argument('--output-format', choices=output_mapping.keys(),
                         default='none', help='Choose output format. Default: none')
 
@@ -98,6 +107,7 @@ def create_parser():
                         help='File or directory to analyze.')
 
     return parser
+
 
 def main(args=None):
     """Take folder or single file and analyze each."""

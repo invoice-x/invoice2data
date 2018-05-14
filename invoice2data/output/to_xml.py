@@ -2,14 +2,28 @@ import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
 def prettify(elem):
-    """Return a pretty-printed XML string for the Element.
-    """
+    """Return a pretty-printed XML string for the Element."""
     rough_string = ET.tostring(elem, 'utf-8')
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
 
 def write_to_file(data, path):
+    """Export extracted fields to csv
+     * Only date, desc, currency and amount are exported
+     * Appends .xml to path if missing
+     * Generates csv file in specified directory, if not then in root
+
+    Examples:
+        >>> from invoice2data.output import to_xml
+        >>> to_xml.write_to_file(data, "/exported_xml/invoice.xml")
+        >>> to_xml.write_to_file(data, "invoice.xml")
+
+    Note: Do give file name to the function parameter path.
+
+    :param data: dict of extracted fields
+    :param path: string type directory where to save generated csv file
+    """
 
     if path.endswith('.xml'):
         filename = path
