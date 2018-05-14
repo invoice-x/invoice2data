@@ -74,9 +74,6 @@ def create_parser():
     parser.add_argument('--debug', dest='debug', action='store_true',
                         help='Enable debug information.')
 
-    parser.add_argument('--dump-all-fields', dest='dump_fields', action='store_true',
-                        help='Dumps all fields to output files')
-
     parser.add_argument('--copy', '-c', dest='copy',
                         help='Copy renamed PDFs to specified folder.')
 
@@ -127,13 +124,7 @@ def main(args=None):
                     desc=res['desc'])
                 shutil.copyfile(f.name, join(args.copy, filename))
 
-    if output_module is not None:
-        if args.dump_fields:
-            dump_field = True
-        else:
-            dump_field = False
-
-        output_module.write_to_file(output, args.output_name, dump_field)
+    output_module.write_to_file(output, args.output_name)
 
 
 if __name__ == '__main__':

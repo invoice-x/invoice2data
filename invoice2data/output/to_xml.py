@@ -9,7 +9,7 @@ def prettify(elem):
     return reparsed.toprettyxml(indent="  ")
 
 
-def write_to_file(data, path, dump_fields):
+def write_to_file(data, path):
 
     if path.endswith('.xml'):
         filename = path
