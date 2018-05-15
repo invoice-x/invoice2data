@@ -120,7 +120,7 @@ lines:
 ```
 
 ## Development
-If you are interested in improving this project, have a look at our [developer guide](TUTORIAL.md) to get you started quickly.
+If you are interested in improving this project, have a look at our [developer guide](DEVELOP.md) to get you started quickly.
 
 ## Roadmap and open tasks
 
