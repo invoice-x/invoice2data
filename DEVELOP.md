@@ -19,6 +19,10 @@ Major folders in the `invoice2data` package and their purpose:
 - `extract/templates`: Keeps all supported template files. Add new templates here.
 - `output`: Modules to output structured data. Currently only `csv` is supported. JSON and XML may be added soon.
 
+## Documentation
+
+This project uses the restructured text (reST), or [Sphinx docstring standard](http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html).
+
 ## Testing
 
 Every new feature should have a test to make sure it still works after modifications done by you or someone else in the future.

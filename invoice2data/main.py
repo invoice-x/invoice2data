@@ -38,13 +38,13 @@ output_mapping = {
 
 
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
-    """Extracts structured elements (like data, amount, etc) from PDF/image invoices using different extraction backends
-        and pre-defined templates.
-     * reads template if no template assigned
-     * required fields are matches from templates
+    """Extracts structured data from PDF/image invoices.
+
+    This function uses the text extracted from a PDF file or image and
+    pre-defined regex templates to find structured data.
 
     :param invoicefile:
-        path of electronic invoice file in PDF,JPEG,PNG (example: "/home/duskybomb/pdf/invoice.pdf")
+        path of electronic invoice file in PDF, JPEG or PNG format (example: "/home/duskybomb/pdf/invoice.pdf")
         :type invoicefile: str
     :param templates: This parameter is optional
         load templates as .yml file (template name). Templates are loaded using read_template function in loader.py
@@ -63,7 +63,6 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         Example:    {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0),
                     'invoice_number': 'IBZY2087', 'currency': 'INR', 'desc': 'Invoice IBZY2087
                     from OYO'}
-
     """
     if templates is None:
         templates = read_templates()
