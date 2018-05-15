@@ -53,14 +53,22 @@ def read_templates(folder=None):
     Examples
     --------
 
-    >>> read_template("~/home/duskybomb/invoice-templates/")
-    InvoiceTemplate([('issuer', 'PC Engines GmbH'), ('fields', OrderedDict([('amount',
-    'Total\\s+EUR\\s+([\\d ,]+.\\d{2})'), ('amount_untaxed', 'Subtotal\\s+EUR\\s+([\\d,]+.\\d{2})'),
-    'date', 'Date:\\s+(\\d{1,2}\\. \\d{1,2}\\.\\d{4})'), ('invoice_number', 'Invoice\\s+(\\w+)'),
-    ('static_vat', 'CHE-109.825.964'), ('stati c_partner_email', 'orders@pcengines.ch')])),
-    ('keywords', ['CHE-109.825.964', 'Invoice', 'EUR', 'pcengine s.ch']),
-    ('options', OrderedDict([('currency', 'EUR'), ('date_formats', ['%d.%m.%Y']),
-    ('languages', ['en ']), ('decimal_separator', '.')])), ('template_name', 'ch.pcengines.yml')])
+    >>> read_template("home/duskybomb/invoice-templates/")
+    InvoiceTemplate([('issuer', 'OYO'), ('fields', OrderedDict([('amount', 'GrandTotalRs(\\d+)'),
+    ('date', 'Date:(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})'), ('invoice_number', '([A-Z0-9]+)CashatHotel')])),
+    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', OrderedDict([('currency', 'INR'), ('decimal_separator', '.'),
+    ('remove_whitespace', True)])), ('template_name', 'com.oyo.invoice.yml')])
+
+    After reading the template you can use the result as an instance of `InvoiceTemplate` to extract fields from
+    `extract_data()`
+
+    >>> my_template = InvoiceTemplate([('issuer', 'OYO'), ('fields', OrderedDict([('amount', 'GrandTotalRs(\\d+)'),
+    ('date', 'Date:(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})'), ('invoice_number', '([A-Z0-9]+)CashatHotel')])),
+    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', OrderedDict([('currency', 'INR'), ('decimal_separator', '.'),
+    ('remove_whitespace', True)])), ('template_name', 'com.oyo.invoice.yml')])
+    >>> extract_data("invoice2data/test/pdfs/oyo.pdf", my_template, pdftotext)
+    {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087',
+     'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
 
     """
 
