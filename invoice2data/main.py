@@ -44,19 +44,25 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
      * extracted text is sent for optimization in prepare_input()
      * required fields are matches from templates
 
-    Note: Import all required module when using as a library
-        Example: If you want to use pdfminer
-            >>> from invoice2data.main import pdfminer
-            >>> extract_data("/home/duskybomb/pdf/invoice.pdf", "com.aws-invoice.yaml", pdfminer)
+    :param invoicefile:
+        path of electronic invoice file in PDF,JPEG,PNG (example: "/home/duskybomb/pdf/invoice.pdf")
+        :type invoicefile: str
+    :param templates (optional):
+        load templates as .yml file (template name). Templates are loaded using read_template function in loader.py
+    :param input_module (optional):
+        library to be used to extract text from given invoicefile,
+        Currently supported libraries are: pdftotext, pdfminer, tesseract (default pdftotext)
 
-    :param invoicefile: path of invoice in form of string (example: "/home/duskybomb/pdf/invoice.pdf")
-    :param templates: load templates (template name)
-    :param input_module: input module to use out of input_mapping dict. (default pdftotext)
-
-    :var extracted_str: saves extracted text from input module
-    :var optimized_str: stores optimized string after passing extracted_str to prepare_input()
+        Note: Import all required input_module when using as a library
+            Example: If you want to use pdfminer
+                >>> from invoice2data.main import pdfminer
+                >>> extract_data("/home/duskybomb/pdf/invoice.pdf", "com.aws-invoice.yaml", pdfminer)
 
     :return: dict of extracted and matched fields, False if no template matches
+        Example:    {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0),
+                    'invoice_number': 'IBZY2087', 'currency': 'INR', 'desc': 'Invoice IBZY2087
+                    from OYO'}
+
     """
     if templates is None:
         templates = read_templates()
