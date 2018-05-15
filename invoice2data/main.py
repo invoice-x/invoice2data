@@ -47,18 +47,20 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
     :param invoicefile:
         path of electronic invoice file in PDF,JPEG,PNG (example: "/home/duskybomb/pdf/invoice.pdf")
         :type invoicefile: str
-    :param templates (optional):
+    :param templates: This parameter is optional
         load templates as .yml file (template name). Templates are loaded using read_template function in loader.py
-    :param input_module (optional):
+    :param input_module: This parameter is optional
         library to be used to extract text from given invoicefile,
         Currently supported libraries are: pdftotext, pdfminer, tesseract (default pdftotext)
 
-        Note: Import all required input_module when using as a library
+        Note:
+            Import required input_module when using invoice2data as a library
             Example: If you want to use pdfminer
                 >>> from invoice2data.main import pdfminer
                 >>> extract_data("/home/duskybomb/pdf/invoice.pdf", "com.aws-invoice.yaml", pdfminer)
 
-    :return: dict of extracted and matched fields, False if no template matches
+    :return: extracted and matched fields, False if no template matches
+    :rtype: dict
         Example:    {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0),
                     'invoice_number': 'IBZY2087', 'currency': 'INR', 'desc': 'Invoice IBZY2087
                     from OYO'}
