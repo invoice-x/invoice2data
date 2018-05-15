@@ -21,8 +21,8 @@ Major folders in the `invoice2data` package and their purpose:
 
 ## Documentation
 
-This project uses [numpydoc](https://numpydoc.readthedocs.io/en/latest/) extension for [Sphinx](http://sphinx-doc.org/).
 
+This project uses [numpydoc](https://numpydoc.readthedocs.io/en/latest/) extension for [Sphinx](http://sphinx-doc.org/).
 
 ## Testing
 
