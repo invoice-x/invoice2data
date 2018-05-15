@@ -2,8 +2,16 @@
 def to_text(path):
     """Wraps Tesseract OCR.
 
-    :param path: string containing path of e-invoice image
-    :return: returns extracted text from pdf
+    Parameters
+    ----------
+    path : str
+        path of electronic invoice in JPG or PNG format
+
+    Returns
+    -------
+    extracted_str : str
+        returns extracted text from image in JPG or PNG format
+
     """
     import subprocess
 

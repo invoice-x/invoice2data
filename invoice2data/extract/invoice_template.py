@@ -31,6 +31,21 @@ PLUGIN_MAPPING = {
 class InvoiceTemplate(OrderedDict):
     """
     Represents single template files that live as .yml files on the disk.
+
+    Methods
+    -------
+    prepare_input(self, extracted_str)
+        Input raw string and do transformations, as set in template file.
+    matches_input(self, optimized_str)
+        See if string matches keywords set in template file
+    parse_number(self, value)
+        Parse number, remove decimal separator and add other options
+    parse_date(self, value)
+        Parses date and returns date after parsing
+    coerce_type(self, value, target_type)
+        change type of values
+    extract(self, optimized_str)
+        Given a template file and a string, extract matching data fields.
     """
 
     def __init__(self, *args, **kwargs):

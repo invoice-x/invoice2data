@@ -15,7 +15,8 @@ import chardet
 
 # borrowed from http://stackoverflow.com/a/21912744
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
-    """
+    """load mappings and ordered mappings
+
     loader to load mappings and ordered mappings into the Python 2.7+ OrderedDict type,
     instead of the vanilla dict and the list of pairs it currently uses.
     """
@@ -39,9 +40,27 @@ def read_templates(folder=None):
 
     Use built-in templates if no folder is set.
 
-    :param folder: user defined folder where they stores their files, if None uses built-in templates
-        Example: >>> read_template("~/home/duskybomb/invoice-templates/")
-    :return: template which match based on keywords
+    Parameters
+    ----------
+    folder : str
+        user defined folder where they stores their files, if None uses built-in templates
+
+    Returns
+    -------
+    output : Instance of `InvoiceTemplate`
+        template which match based on keywords
+
+    Examples
+    --------
+
+    >>> read_template("~/home/duskybomb/invoice-templates/")
+    InvoiceTemplate([('issuer', 'PC Engines GmbH'), ('fields', OrderedDict([('amount',
+    'Total\\s+EUR\\s+([\\d ,]+.\\d{2})'), ('amount_untaxed', 'Subtotal\\s+EUR\\s+([\\d,]+.\\d{2})'),
+    'date', 'Date:\\s+(\\d{1,2}\\. \\d{1,2}\\.\\d{4})'), ('invoice_number', 'Invoice\\s+(\\w+)'),
+    ('static_vat', 'CHE-109.825.964'), ('stati c_partner_email', 'orders@pcengines.ch')])),
+    ('keywords', ['CHE-109.825.964', 'Invoice', 'EUR', 'pcengine s.ch']),
+    ('options', OrderedDict([('currency', 'EUR'), ('date_formats', ['%d.%m.%Y']),
+    ('languages', ['en ']), ('decimal_separator', '.')])), ('template_name', 'ch.pcengines.yml')])
 
     """
 

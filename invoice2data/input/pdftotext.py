@@ -2,8 +2,20 @@
 def to_text(path):
     """Wrapper around Poppler pdftotext.
 
-    :param path: string containing path of e-invoice in pdf form
-    :return: returns extracted text from pdf
+    Parameters
+    ----------
+    path : str
+        path of electronic invoice in PDF
+
+    Returns
+    -------
+    out : str
+        returns extracted text from pdf
+
+    Raises
+    ------
+    EnvironmentError:
+        If pdftotext library is not found
     """
     import subprocess
     import logging as logger

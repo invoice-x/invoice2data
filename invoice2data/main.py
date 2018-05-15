@@ -38,36 +38,51 @@ output_mapping = {
 
 
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
-    """Extracts structured elements (like data, amount, etc) from PDF/image invoices using different extraction backends
-        and pre-defined templates.
-     * reads template if no template assigned
-     * required fields are matches from templates
+    """Extracts structured data from PDF/image invoices.
 
-    :param invoicefile:
+    This function uses the text extracted from a PDF file or image and
+    pre-defined regex templates to find structured data.
+
+    Reads template if no template assigned
+    Required fields are matches from templates
+
+    Parameters
+    ----------
+    invoicefile : str
         path of electronic invoice file in PDF,JPEG,PNG (example: "/home/duskybomb/pdf/invoice.pdf")
-        :type invoicefile: str
-    :param templates: This parameter is optional
-        load templates as .yml file (template name). Templates are loaded using read_template function in loader.py
-    :param input_module: This parameter is optional
-        library to be used to extract text from given invoicefile,
-        Currently supported libraries are: pdftotext, pdfminer, tesseract (default pdftotext)
+    templates : list of instances of class `InvoiceTemplate`, optional
+        Templates are loaded using `read_template` function in `loader.py`
+    input_module : {'pdftotext', 'pdfminer', 'tesseract'}, optional
+        library to be used to extract text from given `invoicefile`,
 
-        Note:
-            Import required input_module when using invoice2data as a library
-            Example: If you want to use pdfminer
-                >>> from invoice2data.main import pdfminer
-                >>> extract_data("/home/duskybomb/pdf/invoice.pdf", "com.aws-invoice.yaml", pdfminer)
+    Returns
+    -------
+    dict or False
+        extracted and matched fields or False if no template matches
 
-    :return: extracted and matched fields, False if no template matches
-    :rtype: dict
-        Example:    {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0),
-                    'invoice_number': 'IBZY2087', 'currency': 'INR', 'desc': 'Invoice IBZY2087
-                    from OYO'}
+    Notes
+    -----
+    Import required `input_module` when using invoice2data as a library
+
+    See Also
+    --------
+    read_template : Function where templates are loaded
+    InvoiceTemplate : Class representing single template files that live as .yml files on the disk
+
+    Examples
+    --------
+    When using `invoice2data` as an library
+
+    >>> from invoice2data.input import pdftotext
+    >>> extract_data("invoice2data/test/pdfs/oyo.pdf", None, pdftotext)
+    {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087',
+     'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
 
     """
     if templates is None:
         templates = read_templates()
 
+    # print(templates[0])
     extracted_str = input_module.to_text(invoicefile).decode('utf-8')
 
     logger.debug('START pdftotext result ===========================')

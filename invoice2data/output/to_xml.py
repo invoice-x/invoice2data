@@ -9,20 +9,28 @@ def prettify(elem):
 
 
 def write_to_file(data, path):
-    """Export extracted fields to csv
-     * Only date, desc, currency and amount are exported
-     * Appends .xml to path if missing
-     * Generates csv file in specified directory, if not then in root
+    """Export extracted fields to xml
 
-    Examples:
+    Appends .xml to path if missing and generates xml file in specified directory, if not then in root
+
+    Parameters
+    ----------
+    data : dict
+        Dictionary of extracted fields
+    path : str
+        directory to save generated xml file
+
+    Notes
+    ----
+    Do give file name to the function parameter path.
+    Only `date`, `desc`, `amount` and `currency` are exported
+
+    Examples
+    --------
         >>> from invoice2data.output import to_xml
         >>> to_xml.write_to_file(data, "/exported_xml/invoice.xml")
         >>> to_xml.write_to_file(data, "invoice.xml")
 
-    Note: Do give file name to the function parameter path.
-
-    :param data: dict of extracted fields
-    :param path: string type directory where to save generated csv file
     """
 
     if path.endswith('.xml'):
