@@ -38,10 +38,9 @@ output_mapping = {
 
 
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
-    """extract data from e-invoices
+    """Extracts structured elements (like data, amount, etc) from PDF/image invoices using different extraction backends
+        and pre-defined templates.
      * reads template if no template assigned
-     * text is extracted from invoice using input module and stored in extracted_str
-     * extracted text is sent for optimization in prepare_input()
      * required fields are matches from templates
 
     :param invoicefile:
