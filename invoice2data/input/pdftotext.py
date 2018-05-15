@@ -1,13 +1,28 @@
 # -*- coding: utf-8 -*-
 def to_text(path):
+    """Wrapper around Poppler pdftotext.
+
+    Parameters
+    ----------
+    path : str
+        path of electronic invoice in PDF
+
+    Returns
+    -------
+    out : str
+        returns extracted text from pdf
+
+    Raises
+    ------
+    EnvironmentError:
+        If pdftotext library is not found
+    """
     import subprocess
     import logging as logger
     import shutil
     from distutils import spawn #py2 compat
 
-    """
-    Wrapper around Poppler pdftotext.
-    """
+
 
     if spawn.find_executable("pdftotext"): #shutil.which('pdftotext'):
         out, err = subprocess.Popen(

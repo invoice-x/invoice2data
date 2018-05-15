@@ -3,6 +3,28 @@ import sys
 
 
 def write_to_file(data, path):
+    """Export extracted fields to csv
+
+    Appends .csv to path if missing and generates csv file in specified directory, if not then in root
+
+    Parameters
+    ----------
+    data : dict
+        Dictionary of extracted fields
+    path : str
+        directory to save generated csv file
+
+    Notes
+    ----
+    Do give file name to the function parameter path.
+
+    Examples
+    --------
+        >>> from invoice2data.output import to_csv
+        >>> to_csv.write_to_file(data, "/exported_csv/invoice.csv")
+        >>> to_csv.write_to_file(data, "invoice.csv")
+
+    """
     if path.endswith('.csv'):
         filename = path
     else:

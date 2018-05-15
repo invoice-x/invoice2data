@@ -1,6 +1,18 @@
 # -*- coding: utf-8 -*-
 def to_text(path):
-    "Wrapper around pdfminer."
+    """Wrapper around `pdfminer`.
+
+    Parameters
+    ----------
+    path : str
+        path of electronic invoice in PDF
+
+    Returns
+    -------
+    str : str
+        returns extracted text from pdf
+
+    """
 
     from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
     from pdfminer.converter import TextConverter
