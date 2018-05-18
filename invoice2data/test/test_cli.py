@@ -126,7 +126,7 @@ class TestCLI(unittest.TestCase):
         shutil.copy('invoice2data/extract/templates/com/com.oyo.invoice.yml', 'invoice2data/test/temp_test/')
         args = self.parser.parse_args(['--exclude-built-in-templates',
                                        '--template-folder',
-                                       'ACME-templates',
+                                       directory,
                                        my_file])
         main(args)
         shutil.rmtree('invoice2data/test/temp_test/')
