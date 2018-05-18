@@ -108,18 +108,29 @@ class TestCLI(unittest.TestCase):
             self.assertTrue(False, "Number of files not equal")
         '''
 
-
     # def test_template(self):
-    #     parser = create_parser()
-    #     folder = pkg_resources.resource_filename(__name__, 'pdfs')      
-    #     args = parser.parse_args(['--template-folder', 'ACME-templates', self._get_test_file_path()])
+    #     directory = os.path.dirname("invoice2data/test/temp_test/")
+    #     os.makedirs(directory)
+    #     args = self.parser.parse_args(['--template-folder', 'ACME-templates', self._get_test_file_path()])
+    #     main(args)
+    #     shutil.rmtree('invoice2data/test/temp_test/', ignore_errors=True)
     #     self.assertTrue(args.template_folder)
 
-    # def test_exclude_template(self):
-    #     parser = create_parser()
-    #     folder = pkg_resources.resource_filename(__name__, 'pdfs')      
-    #     args = parser.parse_args(['--exclude-built-in-templates', '--template-folder', 'ACME-templates', self._get_test_file_path()])
-    #     self.assertTrue(args.exclude_built_in_templates)
+    def test_exclude_template(self):
+        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
+            for file in files:
+                if file.endswith("oyo.pdf"):
+                    my_file = os.path.join(path, file)
+        directory = os.path.dirname("invoice2data/test/temp_test/")
+        os.makedirs(directory)
+        shutil.copy('invoice2data/extract/templates/com/com.oyo.invoice.yml', 'invoice2data/test/temp_test/')
+        args = self.parser.parse_args(['--exclude-built-in-templates',
+                                       '--template-folder',
+                                       'ACME-templates',
+                                       my_file])
+        main(args)
+        shutil.rmtree('invoice2data/test/temp_test/')
+
 
 
 if __name__ == '__main__':
