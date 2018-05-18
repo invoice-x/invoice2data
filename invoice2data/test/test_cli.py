@@ -1,6 +1,7 @@
 import os
 import glob
 import filecmp
+import json
 
 try:
     from StringIO import StringIO
@@ -17,76 +18,73 @@ class TestCLI(unittest.TestCase):
         self.templates = read_templates()
         self.parser = create_parser()
 
-    def _get_test_file_path(self):
-        out_files = [None]*4
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'pdfs')):
+    def _get_test_file_pdf_path(self):
+        out_files = []
+        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
             for file in files:
-                if file == "2014-05-07 Invoice 30064443 from QualityHosting.pdf":
-                    out_files[0] = os.path.join(path, file)
-                elif file == "2014-08-03 SALES Amazon Web Services  aws.amazon.coUS.pdf":
-                    out_files[1] = os.path.join(path, file)
-                elif file == "2015-01-29 PAYPAL ENVATO MKPL EN 4029357733 AU.pdf":
-                    out_files[2] = os.path.join(path, file)
-                elif file == "2015-07-02-invoice_free_fiber.pdf":
-                    out_files[3] = os.path.join(path, file)        
+                if file.endswith(".pdf"):
+                    out_files.append(os.path.join(path, file))
         return out_files
 
-    def _get_test_file_content():
-        pass
+    def _get_test_file_json_path(self):
+        compare_files = []
+        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
+            for file in files:
+                if file.endswith(".json"):
+                    compare_files.append(os.path.join(path, file))
+        return compare_files
+
+    def compare_json_content(self, test_file, json_file):
+        with open(test_file) as json_test_file, open(json_file) as json_json_file:
+            jdatatest = json.load(json_test_file)
+            jdatajson = json.load(json_json_file)
+        logger.info(jdatajson)
+        logger.info(jdatatest)
+        # cmp(jdatatest, jdatajson)
+        if jdatajson == jdatatest:
+            logger.info("True")
+            return True
+        else:
+            logger.info("False")
+            return False
+
+
 
     def test_input(self):
-        args = self.parser.parse_args(['--input-reader', 'pdftotext'] + self._get_test_file_path())
+        args = self.parser.parse_args(['--input-reader', 'pdftotext'] + self._get_test_file_pdf_path())
         main(args)
 
     def test_output_name(self):
         test_file = 'inv_test_8asd89f78a9df.csv'
-        args = self.parser.parse_args(['--output-name', test_file, '--output-format', 'csv'] + self._get_test_file_path())
+        args = self.parser.parse_args(['--output-name', test_file, '--output-format', 'csv']
+                                      + self._get_test_file_pdf_path())
         main(args)
         self.assertTrue(os.path.exists(test_file))
         os.remove(test_file)
 
     def test_debug(self):
-        args = self.parser.parse_args(['--debug'] + self._get_test_file_path())
+        args = self.parser.parse_args(['--debug'] + self._get_test_file_pdf_path())
         main(args)
 
     # TODO: move result comparison to own test module.
     # TODO: parse output files instaed of comparing them byte-by-byte.
 
-    def test_content_csv(self):
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-            for file in files:
-                if file.endswith(".csv"):
-                    cmp_file = os.path.join(path, file)
-
-        test_files = 'inv_test.csv'
-        args = self.parser.parse_args(['--output-name', test_files, '--output-format', 'csv'] + self._get_test_file_path())
-        main(args)
-        # self.assertTrue(filecmp.cmp(test_files, cmp_file, shallow=False))
-        os.remove(test_files)
-
-    def test_content_xml(self):
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-            for file in files:
-                if file.endswith(".xml"):
-                    cmp_file = os.path.join(path, file)
-
-        test_files = 'inv_test.xml'
-        args = self.parser.parse_args(['--output-name', test_files, '--output-format', 'xml'] + self._get_test_file_path())
-        main(args)
-        # self.assertTrue(filecmp.cmp(test_files, cmp_file, shallow=False))
-        os.remove(test_files)
-
     def test_content_json(self):
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-            for file in files:
-                if file.endswith(".json"):
-                    cmp_file = os.path.join(path, file)
-
-        test_files = 'inv_test.json'
-        args = self.parser.parse_args(['--output-name', test_files, '--output-format', 'json'] + self._get_test_file_path())
-        main(args)
-        # self.assertTrue(filecmp.cmp(test_files, cmp_file, shallow=False))
-        os.remove(test_files)
+        pdf_files = self._get_test_file_pdf_path()
+        json_files = self._get_test_file_json_path()
+        test_files = 'test_compare.json'
+        for pfile in pdf_files:
+            for jfile in json_files:
+                if pfile[:-4] == jfile[:-5]:
+                    args = self.parser.parse_args(
+                        ['--output-name', test_files, '--output-format', 'json', pfile])
+                    main(args)
+                    compare_verified = self.compare_json_content(test_files, jfile)
+                    print (compare_verified)
+                    if not compare_verified:
+                        self.assertTrue(False)
+                    os.remove(test_files)
+        self.assertTrue(True)
 
     # def test_copy(self):
     #     parser = create_parser()
