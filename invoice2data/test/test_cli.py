@@ -132,6 +132,5 @@ class TestCLI(unittest.TestCase):
         shutil.rmtree('invoice2data/test/temp_test/')
 
 
-
 if __name__ == '__main__':
     unittest.main()
