@@ -80,6 +80,13 @@ class TestCLI(unittest.TestCase):
             print(res)  # Check why logger.info is not working, for the time being using print
             self.assertTrue(type(res) is dict, "return is not a dict")
 
+    def _test_extract_data_for_export(self):
+        pdf_files = self._get_test_file_pdf_path()
+        for file in pdf_files:
+            if file.endswith("oyo.pdf"):
+                res = [extract_data(file, None)]
+                return res
+
     def test_extract_data_pdftotext(self):
         pdf_files = self._get_test_file_pdf_path()
         for file in pdf_files:
@@ -91,6 +98,31 @@ class TestCLI(unittest.TestCase):
                 self.assertTrue(False, "pdftotext is not installed")
             self.assertTrue(type(res) is dict, "return is not a dict")
 
+    def test_output_json(self):
+        dump_dict = self._test_extract_data_for_export()
+        print(dump_dict)
+        file_path = "invoices-output-for-test.json"
+        to_json.write_to_file(dump_dict, file_path)
+        self.assertTrue(os.path.exists(file_path), "File not made")
+        os.remove(file_path)
+
+    def test_output_xml(self):
+        dump_dict = self._test_extract_data_for_export()
+        print(dump_dict)
+        file_path = "invoices-output-for-test.xml"
+        to_xml.write_to_file(dump_dict, file_path)
+        self.assertTrue(os.path.exists(file_path), "File not made")
+        os.remove(file_path)
+
+    def test_output_csv(self):
+        dump_dict = self._test_extract_data_for_export()
+        print(dump_dict)
+        file_path = "invoices-output-for-test.csv"
+        to_csv.write_to_file(dump_dict, file_path)
+        self.assertTrue(os.path.exists(file_path), "File not made")
+        os.remove(file_path)
+
+
     # def test_extract_data_pdfminer(self):
     #     pdf_files = self._get_test_file_pdf_path()
     #     for file in pdf_files:
@@ -99,15 +131,15 @@ class TestCLI(unittest.TestCase):
     #         self.assertTrue(False, "pdfminer is not installed")
     #     self.assertTrue(type(res) is dict, "return is not a dict")
 
-    def test_extract_data_pdfminer(self):
-        pdf_files = self._get_test_file_pdf_path()
-        for file in pdf_files:
-            try:
-                res = extract_data(file, None, pdfminer)
-                print(res)  # Check why logger.info is not working, for the time being using print
-            except ImportError:
-                self.assertTrue(False, "pdfminer is not installed")
-            self.assertTrue(type(res) is dict, "return is not a dict")
+    # def test_extract_data_pdfminer(self):
+    #     pdf_files = self._get_test_file_pdf_path()
+    #     for file in pdf_files:
+    #         try:
+    #             res = extract_data(file, None, pdfminer)
+    #             print(res)  # Check why logger.info is not working, for the time being using print
+    #         except ImportError:
+    #             self.assertTrue(False, "pdfminer is not installed")
+    #         self.assertTrue(type(res) is dict, "return is not a dict")
 
     # def test_extract_data_tesseract(self):
     #     img_files = self._get_test_file_img_path()
