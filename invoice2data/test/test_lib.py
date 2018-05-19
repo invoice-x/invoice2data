@@ -91,15 +91,15 @@ class TestCLI(unittest.TestCase):
                 self.assertTrue(False, "pdftotext is not installed")
             self.assertTrue(type(res) is dict, "return is not a dict")
 
-    def test_extract_data_pdfminer(self):
-        pdf_files = self._get_test_file_pdf_path()
-        for file in pdf_files:
-            try:
-                res = extract_data(file, None, pdfminer)
-                print(res)  # Check why logger.info is not working, for the time being using print
-            except ModuleNotFoundError:
-                self.assertTrue(False, "pdfminer is not installed")
-            self.assertTrue(type(res) is dict, "return is not a dict")
+    # def test_extract_data_pdfminer(self):
+    #     pdf_files = self._get_test_file_pdf_path()
+    #     for file in pdf_files:
+    #         try:
+    #             res = extract_data(file, None, pdfminer)
+    #             print(res)  # Check why logger.info is not working, for the time being using print
+    #         except ModuleNotFoundError:
+    #             self.assertTrue(False, "pdfminer is not installed")
+    #         self.assertTrue(type(res) is dict, "return is not a dict")
 
     # def test_extract_data_tesseract(self):
     #     img_files = self._get_test_file_img_path()
