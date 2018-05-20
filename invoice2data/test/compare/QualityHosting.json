@@ -1,0 +1,56 @@
+[
+    {
+        "amount": 34.73,
+        "amount_untaxed": 34.73,
+        "currency": "EUR",
+        "date": "07/05/2014",
+        "desc": "Invoice 30064443 from QualityHosting AG",
+        "invoice_number": "30064443",
+        "issuer": "QualityHosting AG",
+        "lines": [
+            {
+                "desc": "Small Business StandardExchange 2010\nGrundgeb\u00fchr pro Einheit\nDienst: OUDJQ_strukan\n01.05.14-31.05.14",
+                "pos": "1",
+                "price": 3.89,
+                "qty": 1.0
+            },
+            {
+                "desc": "Small Business QualityExchange 2010\nGrundgeb\u00fchr pro Einheit\nDienst: OUDJQ_schneider\n01.05.14-31.05.14",
+                "pos": "2",
+                "price": 5.39,
+                "qty": 1.0
+            },
+            {
+                "desc": "Small Business QualityExchange 2010\nGrundgeb\u00fchr pro Einheit\nDienst: OUDJQ_minar\n01.05.14-31.05.14",
+                "pos": "3",
+                "price": 5.39,
+                "qty": 1.0
+            },
+            {
+                "desc": "Small Business QualityExchange 2010\nGrundgeb\u00fchr pro Einheit\nDienst: OUDJQ_mayr\n01.05.14-31.05.14",
+                "pos": "4",
+                "price": 5.39,
+                "qty": 1.0
+            },
+            {
+                "desc": "Small Business QualityExchange 2010\nGrundgeb\u00fchr pro Einheit\nDienst: OUDJQ_jenewein\n01.05.14-31.05.14",
+                "pos": "5",
+                "price": 5.39,
+                "qty": 1.0
+            },
+            {
+                "desc": "Small Business QualityExchange 2010\nGrundgeb\u00fchr pro Einheit\nDienst: OUDJQ_jauernik\n01.05.14-31.05.14\nQualityHosting AG - Uferweg 40-42 - D-63571 Gelnhausen\niViveLabs Ltd.\n93B Sai Yu Chung\nYuen Long, N.T.\nHong Kong\nPos.            Menge      Beschreibung                                                            Rabatt %     VK-Preis     Zeilenbetrag\nOhne      Ohne MwSt.\nMwSt.",
+                "pos": "6",
+                "price": 5.39,
+                "qty": 1.0
+            },
+            {
+                "desc": "Small Business StandardExchange 2010\nGrundgeb\u00fchr pro Einheit\nDienst: OUDJQ_office\n01.05.14-31.05.14\n",
+                "pos": "7",
+                "price": 3.89,
+                "qty": 1.0
+            }
+        ],
+        "vat": "DE 232 446 240"
+    }
+]
