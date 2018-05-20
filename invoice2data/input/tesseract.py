@@ -14,14 +14,21 @@ def to_text(path):
 
     """
     import subprocess
+    from distutil import spawn
 
-    convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
-    p1 = subprocess.Popen(convert.split(' '), stdout=subprocess.PIPE)
+    if spawn.find_executable('tesseract') and spawn.find_executable('convert'):
+        convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
+        p1 = subprocess.Popen(convert.split(' '), stdout=subprocess.PIPE)
 
-    p2 = subprocess.Popen("tesseract stdin stdout".split(' '),
-                          stdin=p1.stdout, stdout=subprocess.PIPE)
-    out, err = p2.communicate()
+        p2 = subprocess.Popen("tesseract stdin stdout".split(' '),
+                              stdin=p1.stdout, stdout=subprocess.PIPE)
+        out, err = p2.communicate()
 
-    extracted_str = out
+        extracted_str = out
 
-    return extracted_str
+        return extracted_str
+    else:
+        if spawn.find_executable('tesseract'):
+            raise EnvironmentError('tesseract not installed.')
+        if spawn.find_executable('convert'):
+            raise EnvironmentError('imagemagick not installed.')
