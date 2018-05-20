@@ -14,81 +14,25 @@ import pkg_resources
 from invoice2data.main import *
 from invoice2data.input import *
 
+from .common import *
+
+def _extract_data_for_export():
+    pdf_files = get_sample_files('.pdf')
+    for file in pdf_files:
+        if file.endswith("oyo.pdf"):
+            res = [extract_data(file, None)]
+            return res
 
 class TestCLI(unittest.TestCase):
-    def setUp(self):
-        # self.templates = read_templates()
-        # vself.parser = create_parser()
-        pass
-
-    def _get_test_file_pdf_path(self):
-        out_files = []
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-            for file in files:
-                if file.endswith(".pdf"):
-                    out_files.append(os.path.join(path, file))
-        return out_files
-
-    def _get_test_file_img_path(self):
-        out_files = []
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-            for file in files:
-                if file.endswith(".png"):
-                    out_files.append(os.path.join(path, file))
-        return out_files
-
-    # def _get_test_file_json_path(self):
-    #     compare_files = []
-    #     for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-    #         for file in files:
-    #             if file.endswith(".json"):
-    #                 compare_files.append(os.path.join(path, file))
-    #     return compare_files
-
-    # def compare_json_content(self, test_file, json_file):
-    #     with open(test_file) as json_test_file, open(json_file) as json_json_file:
-    #         jdatatest = json.load(json_test_file)
-    #         jdatajson = json.load(json_json_file)
-    #     if jdatajson == jdatatest:
-    #         logger.info("True")
-    #         return True
-    #     else:
-    #         logger.info("False")
-    #         return False
-
-    # def test_content_json(self):
-    #     pdf_files = self._get_test_file_pdf_path()
-    #     json_files = self._get_test_file_json_path()
-    #     test_files = 'test_compare.json'
-    #     for pfile in pdf_files:
-    #         for jfile in json_files:
-    #             if pfile[:-4] == jfile[:-5]:
-    #                 args = self.parser.parse_args(
-    #                     ['--output-name', test_files, '--output-format', 'json', pfile])
-    #                 main(args)
-    #                 compare_verified = self.compare_json_content(test_files, jfile)
-    #                 print(compare_verified)
-    #                 if not compare_verified:
-    #                     self.assertTrue(False)
-    #                 os.remove(test_files)
-    #     self.assertTrue(True)
-
     def test_extract_data(self):
-        pdf_files = self._get_test_file_pdf_path()
+        pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
             res = extract_data(file, None)
             print(res)  # Check why logger.info is not working, for the time being using print
             self.assertTrue(type(res) is dict, "return is not a dict")
 
-    def _test_extract_data_for_export(self):
-        pdf_files = self._get_test_file_pdf_path()
-        for file in pdf_files:
-            if file.endswith("oyo.pdf"):
-                res = [extract_data(file, None)]
-                return res
-
     def test_extract_data_pdftotext(self):
-        pdf_files = self._get_test_file_pdf_path()
+        pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
             try:
                 res = extract_data(file, None, pdftotext)
@@ -99,7 +43,7 @@ class TestCLI(unittest.TestCase):
             self.assertTrue(type(res) is dict, "return is not a dict")
 
     def test_output_json(self):
-        dump_dict = self._test_extract_data_for_export()
+        dump_dict = _extract_data_for_export()
         print(dump_dict)
         file_path = "invoices-output-for-test.json"
         to_json.write_to_file(dump_dict, file_path)
@@ -107,7 +51,7 @@ class TestCLI(unittest.TestCase):
         os.remove(file_path)
 
     def test_output_xml(self):
-        dump_dict = self._test_extract_data_for_export()
+        dump_dict = _extract_data_for_export()
         print(dump_dict)
         file_path = "invoices-output-for-test.xml"
         to_xml.write_to_file(dump_dict, file_path)
@@ -115,7 +59,7 @@ class TestCLI(unittest.TestCase):
         os.remove(file_path)
 
     def test_output_csv(self):
-        dump_dict = self._test_extract_data_for_export()
+        dump_dict = _extract_data_for_export()
         print(dump_dict)
         file_path = "invoices-output-for-test.csv"
         to_csv.write_to_file(dump_dict, file_path)

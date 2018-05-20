@@ -14,27 +14,13 @@ import pkg_resources
 from invoice2data.main import *
 from invoice2data.extract.loader import read_templates
 
+from .common import *
+
 
 class TestCLI(unittest.TestCase):
     def setUp(self):
         self.templates = read_templates()
         self.parser = create_parser()
-
-    def _get_test_file_pdf_path(self):
-        out_files = []
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-            for file in files:
-                if file.endswith(".pdf"):
-                    out_files.append(os.path.join(path, file))
-        return out_files
-
-    def _get_test_file_json_path(self):
-        compare_files = []
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
-            for file in files:
-                if file.endswith(".json"):
-                    compare_files.append(os.path.join(path, file))
-        return compare_files
 
     def compare_json_content(self, test_file, json_file):
         with open(test_file) as json_test_file, open(json_file) as json_json_file:
@@ -50,27 +36,27 @@ class TestCLI(unittest.TestCase):
             return False
 
     def test_input(self):
-        args = self.parser.parse_args(['--input-reader', 'pdftotext'] + self._get_test_file_pdf_path())
+        args = self.parser.parse_args(['--input-reader', 'pdftotext'] + get_sample_files('.pdf'))
         main(args)
 
     def test_output_name(self):
         test_file = 'inv_test_8asd89f78a9df.csv'
         args = self.parser.parse_args(['--output-name', test_file, '--output-format', 'csv']
-                                      + self._get_test_file_pdf_path())
+                                      + get_sample_files('.pdf'))
         main(args)
         self.assertTrue(os.path.exists(test_file))
         os.remove(test_file)
 
     def test_debug(self):
-        args = self.parser.parse_args(['--debug'] + self._get_test_file_pdf_path())
+        args = self.parser.parse_args(['--debug'] + get_sample_files('.pdf'))
         main(args)
 
     # TODO: move result comparison to own test module.
     # TODO: parse output files instaed of comparing them byte-by-byte.
 
     def test_content_json(self):
-        pdf_files = self._get_test_file_pdf_path()
-        json_files = self._get_test_file_json_path()
+        pdf_files = get_sample_files('.pdf')
+        json_files = get_sample_files('.json')
         test_files = 'test_compare.json'
         for pfile in pdf_files:
             for jfile in json_files:
@@ -89,7 +75,7 @@ class TestCLI(unittest.TestCase):
         # folder = pkg_resources.resource_filename(__name__, 'pdfs')
         directory = os.path.dirname("invoice2data/test/copy_test/pdf/")
         os.makedirs(directory)
-        args = self.parser.parse_args(['--copy', 'invoice2data/test/copy_test/pdf'] + self._get_test_file_pdf_path())
+        args = self.parser.parse_args(['--copy', 'invoice2data/test/copy_test/pdf'] + get_sample_files('.pdf'))
         main(args)
         i = 0
         for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'copy_test/pdf')):
@@ -98,7 +84,7 @@ class TestCLI(unittest.TestCase):
                     i += 1
 
         shutil.rmtree('invoice2data/test/copy_test/', ignore_errors=True)
-        self.assertEqual(i, len(self._get_test_file_json_path()))
+        self.assertEqual(i, len(get_sample_files('.json')))
         '''
         if i != len(self._get_test_file_json_path()):
             print(i)
