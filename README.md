@@ -1,6 +1,6 @@
 # Data extractor for PDF invoices - invoice2data
 
-[![Circle CI](https://circleci.com/gh/m3nu/invoice2data.svg?style=svg)](https://circleci.com/gh/m3nu/invoice2data)
+[![Circle CI](https://circleci.com/gh/invoice-x/invoice2data.svg?style=svg)](https://circleci.com/gh/invoice-x/invoice2data)
 
 This project has been selected for [GSoC 2018](https://developers.google.com/open-source/gsoc/). Read more [here](https://wiki.debian.org/SummerOfCode2018/Projects/ExtractingDataFromPDFInvoicesAndBillsDetails).
 
