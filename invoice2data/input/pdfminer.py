@@ -14,11 +14,15 @@ def to_text(path):
 
     """
 
+    try:
+        from StringIO import StringIO
+    except ImportError:
+        from io import StringIO
+
     from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
     from pdfminer.converter import TextConverter
     from pdfminer.layout import LAParams
     from pdfminer.pdfpage import PDFPage
-    from cStringIO import StringIO
 
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
@@ -40,4 +44,4 @@ def to_text(path):
     device.close()
     str = retstr.getvalue()
     retstr.close()
-    return str
+    return str.encode('utf-8')
