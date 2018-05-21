@@ -25,7 +25,7 @@ FILENAME = "{date} {desc}.pdf"
 input_mapping = {
     'pdftotext': pdftotext,
     'tesseract': tesseract,
-    'pdfminer': pdfminer,
+    'pdfminer': pdfminer_wrapper,
     }
 
 output_mapping = {
