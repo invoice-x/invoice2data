@@ -14,7 +14,7 @@ def to_text(path):
 
     """
     import subprocess
-    from distutil import spawn
+    from distutils import spawn
 
     if spawn.find_executable('tesseract') and spawn.find_executable('convert'):
         convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
@@ -28,7 +28,7 @@ def to_text(path):
 
         return extracted_str
     else:
-        if spawn.find_executable('tesseract'):
+        if not spawn.find_executable('tesseract'):
             raise EnvironmentError('tesseract not installed.')
-        if spawn.find_executable('convert'):
+        if not spawn.find_executable('convert'):
             raise EnvironmentError('imagemagick not installed.')
