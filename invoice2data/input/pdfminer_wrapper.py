@@ -19,6 +19,11 @@ def to_text(path):
     except ImportError:
         from io import StringIO
 
+    # fix for Python 2.
+    import sys
+    reload(sys)  
+    sys.setdefaultencoding('utf8')
+
     from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
     from pdfminer.converter import TextConverter
     from pdfminer.layout import LAParams
