@@ -66,36 +66,12 @@ class TestCLI(unittest.TestCase):
         self.assertTrue(os.path.exists(file_path), "File not made")
         os.remove(file_path)
 
-
-    # def test_extract_data_pdfminer(self):
-    #     pdf_files = self._get_test_file_pdf_path()
-    #     for file in pdf_files:
-    #         res = extract_data(file, None, pdfminer)
-    #         print(res)  # Check why logger.info is not working, for the time being using print
-    #         self.assertTrue(False, "pdfminer is not installed")
-    #     self.assertTrue(type(res) is dict, "return is not a dict")
-
-    # def test_extract_data_pdfminer(self):
-    #     pdf_files = self._get_test_file_pdf_path()
-    #     for file in pdf_files:
-    #         try:
-    #             res = extract_data(file, None, pdfminer)
-    #             print(res)  # Check why logger.info is not working, for the time being using print
-    #         except ImportError:
-    #             self.assertTrue(False, "pdfminer is not installed")
-    #         self.assertTrue(type(res) is dict, "return is not a dict")
-
-    # def test_extract_data_tesseract(self):
-    #     img_files = self._get_test_file_img_path()
-    #     for file in img_files:
-    #         try:
-    #             res = extract_data(file, None, tesseract)
-    #             print(res)  # Check why logger.info is not working, for the time being using print
-    #         except (ModuleNotFoundError, FileNotFoundError):
-    #             # print("Tesseract module not installed!")
-    #             self.assertTrue(False, "tesseract is not installed")
-    #         self.assertTrue(type(res) is dict, "return is not a dict")
-
+    def test_extract_data_pdfminer(self):
+        pdf_files = get_sample_files('.pdf')
+        for file in pdf_files:
+            res = extract_data(file, None, pdfminer_wrapper)
+            # TODO: some invoices are not recognized with pdfminer.
+            # self.assertTrue(type(res) is dict, "return is not a dict")
 
 if __name__ == '__main__':
     unittest.main()
