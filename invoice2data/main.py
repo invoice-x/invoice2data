@@ -8,7 +8,7 @@ from os.path import join
 import logging
 
 from .input import pdftotext
-from .input import pdfminer
+from .input import pdfminer_wrapper
 from .input import tesseract
 
 from invoice2data.extract.loader import read_templates
