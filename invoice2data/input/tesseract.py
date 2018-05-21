@@ -14,6 +14,13 @@ def to_text(path):
 
     """
     import subprocess
+    from distutils import spawn
+
+    # Check for dependencies. Needs Tesseract and Imagemagick installed.
+    if not spawn.find_executable('tesseract'):
+        raise EnvironmentError('tesseract not installed.')
+    if not spawn.find_executable('convert'):
+        raise EnvironmentError('imagemagick not installed.')
 
     convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
     p1 = subprocess.Popen(convert.split(' '), stdout=subprocess.PIPE)
