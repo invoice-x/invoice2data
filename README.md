@@ -135,3 +135,11 @@ If you are interested in improving this project, have a look at our [developer g
 ## Contributors
 - [Harshit Joshi](https://github.com/duskybomb): As Google Summer of Code student.
 - [Holger Brunn](https://github.com/hbrunn): Add support for parsing invoice items.
+
+## Related Projects
+ * [OCR-Invoice](https://github.com/robela/OCR-Invoice) (FOSS | C#)
+ * [Docparser](https://docparser.com/) (Commercial | Web Service)
+ * [A-PDF](http://www.a-pdf.com/data-extractor/index.htm) (Commercial)
+ * [PDFdeconstruct](http://www.glyphandcog.com/PDFdeconstruct.html?g6) (Commercial)
+ * [CVision](http://www.cvisiontech.com/library/document-automation/forms-processing/extract-data-from-invoice.html) (Commercial) 
+    
