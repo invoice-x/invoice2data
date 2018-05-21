@@ -21,6 +21,7 @@ def to_text(path):
 
     # fix for Python 2.
     import sys
+    from imp import reload
     reload(sys)  
     sys.setdefaultencoding('utf8')
 
