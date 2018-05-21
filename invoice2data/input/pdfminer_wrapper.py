@@ -15,15 +15,13 @@ def to_text(path):
     """
 
     try:
+        # python 2
         from StringIO import StringIO
+        import sys
+        reload(sys)  
+        sys.setdefaultencoding('utf8')
     except ImportError:
         from io import StringIO
-
-    # fix for Python 2.
-    import sys
-    from imp import reload
-    reload(sys)  
-    sys.setdefaultencoding('utf8')
 
     from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
     from pdfminer.converter import TextConverter
