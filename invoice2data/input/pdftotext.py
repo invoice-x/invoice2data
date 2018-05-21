@@ -22,8 +22,6 @@ def to_text(path):
     import shutil
     from distutils import spawn #py2 compat
 
-
-
     if spawn.find_executable("pdftotext"): #shutil.which('pdftotext'):
         out, err = subprocess.Popen(
             ["pdftotext", '-layout', '-enc', 'UTF-8', path, '-'],

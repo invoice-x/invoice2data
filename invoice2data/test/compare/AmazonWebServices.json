@@ -1,0 +1,31 @@
+[
+    {
+        "amount": 4.11,
+        "amount_untaxed": 4.11,
+        "currency": "USD",
+        "date": "03/08/2014",
+        "desc": "Invoice 42183017 from Amazon Web Services",
+        "invoice_number": "42183017",
+        "issuer": "Amazon Web Services",
+        "lines": [
+            {
+                "description": "AWS Data Transfer",
+                "price_unit": "0.01"
+            },
+            {
+                "description": "Amazon Elastic Compute Cloud",
+                "price_unit": "1.87"
+            },
+            {
+                "description": "Amazon Glacier",
+                "price_unit": "2.22"
+            },
+            {
+                "description": "Amazon Simple Storage Service",
+                "price_unit": "0.01"
+            }
+        ],
+        "partner_name": "Amazon Web Services, Inc.",
+        "partner_website": "aws.amazon.com"
+    }
+]
