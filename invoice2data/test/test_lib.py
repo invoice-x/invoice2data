@@ -69,7 +69,7 @@ class TestCLI(unittest.TestCase):
     def test_extract_data_pdfminer(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
-            res = extract_data(file, None, pdfminer)
+            res = extract_data(file, None, pdfminer_wrapper)
             # TODO: some invoices are not recognized with pdfminer.
             # self.assertTrue(type(res) is dict, "return is not a dict")
 
