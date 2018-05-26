@@ -144,7 +144,7 @@ Development
 -----------
 
 If you are interested in improving this project, have a look at our
-`developer guide <DEVELOP.md>`__ to get you started quickly.
+`developer guide <DEVELOP.rst>`__ to get you started quickly.
 
 Roadmap and open tasks
 ----------------------
