@@ -104,7 +104,7 @@ See ``invoice2data/templates`` for existing templates. Just extend the
 list to add your own. If deployed by a bigger organisation, there should
 be an interface to edit templates for new suppliers. 80-20 rule. For a
 short tutorial on how to add new templates, see
-`TUTORIAL.md <TUTORIAL.md>`__.
+`TUTORIAL.rst <TUTORIAL.rst>`__.
 
 Templates are based on Yaml. They define one or more keywords to find
 the right template and regexp for fields to be extracted. They could
