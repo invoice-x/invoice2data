@@ -73,5 +73,14 @@ class TestCLI(unittest.TestCase):
             # TODO: some invoices are not recognized with pdfminer.
             # self.assertTrue(type(res) is dict, "return is not a dict")
 
+    def test_tesseract_for_return(self):
+        png_files = get_sample_files('.png')
+        for file in png_files:
+            if tesseract.to_text(file) is None:
+                self.assertTrue(False, "Tesseract returned None")
+            else:
+                self.assertTrue(True)
+
+
 if __name__ == '__main__':
     unittest.main()
