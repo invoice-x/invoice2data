@@ -48,3 +48,13 @@ To run tests using the current Python version:
 
 To run tests using all supported Python versions: ``tox`` (needs
 ``pyenv`` and corresponding Python versions installed.)
+
+Coverage
+--------
+To test coverage we recommend using ``pytest-cov``
+
+::
+
+   pip install pytest-cov
+   py.test --cov-report html --cov invoice2data --verbose
+   [yourbrowser] htmlconv/index.hml
