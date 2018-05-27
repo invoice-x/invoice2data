@@ -54,18 +54,22 @@ included with macOS Homebrew, Debian and Ubuntu. Without it,
 Usage
 -----
 
-Basic usage. Process PDF files and write result to CSV. -
-``invoice2data invoice.pdf`` - ``invoice2data *.pdf``
+Basic usage. Process PDF files and write result to CSV. 
 
-Choose any of the following three input readers: \* pdftotext
-``invoice2data --input-reader pdftotext invoice.pdf`` \* tesseract
-``invoice2data --input-reader tesseract invoice.pdf`` \* pdf miner
-``invoice2data --input-reader pdfminer invoice.pdf``
+ - ``invoice2data invoice.pdf``
+ - ``invoice2data *.pdf``
 
-Choose any of the following output formats: \* csv
-``invoice2data --output-format csv invoice.pdf`` \* json
-``invoice2data --output-format json invoice.pdf`` \* xml
-``invoice2data --output-format xml invoice.pdf``
+Choose any of the following three input readers:
+
+ - pdftotext ``invoice2data --input-reader pdftotext invoice.pdf``
+ - tesseract ``invoice2data --input-reader tesseract invoice.pdf``
+ - pdf miner ``invoice2data --input-reader pdfminer invoice.pdf``
+
+Choose any of the following output formats:
+
+ - csv ``invoice2data --output-format csv invoice.pdf``
+ - json ``invoice2data --output-format json invoice.pdf``
+ - xml ``invoice2data --output-format xml invoice.pdf``
 
 Save output file with custom name or a specific folder
 ``invoice2data --output-format csv --output-name myinvoices/invoices.csv invoice.pdf``
