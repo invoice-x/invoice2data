@@ -168,8 +168,7 @@ class InvoiceTemplate(OrderedDict):
                             if sum_field:
                                 res_find += res_val
                             else:
-                                res_find = res_val
-                                break
+                                res_find.extend(res_val)
                 else:
                     res_find = re.findall(v, optimized_str)
                 if res_find:
@@ -188,7 +187,11 @@ class InvoiceTemplate(OrderedDict):
                         else:
                             output[k] = self.parse_number(res_find[0])
                     else:
-                        output[k] = res_find[0]
+                        res_find = list(set(res_find))
+                        if len(res_find) == 1:
+                            output[k] = res_find[0]
+                        else:
+                            output[k] = res_find
                 else:
                     logger.warning("regexp for field %s didn't match", k)
 

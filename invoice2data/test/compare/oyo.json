@@ -5,6 +5,7 @@
         "date": "31/12/2017",
         "desc": "Invoice IBZY2087 from OYO",
         "invoice_number": "IBZY2087",
-        "issuer": "OYO"
+        "issuer": "OYO",
+        "payment_method": "Cash"
     }
 ]
