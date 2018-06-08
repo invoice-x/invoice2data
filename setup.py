@@ -5,7 +5,7 @@ import sys
 
 setup(
     name='invoice2data',
-    version='0.2.97',
+    version='0.2.98',
     author='Manuel Riel',
     author_email='github@snapdragon.cc',
     url='https://github.com/m3nu/invoice2data',
