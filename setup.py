@@ -5,13 +5,13 @@ import sys
 
 setup(
     name='invoice2data',
-    version='0.2.93',
+    version='0.2.97',
     author='Manuel Riel',
     author_email='github@snapdragon.cc',
     url='https://github.com/m3nu/invoice2data',
     description='Python parser to extract data from pdf invoice',
     license="MIT",
-    long_description=open(path.join(path.dirname(__file__), 'README.md')).read(),
+    long_description=open(path.join(path.dirname(__file__), 'README.rst')).read(),
     package_data = {
         'invoice2data.extract': [
             'templates/com/*.yml',
