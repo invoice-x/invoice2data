@@ -85,9 +85,9 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
     # print(templates[0])
     extracted_str = input_module.to_text(invoicefile).decode('utf-8')
 
-    logger.debug('START pdftotext result ===========================')
+    logger.debug('START %s result ===========================', input_module.__name__.split('.')[2])
     logger.debug(extracted_str)
-    logger.debug('END pdftotext result =============================')
+    logger.debug('END %s result =============================', input_module.__name__.split('.')[2])
 
     logger.debug('Testing {} template files'.format(len(templates)))
     for t in templates:
