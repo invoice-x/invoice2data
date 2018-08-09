@@ -174,6 +174,9 @@ options and their defaults are:
    names of months.
 -  ``replace`` (default = ``[]``): Additional search and replace before
    matching. Not needed usually.
+-  ``required_fields``: By default the template should have regex for date, amount, 
+   invoice_number and issuer. If you wish to extract different fields, you can supply 
+   a list here. The extraction will fail if not all fields are matched.
 
 Example of template using most options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,6 +193,9 @@ Example of template using most options
     keywords:
       - FR25499247138
       - Facture
+    required_fields:
+      - static_vat
+      - invoice_number
     options:
       currency: EUR
       date_formats:

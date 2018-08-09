@@ -13,6 +13,8 @@ from .invoice_template import InvoiceTemplate
 import codecs
 import chardet
 
+logger.getLogger('chardet').setLevel(logger.WARNING)
+
 # borrowed from http://stackoverflow.com/a/21912744
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     """load mappings and ordered mappings
@@ -86,9 +88,6 @@ def read_templates(folder=None):
 
                 # Test if all required fields are in template:
                 assert 'keywords' in tpl.keys(), 'Missing keywords field.'
-                required_fields = ['date', 'amount', 'invoice_number']
-                assert len(set(required_fields).intersection(tpl['fields'].keys())) == len(required_fields), \
-                    'Missing required key in template {} {}. Found {}'.format(name, path, tpl['fields'].keys())
 
                 # Keywords as list, if only one.
                 if type(tpl['keywords']) is not list:
