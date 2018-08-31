@@ -149,7 +149,6 @@ def main(args=None):
     output_module = output_mapping[args.output_format]
 
     templates = []
-
     # Load templates from external folder if set.
     if args.template_folder:
         templates += read_templates(os.path.abspath(args.template_folder))
@@ -157,7 +156,6 @@ def main(args=None):
     # Load internal templates, if not disabled.
     if not args.exclude_built_in_templates:
         templates += read_templates()
-
     output = []
     for f in args.input_files:
         res = extract_data(f.name, templates=templates, input_module=input_module)
