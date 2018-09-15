@@ -92,8 +92,12 @@ class InvoiceTemplate(OrderedDict):
 
     def matches_input(self, optimized_str):
         """See if string matches keywords set in template file"""
+        if 'banned_keywords' in self:
+            if (all([keyword in optimized_str for keyword in self['keywords']]) and not any([keyword in optimized_str for keyword in self['banned_keywords']])):
+                logger.debug('Matched template %s', self['template_name'])
+                return True
 
-        if all([keyword in optimized_str for keyword in self['keywords']]):
+        elif all([keyword in optimized_str for keyword in self['keywords']]):
             logger.debug('Matched template %s', self['template_name'])
             return True
 
