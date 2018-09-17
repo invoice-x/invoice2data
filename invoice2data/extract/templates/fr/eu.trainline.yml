@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+issuer: Trainline.eu
+fields:
+  amount: Paiement Trainline du.+\s(\d+,\d{2})\s+€
+  amount_untaxed: Paiement Trainline du.+\s(\d+,\d{2})\s+€
+  date: \d+,\d{2}\D+(\d+\s.+\s\d{4})
+  description:
+    - Billet aller\s+[A-Z]+ − (.+?(?=\s{3}))
+    - Billet\s+[A-Z]+ − (.+?(?=\s{3}))
+  invoice_number:
+    - Billet aller\s+([A-Z]+)
+    - Billet\s+([A-Z]+)
+  static_vat: FR58512277450
+keywords:
+  - FR58512277450
+  - PAIEMENT
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: ','
