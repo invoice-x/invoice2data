@@ -117,11 +117,14 @@ def create_parser():
                         help='Enable debug information.')
 
     parser.add_argument('--copy', '-c', dest='copy',
-                        help='Copy renamed PDFs to specified folder.')
+                        help='Copy and rename processed PDFs to specified folder.')
+
+    parser.add_argument('--move', '-m', dest='move',
+                        help='Move and rename processed PDFs to specified folder.')
 
     parser.add_argument('--template-folder', '-t', dest='template_folder',
                         help='Folder containing invoice templates in yml file. Always adds built-in templates.')
-    
+
     parser.add_argument('--exclude-built-in-templates', dest='exclude_built_in_templates',
                         default=False, help='Ignore built-in templates.', action="store_true")
 
@@ -146,7 +149,6 @@ def main(args=None):
     output_module = output_mapping[args.output_format]
 
     templates = []
-    
     # Load templates from external folder if set.
     if args.template_folder:
         templates += read_templates(os.path.abspath(args.template_folder))
@@ -154,7 +156,6 @@ def main(args=None):
     # Load internal templates, if not disabled.
     if not args.exclude_built_in_templates:
         templates += read_templates()
-    
     output = []
     for f in args.input_files:
         res = extract_data(f.name, templates=templates, input_module=input_module)
@@ -166,6 +167,11 @@ def main(args=None):
                     date=res['date'].strftime('%Y-%m-%d'),
                     desc=res['desc'])
                 shutil.copyfile(f.name, join(args.copy, filename))
+            if args.move:
+                filename = FILENAME.format(
+                    date=res['date'].strftime('%Y-%m-%d'),
+                    desc=res['desc'])
+                shutil.move(f.name, join(args.move, filename))
 
     if output_module is not None:
         output_module.write_to_file(output, args.output_name)
@@ -173,4 +179,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
