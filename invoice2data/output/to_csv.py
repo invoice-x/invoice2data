@@ -35,21 +35,8 @@ def write_to_file(data, path):
     else:
         openfile = open(filename, "w", newline='')
 
+    keys = data[0].keys()
     with openfile as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
-
-        for line in data:
-            first_row = []
-            for k, v in line.items():
-                first_row.append(k)
-
-        writer.writerow(first_row)
-        for line in data:
-            csv_items = []
-            for k, v in line.items():
-                # first_row.append(k)
-                if k == 'date':
-                    v = v.strftime('%d/%m/%Y')
-                csv_items.append(v)
-            writer.writerow(csv_items)
-
+        dict_writer = csv.DictWriter(csv_file, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(data)

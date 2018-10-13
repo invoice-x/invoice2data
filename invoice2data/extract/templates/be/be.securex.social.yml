@@ -1,0 +1,13 @@
+issuer: Secretar. Social Securex
+fields:
+  amount_untaxed: 21,00%Base:\s?(\d?\.?\d+,\d+)\s+
+  amount: TOTALAPAYER\(EUR\):\s+[a-z]{0,}(\d?\.?\d+,\d+)
+  date:  FACTURE\d+/\d+du(\d+/\d+/\d+)
+  invoice_number: 'FACTURE(\d+/\d+)du'
+keywords:
+- BBRUBEBBBE58390001370179
+- FACTURE
+options:
+  currency: EUR
+  remove_whitespace: true
+  decimal_separator: ','

@@ -114,7 +114,7 @@ class InvoiceTemplate(OrderedDict):
             value, date_formats=self.options['date_formats'],
             languages=self.options['languages'])
         logger.debug("result of date parsing=%s", res)
-        return res
+        return res.date()
 
     def coerce_type(self, value, target_type):
         if target_type == 'int':
@@ -163,14 +163,14 @@ class InvoiceTemplate(OrderedDict):
                 if type(v) is list:
                     res_find = []
                     for v_option in v:
-                        res_val = re.findall(v_option, optimized_str)
+                        res_val = re.findall(v_option, optimized_str, re.MULTILINE | re.UNICODE)
                         if res_val:
                             if sum_field:
                                 res_find += res_val
                             else:
                                 res_find.extend(res_val)
                 else:
-                    res_find = re.findall(v, optimized_str)
+                    res_find = re.findall(v, optimized_str, re.MULTILINE | re.UNICODE)
                 if res_find:
                     logger.debug("res_find=%s", res_find)
                     if k.startswith('date') or k.endswith('date'):

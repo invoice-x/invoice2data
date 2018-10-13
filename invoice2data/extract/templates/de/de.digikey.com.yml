@@ -43,7 +43,7 @@ options:
     - '%d-%b-%Y'
   languages:
     - de
-  decimal_seperator: '.'
+  decimal_separator: '.'
   replace:
     - ['JAN', 'Jan']
     - ['FEB', 'Feb']
