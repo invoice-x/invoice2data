@@ -10,6 +10,8 @@ import logging
 from .input import pdftotext
 from .input import pdfminer_wrapper
 from .input import tesseract
+from .input import tesseract4
+from .input import gvision
 
 from invoice2data.extract.loader import read_templates
 
@@ -25,7 +27,9 @@ FILENAME = "{date} {desc}.pdf"
 input_mapping = {
     'pdftotext': pdftotext,
     'tesseract': tesseract,
+    'tesseract4': tesseract4,
     'pdfminer': pdfminer_wrapper,
+    'gvision': gvision
     }
 
 output_mapping = {
@@ -94,7 +98,10 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         optimized_str = t.prepare_input(extracted_str)
 
         if t.matches_input(optimized_str):
-            return t.extract(optimized_str)
+            result = t.extract(optimized_str)
+            if result:
+                result.update(file=os.path.basename(invoicefile))
+                return result
 
     logger.error('No template for %s', invoicefile)
     return False

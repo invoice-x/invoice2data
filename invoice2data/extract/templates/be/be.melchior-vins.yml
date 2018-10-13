@@ -1,0 +1,13 @@
+issuer: Melchior Vins
+fields:
+  amount_untaxed: (\d?\.?\d+.\d+)\s+21%
+  amount: APayerenEuro\s+(\d?,?\d+.\d+)\s+
+  date:  Date:\s(\d+.\d+.\d+)\sFACTURE
+  invoice_number: 'FACTURE\s+(\d+)'
+keywords:
+- www.melchior-vins.be
+- FACTURE
+options:
+  currency: EUR
+  remove_whitespace: true
+  decimal_separator: '.'

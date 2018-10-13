@@ -1,0 +1,13 @@
+issuer: S.P.R.L Pochet
+fields:
+  amount_untaxed: \sHTVA\s+(\d?\.?\d+,\d+)EUR\s+
+  amount: NETAPAYER\s+(\d?\.?\d+,\d+)EUR\s+
+  date:  DU(\d+/\d+/\d+)
+  invoice_number: 'FACTUREN.{1}(\d+)'
+keywords:
+- IBANBE68370103949634
+- FACTURE
+options:
+  currency: EUR
+  remove_whitespace: true
+  decimal_separator: ','
