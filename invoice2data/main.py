@@ -172,6 +172,7 @@ def main(args=None):
                     date=res['date'].strftime('%Y-%m-%d'),
                     desc=res['desc'])
                 shutil.move(f.name, join(args.move, filename))
+        f.close()
 
     if output_module is not None:
         output_module.write_to_file(output, args.output_name)
