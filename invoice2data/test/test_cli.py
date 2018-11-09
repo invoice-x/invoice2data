@@ -26,14 +26,7 @@ class TestCLI(unittest.TestCase):
         with open(test_file) as json_test_file, open(json_file) as json_json_file:
             jdatatest = json.load(json_test_file)
             jdatajson = json.load(json_json_file)
-        # logger.info(jdatajson)
-        # logger.info(jdatatest)
-        if jdatajson == jdatatest:
-            logger.info("True")
-            return True
-        else:
-            logger.info("False")
-            return False
+            return jdatajson == jdatatest
 
     def test_input(self):
         args = self.parser.parse_args(['--input-reader', 'pdftotext'] + get_sample_files('.pdf'))
@@ -69,7 +62,6 @@ class TestCLI(unittest.TestCase):
                     if not compare_verified:
                         self.assertTrue(False)
                     os.remove(test_files)
-        self.assertTrue(True)
 
     def test_copy(self):
         # folder = pkg_resources.resource_filename(__name__, 'pdfs')
