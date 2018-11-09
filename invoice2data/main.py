@@ -100,7 +100,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         if t.matches_input(optimized_str):
             result = t.extract(optimized_str)
             if result:
-                result.update(file=os.path.basename(invoicefile))
+                # result.update(file=os.path.basename(invoicefile))
                 return result
 
     logger.error('No template for %s', invoicefile)
