@@ -26,9 +26,7 @@ class TestCLI(unittest.TestCase):
         with open(test_file) as json_test_file, open(json_file) as json_json_file:
             jdatatest = json.load(json_test_file)
             jdatajson = json.load(json_json_file)
-        logger.error(jdatajson)
-        logger.error(jdatatest)
-        return jdatajson == jdatatest
+            return jdatajson == jdatatest
 
     def test_input(self):
         args = self.parser.parse_args(['--input-reader', 'pdftotext'] + get_sample_files('.pdf'))
