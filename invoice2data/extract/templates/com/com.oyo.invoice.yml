@@ -1,16 +1,22 @@
 issuer: OYO
 fields:
-  amount: GrandTotalRs(\d+)
-  date: Date:(\d{1,2}\/\d{1,2}\/\d{1,4})
-  invoice_number: ([A-Z0-9]+)CashatHotel
-  payment_method:
-    - \d+(\S*)atHotel
+  amount: Grand Total\s+Rs (\d+)
+  date: Date:\s(\d{1,2}\/\d{1,2}\/\d{1,4})
+  invoice_number: ([A-Z0-9]+)\s+Cash at Hotel
 keywords:
   - OYO
   - Oravel
   - Stays
-
+tables:
+  - start: Hotel Details\s+Check In\s+Check Out\s+Rooms
+    end: Booking ID
+    body: (?P<hotel_details>[\S ]+),\s+(?P<date_check_in>(?:0[1-9]|[12][0-9]|3[01])\/(?:0[1-9]|1[012])\/(?:19\d{2}|20\d{2}))\s+(?P<date_check_out>(?:0[1-9]|[12][0-9]|3[01])\/(?:0[1-9]|1[012])\/(?:19\d{2}|20\d{2}))\s+(?P<amount_rooms>\d+)
+  - start: Booking ID\s+Payment Mode
+    end: DESCRIPTION
+    body: (?P<booking_id>\w+)\s+(?P<payment_method>(?:\w+ ?)*)
+  - start: GSTIN\s+CIN
+    end: Oravel Stays Private Limited
+    body: (?P<gstin>\w+)\s+(?P<cin>\w+)
 options:
   currency: INR
   decimal_separator: '.'
-  remove_whitespace: true
