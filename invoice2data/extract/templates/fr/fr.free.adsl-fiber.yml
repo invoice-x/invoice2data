@@ -11,6 +11,10 @@ keywords:
   - FR 604 219 388 61
   - Facture
   - EUR
+tables:
+  - start: Numéro de ligne\s+Id\.client\s+Adresse de l’installation
+    end: Facture n°
+    body: (?P<line_number>\w+)\s+(?P<client_id>\d+)\s+[\w ]+
 options:
   currency: EUR
   date_formats:
