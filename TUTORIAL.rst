@@ -149,6 +149,58 @@ and if this one doesn’t match either, this line is ignored. This implies
 that you need to take care that the ``first_line`` regex is the most
 specific one, and ``line`` the least specific.
 
+Tables
+~~~~~
+
+The ``tables`` plugin allows you to parse table-oriented fields that have a row
+of column headers followed by a row of values on the next line. The plugin
+requires a ``start`` and ``end`` regex to identify where the table is located
+in the invoice. The ``body`` regex should contain named capture groups that
+will be added to the fields output. The plugin will attempt to match the
+``body`` regex to the invoice content found between the ``start`` and ``end``
+regexes.
+
+An example invoice that contains table-oriented data may look like:
+
+::
+
+    Guest Name: Sanjay                                                                      Date: 31/12/2017
+
+    Hotel Details                                                   Check In            Check Out       Rooms
+    OYO 4189 Resort Nanganallur,                                    31/12/2017          01/01/2018      1
+    25,Vembuliamman Koil Street,, Pazhavanthangal, Chennai
+                                                                        Booking ID              Payment Mode
+                                                                        IBZY2087                Cash at Hotel
+
+    DESCRIPTION                                             RATE                                    AMOUNT
+
+    Room Charges                                            Rs 1939 x 1 Night x 1 Room              Rs 1939
+
+    Grand Total                                                                                     Rs 1939
+
+    Payment received by OYO                                 Paid through Cash At Hotel (Rs 1939)    Rs 1939
+
+    Balance ( if any )                                                                              Rs 0
+
+The hotel name, check in and check out dates, room count, booking ID, and
+payment mode are all located on different lines from their column headings.
+A template to capture these fields may look like:
+
+::
+
+    tables:
+      - start: Hotel Details\s+Check In\s+Check Out\s+Rooms
+        end: Booking ID
+        body: (?P<hotel_details>[\S ]+),\s+(?P<date_check_in>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<date_check_out>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<amount_rooms>\d+)
+      - start: Booking ID\s+Payment Mode
+        end: DESCRIPTION
+        body: (?P<booking_id>\w+)\s+(?P<payment_method>(?:\w+ ?)*)
+
+The plugin supports multiple tables per invoice as seen in the example.
+
+By default, all fields are parsed as strings. The ``tables`` plugin supports
+the ``amount`` and ``date`` field naming conventions to convert data types.
+
 Options
 ~~~~~~~
 
