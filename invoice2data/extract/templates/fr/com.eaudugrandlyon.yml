@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: Eau du grand Lyon (eaudugrandlyon.com)
+fields:
+  amount: Total\s+général\s+:\s+\d+,\d{2}\s+€\s+HT\s+\d+,\d{2}\s+(\d+,\d{2})
+  amount_untaxed: Total\s+général\s+:\s+(\d+,\d{2})\s+€\s+HT
+  date: FACTURE\s+D'ACCÈS\s+AU\s+SERVICE\s+du\s+(\d{1,2}.+\d{4})
+  date_start: du\s+(\d{2}/\d{2}/\d{4})\s+au\s+\d{2}/\d{2}/\d{4}
+  date_end: du\s+\d{2}/\d{2}/\d{4}\s+au\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Facture\s+n°\s+(\d+)
+  static_vat: FR41799365887
+keywords:
+  - FR 41 799 365 887
+  - €
+  - Facture
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: ','

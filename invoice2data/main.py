@@ -10,6 +10,8 @@ import logging
 from .input import pdftotext
 from .input import pdfminer_wrapper
 from .input import tesseract
+from .input import tesseract4
+from .input import gvision
 
 from invoice2data.extract.loader import read_templates
 
@@ -25,7 +27,9 @@ FILENAME = "{date} {desc}.pdf"
 input_mapping = {
     'pdftotext': pdftotext,
     'tesseract': tesseract,
+    'tesseract4': tesseract4,
     'pdfminer': pdfminer_wrapper,
+    'gvision': gvision
     }
 
 output_mapping = {
@@ -172,6 +176,7 @@ def main(args=None):
                     date=res['date'].strftime('%Y-%m-%d'),
                     desc=res['desc'])
                 shutil.move(f.name, join(args.move, filename))
+        f.close()
 
     if output_module is not None:
         output_module.write_to_file(output, args.output_name)
