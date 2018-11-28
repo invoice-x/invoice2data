@@ -38,8 +38,9 @@ jobs:
     - run: git config --global user.name $GIT_NAME
     - run: git config --global push.default matching
     - run: sudo apt-get update && sudo apt-get install tesseract-ocr xpdf
-    - run: pyenv local 2.7.12 3.6.1
-    - run: pip install -U bumpversion twine tox
+    - run: pyenv install 2.7.14 3.5.4 3.6.3
+    - run: pyenv local 2.7.14 3.5.4 3.6.3
+    - run: pip install -U tox
     # Save dependency cache
     - save_cache:
         key: v1-dep-{{ .Branch }}-{{ epoch }}
