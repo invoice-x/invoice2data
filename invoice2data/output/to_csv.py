@@ -52,4 +52,3 @@ def write_to_file(data, path):
                     v = v.strftime('%d/%m/%Y')
                 csv_items.append(v)
             writer.writerow(csv_items)
-

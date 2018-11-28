@@ -1,0 +1,13 @@
+issuer: Proximus SA
+fields:
+  amount: 'Montanttotalàpayer\s+€(\d+,\d+)\s+'
+  amount_untaxed: TVA21%sur€(\d?\.?\d+,\d+)
+  date: (\d{1,2}[a-z]{4,}\d{4})
+  invoice_number: '\d{1,2}[a-z]{4,}\d{4}\s+(\d+)\s+'
+keywords:
+- BE61000171003017
+- Facture
+options:
+  currency: EUR
+  remove_whitespace: true
+  decimal_separator: ','

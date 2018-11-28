@@ -1,0 +1,13 @@
+issuer: CEBEO NV
+fields:
+  amount_untaxed: \s+21,00%\s+(\d?\.?\d+,\d+)\s+
+  amount: (\d?\.?\d+,\d+)EUR\sDISPENSE
+  date:  DATEFA\s(\d+/\d+/\d+)\sECHEANCE
+  invoice_number: 'FACTURE\s+N.{1}\s?(\d+)\s+'
+keywords:
+- www.cebeo.be
+- FACTURE
+options:
+  currency: EUR
+  remove_whitespace: true
+  decimal_separator: ','
