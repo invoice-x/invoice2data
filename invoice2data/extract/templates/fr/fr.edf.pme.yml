@@ -3,7 +3,7 @@ issuer: EDF
 fields:
   amount: Facture TTC\s+([\d ]+,\d{2})
   amount_untaxed: Montant Hors TVA\s+([\d ]+,\d{2})
-  date: Facture.+ du (\d{2}/\d{2}/\d{4})
+  date: Facture\s+du\s+(\d{2}/\d{2}/\d{4})
   invoice_number: n° (\d+)
   static_vat: FR 03 552 081 317
 keywords:
