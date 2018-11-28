@@ -11,7 +11,7 @@ import dateparser
 from unidecode import unidecode
 import logging as logger
 from collections import OrderedDict
-from .plugins import lines
+from .plugins import lines, tables
 
 OPTIONS_DEFAULT = {
     'remove_whitespace': False,
@@ -25,7 +25,8 @@ OPTIONS_DEFAULT = {
 }
 
 PLUGIN_MAPPING = {
-    'lines': lines
+    'lines': lines,
+    'tables': tables
 }
 
 class InvoiceTemplate(OrderedDict):
