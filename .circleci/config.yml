@@ -38,9 +38,9 @@ jobs:
     - run: git config --global user.name $GIT_NAME
     - run: git config --global push.default matching
     - run: sudo apt-get update && sudo apt-get install tesseract-ocr xpdf
-    - run: pyenv install 2.7.14
-    - run: pyenv install 3.5.4
-    - run: pyenv install 3.6.3
+    - run: pyenv install -s 2.7.14
+    - run: pyenv install -s 3.5.4
+    - run: pyenv install -s 3.6.3
     - run: pyenv local 2.7.14 3.5.4 3.6.3
     - run: pip install -U tox
     # Save dependency cache
@@ -51,6 +51,7 @@ jobs:
         # You can probably delete some of these entries
         - vendor/bundle
         - ~/virtualenvs
+        - /opt/circleci/.pyenv/versions
     # Test
     #   This would typically be a build job when using workflows, possibly combined with build
     # This is based on your 1.0 configuration file or project settings
