@@ -18,6 +18,7 @@ import os
 from invoice2data.main import extract_data
 from invoice2data.extract.loader import read_templates
 
+
 class TestExtraction(unittest.TestCase):
 
     def setUp(self):
@@ -26,17 +27,18 @@ class TestExtraction(unittest.TestCase):
     def _run_test_on_folder(self, folder):
         for path, subdirs, files in os.walk(folder):
             for file in files:
-                res = extract_data(os.path.join(path, file), self.templates)   
-                print(file, res)         
+                res = extract_data(os.path.join(path, file), self.templates)
+                print(file, res)
 
     def test_external_pdfs(self):
         folder = os.getenv('EXTERNAL_PDFS', None)
         if folder:
             self._run_test_on_folder(folder)
-        
+
     def test_internal_pdfs(self):
         folder = pkg_resources.resource_filename(__name__, 'pdfs')
-        self._run_test_on_folder(folder)       
+        self._run_test_on_folder(folder)
+
 
 if __name__ == '__main__':
     unittest.main()

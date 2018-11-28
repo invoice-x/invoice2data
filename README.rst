@@ -20,6 +20,7 @@ Python 2.7 and 3.4+. Main steps:
 With the flexible template system you can:
 
 -  precisely match content PDF files
+-  plugins available to match line items and tables
 -  define static fields that are the same for every invoice
 -  define custom fields needed in your organisation or process
 -  have multiple regex per field (if layout or wording changes)
@@ -55,7 +56,7 @@ included with macOS Homebrew, Debian and Ubuntu. Without it,
 Usage
 -----
 
-Basic usage. Process PDF files and write result to CSV. 
+Basic usage. Process PDF files and write result to CSV.
 
  - ``invoice2data invoice.pdf``
  - ``invoice2data *.pdf``

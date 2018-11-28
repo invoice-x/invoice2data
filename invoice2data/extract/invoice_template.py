@@ -105,7 +105,7 @@ class InvoiceTemplate(OrderedDict):
         amount_pipe = value.replace(self.options['decimal_separator'], '|')
         # remove all possible thousands separators
         amount_pipe_no_thousand_sep = re.sub(
-            '[.,\s]', '', amount_pipe)
+            r'[.,\s]', '', amount_pipe)
         # put dot as decimal sep
         return float(amount_pipe_no_thousand_sep.replace('|', '.'))
 
@@ -148,7 +148,7 @@ class InvoiceTemplate(OrderedDict):
         # Try to find data for each field.
         output = {}
         output['issuer'] = self['issuer']
-        
+
         for k, v in self['fields'].items():
             if k.startswith('static_'):
                 logger.debug("field=%s | static value=%s", k, v)

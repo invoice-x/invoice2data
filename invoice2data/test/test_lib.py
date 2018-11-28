@@ -1,8 +1,4 @@
 import os
-import glob
-import filecmp
-import json
-import shutil
 
 try:
     from StringIO import StringIO
@@ -10,11 +6,11 @@ except ImportError:
     from io import StringIO
 import unittest
 
-import pkg_resources
-from invoice2data.main import *
-from invoice2data.input import *
+from invoice2data.main import extract_data
+from invoice2data.input import pdftotext, tesseract, pdfminer_wrapper
+from invoice2data.output import to_csv, to_json, to_xml
+from .common import get_sample_files
 
-from .common import *
 
 def _extract_data_for_export():
     pdf_files = get_sample_files('.pdf')
@@ -22,6 +18,7 @@ def _extract_data_for_export():
         if file.endswith("oyo.pdf"):
             res = [extract_data(file, None)]
             return res
+
 
 class TestCLI(unittest.TestCase):
     def test_extract_data(self):

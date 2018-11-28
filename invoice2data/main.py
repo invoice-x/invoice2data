@@ -103,6 +103,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
     logger.error('No template for %s', invoicefile)
     return False
 
+
 def create_parser():
     """Returns argument parser """
 
@@ -169,13 +170,14 @@ def main(args=None):
             if args.copy:
                 filename = FILENAME.format(
                     date=res['date'].strftime('%Y-%m-%d'),
-                    invoice_number=res['invoice_number']),
-                    desc=res['desc'])
+                    invoice_number=res['invoice_number'],
+                    desc=res['desc']
+                )
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
                 filename = FILENAME.format(
                     date=res['date'].strftime('%Y-%m-%d'),
-                    invoice_number=res['invoice_number']),
+                    invoice_number=res['invoice_number'],
                     desc=res['desc'])
                 shutil.move(f.name, join(args.move, filename))
         f.close()

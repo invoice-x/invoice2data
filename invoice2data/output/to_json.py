@@ -2,6 +2,7 @@ import json
 import datetime
 import codecs
 
+
 def myconverter(o):
     """function to serialise datetime"""
     if isinstance(o, datetime.datetime):
@@ -39,4 +40,6 @@ def write_to_file(data, path):
     with codecs.open(filename, "w", encoding='utf-8') as json_file:
         for line in data:
             line['date'] = line['date'].strftime('%d/%m/%Y')
-        json.dump(data, json_file, indent=4,  sort_keys=True, default = myconverter, ensure_ascii=False)
+        print(type(json))
+        print(json)
+        json.dump(data, json_file, indent=4,  sort_keys=True, default=myconverter, ensure_ascii=False)

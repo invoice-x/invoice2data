@@ -43,8 +43,7 @@ Testing
 Every new feature should have a test to make sure it still works after
 modifications done by you or someone else in the future.
 
-To run tests using the current Python version:
-``python -m unittest discover`` or ``nosetests invoice2data``
+To run tests using the current Python version: ``pytest invoice2data``
 
 To run tests using all supported Python versions: ``tox`` (needs
 ``pyenv`` and corresponding Python versions installed.)
@@ -56,5 +55,5 @@ To test coverage we recommend using ``pytest-cov``
 ::
 
    pip install pytest-cov
-   py.test --cov-report html --cov invoice2data --verbose
+   pytest --cov-report html --cov invoice2data --verbose
    [yourbrowser] htmlconv/index.hml
