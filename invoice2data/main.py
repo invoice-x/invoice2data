@@ -22,7 +22,7 @@ from .output import to_xml
 
 logger = logging.getLogger(__name__)
 
-FILENAME = "{date} {desc}.pdf"
+FILENAME = "{date} {invoice_number} {desc}.pdf"
 
 input_mapping = {
     'pdftotext': pdftotext,
