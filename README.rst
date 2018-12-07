@@ -108,7 +108,7 @@ If you want to use it as a lib just do
 Template system
 ---------------
 
-See ``invoice2data/templates`` for existing templates. Just extend the
+See ``invoice2data/extract/templates`` for existing templates. Just extend the
 list to add your own. If deployed by a bigger organisation, there should
 be an interface to edit templates for new suppliers. 80-20 rule. For a
 short tutorial on how to add new templates, see
