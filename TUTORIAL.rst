@@ -263,7 +263,8 @@ Steps to add new template
 
 To add a new template, we recommend this workflow:
 
-###1. Copy existing template to new file
+1. Copy existing template to new file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Find a template that is roughly similar to what you need and copy it to
 a new file. It’s good practice to use reverse domain notation. E.g.
