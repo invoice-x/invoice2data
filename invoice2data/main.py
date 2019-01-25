@@ -22,8 +22,6 @@ from .output import to_xml
 
 logger = logging.getLogger(__name__)
 
-FILENAME = "{date} {invoice_number} {desc}.pdf"
-
 input_mapping = {
     'pdftotext': pdftotext,
     'tesseract': tesseract,
@@ -127,6 +125,9 @@ def create_parser():
     parser.add_argument('--move', '-m', dest='move',
                         help='Move and rename processed PDFs to specified folder.')
 
+    parser.add_argument('--filename-format', dest='filename', default="{date} {invoice_number} {desc}.pdf",
+                        help='Filename format to use when moving or copying processed PDFs. Default: "{date} {invoice_number} {desc}.pdf"')
+
     parser.add_argument('--template-folder', '-t', dest='template_folder',
                         help='Folder containing invoice templates in yml file. Always adds built-in templates.')
 
@@ -168,14 +169,14 @@ def main(args=None):
             logger.info(res)
             output.append(res)
             if args.copy:
-                filename = FILENAME.format(
+                filename = args.filename.format(
                     date=res['date'].strftime('%Y-%m-%d'),
                     invoice_number=res['invoice_number'],
                     desc=res['desc']
                 )
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
-                filename = FILENAME.format(
+                filename = args.filename.format(
                     date=res['date'].strftime('%Y-%m-%d'),
                     invoice_number=res['invoice_number'],
                     desc=res['desc'])
