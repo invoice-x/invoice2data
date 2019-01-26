@@ -1,3 +1,4 @@
+import datetime
 import os
 import glob
 import filecmp
@@ -108,6 +109,61 @@ class TestCLI(unittest.TestCase):
                                        my_file])
         main(args)
         shutil.rmtree('invoice2data/test/temp_test/')
+
+    def get_filename_format_test_data(self, filename_format):
+        # Generate test input and expected output by walking the compare dir
+        data = {}
+        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
+            for file in files:
+                root, ext = os.path.splitext(file)
+                if root not in data:
+                    data[root] = {}
+                if file.endswith('.pdf'):
+                    data[root]['input_fpath'] = os.path.join(path, file)
+                if file.endswith('.json'):
+                    with open(os.path.join(path, file), 'r') as f:
+                        res = json.load(f)[0]
+                        date = datetime.datetime.strptime(res['date'], '%d/%m/%Y')
+                        data[root]['output_fname'] = filename_format.format(
+                            date=date.strftime('%Y-%m-%d'),
+                            invoice_number=res['invoice_number'],
+                            desc=res['desc']
+                        )
+        return data
+
+    def test_copy_with_default_filename_format(self):
+        copy_dir = os.path.join('invoice2data', 'test', 'copy_test', 'pdf')
+        filename_format = "{date} {invoice_number} {desc}.pdf"
+
+        data = self.get_filename_format_test_data(filename_format)
+
+        os.makedirs(copy_dir)
+
+        sample_files = [v['input_fpath'] for k,v in data.items()]
+
+        args = self.parser.parse_args(['--copy', copy_dir] + sample_files)
+        main(args)
+
+        self.assertTrue(all(os.path.exists(os.path.join(copy_dir, v['output_fname'])) for k,v in data.items()))
+
+        shutil.rmtree(os.path.dirname(copy_dir), ignore_errors=True)
+
+    def test_copy_with_custom_filename_format(self):
+        copy_dir = os.path.join('invoice2data', 'test', 'copy_test', 'pdf')
+        filename_format = "Custom Prefix {date} {invoice_number}.pdf"
+
+        data = self.get_filename_format_test_data(filename_format)
+
+        os.makedirs(copy_dir)
+
+        sample_files = [v['input_fpath'] for k,v in data.items()]
+
+        args = self.parser.parse_args(['--copy', copy_dir, '--filename-format', filename_format] + sample_files)
+        main(args)
+
+        self.assertTrue(all(os.path.exists(os.path.join(copy_dir, v['output_fname'])) for k,v in data.items()))
+
+        shutil.rmtree(os.path.dirname(copy_dir), ignore_errors=True)
 
 
 if __name__ == '__main__':
