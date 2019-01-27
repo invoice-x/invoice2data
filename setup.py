@@ -11,7 +11,7 @@ setup(
     url='https://github.com/m3nu/invoice2data',
     description='Python parser to extract data from pdf invoice',
     license="MIT",
-    long_description=open(path.join(path.dirname(__file__), 'README.rst'), encoding='utf-8').read(),
+    long_description=open(path.join(path.dirname(__file__), 'README.rst')).read().decode('utf-8'),
     package_data = {
         'invoice2data.extract': [
             'templates/com/*.yml',
