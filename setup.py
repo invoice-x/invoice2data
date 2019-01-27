@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 from os import path
+import sys
 
 
 def readme_description():
@@ -17,7 +18,7 @@ setup(
     description='Python parser to extract data from pdf invoice',
     license="MIT",
     long_description=readme_description(),
-    package_data={
+    package_data = {
         'invoice2data.extract': [
             'templates/com/*.yml',
             'templates/de/*.yml',
@@ -26,17 +27,17 @@ setup(
             'templates/nl/*.yml',
             'templates/ch/*.yml'],
         'invoice2data.test': ['pdfs/*.pdf']
-    },
+        },
     packages=find_packages(),
     install_requires=[
         r.strip() for r in open(
             path.join(path.dirname(__file__), 'requirements.txt')
-        ).read().splitlines() if not r.startswith('#')
-    ],
-    zip_safe=False,
-    entry_points={
-        'console_scripts': [
-            'invoice2data = invoice2data.main:main',
+                ).read().splitlines() if not r.startswith('#')
         ],
-    },
+    zip_safe=False,
+    entry_points = {
+              'console_scripts': [
+                  'invoice2data = invoice2data.main:main',
+              ],
+          },
 )
