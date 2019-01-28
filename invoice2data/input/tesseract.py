@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+
 def to_text(path):
     """Wraps Tesseract OCR.
 
@@ -19,12 +21,12 @@ def to_text(path):
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not spawn.find_executable('tesseract'):
         raise EnvironmentError('tesseract not installed.')
-    if not spawn.find_executable('convert'):
+    if not spawn.find_executable('convert'):  # Please remember that on Windows exists C:\Windows\System32\convert.exe and have the same name as ImageMagick tool
         raise EnvironmentError('imagemagick not installed.')
 
     # convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
     convert = ['convert', '-density', '350', path, '-depth', '8', 'png:-']
-    p1 = subprocess.Popen(convert, stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(convert, stdout=subprocess.PIPE, shell=True)
 
     tess = ['tesseract', 'stdin', 'stdout']
     p2 = subprocess.Popen(tess, stdin=p1.stdout, stdout=subprocess.PIPE)
