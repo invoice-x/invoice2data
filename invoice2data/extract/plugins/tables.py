@@ -42,20 +42,27 @@ def extract(self, content, output):
             match = re.search(table['body'], line)
             if match:
                 for field, value in match.groupdict().items():
-                    # If a field name already exists, do not overwrite it
-                    if field in output:
-                        continue
-
-                    if field.startswith('date') or field.endswith('date'):
-                        output[field] = self.parse_date(value)
-                        if not output[field]:
-                            logger.error(
-                                "Date parsing failed on date '%s'", value)
-                            return None
-                    elif field.startswith('amount'):
-                        output[field] = self.parse_number(value)
+                    if field.startswith('sum_amount'):
+                        field = field[4:]  # remove 'sum_' prefix
+                        if field in output:
+                            output[field] += self.parse_number(value)
+                        else:
+                            output[field] = self.parse_number(value)
                     else:
-                        output[field] = value
+                        # If a field name already exists, do not overwrite it
+                        if field in output:
+                            continue
+
+                        if field.startswith('date') or field.endswith('date'):
+                            output[field] = self.parse_date(value)
+                            if not output[field]:
+                                logger.error(
+                                    "Date parsing failed on date '%s'", value)
+                                return None
+                        elif field.startswith('amount'):
+                            output[field] = self.parse_number(value)
+                        else:
+                            output[field] = value
             logger.debug(
                 'ignoring *%s* because it doesn\'t match anything', line
             )
