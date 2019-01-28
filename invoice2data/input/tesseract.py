@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import platform
 
 
 def to_text(path):
