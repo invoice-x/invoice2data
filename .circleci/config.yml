@@ -30,6 +30,7 @@ jobs:
         # This branch if available
         - v1-dep-{{ .Branch }}-
     - run: sudo apt-get update && sudo apt-get install tesseract-ocr xpdf
+    - run: cd /opt/circleci/.pyenv/plugins/python-build/../.. && git pull && cd -
     - run: pyenv install -s 2.7.14
     - run: pyenv install -s 3.5.4
     - run: pyenv install -s 3.6.3
