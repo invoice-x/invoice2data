@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
+
 def prettify(elem):
     """Return a pretty-printed XML string for the Element."""
     rough_string = ET.tostring(elem, 'utf-8')
@@ -55,4 +56,3 @@ def write_to_file(data, path):
         tag_amount.text = str(line['amount'])
 
     xml_file.write(prettify(tag_data))
-

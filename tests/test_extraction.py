@@ -20,7 +20,6 @@ from invoice2data.extract.loader import read_templates
 
 
 class TestExtraction(unittest.TestCase):
-
     def setUp(self):
         self.templates = read_templates()
 

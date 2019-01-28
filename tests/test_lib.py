@@ -1,9 +1,9 @@
 import os
 
 try:
-    from StringIO import StringIO
+    from StringIO import StringIO  # noqa: F401
 except ImportError:
-    from io import StringIO
+    from io import StringIO  # noqa: F401
 import unittest
 
 from invoice2data.main import extract_data
@@ -66,9 +66,7 @@ class TestCLI(unittest.TestCase):
     def test_extract_data_pdfminer(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
-            res = extract_data(file, None, pdfminer_wrapper)
-            # TODO: some invoices are not recognized with pdfminer.
-            # self.assertTrue(type(res) is dict, "return is not a dict")
+            extract_data(file, None, pdfminer_wrapper)
 
     def test_tesseract_for_return(self):
         png_files = get_sample_files('.png')

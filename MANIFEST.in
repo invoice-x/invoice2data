@@ -1,3 +1,4 @@
 include LICENSE.txt
 include README.rst
 include requirements.txt
+recursive-include src/invoice2data/extract/templates/ *.yml

@@ -42,4 +42,6 @@ def write_to_file(data, path):
             line['date'] = line['date'].strftime('%d/%m/%Y')
         print(type(json))
         print(json)
-        json.dump(data, json_file, indent=4,  sort_keys=True, default=myconverter, ensure_ascii=False)
+        json.dump(
+            data, json_file, indent=4, sort_keys=True, default=myconverter, ensure_ascii=False
+        )

@@ -20,11 +20,11 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
     """
 
     """OCR with PDF/TIFF as source files on GCS"""
-    import re
     import os
     from google.cloud import vision
     from google.cloud import storage
     from google.protobuf import json_format
+
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
     mime_type = 'application/pdf'
 
@@ -33,7 +33,6 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
     result_blob_name = result_blob_basename + '/output-1-to-1.json'
     result_blob_uri = 'gs://{}/{}/'.format(bucket_name, result_blob_basename)
     input_blob_uri = 'gs://{}/{}'.format(bucket_name, filename)
-
 
     # Upload file to gcloud if it doesn't exist yet
     storage_client = storage.Client()
@@ -52,23 +51,21 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
 
         client = vision.ImageAnnotatorClient()
 
-        feature = vision.types.Feature(
-            type=vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION)
+        feature = vision.types.Feature(type=vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION)
 
         gcs_source = vision.types.GcsSource(uri=input_blob_uri)
-        input_config = vision.types.InputConfig(
-            gcs_source=gcs_source, mime_type=mime_type)
+        input_config = vision.types.InputConfig(gcs_source=gcs_source, mime_type=mime_type)
 
         gcs_destination = vision.types.GcsDestination(uri=result_blob_uri)
         output_config = vision.types.OutputConfig(
-            gcs_destination=gcs_destination, batch_size=batch_size)
+            gcs_destination=gcs_destination, batch_size=batch_size
+        )
 
         async_request = vision.types.AsyncAnnotateFileRequest(
-            features=[feature], input_config=input_config,
-            output_config=output_config)
+            features=[feature], input_config=input_config, output_config=output_config
+        )
 
-        operation = client.async_batch_annotate_files(
-            requests=[async_request])
+        operation = client.async_batch_annotate_files(requests=[async_request])
 
         print('Waiting for the operation to finish.')
         operation.result(timeout=180)
@@ -77,8 +74,7 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
     result_blob = bucket.get_blob(result_blob_name)
 
     json_string = result_blob.download_as_string()
-    response = json_format.Parse(
-        json_string, vision.types.AnnotateFileResponse())
+    response = json_format.Parse(json_string, vision.types.AnnotateFileResponse())
 
     # The actual response for the first page of the input file.
     first_page_response = response.responses[0]
