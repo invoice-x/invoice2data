@@ -4,11 +4,6 @@ from os import path
 import sys
 
 
-def readme_description():
-    with open(path.join(path.dirname(__file__), 'README.rst'), "rb") as readme_file:
-        return readme_file.read().decode('utf-8')
-
-
 setup(
     name='invoice2data',
     version='0.3.2',
@@ -17,7 +12,6 @@ setup(
     url='https://github.com/m3nu/invoice2data',
     description='Python parser to extract data from pdf invoice',
     license="MIT",
-    long_description=readme_description(),
     package_data = {
         'invoice2data.extract': [
             'templates/com/*.yml',

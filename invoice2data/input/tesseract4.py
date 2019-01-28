@@ -21,7 +21,7 @@ def to_text(path, language='fra'):
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not spawn.find_executable('tesseract'):
         raise EnvironmentError('tesseract not installed.')
-    if not spawn.find_executable('convert'):
+    if not spawn.find_executable('convert'):  # Please remember that on Windows exists C:\Windows\System32\convert.exe and have the same name as ImageMagick tool
         raise EnvironmentError('imagemagick not installed.')
     if not spawn.find_executable('gs'):
         raise EnvironmentError('ghostscript not installed.')
@@ -35,7 +35,7 @@ def to_text(path, language='fra'):
         # Step 2: Enhance TIFF
         magick_cmd = ['convert', tf.name, '-colorspace', 'gray', '-type', 'grayscale', '-contrast-stretch', '0', '-sharpen', '0x1', 'tiff:-']
 
-        p1 = subprocess.Popen(magick_cmd, stdout=subprocess.PIPE)
+        p1 = subprocess.Popen(magick_cmd, stdout=subprocess.PIPE, shell=True)
 
         tess_cmd = ['tesseract', '-l', language, '--oem', '1', '--psm', '3', 'stdin', 'stdout']
         p2 = subprocess.Popen(tess_cmd, stdin=p1.stdout, stdout=subprocess.PIPE)
