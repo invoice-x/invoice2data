@@ -27,16 +27,10 @@ input_mapping = {
     'tesseract': tesseract,
     'tesseract4': tesseract4,
     'pdfminer': pdfminer_wrapper,
-    'gvision': gvision
-    }
+    'gvision': gvision,
+}
 
-output_mapping = {
-    'csv': to_csv,
-    'json': to_json,
-    'xml': to_xml,
-
-    'none': None
-    }
+output_mapping = {'csv': to_csv, 'json': to_json, 'xml': to_xml, 'none': None}
 
 
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
@@ -105,37 +99,70 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
 def create_parser():
     """Returns argument parser """
 
-    parser = argparse.ArgumentParser(description='Extract structured data from PDF files and save to CSV or JSON.')
+    parser = argparse.ArgumentParser(
+        description='Extract structured data from PDF files and save to CSV or JSON.'
+    )
 
-    parser.add_argument('--input-reader', choices=input_mapping.keys(),
-                        default='pdftotext', help='Choose text extraction function. Default: pdftotext')
+    parser.add_argument(
+        '--input-reader',
+        choices=input_mapping.keys(),
+        default='pdftotext',
+        help='Choose text extraction function. Default: pdftotext',
+    )
 
-    parser.add_argument('--output-format', choices=output_mapping.keys(),
-                        default='none', help='Choose output format. Default: none')
+    parser.add_argument(
+        '--output-format',
+        choices=output_mapping.keys(),
+        default='none',
+        help='Choose output format. Default: none',
+    )
 
-    parser.add_argument('--output-name', '-o', dest='output_name', default='invoices-output',
-                        help='Custom name for output file. Extension is added based on chosen format.')
+    parser.add_argument(
+        '--output-name',
+        '-o',
+        dest='output_name',
+        default='invoices-output',
+        help='Custom name for output file. Extension is added based on chosen format.',
+    )
 
-    parser.add_argument('--debug', dest='debug', action='store_true',
-                        help='Enable debug information.')
+    parser.add_argument(
+        '--debug', dest='debug', action='store_true', help='Enable debug information.'
+    )
 
-    parser.add_argument('--copy', '-c', dest='copy',
-                        help='Copy and rename processed PDFs to specified folder.')
+    parser.add_argument(
+        '--copy', '-c', dest='copy', help='Copy and rename processed PDFs to specified folder.'
+    )
 
-    parser.add_argument('--move', '-m', dest='move',
-                        help='Move and rename processed PDFs to specified folder.')
+    parser.add_argument(
+        '--move', '-m', dest='move', help='Move and rename processed PDFs to specified folder.'
+    )
 
-    parser.add_argument('--filename-format', dest='filename', default="{date} {invoice_number} {desc}.pdf",
-                        help='Filename format to use when moving or copying processed PDFs. Default: "{date} {invoice_number} {desc}.pdf"')
+    parser.add_argument(
+        '--filename-format',
+        dest='filename',
+        default="{date} {invoice_number} {desc}.pdf",
+        help='Filename format to use when moving or copying processed PDFs.'
+             'Default: "{date} {invoice_number} {desc}.pdf"',
+    )
 
-    parser.add_argument('--template-folder', '-t', dest='template_folder',
-                        help='Folder containing invoice templates in yml file. Always adds built-in templates.')
+    parser.add_argument(
+        '--template-folder',
+        '-t',
+        dest='template_folder',
+        help='Folder containing invoice templates in yml file. Always adds built-in templates.',
+    )
 
-    parser.add_argument('--exclude-built-in-templates', dest='exclude_built_in_templates',
-                        default=False, help='Ignore built-in templates.', action="store_true")
+    parser.add_argument(
+        '--exclude-built-in-templates',
+        dest='exclude_built_in_templates',
+        default=False,
+        help='Ignore built-in templates.',
+        action="store_true",
+    )
 
-    parser.add_argument('input_files', type=argparse.FileType('r'), nargs='+',
-                        help='File or directory to analyze.')
+    parser.add_argument(
+        'input_files', type=argparse.FileType('r'), nargs='+', help='File or directory to analyze.'
+    )
 
     return parser
 
@@ -172,14 +199,15 @@ def main(args=None):
                 filename = args.filename.format(
                     date=res['date'].strftime('%Y-%m-%d'),
                     invoice_number=res['invoice_number'],
-                    desc=res['desc']
+                    desc=res['desc'],
                 )
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
                 filename = args.filename.format(
                     date=res['date'].strftime('%Y-%m-%d'),
                     invoice_number=res['invoice_number'],
-                    desc=res['desc'])
+                    desc=res['desc'],
+                )
                 shutil.move(f.name, join(args.move, filename))
         f.close()
 

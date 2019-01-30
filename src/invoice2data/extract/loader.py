@@ -15,6 +15,7 @@ import chardet
 
 logger.getLogger('chardet').setLevel(logger.WARNING)
 
+
 # borrowed from http://stackoverflow.com/a/21912744
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     """load mappings and ordered mappings
@@ -22,6 +23,7 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     loader to load mappings and ordered mappings into the Python 2.7+ OrderedDict type,
     instead of the vanilla dict and the list of pairs it currently uses.
     """
+
     class OrderedLoader(Loader):
         pass
 
@@ -29,9 +31,7 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
         loader.flatten_mapping(node)
         return object_pairs_hook(loader.construct_pairs(node))
 
-    OrderedLoader.add_constructor(
-        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
-        construct_mapping)
+    OrderedLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_mapping)
 
     return yaml.load(stream, OrderedLoader)
 

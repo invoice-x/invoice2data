@@ -4,8 +4,6 @@ This module abstracts templates for invoice providers.
 Templates are initially read from .yml files and then kept as class.
 """
 
-import yaml
-import os
 import re
 import dateparser
 from unidecode import unidecode
@@ -24,10 +22,8 @@ OPTIONS_DEFAULT = {
     'replace': [],  # example: see templates/fr/fr.free.mobile.yml
 }
 
-PLUGIN_MAPPING = {
-    'lines': lines,
-    'tables': tables
-}
+PLUGIN_MAPPING = {'lines': lines, 'tables': tables}
+
 
 class InvoiceTemplate(OrderedDict):
     """
@@ -99,21 +95,21 @@ class InvoiceTemplate(OrderedDict):
             return True
 
     def parse_number(self, value):
-        assert value.count(self.options['decimal_separator']) < 2,\
-            'Decimal separator cannot be present several times'
+        assert (
+            value.count(self.options['decimal_separator']) < 2
+        ), 'Decimal separator cannot be present several times'
         # replace decimal separator by a |
         amount_pipe = value.replace(self.options['decimal_separator'], '|')
         # remove all possible thousands separators
-        amount_pipe_no_thousand_sep = re.sub(
-            r'[.,\s]', '', amount_pipe)
+        amount_pipe_no_thousand_sep = re.sub(r'[.,\s]', '', amount_pipe)
         # put dot as decimal sep
         return float(amount_pipe_no_thousand_sep.replace('|', '.'))
 
     def parse_date(self, value):
         """Parses date and returns date after parsing"""
         res = dateparser.parse(
-            value, date_formats=self.options['date_formats'],
-            languages=self.options['languages'])
+            value, date_formats=self.options['date_formats'], languages=self.options['languages']
+        )
         logger.debug("result of date parsing=%s", res)
         return res
 
@@ -140,7 +136,9 @@ class InvoiceTemplate(OrderedDict):
         logger.debug('END optimized_str ==========================')
         logger.debug(
             'Date parsing: languages=%s date_formats=%s',
-            self.options['languages'], self.options['date_formats'])
+            self.options['languages'],
+            self.options['date_formats'],
+        )
         logger.debug('Float parsing: decimal separator=%s', self.options['decimal_separator'])
         logger.debug("keywords=%s", self['keywords'])
         logger.debug(self.options)
@@ -177,8 +175,7 @@ class InvoiceTemplate(OrderedDict):
                     if k.startswith('date') or k.endswith('date'):
                         output[k] = self.parse_date(res_find[0])
                         if not output[k]:
-                            logger.error(
-                                "Date parsing failed on date '%s'", res_find[0])
+                            logger.error("Date parsing failed on date '%s'", res_find[0])
                             return None
                     elif k.startswith('amount'):
                         if sum_field:
@@ -212,13 +209,14 @@ class InvoiceTemplate(OrderedDict):
                 required_fields.append(v)
 
         if set(required_fields).issubset(output.keys()):
-                output['desc'] = 'Invoice from %s' % (self['issuer'])
-                logger.debug(output)
-                return output
+            output['desc'] = 'Invoice from %s' % (self['issuer'])
+            logger.debug(output)
+            return output
         else:
             fields = list(set(output.keys()))
-            logger.error('Unable to match all required fields. '
-                         'The required fields are: {0}. '
-                         'Output contains the following fields: {1}.'
-                         .format(required_fields, fields))
+            logger.error(
+                'Unable to match all required fields. '
+                'The required fields are: {0}. '
+                'Output contains the following fields: {1}.'.format(required_fields, fields)
+            )
             return None

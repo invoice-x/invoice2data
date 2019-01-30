@@ -18,7 +18,8 @@ def to_text(path):
         # python 2
         from StringIO import StringIO
         import sys
-        reload(sys)  
+
+        reload(sys)  # noqa: F821
         sys.setdefaultencoding('utf8')
     except ImportError:
         from io import StringIO
@@ -41,8 +42,13 @@ def to_text(path):
         caching = True
         pagenos = set()
         pages = PDFPage.get_pages(
-            fp, pagenos, maxpages=maxpages, password=password,
-            caching=caching, check_extractable=True)
+            fp,
+            pagenos,
+            maxpages=maxpages,
+            password=password,
+            caching=caching,
+            check_extractable=True,
+        )
         for page in pages:
             interpreter.process_page(page)
     device.close()

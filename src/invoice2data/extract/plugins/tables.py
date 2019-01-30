@@ -5,10 +5,8 @@ Plugin to extract tables from an invoice.
 import re
 import logging as logger
 
-DEFAULT_OPTIONS = {
-    'field_separator': r'\s+',
-    'line_separator': r'\n',
-}
+DEFAULT_OPTIONS = {'field_separator': r'\s+', 'line_separator': r'\n'}
+
 
 def extract(self, content, output):
     """Try to extract tables from an invoice"""
@@ -32,7 +30,7 @@ def extract(self, content, output):
             logger.warning('no table body found - start %s, end %s', start, end)
             continue
 
-        table_body = content[start.end():end.start()]
+        table_body = content[start.end(): end.start()]
 
         for line in re.split(table['line_separator'], table_body):
             # if the line has empty lines in it , skip them
@@ -49,13 +47,10 @@ def extract(self, content, output):
                     if field.startswith('date') or field.endswith('date'):
                         output[field] = self.parse_date(value)
                         if not output[field]:
-                            logger.error(
-                                "Date parsing failed on date '%s'", value)
+                            logger.error("Date parsing failed on date '%s'", value)
                             return None
                     elif field.startswith('amount'):
                         output[field] = self.parse_number(value)
                     else:
                         output[field] = value
-            logger.debug(
-                'ignoring *%s* because it doesn\'t match anything', line
-            )
+            logger.debug('ignoring *%s* because it doesn\'t match anything', line)

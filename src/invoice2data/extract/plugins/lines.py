@@ -4,14 +4,11 @@ Plugin to extract individual lines from an invoice.
 Initial work and maintenance by Holger Brunn @hbrunn
 """
 
-import os
 import re
 import logging as logger
 
-DEFAULT_OPTIONS = {
-    'field_separator': r'\s+',
-    'line_separator': r'\n',
-}
+DEFAULT_OPTIONS = {'field_separator': r'\s+', 'line_separator': r'\n'}
+
 
 def extract(self, content, output):
     """Try to extract lines from the invoice"""
@@ -31,11 +28,10 @@ def extract(self, content, output):
     if not start or not end:
         logger.warning('no lines found - start %s, end %s', start, end)
         return
-    content = content[start.end():end.start()]
+    content = content[start.end(): end.start()]
     lines = []
     current_row = {}
-    if 'first_line' not in self['lines'] and\
-            'last_line' not in self['lines']:
+    if 'first_line' not in self['lines'] and 'last_line' not in self['lines']:
         self['lines']['first_line'] = self['lines']['line']
     for line in re.split(self['lines']['line_separator'], content):
         # if the line has empty lines in it , skip them
@@ -62,7 +58,7 @@ def extract(self, content, output):
                     current_row[field] = '%s%s%s' % (
                         current_row.get(field, ''),
                         current_row.get(field, '') and '\n' or '',
-                        value.strip() if value else ''
+                        value.strip() if value else '',
                     )
                 if current_row:
                     lines.append(current_row)
@@ -74,12 +70,10 @@ def extract(self, content, output):
                 current_row[field] = '%s%s%s' % (
                     current_row.get(field, ''),
                     current_row.get(field, '') and '\n' or '',
-                    value.strip() if value else ''
+                    value.strip() if value else '',
                 )
             continue
-        logger.debug(
-            'ignoring *%s* because it doesn\'t match anything', line
-        )
+        logger.debug('ignoring *%s* because it doesn\'t match anything', line)
     if current_row:
         lines.append(current_row)
 
