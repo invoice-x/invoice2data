@@ -56,3 +56,4 @@ def write_to_file(data, path):
         tag_amount.text = str(line['amount'])
 
     xml_file.write(prettify(tag_data))
+    xml_file.close()
