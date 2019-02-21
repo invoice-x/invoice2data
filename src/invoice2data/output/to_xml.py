@@ -9,7 +9,7 @@ def prettify(elem):
     return reparsed.toprettyxml(indent="  ")
 
 
-def write_to_file(data, path):
+def write_to_file(data, path, date_format='%d/%m/%Y'):
     """Export extracted fields to xml
 
     Appends .xml to path if missing and generates xml file in specified directory, if not then in root
@@ -20,6 +20,8 @@ def write_to_file(data, path):
         Dictionary of extracted fields
     path : str
         directory to save generated xml file
+    date_format : str
+        Date format used in generated file
 
     Notes
     ----
@@ -50,7 +52,7 @@ def write_to_file(data, path):
         tag_currency = ET.SubElement(tag_item, 'currency')
         tag_amount = ET.SubElement(tag_item, 'amount')
         tag_item.set('id', str(i))
-        tag_date.text = line['date'].strftime('%d/%m/%Y')
+        tag_date.text = line['date'].strftime(date_format)
         tag_desc.text = line['desc']
         tag_currency.text = line['currency']
         tag_amount.text = str(line['amount'])

@@ -2,6 +2,8 @@ import datetime
 import os
 import json
 import shutil
+import csv
+from xml.dom import minidom
 
 try:
     from StringIO import StringIO  # noqa: F401
@@ -63,6 +65,56 @@ class TestCLI(unittest.TestCase):
                     if not compare_verified:
                         self.assertTrue(False)
                     os.remove(test_files)
+
+    def test_output_format_date_json(self):
+        pdf_files = get_sample_files('free_fiber.pdf')
+        test_file = 'test_compare.json'
+        for pfile in pdf_files:
+            args = self.parser.parse_args(
+                ['--output-name', test_file, '--output-format', 'json', '--output-date-format', '%Y-%m-%d', pfile]
+            )
+            main(args)
+            with open(test_file) as json_test_file:
+                jdatatest = json.load(json_test_file)
+            compare_verified = (jdatatest[0]['date'] == '2015-07-02') and (jdatatest[0]['date_due'] == '2015-07-05')
+            print(compare_verified)
+            if not compare_verified:
+                self.assertTrue(False, 'Unexpected date format')
+            os.remove(test_file)
+
+    def test_output_format_date_csv(self):
+        pdf_files = get_sample_files('free_fiber.pdf')
+        test_file = 'test_compare.csv'
+        for pfile in pdf_files:
+            args = self.parser.parse_args(
+                ['--output-name', test_file, '--output-format', 'csv', '--output-date-format', '%Y-%m-%d', pfile]
+            )
+            main(args)
+            with open(test_file) as csv_test_file:
+                csvdatatest = csv.DictReader(csv_test_file, delimiter=',')
+                for row in csvdatatest:
+                    compare_verified = (row['date'] == '2015-07-02') and (row['date_due'] == '2015-07-05')
+                    print(compare_verified)
+                    if not compare_verified:
+                        self.assertTrue(False, 'Unexpected date format')
+            os.remove(test_file)
+
+    def test_output_format_date_xml(self):
+        pdf_files = get_sample_files('free_fiber.pdf')
+        test_file = 'test_compare.xml'
+        for pfile in pdf_files:
+            args = self.parser.parse_args(
+                ['--output-name', test_file, '--output-format', 'xml', '--output-date-format', '%Y-%m-%d', pfile]
+            )
+            main(args)
+            with open(test_file) as xml_test_file:
+                xmldatatest = minidom.parse(xml_test_file)
+            dates = xmldatatest.getElementsByTagName('date')
+            compare_verified = (dates[0].firstChild.data == '2015-07-02')
+            print(compare_verified)
+            if not compare_verified:
+                self.assertTrue(False, 'Unexpected date format')
+            os.remove(test_file)
 
     def test_copy(self):
         # folder = pkg_resources.resource_filename(__name__, 'pdfs')
