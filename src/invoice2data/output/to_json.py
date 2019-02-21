@@ -9,7 +9,7 @@ def myconverter(o):
         return o.__str__()
 
 
-def write_to_file(data, path, date_format):
+def write_to_file(data, path, date_format="%d/%m/%Y"):
     """Export extracted fields to json
 
     Appends .json to path if missing and generates json file in specified directory, if not then in root
