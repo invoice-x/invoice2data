@@ -71,12 +71,12 @@ class TestCLI(unittest.TestCase):
         test_file = 'test_compare.json'
         for pfile in pdf_files:
             args = self.parser.parse_args(
-                ['--output-name', test_file, '--output-format', 'json', '--output-date-format', '%Y-%m-%d', pfile]
+                ['--output-name', test_file, '--output-format', 'json', '--output-date-format', "%d/%m/%Y", pfile]
             )
             main(args)
             with open(test_file) as json_test_file:
                 jdatatest = json.load(json_test_file)
-            compare_verified = (jdatatest[0]['date'] == '2015-07-02') and (jdatatest[0]['date_due'] == '2015-07-05')
+            compare_verified = (jdatatest[0]['date'] == '02/07/2015') and (jdatatest[0]['date_due'] == '05/07/2015')
             print(compare_verified)
             if not compare_verified:
                 self.assertTrue(False, 'Unexpected date format')
@@ -87,13 +87,13 @@ class TestCLI(unittest.TestCase):
         test_file = 'test_compare.csv'
         for pfile in pdf_files:
             args = self.parser.parse_args(
-                ['--output-name', test_file, '--output-format', 'csv', '--output-date-format', '%Y-%m-%d', pfile]
+                ['--output-name', test_file, '--output-format', 'csv', '--output-date-format', '%d/%m/%Y', pfile]
             )
             main(args)
             with open(test_file) as csv_test_file:
                 csvdatatest = csv.DictReader(csv_test_file, delimiter=',')
                 for row in csvdatatest:
-                    compare_verified = (row['date'] == '2015-07-02') and (row['date_due'] == '2015-07-05')
+                    compare_verified = (row['date'] == '02/07/2015') and (row['date_due'] == '05/07/2015')
                     print(compare_verified)
                     if not compare_verified:
                         self.assertTrue(False, 'Unexpected date format')
@@ -104,13 +104,13 @@ class TestCLI(unittest.TestCase):
         test_file = 'test_compare.xml'
         for pfile in pdf_files:
             args = self.parser.parse_args(
-                ['--output-name', test_file, '--output-format', 'xml', '--output-date-format', '%Y-%m-%d', pfile]
+                ['--output-name', test_file, '--output-format', 'xml', '--output-date-format', '%d/%m/%Y', pfile]
             )
             main(args)
             with open(test_file) as xml_test_file:
                 xmldatatest = minidom.parse(xml_test_file)
             dates = xmldatatest.getElementsByTagName('date')
-            compare_verified = (dates[0].firstChild.data == '2015-07-02')
+            compare_verified = (dates[0].firstChild.data == '02/07/2015')
             print(compare_verified)
             if not compare_verified:
                 self.assertTrue(False, 'Unexpected date format')
@@ -180,7 +180,7 @@ class TestCLI(unittest.TestCase):
                 if file.endswith('.json'):
                     with open(os.path.join(path, file), 'r') as f:
                         res = json.load(f)[0]
-                        date = datetime.datetime.strptime(res['date'], '%d/%m/%Y')
+                        date = datetime.datetime.strptime(res['date'], '%Y-%m-%d')
                         data[root]['output_fname'] = filename_format.format(
                             date=date.strftime('%Y-%m-%d'),
                             invoice_number=res['invoice_number'],

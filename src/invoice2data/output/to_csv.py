@@ -2,7 +2,7 @@ import csv
 import sys
 
 
-def write_to_file(data, path, date_format="%d/%m/%Y"):
+def write_to_file(data, path, date_format="%Y-%m-%d"):
     """Export extracted fields to csv
 
     Appends .csv to path if missing and generates csv file in specified directory, if not then in root
