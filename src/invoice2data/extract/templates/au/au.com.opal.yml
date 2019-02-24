@@ -1,0 +1,19 @@
+issuer: Opal Customer Care
+keywords:
+- Opal Customer Care
+- Your activity statement
+- or visit opal.com.au
+fields:
+  opal_card_number: 'Opal card number\s*(\d{4}\s\d{4}\s\d{4}\s\d{4})'
+  amount: 'Total fares \(incl. GST\)\s*-\$(\d{1,10}.\d\d)'
+  date: 'Printed (\d\d:\d\d \d\d \w{1,10} \d{4})'
+  invoice_number: 'Journeys and top ups from (\d\d \w{1,10} \d{4})'
+lines:
+  start: '\s*Always remember to tap on and tap off'
+  end: 'Understanding your activity statement'
+  first_line: '(?P<tx_number>\d{1,10})[ ]+(?P<day_of_week>\w\w\w)[ ]+(?P<timestamp>\d\d:\d\d)[ ]+(?P<details_1>.{1,28}?)[ ]+(?P<journey_number>\d{,3}?)[ ]+(?P<fare>(Travel Reward|Off-peak|Default fare|Day Cap){,1})[ ]+(?P<full_fare>\d{1,3}.\d\d)[ ]+(?P<discount>\d{1,3}.\d\d)[ ]+-?(?P<amount>\d{1,3}.\d\d)'
+  line: '[ ]+(?P<datestamp>\d\d/\d\d/\d\d)[ ]*(?P<details_2>.{,28})'
+  last_line: '^$'
+options:
+  currency: AUD
+  remove_whitespace: false
