@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: mongoDB Cloud
+fields:
+  amount: PAID\s+\w+\s\d{1,2},\s\d{4}\s+\$[\d,]+\.\d{2}\s+\$[\d,]+\.\d{2}\s+\$[\d,]+\.\d{2}\s+\$([\d,]+\.\d{2})
+  amount_untaxed: PAID\s+\w+\s\d{1,2},\s\d{4}\s+\$([\d,]+\.\d{2})
+  date: PAID\s+(\w+\s\d{1,2},\s\d{4})
+  invoice_number: Invoice\s+Number:\s+(\w+)
+  static_vat: IE9793087U
+keywords:
+  - IE9793087U
+  - Invoice Number
+  - $
+  - cloud.mongodb.com
+  - PAID
+options:
+  currency: USD
+  date_formats:
+    - '%B %d, %Y'
+  decimal_separator: '.'
