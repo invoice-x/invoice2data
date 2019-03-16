@@ -17,7 +17,7 @@ lines:
     ?(?P<item_price_excl_vat>\d+,\d+)\s+
     ?(?P<item_vat_category>[A-Z])
   line: ^[ ]{5,}(?P<item_description>[a-zA-Z0-9\.\/\-\<\>:\+,]+( [a-zA-Z0-9\.\/\-\<\>\+:,]+)*)
-  last_line: SN. 1 x (?P<item_serial_number>[A-Z0-9,]+)
+  last_line: (SN. 1 x|S/N:) (?P<item_serial_number>[A-Z0-9,]+)
 options:
   remove_whitespace: false
   decimal_separator: ','
