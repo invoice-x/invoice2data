@@ -10,7 +10,7 @@ keywords:
   - BE0893031290
 lines:
   start: Artikel[-−]nr\.\s+Beschrijving\s+Aantal\s+Prijs in EUR\s+Totaalprijs\s+BTW
-  end: Netto-Som|Vracht
+  end: _____________|Netto-Som|Vracht
 
   # Some comments:
   # - ` -~` matches any ascii printable.
@@ -19,7 +19,7 @@ lines:
   #   mandatory space that gets inserted by yaml.
   first_line: |-
     (?P<code>[A-Z0-9#]+)\s+
-    ?(?P<description>[ -~−]+( [ -~−]+)*)\s+
+    ?(?P<description>[ -~−]+)\s+
     ?(?P<qty>\d+)\s+
     ?(?P<price_unit>\d+,\d+)\s+
     ?(?P<amount>\d+,\d+)\s+
