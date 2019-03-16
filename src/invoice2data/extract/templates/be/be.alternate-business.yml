@@ -6,6 +6,8 @@ fields:
   amount_untaxed: (?:Netto−som|Netto-Som EUR)\s+(\d+,\d+)
   amount_shipping: Vracht\/Porto\s+(\d+,\d+)
   static_vat: BE0893031290
+  ship_date: Verzenddatum:\s+(\d{1,2}\.\d{1,2}\.\d{4})
+  delivery_date: Leverdatum:\s+(\d{1,2}\.\d{1,2}\.\d{4})
 keywords:
   - BE0893031290
 lines:
