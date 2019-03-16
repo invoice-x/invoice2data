@@ -9,7 +9,13 @@ keywords:
 lines:
   start: Artikel[-−]nr\.\s+Beschrijving\s+Aantal\s+Prijs in EUR\s+Totaalprijs\s+BTW
   end: Netto-Som|Vracht
-  first_line: (?P<item_article_number>[A-Z0-9]+)\s+(?P<item_description>[a-zA-Z0-9_\.\/\-\<\>:,\s]+( [a-zA-Z0-9_\.\/\-\<\>:,]+)*)\s+(?P<item_amount>\d+)\s+(?P<item_unit_price>\d+,\d+)\s+(?P<item_price_excl_vat>\d+,\d+)\s+(?P<item_vat_category>[A-Z])
+  first_line: |-
+    (?P<item_article_number>[A-Z0-9]+)\s+
+    ?(?P<item_description>[a-zA-Z0-9_\.\/\-\<\>:,\s]+( [a-zA-Z0-9_\.\/\-\<\>:,]+)*)\s+
+    ?(?P<item_amount>\d+)\s+
+    ?(?P<item_unit_price>\d+,\d+)\s+
+    ?(?P<item_price_excl_vat>\d+,\d+)\s+
+    ?(?P<item_vat_category>[A-Z])
   line: ^[ ]{5,}(?P<item_description>[a-zA-Z0-9\.\/\-\<\>:\+,]+( [a-zA-Z0-9\.\/\-\<\>\+:,]+)*)
   last_line: SN. 1 x (?P<item_serial_number>[A-Z0-9,]+)
 options:
