@@ -1,0 +1,22 @@
+issuer: edpnet
+fields:
+  date: Invoice date:\s+(\d{1,2} \w{3,} \d{4})
+  date_due: payment before\s+(\d{1,2} \w{3,} \d{4})
+  invoice_number: Invoice (\d+)
+  amount: Total amount to be paid\s+\S (\d+,\d+)
+  amount_excl_vat: Amount \(VAT excl\.\)\s+\S (\d+,\d+)
+keywords:
+  - BE 0466.070.845
+lines:
+  start: Subscription fee\s+Price \(VAT excl\.\)\s
+  end: Total
+  first_line: ^\s(?P<item_name>[a-zA-Z0-9_\.:]+( [a-zA-Z0-9_\.:]+)*)\s+\S (?P<item_price_excl_vat>\d+,\d+)
+  line: (?P<item_description>[a-zA-Z0-9\(\)\/-_\.:]+( [a-zA-Z0-9_\.:-]+)*)
+options:
+  remove_whitespace: false
+  currency: EUR
+  decimal_separator: ','
+  languages:
+    - en
+types:
+  invoice_number: float
