@@ -1,0 +1,21 @@
+issuer: Copaco
+fields:
+  date: Factuurdatum\s+:\s+(\d{1,2}\.\d{1,2}\.\d{4})
+  date_due: Vervaldatum\s+:\s+(\d{1,2}\.\d{1,2}\.\d{4})
+  invoice_number:  Factuurnummer\s+:\s+(\d+)
+keywords:
+  - BE 0466.466.565
+tables:
+  - start: Valuta\s+Nettobedrag\s+Transportkosten\s+Handling\s+Drop\s+shipment\s+BTW\s+Totaalbedrag\s+
+    end: (Deze factuur|S\.v\.p\. bij)
+    body: (?P<currency>\S+)\s+(?P<nettobedrag>\d+,\d+)\s+(?P<transport>\d+,\d+)\s+(?P<handling>\d+,\d+)\s+(?P<dropshipment>\d+,\d+)\s+(?P<vat>\d+,\d+\%\s\d+,\d+)\s+(?P<amount>\d+,\d+)
+lines:
+  start: Omschrijving\s+EUR\s+%\s+EUR\s+%
+  end: Valuta
+  first_line: (?P<item_pos>\d+)?\s+(?P<item_article_number>\S+)\s+(?P<item_amount>\d+)\s+(?P<item_unit_price>\d+,\d+)\s+(?P<item_reduction>\d+,\d+)?\s+(?P<item_price_excl_vat>\d+,\d+)\s+(?P<item_vat>\d+,\d+)
+  line: (?P<item_description>[a-zA-Z0-9_\.:]+( [a-zA-Z0-9_\.:]+)*)
+options:
+  remove_whitespace: false
+  decimal_separator: ','
+  date_formats:
+    - '%d.%m.%Y'
