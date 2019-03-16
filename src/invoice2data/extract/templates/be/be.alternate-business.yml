@@ -24,7 +24,7 @@ lines:
     ?(?P<price_unit>\d+,\d+)\s+
     ?(?P<amount>\d+,\d+)\s+
     ?(?P<vat_category>[A-Z])
-  line: ^ {5,}(?P<description>[a-zA-Z0-9\.\/\-\<\>:\+,]+( [a-zA-Z0-9\.\/\-\<\>\+:,]+)*)
+  line: ^ {5,}(?P<description>[!-~−]+( [!-~−]+)*)
   last_line: (SN. 1 x|S/N:) (?P<serial_number>[A-Z0-9,]+)
 options:
   remove_whitespace: false
