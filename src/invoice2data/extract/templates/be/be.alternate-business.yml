@@ -11,9 +11,15 @@ keywords:
 lines:
   start: Artikel[-−]nr\.\s+Beschrijving\s+Aantal\s+Prijs in EUR\s+Totaalprijs\s+BTW
   end: Netto-Som|Vracht
+
+  # Some comments:
+  # - ` -~` matches any ascii printable.
+  # - Alternate loves long dashes `−`
+  # - I split this thing over multiple lines, and then used `?` to "remove" the
+  #   mandatory space that gets inserted by yaml.
   first_line: |-
-    (?P<code>[A-Z0-9]+)\s+
-    ?(?P<description>[a-zA-Z0-9_\.\/\-\<\>:,\s]+( [a-zA-Z0-9_\.\/\-\<\>:,]+)*)\s+
+    (?P<code>[A-Z0-9#]+)\s+
+    ?(?P<description>[ -~−]+( [ -~−]+)*)\s+
     ?(?P<qty>\d+)\s+
     ?(?P<price_unit>\d+,\d+)\s+
     ?(?P<amount>\d+,\d+)\s+
