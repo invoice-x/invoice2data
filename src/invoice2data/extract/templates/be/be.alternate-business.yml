@@ -5,6 +5,7 @@ fields:
   amount: (?:Factuureindbedrag in|Totaalbedrag) EUR\s+(\d+,\d+)
   amount_untaxed: Netto−som\s+(\d+,\d+)
   amount_shipping: Vracht\/Porto\s+(\d+,\d+)
+  static_vat: BE0893031290
 keywords:
   - BE0893031290
 lines:
