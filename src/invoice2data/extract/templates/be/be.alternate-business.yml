@@ -25,7 +25,7 @@ lines:
     ?(?P<amount>\d+,\d+)\s+
     ?(?P<vat_category>[A-Z])
   line: ^ {5,}(?P<description>[!-~−]+( [!-~−]+)*)
-  last_line: (SN. 1 x|S/N:) (?P<serial_number>[A-Z0-9,]+)
+  last_line: (SN. 1 x|S/N:) (?P<serial_number>[\w,]+)
 options:
   remove_whitespace: false
   decimal_separator: ','
