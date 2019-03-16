@@ -3,6 +3,7 @@ fields:
   date: (?:Factuur-|Document−)nr\.\s+\d+ \/ (\d{1,2}\.\d{1,2}\.\d{4})
   invoice_number:  (?:Factuur-|Document−)nr\.\s+(\d+)
   amount: (?:Factuureindbedrag in|Totaalbedrag) EUR\s+(\d+,\d+)
+  amount_untaxed: Netto−som\s+(\d+,\d+)
   amount_shipping: Vracht\/Porto\s+(\d+,\d+)
 keywords:
   - BE0893031290
