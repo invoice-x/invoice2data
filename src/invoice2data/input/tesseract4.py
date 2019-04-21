@@ -57,7 +57,7 @@ def to_text(path, language='fra'):
             'tiff:-',
         ]
 
-        p1 = subprocess.Popen(magick_cmd, stdout=subprocess.PIPE, shell=True)
+        p1 = subprocess.Popen(magick_cmd, stdout=subprocess.PIPE)
 
         tess_cmd = ['tesseract', '-l', language, '--oem', '1', '--psm', '3', 'stdin', 'stdout']
         p2 = subprocess.Popen(tess_cmd, stdin=p1.stdout, stdout=subprocess.PIPE)
