@@ -2,7 +2,7 @@ issuer: Travis CI GmbH
 fields:
   amount: 'Total\$(\d+\.\d+)'
   amount_untaxed: 'Price\$(\d+\.\d+)'
-  date: 'SubscriptionPeriod([\w]+[[\d]{1,2}\,[\d]{4})'
+  date: 'SubscriptionPeriod([\w]+[\d]{1,2}\,[\d]{4})'
   invoice_number: 'Invoice\#(\w+)'
 keywords:
   - support@travis-ci.com
