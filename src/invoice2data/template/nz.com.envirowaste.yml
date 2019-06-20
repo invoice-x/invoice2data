@@ -1,0 +1,22 @@
+issuer: Enviro Waste
+keywords:
+- EnviroWaste Services Limited
+- accounts.receivable@envirowaste.co.nz
+
+fields:
+  invoice_number: '(?<=Invoice No\:\s)\s*(\w+)'
+  bc_number: '(?<=Body Corporate\s)[^B]\w+'
+  customer_number: ''
+  gst_number: '(?<=GST No\:)\s*(\d\d\d\-\d\d\d\-\d\d\d)'
+  date: '(?<=Invoice Date\:)\s+\d{2}\/\d{2}\/\d{4}'
+  due_date: '(?<=Due Date\:)\s+\d{2}\/\d{2}\/\d{4}'
+  amount: '(?<=TOTAL\s)\s*\$(\d{1,10}.\d\d)'
+  gst: 'GST\s+\$(\d+\.\d\d)'
+  overdue_amout: ''
+
+options:
+  currency: NZD
+  remove_whitespace: false
+  date_formats:
+    - '%d/%m/%Y'
+    - '%d %b %Y'

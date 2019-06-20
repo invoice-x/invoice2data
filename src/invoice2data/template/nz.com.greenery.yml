@@ -1,0 +1,22 @@
+issuer: Greenery
+keywords:
+- Greenery
+- 06-0122-0200625-00
+
+fields:
+  invoice_number: '(?<=Invoice Number)\s*(INV-\w+)'
+  bc_number: ''
+  customer_number: ''
+  gst_number: ''
+  date: 'Greenery\s*(\d{1,2} \w{3} \d{4})'
+  due_date: '(?<=Due Date\:)\s+(\d{1,2} \w{3} \d{4})'
+  amount: '(?<=Due Date)\s*\d{1,10}\.\d\d'
+  gst: ''
+  overdue_amout: ''
+
+options:
+  currency: NZD
+  remove_whitespace: false
+  date_formats:
+    - '%d/%m/%Y'
+    - '%d %b %Y'

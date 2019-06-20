@@ -1,0 +1,21 @@
+issuer: SiteCare Limited
+keywords:
+- SiteCare Limited
+- sitecare.co.nz
+
+fields:
+  invoice_number: 'Invoice\s+(\d+)'
+  bc_number: 'Body Corporate 482041 ([^\-]\d+)'
+  customer_number: ''
+  gst_number: '109\-430\-048'
+  date: 'Date\s+(\w{3,9} \d{1,2}\,\s*\d\d\d\d)'
+  due_date: 'Date\s+(\w{3,9} \d{1,2}\,\s*\d\d\d\d)'
+  amount: 'Amount\s+\$([\d\,]{1,10}\.\d\d)'
+  gst: 'GST\s+\$([\d\,]{1,10}\.\d\d)'
+  overdue_amout: ''
+
+options:
+  currency: NZD
+  remove_whitespace: false
+  date_formats:
+    - '%b %d,%Y'

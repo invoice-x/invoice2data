@@ -1,0 +1,26 @@
+issuer: GOURLEY HOLDINGS LTD
+keywords:
+- GOURLEY HOLDINGS LTD
+- 104-299-202
+
+fields:
+  invoice_number: 'Tax Invoice No\:\s*(\d+)'
+  bc_number: 'Body Corporate No\:\s*(\w+)'
+  customer_number: ''
+  gst_number: 'GST No\:\s*(\d\d\d\-\d\d\d\-\d\d\d)'
+  date: '\s(\d+[a-zA-Z]{2} [a-zA-Z]+ \d{4})'
+  due_date: '\s(\d+[a-zA-Z]{2} [a-zA-Z]+ \d{4})'
+  amount: 'All Totals to pay \$([\d\,]{1,10}\.\d\d)'
+  gst: 'GST \$([\d\,]{1,10}\.\d\d)'
+  overdue_amout: ''
+
+options:
+  currency: NZD
+  remove_whitespace: false
+  date_formats:
+    - '%dst %b %Y'
+    - '%D %b %Y'
+    - '%d %B %Y'
+    - '%d%m%y'
+    - '%d/%m/%Y'
+    - '%d %b %Y'

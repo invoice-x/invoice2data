@@ -1,0 +1,22 @@
+issuer: Vocus Communications
+keywords:
+- Vocus Communications
+- www.vocus.co.nz
+
+fields:
+  invoice_number: '(?<=Invoice number)\s*(\d+)'
+  bc_number: '(?<=BODY CORPORATE )\w+'
+  customer_number: 'SUL\d+'
+  gst_number: '(?<=GST no\. )\d\d\d\-\d\d\d\-\d\d\d'
+  date: '(?<=Issue date)\s+\d{1,2} .{3} \d{4}'
+  due_date: '(?<=Due if paid by\s)\d\d\/\d\d\/\d\d\d\d'
+  amount: '(?<=Due if paid by\s\d\d\/\d\d\/\d\d\d\d)\s+\$(\d{1,10}.\d\d)'
+  gst: '(?<=Due if paid by\s\d\d\/\d\d\/\d\d\d\d)\s*\$\d*\.\d\d\s*\$\d+\.\d\d\s*Incl GST of \$(\d{1,10}.\d\d)'
+  overdue_amout: '(?<=Due if paid after\s\d\d\/\d\d\/\d\d\d\d)\s+\$(\d{1,10}.\d\d)'
+
+options:
+  currency: NZD
+  remove_whitespace: false
+  date_formats:
+    - '%d/%m/%Y'
+    - '%d %b %Y'
