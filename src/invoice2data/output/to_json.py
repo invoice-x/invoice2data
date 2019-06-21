@@ -9,7 +9,7 @@ def myconverter(o):
         return o.__str__()
 
 
-def write_to_file(data, path):
+def write_to_file(data, path, date_format="%Y-%m-%d"):
     """Export extracted fields to json
 
     Appends .json to path if missing and generates json file in specified directory, if not then in root
@@ -20,6 +20,8 @@ def write_to_file(data, path):
         Dictionary of extracted fields
     path : str
         directory to save generated json file
+    date_format : str
+        Date format used in generated file
 
     Notes
     ----
@@ -39,7 +41,9 @@ def write_to_file(data, path):
 
     with codecs.open(filename, "w", encoding='utf-8') as json_file:
         for line in data:
-            line['date'] = line['date'].strftime('%d/%m/%Y')
+            for k, v in line.items():
+                if k.startswith('date') or k.endswith('date'):
+                    line[k] = v.strftime(date_format)
         print(type(json))
         print(json)
         json.dump(
