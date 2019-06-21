@@ -1,0 +1,27 @@
+issuer: Opal Customer Care
+keywords:
+- Opal Customer Care
+- Your activity statement
+- or visit opal.com.au
+fields:
+  opal_card_number: 'Opal card number\s+(\d{4}\s\d{4}\s\d{4}\s\d{4})'
+  opal_card_status: 'Opal card status\s+(\w+)'
+  card_nickname: 'Card nickname\s+(\w+)'
+  type_of_card: 'Type of card\s+(\w+)'
+  amount: 'Total fares \(incl. GST\)\s+-\$(\d{1,10}.\d\d)'
+  total_top_ups: 'Total top ups\s+(-?\$\d{1,10}.\d\d)'
+  total_adjustments: 'Total adjustments\s+(-?\$\d{1,10}.\d\d)'
+  activity_statement_balance: 'Activity statement\s+(-?\$\d{1,10}.\d\d)'
+  date: 'Printed (\d\d:\d\d \d\d \w\w\w \d{4})'
+  invoice_number: 'Printed (\d\d:\d\d \d\d \w\w\w \d{4})'
+  from_date: 'top ups from (\d\d \w+ \d\d\d\d) to'
+  to_date: 'to (\d\d \w+ \d\d\d\d)'
+lines:
+  start: '\s*Always remember to tap on and tap off'
+  end: 'Understanding your activity statement'
+  first_line: '^(?P<tx_number>\d{1,10})[ ]{10,22}(?P<day_of_week>(Mon|Tue|Wed|Thu|Fri|Sat|Sun))[ ]{6}(?P<timestamp>\d\d:\d\d)[ ]{18}(?P<details>\S+( \S+)*)[ ]{6,32}(?P<journey_number>(\d{1,3})?)[ ]+(?P<fare>(Travel Reward|Off-peak|Default fare|Day Cap)?)[ ][ ]+(?P<full_fare>(\d{1,3}.\d\d)?)[ ]+(?P<discount>(\d{1,3}.\d\d)?)[ ]+(?P<amount>-?\d{1,3}.\d\d)$'
+  line: '^[ ]{18,24}(?P<datestamp>(\d\d/\d\d/\d\d)?)[ ]{,32}(?P<details>\S+( \S+)*)?$'
+  last_line: '^$'
+options:
+  currency: AUD
+  remove_whitespace: false
