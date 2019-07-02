@@ -105,6 +105,16 @@ If you want to use it as a lib just do
 
     result = extract_data('path/to/my/file.pdf')
 
+If you want to use your own templates, you may do
+
+::
+
+   from invoice2data import extract_data
+   from invoice2data.extract.loader import read_templates
+
+   templates = read_templates('/path/to/your/templates/')
+   result = extract_data(filename, templates=templates)
+
 Template system
 ---------------
 

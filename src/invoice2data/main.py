@@ -13,7 +13,7 @@ from .input import tesseract
 from .input import tesseract4
 from .input import gvision
 
-from invoice2data.extract.loader import read_templates
+from .extract.loader import read_templates
 
 from .output import to_csv
 from .output import to_json
@@ -118,6 +118,13 @@ def create_parser():
     )
 
     parser.add_argument(
+        '--output-date-format',
+        dest='output_date_format',
+        default="%Y-%m-%d",
+        help='Choose output date format. Default: %Y-%m-%d (ISO 8601 Date)',
+    )
+
+    parser.add_argument(
         '--output-name',
         '-o',
         dest='output_name',
@@ -212,7 +219,7 @@ def main(args=None):
         f.close()
 
     if output_module is not None:
-        output_module.write_to_file(output, args.output_name)
+        output_module.write_to_file(output, args.output_name, args.output_date_format)
 
 
 if __name__ == '__main__':

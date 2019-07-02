@@ -1,0 +1,22 @@
+issuer: Profile Plumbing LTD
+keywords:
+- le Plumbing LTD
+- info@profileplumbing.co.nz
+
+fields:
+  invoice_number: 'Invoice Number:\s*(INV\-\d+)'
+  bc_number: '(?<=Invoice BC)\s*(\w+)'
+  customer_number: 'Job Number\: (\w+\-\d+)'
+  gst_number: 'GST Number\:\s*(\d\d\d\-\d\d\d\-\d\d\d)'
+  date: 'Invoice Date\:\s*(\d{1,2}[a-zA-Z]{2} \w\w\w \d\d\d\d)'
+  due_date: 'Due Date\:\s*(\d{1,2}\w\w \w\w\w \d\d\d\d)'
+  amount: '(?<=Total)\s*\$(\d{1,10}.\d\d)'
+  gst: '(?<=GST Amount)\s*\$(\d{1,10}.\d\d)'
+  overdue_amout: ''
+
+options:
+  currency: NZD
+  remove_whitespace: false
+  date_formats:
+    - '%d/%m/%Y'
+    - '%d %b %Y'

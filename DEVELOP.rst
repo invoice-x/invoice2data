@@ -27,8 +27,8 @@ Major folders in the ``invoice2data`` package and their purpose:
    ``LineInvoiceTemplate`` adds support for getting individual items.
 -  ``extract/templates``: Keeps all supported template files. Add new
    templates here.
--  ``output``: Modules to output structured data. Currently ``CSV``,
-   ``JSON`` and ``XML`` are supported.
+-  ``output``: Modules to output structured data. Currently only ``csv``
+   is supported. JSON and XML may be added soon.
 
 Documentation
 -------------

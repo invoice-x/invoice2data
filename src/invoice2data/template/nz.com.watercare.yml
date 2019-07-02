@@ -1,0 +1,22 @@
+issuer: Watercare Services Limited
+keywords:
+- Watercare Services Limited
+- www.watercare.co.nz
+
+fields:
+  invoice_number: 'Account\snumber\:\s+(\d+\-\d+)'
+  bc_number: '[^\-]\sBody\sCorporate\s+(\w+)'
+  customer_number: 'Account\snumber\:\s+(\d+\-\d+)'
+  gst_number: '56\-892\-397'
+  date: 'Invoice date\:[\w\s]+?(\d{1,2} \w\w\w \d\d\d\d)'
+  due_date: 'Due date\:[\w\s]+?(\d{1,2} \w\w\w \d\d\d\d)'
+  amount: '([\d\,]{1,10}\.[\d\scr]{2,5})[^\$]+All current charges'
+  gst: 'All current charges include 15\% GST\:\s*\$\s*([\d\,]{1,10}\.\d\d)'
+  overdue_amout: ''
+
+options:
+  currency: NZD
+  remove_whitespace: false
+  date_formats:
+    - '%d/%m/%Y'
+    - '%d %b %Y'

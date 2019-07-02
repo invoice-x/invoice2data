@@ -51,7 +51,7 @@ def to_text(path):
 
     # convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
     convert = ['convert', '-density', '350', 'out.jpg', '-depth', '8', 'JPG:-']
-    p1 = subprocess.Popen(convert, stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(convert, stdout=subprocess.PIPE, shell=True)
 
     tess = ['tesseract', 'stdin', 'stdout']
     p2 = subprocess.Popen(tess, stdin=p1.stdout, stdout=subprocess.PIPE)
