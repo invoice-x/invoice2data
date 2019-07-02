@@ -13,7 +13,7 @@ from .input import tesseract
 from .input import tesseract4
 from .input import gvision
 
-from .extract.loader import read_templates
+from invoice2data.extract.loader import read_templates
 
 from .output import to_csv
 from .output import to_json

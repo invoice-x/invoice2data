@@ -37,9 +37,6 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
     else:
         openfile = open(filename, "w", newline='')
 
-
-    if data is None or len(data) == 0:
-        return
     with openfile as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
 
@@ -54,6 +51,6 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
             for k, v in line.items():
                 # first_row.append(k)
                 if k.startswith('date') or k.endswith('date'):
-                    v = v.strftime('%d/%m/%Y')
+                    v = v.strftime(date_format)
                 csv_items.append(v)
             writer.writerow(csv_items)
