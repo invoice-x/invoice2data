@@ -103,7 +103,15 @@ class InvoiceTemplate(OrderedDict):
         # remove all possible thousands separators
         amount_pipe_no_thousand_sep = re.sub(r'[.,\s]', '', amount_pipe)
         # put dot as decimal sep
-        return float(amount_pipe_no_thousand_sep.replace('|', '.'))
+
+        credit_is_negtive = False
+        if amount_pipe_no_thousand_sep.endswith('cr'):
+            credit_is_negtive = True
+            amount_pipe_no_thousand_sep = amount_pipe_no_thousand_sep.replace('cr','')
+        if credit_is_negtive:
+            return -float(amount_pipe_no_thousand_sep.replace('|', '.'))
+        else:
+            return float(amount_pipe_no_thousand_sep.replace('|', '.'))
 
     def parse_date(self, value):
         """Parses date and returns date after parsing"""
@@ -126,7 +134,7 @@ class InvoiceTemplate(OrderedDict):
             return self.parse_date(value)
         assert False, 'Unknown type'
 
-    def extract(self, optimized_str):
+    def extract(self, optimized_str, filename=''):
         """
         Given a template file and a string, extract matching data fields.
         """
@@ -151,6 +159,8 @@ class InvoiceTemplate(OrderedDict):
             if k.startswith('static_'):
                 logger.debug("field=%s | static value=%s", k, v)
                 output[k.replace('static_', '')] = v
+            elif k=='filename':
+                output[k] = filename
             else:
                 logger.debug("field=%s | regexp=%s", k, v)
 
@@ -191,6 +201,7 @@ class InvoiceTemplate(OrderedDict):
                         else:
                             output[k] = res_find
                 else:
+                    output[k] = ''
                     logger.warning("regexp for field %s didn't match", k)
 
         output['currency'] = self.options['currency']
