@@ -41,7 +41,7 @@ def test_to_text(mocker: "pytest_mock.MockerFixture") -> None:  # type: ignore [
 
     # Call the function
     path = "test.pdf"
-    extracted_text = gvision.to_text(path)
+    extracted_text = gvision.to_text(path, bucket_name="cloud-vision-84893")
 
     # Assertions
     mock_storage_client.return_value.get_bucket.assert_called_once_with(
@@ -77,7 +77,7 @@ def test_to_text_existing_result(mocker: "pytest_mock.MockerFixture") -> None:  
 
     # Call the function
     path = "test.pdf"
-    extracted_text = gvision.to_text(path)
+    extracted_text = gvision.to_text(path, bucket_name="cloud-vision-84893")
 
     # Assertions
     mock_storage_client.return_value.get_bucket.assert_called_once_with(

@@ -2,6 +2,7 @@
 
 import logging
 import os
+from typing import Optional
 
 
 logger = logging.getLogger(__name__)
@@ -21,9 +22,7 @@ def have_google_cloud() -> bool:
     return GOOGLE_CLOUD_AVAILABLE
 
 
-def to_text(
-    path: str, bucket_name: str = "cloud-vision-84893", language: str = "en"
-) -> str:
+def to_text(path: str, bucket_name: Optional[str] = None, language: str = "en") -> str:
     """Sends PDF files to Google Cloud Vision for OCR.
 
     Before using invoice2data, make sure you have the auth JSON path set as
@@ -31,12 +30,15 @@ def to_text(
 
     Args:
         path (str): Path of the electronic invoice in JPG or PNG format.
-        bucket_name (str, optional): Name of the bucket to use for file storage
+        bucket_name (Optional[str]): Name of the bucket to use for file storage
                                      and results cache. Defaults to "cloud-vision-84893".
         language (str, optional): Language to use for OCR. Defaults to "en".
 
     Returns:
         str: Extracted text from the image.
+
+    Raises:
+        OSError: If the google cloud bucket_name is not set.
     """
     if not have_google_cloud():
         logger.warning(
@@ -46,6 +48,13 @@ def to_text(
         return ""
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
     mime_type = "application/pdf"
+    if bucket_name is None:
+        bucket_name = os.getenv("GOOGLE_CLOUD_BUCKET_NAME", None)
+
+    if bucket_name is None:
+        raise OSError(
+            "No Google Cloud Bucket name set.\n Set it as an input variable or as an environment variable named GOOGLE_CLOUD_BUCKET_NAME"
+        )
 
     path_dir, filename = os.path.split(path)
     result_blob_basename = filename.replace(".pdf", "").replace(".PDF", "")
