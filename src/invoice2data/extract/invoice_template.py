@@ -107,7 +107,7 @@ class InvoiceTemplate(OrderedDict):
         credit_is_negtive = False
         if amount_pipe_no_thousand_sep.endswith('cr'):
             credit_is_negtive = True
-            amount_pipe_no_thousand_sep = amount_pipe_no_thousand_sep.replace('cr','')
+            amount_pipe_no_thousand_sep = amount_pipe_no_thousand_sep.replace('cr', '')
         if credit_is_negtive:
             return -float(amount_pipe_no_thousand_sep.replace('|', '.'))
         else:
@@ -159,7 +159,7 @@ class InvoiceTemplate(OrderedDict):
             if k.startswith('static_'):
                 logger.debug("field=%s | static value=%s", k, v)
                 output[k.replace('static_', '')] = v
-            elif k=='filename':
+            elif k == 'filename':
                 output[k] = filename
             else:
                 logger.debug("field=%s | regexp=%s", k, v)
