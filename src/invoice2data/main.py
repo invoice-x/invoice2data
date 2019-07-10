@@ -121,7 +121,7 @@ def create_parser():
         '--output-date-format',
         dest='output_date_format',
         default="%Y-%m-%d",
-        help='Choose output date format. Default: %Y-%m-%d (ISO 8601 Date)',
+        help='Choose output date format. Default: %%Y-%%m-%%d (ISO 8601 Date)',
     )
 
     parser.add_argument(
