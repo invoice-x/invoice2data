@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def to_text(path, language='fr'):
+def to_text(path, bucket_name=None, language='fr'):
     """Sends PDF files to Google Cloud Vision for OCR.
 
     Before using invoice2data, make sure you have the auth json path set as
@@ -9,6 +9,8 @@ def to_text(path, language='fr'):
     ----------
     path : str
         path of electronic invoice in JPG or PNG format
+    bucket_name : str
+        name of bucket to use for file storage and results cache.
 
     Returns
     -------
@@ -25,12 +27,14 @@ def to_text(path, language='fr'):
 
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
     mime_type = 'application/pdf'
-    bucket_name = os.getenv('GOOGLE_CLOUD_BUCKET_NAME', None)
 
     if bucket_name is None:
-        raise EnvironmentError(
-            'GOOGLE_CLOUD_BUCKET_NAME environment variable not set'
-        )
+        bucket_name = os.getenv('GOOGLE_CLOUD_BUCKET_NAME', None)
+
+        if bucket_name is None:
+            raise EnvironmentError(
+                'No Google Cloud Bucket name set.\n Set it as an input variable or as an environment variable named GOOGLE_CLOUD_BUCKET_NAME'
+            )
 
     path_dir, filename = os.path.split(path)
     result_blob_basename = filename.replace('.pdf', '').replace('.PDF', '')
