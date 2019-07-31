@@ -25,7 +25,7 @@ def to_text(path):
         raise EnvironmentError('imagemagick not installed.')
 
     # convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
-    convert = ['convert', '-density', '350', path, '-depth', '8', 'png:-']
+    convert = ['convert', '-density', '350', path, '-depth', '8', '-alpha', 'off', 'png:-']
     p1 = subprocess.Popen(convert, stdout=subprocess.PIPE)
 
     tess = ['tesseract', 'stdin', 'stdout']
