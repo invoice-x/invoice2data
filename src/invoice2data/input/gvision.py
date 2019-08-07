@@ -24,13 +24,15 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
     from google.cloud import vision
     from google.cloud import storage
     from google.protobuf import json_format
+    from PyPDF2 import PdfFileReader
 
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
     mime_type = 'application/pdf'
 
     path_dir, filename = os.path.split(path)
     result_blob_basename = filename.replace('.pdf', '').replace('.PDF', '')
-    result_blob_name = result_blob_basename + '/output-1-to-1.json'
+    #forming json file name based on no. of pages
+    result_blob_name = result_blob_basename + '/output-1-to-'+str(PdfFileReader(open(path, "rb")).getNumPages())+'.json'
     result_blob_uri = 'gs://{}/{}/'.format(bucket_name, result_blob_basename)
     input_blob_uri = 'gs://{}/{}'.format(bucket_name, filename)
 
@@ -76,8 +78,14 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
     json_string = result_blob.download_as_string()
     response = json_format.Parse(json_string, vision.types.AnnotateFileResponse())
 
-    # The actual response for the first page of the input file.
-    first_page_response = response.responses[0]
-    annotation = first_page_response.full_text_annotation
-
-    return annotation.text.encode('utf-8')
+# The actual response for all pages of the input file.
+    
+    anottext=''
+    for x in range(PdfFileReader(open(path, "rb")).getNumPages()):
+        first_page_response = response.responses[x]
+        if x==0:
+            anottext = first_page_response.full_text_annotation.text
+        else :
+            anottext =anottext+ first_page_response.full_text_annotation.text
+     
+    return anottext.encode('utf-8')
