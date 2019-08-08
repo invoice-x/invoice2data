@@ -8,12 +8,12 @@ import os
 import yaml
 import pkg_resources
 from collections import OrderedDict
-import logging as logger
+import logging
 from .invoice_template import InvoiceTemplate
 import codecs
 import chardet
 
-logger.getLogger('chardet').setLevel(logger.WARNING)
+logging.getLogger('chardet').setLevel(logging.WARNING)
 
 
 # borrowed from http://stackoverflow.com/a/21912744

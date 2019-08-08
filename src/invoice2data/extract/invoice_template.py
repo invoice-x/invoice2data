@@ -7,9 +7,11 @@ Templates are initially read from .yml files and then kept as class.
 import re
 import dateparser
 from unidecode import unidecode
-import logging as logger
+import logging
 from collections import OrderedDict
 from .plugins import lines, tables
+
+logger = logging.getLogger(__name__)
 
 OPTIONS_DEFAULT = {
     'remove_whitespace': False,

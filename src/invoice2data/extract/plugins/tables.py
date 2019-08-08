@@ -3,7 +3,9 @@ Plugin to extract tables from an invoice.
 """
 
 import re
-import logging as logger
+import logging
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_OPTIONS = {'field_separator': r'\s+', 'line_separator': r'\n'}
 
