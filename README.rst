@@ -67,7 +67,7 @@ Choose any of the following input readers:
  - tesseract ``invoice2data --input-reader tesseract invoice.pdf``
  - pdf miner ``invoice2data --input-reader pdfminer invoice.pdf``
  - tesseract4 ``invoice2data --input-reader tesseract4 invoice.pdf``
- - gvision ``invoice2data --input-reader gvision invoice.pdf`` (needs ``GOOGLE_APPLICATION_CREDENTIALS`` env var)
+ - gvision ``invoice2data --input-reader gvision invoice.pdf`` (needs ``GOOGLE_APPLICATION_CREDENTIALS`` and a Google Cloud Bucket name. The bucket name can be set as an argument to the function ``to_text`` or as an Environment variable named ``GOOGLE_CLOUD_BUCKET_NAME`` )
 
 Choose any of the following output formats:
 

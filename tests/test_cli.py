@@ -133,7 +133,7 @@ class TestCLI(unittest.TestCase):
                     i += 1
 
         shutil.rmtree('tests/copy_test/', ignore_errors=True)
-        self.assertEqual(i, len(get_sample_files('.json')))
+        self.assertEqual(i, len(get_sample_files('.pdf')))
         '''
         if i != len(self._get_test_file_json_path()):
             print(i)
