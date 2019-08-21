@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
+def to_text(path, bucket_name="cloud-vision-84893", language="fr"):
     """Sends PDF files to Google Cloud Vision for OCR.
 
     Before using invoice2data, make sure you have the auth json path set as
@@ -26,13 +26,13 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
     from google.protobuf import json_format
 
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
-    mime_type = 'application/pdf'
+    mime_type = "application/pdf"
 
     path_dir, filename = os.path.split(path)
-    result_blob_basename = filename.replace('.pdf', '').replace('.PDF', '')
-    result_blob_name = result_blob_basename + '/output-1-to-1.json'
-    result_blob_uri = 'gs://{}/{}/'.format(bucket_name, result_blob_basename)
-    input_blob_uri = 'gs://{}/{}'.format(bucket_name, filename)
+    result_blob_basename = filename.replace(".pdf", "").replace(".PDF", "")
+    result_blob_name = result_blob_basename + "/output-1-to-1.json"
+    result_blob_uri = "gs://{}/{}/".format(bucket_name, result_blob_basename)
+    input_blob_uri = "gs://{}/{}".format(bucket_name, filename)
 
     # Upload file to gcloud if it doesn't exist yet
     storage_client = storage.Client()
@@ -51,10 +51,14 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
 
         client = vision.ImageAnnotatorClient()
 
-        feature = vision.types.Feature(type=vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION)
+        feature = vision.types.Feature(
+            type=vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION
+        )
 
         gcs_source = vision.types.GcsSource(uri=input_blob_uri)
-        input_config = vision.types.InputConfig(gcs_source=gcs_source, mime_type=mime_type)
+        input_config = vision.types.InputConfig(
+            gcs_source=gcs_source, mime_type=mime_type
+        )
 
         gcs_destination = vision.types.GcsDestination(uri=result_blob_uri)
         output_config = vision.types.OutputConfig(
@@ -67,7 +71,7 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
 
         operation = client.async_batch_annotate_files(requests=[async_request])
 
-        print('Waiting for the operation to finish.')
+        print("Waiting for the operation to finish.")
         operation.result(timeout=180)
 
     # Get result after OCR is completed
@@ -80,4 +84,4 @@ def to_text(path, bucket_name='cloud-vision-84893', language='fr'):
     first_page_response = response.responses[0]
     annotation = first_page_response.full_text_annotation
 
-    return annotation.text.encode('utf-8')
+    return annotation.text.encode("utf-8")

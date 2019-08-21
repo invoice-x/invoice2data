@@ -34,18 +34,23 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
         >>> to_json.write_to_file(data, "invoice.json")
 
     """
-    if path.endswith('.json'):
+    if path.endswith(".json"):
         filename = path
     else:
-        filename = path + '.json'
+        filename = path + ".json"
 
-    with codecs.open(filename, "w", encoding='utf-8') as json_file:
+    with codecs.open(filename, "w", encoding="utf-8") as json_file:
         for line in data:
             for k, v in line.items():
-                if k.startswith('date') or k.endswith('date'):
+                if k.startswith("date") or k.endswith("date"):
                     line[k] = v.strftime(date_format)
         print(type(json))
         print(json)
         json.dump(
-            data, json_file, indent=4, sort_keys=True, default=myconverter, ensure_ascii=False
+            data,
+            json_file,
+            indent=4,
+            sort_keys=True,
+            default=myconverter,
+            ensure_ascii=False,
         )

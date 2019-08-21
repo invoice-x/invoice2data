@@ -4,12 +4,12 @@ from xml.dom import minidom
 
 def prettify(elem):
     """Return a pretty-printed XML string for the Element."""
-    rough_string = ET.tostring(elem, 'utf-8')
+    rough_string = ET.tostring(elem, "utf-8")
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
 
-def write_to_file(data, path, date_format='%Y-%m-%d'):
+def write_to_file(data, path, date_format="%Y-%m-%d"):
     """Export extracted fields to xml
 
     Appends .xml to path if missing and generates xml file in specified directory, if not then in root
@@ -36,26 +36,26 @@ def write_to_file(data, path, date_format='%Y-%m-%d'):
 
     """
 
-    if path.endswith('.xml'):
+    if path.endswith(".xml"):
         filename = path
     else:
-        filename = path + '.xml'
+        filename = path + ".xml"
 
-    tag_data = ET.Element('data')
+    tag_data = ET.Element("data")
     xml_file = open(filename, "w")
     i = 0
     for line in data:
         i += 1
-        tag_item = ET.SubElement(tag_data, 'item')
-        tag_date = ET.SubElement(tag_item, 'date')
-        tag_desc = ET.SubElement(tag_item, 'desc')
-        tag_currency = ET.SubElement(tag_item, 'currency')
-        tag_amount = ET.SubElement(tag_item, 'amount')
-        tag_item.set('id', str(i))
-        tag_date.text = line['date'].strftime(date_format)
-        tag_desc.text = line['desc']
-        tag_currency.text = line['currency']
-        tag_amount.text = str(line['amount'])
+        tag_item = ET.SubElement(tag_data, "item")
+        tag_date = ET.SubElement(tag_item, "date")
+        tag_desc = ET.SubElement(tag_item, "desc")
+        tag_currency = ET.SubElement(tag_item, "currency")
+        tag_amount = ET.SubElement(tag_item, "amount")
+        tag_item.set("id", str(i))
+        tag_date.text = line["date"].strftime(date_format)
+        tag_desc.text = line["desc"]
+        tag_currency.text = line["currency"]
+        tag_amount.text = str(line["amount"])
 
     xml_file.write(prettify(tag_data))
     xml_file.close()
