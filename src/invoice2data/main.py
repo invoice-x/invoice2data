@@ -23,14 +23,14 @@ from .output import to_xml
 logger = logging.getLogger(__name__)
 
 input_mapping = {
-    'pdftotext': pdftotext,
-    'tesseract': tesseract,
-    'tesseract4': tesseract4,
-    'pdfminer': pdfminer_wrapper,
-    'gvision': gvision,
+    "pdftotext": pdftotext,
+    "tesseract": tesseract,
+    "tesseract4": tesseract4,
+    "pdfminer": pdfminer_wrapper,
+    "gvision": gvision,
 }
 
-output_mapping = {'csv': to_csv, 'json': to_json, 'xml': to_xml, 'none': None}
+output_mapping = {"csv": to_csv, "json": to_json, "xml": to_xml, "none": None}
 
 
 def extract_data(invoicefile, templates=None, input_module=pdftotext):
@@ -79,20 +79,20 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         templates = read_templates()
 
     # print(templates[0])
-    extracted_str = input_module.to_text(invoicefile).decode('utf-8')
+    extracted_str = input_module.to_text(invoicefile).decode("utf-8")
 
-    logger.debug('START pdftotext result ===========================')
+    logger.debug("START pdftotext result ===========================")
     logger.debug(extracted_str)
-    logger.debug('END pdftotext result =============================')
+    logger.debug("END pdftotext result =============================")
 
-    logger.debug('Testing {} template files'.format(len(templates)))
+    logger.debug("Testing {} template files".format(len(templates)))
     for t in templates:
         optimized_str = t.prepare_input(extracted_str)
 
         if t.matches_input(optimized_str):
             return t.extract(optimized_str)
 
-    logger.error('No template for %s', invoicefile)
+    logger.error("No template for %s", invoicefile)
     return False
 
 
@@ -100,75 +100,84 @@ def create_parser():
     """Returns argument parser """
 
     parser = argparse.ArgumentParser(
-        description='Extract structured data from PDF files and save to CSV or JSON.'
+        description="Extract structured data from PDF files and save to CSV or JSON."
     )
 
     parser.add_argument(
-        '--input-reader',
+        "--input-reader",
         choices=input_mapping.keys(),
-        default='pdftotext',
-        help='Choose text extraction function. Default: pdftotext',
+        default="pdftotext",
+        help="Choose text extraction function. Default: pdftotext",
     )
 
     parser.add_argument(
-        '--output-format',
+        "--output-format",
         choices=output_mapping.keys(),
-        default='none',
-        help='Choose output format. Default: none',
+        default="none",
+        help="Choose output format. Default: none",
     )
 
     parser.add_argument(
-        '--output-date-format',
-        dest='output_date_format',
+        "--output-date-format",
+        dest="output_date_format",
         default="%Y-%m-%d",
-        help='Choose output date format. Default: %%Y-%%m-%%d (ISO 8601 Date)',
+        help="Choose output date format. Default: %%Y-%%m-%%d (ISO 8601 Date)",
     )
 
     parser.add_argument(
-        '--output-name',
-        '-o',
-        dest='output_name',
-        default='invoices-output',
-        help='Custom name for output file. Extension is added based on chosen format.',
+        "--output-name",
+        "-o",
+        dest="output_name",
+        default="invoices-output",
+        help="Custom name for output file. Extension is added based on chosen format.",
     )
 
     parser.add_argument(
-        '--debug', dest='debug', action='store_true', help='Enable debug information.'
+        "--debug", dest="debug", action="store_true", help="Enable debug information."
     )
 
     parser.add_argument(
-        '--copy', '-c', dest='copy', help='Copy and rename processed PDFs to specified folder.'
+        "--copy",
+        "-c",
+        dest="copy",
+        help="Copy and rename processed PDFs to specified folder.",
     )
 
     parser.add_argument(
-        '--move', '-m', dest='move', help='Move and rename processed PDFs to specified folder.'
+        "--move",
+        "-m",
+        dest="move",
+        help="Move and rename processed PDFs to specified folder.",
     )
 
     parser.add_argument(
-        '--filename-format',
-        dest='filename',
+        "--filename-format",
+        dest="filename",
         default="{date} {invoice_number} {desc}.pdf",
-        help='Filename format to use when moving or copying processed PDFs.'
-             'Default: "{date} {invoice_number} {desc}.pdf"',
+        help="Filename format to use when moving or copying processed PDFs."
+        'Default: "{date} {invoice_number} {desc}.pdf"',
     )
 
     parser.add_argument(
-        '--template-folder',
-        '-t',
-        dest='template_folder',
-        help='Folder containing invoice templates in yml file. Always adds built-in templates.',
+        "--template-folder",
+        "-t",
+        dest="template_folder",
+        help="Folder containing invoice templates in yml file. Always adds built-in templates.",
     )
 
     parser.add_argument(
-        '--exclude-built-in-templates',
-        dest='exclude_built_in_templates',
+        "--exclude-built-in-templates",
+        dest="exclude_built_in_templates",
         default=False,
-        help='Ignore built-in templates.',
+        help="Ignore built-in templates.",
         action="store_true",
     )
 
     parser.add_argument(
-        'input_files', type=argparse.FileType('r'), nargs='+', help='File or directory to analyze.'
+        "input_files",
+        type=argparse.FileType("r"),
+        nargs="+",
+        help="File or directory to analyze.",
     )
 
     return parser
@@ -204,16 +213,16 @@ def main(args=None):
             output.append(res)
             if args.copy:
                 filename = args.filename.format(
-                    date=res['date'].strftime('%Y-%m-%d'),
-                    invoice_number=res['invoice_number'],
-                    desc=res['desc'],
+                    date=res["date"].strftime("%Y-%m-%d"),
+                    invoice_number=res["invoice_number"],
+                    desc=res["desc"],
                 )
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
                 filename = args.filename.format(
-                    date=res['date'].strftime('%Y-%m-%d'),
-                    invoice_number=res['invoice_number'],
-                    desc=res['desc'],
+                    date=res["date"].strftime("%Y-%m-%d"),
+                    invoice_number=res["invoice_number"],
+                    desc=res["desc"],
                 )
                 shutil.move(f.name, join(args.move, filename))
         f.close()
@@ -222,5 +231,5 @@ def main(args=None):
         output_module.write_to_file(output, args.output_name, args.output_date_format)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

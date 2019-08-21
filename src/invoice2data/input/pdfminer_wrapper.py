@@ -20,7 +20,7 @@ def to_text(path):
         import sys
 
         reload(sys)  # noqa: F821
-        sys.setdefaultencoding('utf8')
+        sys.setdefaultencoding("utf8")
     except ImportError:
         from io import StringIO
 
@@ -31,11 +31,11 @@ def to_text(path):
 
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
-    codec = 'utf-8'
+    codec = "utf-8"
     laparams = LAParams()
     laparams.all_texts = True
     device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
-    with open(path, 'rb') as fp:
+    with open(path, "rb") as fp:
         interpreter = PDFPageInterpreter(rsrcmgr, device)
         password = ""
         maxpages = 0
@@ -54,4 +54,4 @@ def to_text(path):
     device.close()
     str = retstr.getvalue()
     retstr.close()
-    return str.encode('utf-8')
+    return str.encode("utf-8")

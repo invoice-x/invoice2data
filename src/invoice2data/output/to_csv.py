@@ -27,18 +27,18 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
         >>> to_csv.write_to_file(data, "invoice.csv")
 
     """
-    if path.endswith('.csv'):
+    if path.endswith(".csv"):
         filename = path
     else:
-        filename = path + '.csv'
+        filename = path + ".csv"
 
     if sys.version_info[0] < 3:
         openfile = open(filename, "wb")
     else:
-        openfile = open(filename, "w", newline='')
+        openfile = open(filename, "w", newline="")
 
     with openfile as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
+        writer = csv.writer(csv_file, delimiter=",")
 
         for line in data:
             first_row = []
@@ -50,7 +50,7 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
             csv_items = []
             for k, v in line.items():
                 # first_row.append(k)
-                if k.startswith('date') or k.endswith('date'):
+                if k.startswith("date") or k.endswith("date"):
                     v = v.strftime(date_format)
                 csv_items.append(v)
             writer.writerow(csv_items)
