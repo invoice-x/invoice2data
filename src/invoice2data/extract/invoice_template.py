@@ -24,7 +24,7 @@ OPTIONS_DEFAULT = {
     "replace": [],  # example: see templates/fr/fr.free.mobile.yml
 }
 
-PLUGIN_MAPPING = {"lines": lines, "tables": tables}
+PLUGIN_MAPPING = {"lines": lines, "tables": tables, "chunks": chunks}
 
 
 class InvoiceTemplate(OrderedDict):
