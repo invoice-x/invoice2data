@@ -20,9 +20,7 @@ def extract(self, content, output):
         chunk = plugin_settings
 
         # Validate settings
-        assert 'chunk' in chunk, 'chunk regex missing'
-        assert 'chunk_start' in chunk, 'chunk_start regex missing'
-        assert 'chunk_end' in chunk, 'chunk_end regex missing'
+        assert 'chunk' in chunk, 'Chunk regex missing'
 
         start = re.search(chunk['start'], content) if 'start' in chunk.keys() else None
         end = re.search(chunk['end'], content) if 'end' in chunk.keys() else None
@@ -32,6 +30,7 @@ def extract(self, content, output):
         if start and end:
             content_section = content[start.end(): end.start()]
         looping = True
+        logger.debug("STARTING CHUNKS")
         if 'chunk_start' in chunk and 'chunk_end' in chunk:
             chunk_start = re.search(chunk['chunk_start'], content_section)
             chunk_end = re.search(chunk['chunk_end'], content_section)
