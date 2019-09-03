@@ -2,7 +2,7 @@
 def to_text(path, bucket_name="cloud-vision-84893", language="fr"):
     """Sends PDF files to Google Cloud Vision for OCR.
 
-    Before using invoice2data, make sure you have the auth json path set as
+    Before using invoice2dataNew, make sure you have the auth json path set as
     env var GOOGLE_APPLICATION_CREDENTIALS
 
     Parameters

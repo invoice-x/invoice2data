@@ -30,7 +30,7 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
 
     Examples
     --------
-        >>> from invoice2data.output import to_xml
+        >>> from invoice2dataNew.output import to_xml
         >>> to_xml.write_to_file(data, "/exported_xml/invoice.xml")
         >>> to_xml.write_to_file(data, "invoice.xml")
 

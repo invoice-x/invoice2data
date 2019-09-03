@@ -58,7 +58,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
 
     Notes
     -----
-    Import required `input_module` when using invoice2data as a library
+    Import required `input_module` when using invoice2dataNew as a library
 
     See Also
     --------
@@ -67,10 +67,10 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
 
     Examples
     --------
-    When using `invoice2data` as an library
+    When using `invoice2dataNew` as an library
 
-    >>> from invoice2data.input import pdftotext
-    >>> extract_data("invoice2data/test/pdfs/oyo.pdf", None, pdftotext)
+    >>> from invoice2dataNew.input import pdftotext
+    >>> extract_data("invoice2dataNew/test/pdfs/oyo.pdf", None, pdftotext)
     {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087',
      'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
 

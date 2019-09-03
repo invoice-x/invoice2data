@@ -70,7 +70,7 @@ def read_templates(folder=None):
     ('date', 'Date:(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})'), ('invoice_number', '([A-Z0-9]+)CashatHotel')])),
     ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', OrderedDict([('currency', 'INR'), ('decimal_separator', '.'),
     ('remove_whitespace', True)])), ('template_name', 'com.oyo.invoice.yml')])
-    >>> extract_data("invoice2data/test/pdfs/oyo.pdf", my_template, pdftotext)
+    >>> extract_data(iinvoice2dataNewew, my_template, pdftotext)
     {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087',
      'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
 

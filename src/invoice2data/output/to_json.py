@@ -29,7 +29,7 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
 
     Examples
     --------
-        >>> from invoice2data.output import to_json
+        >>> from invoice2dataNew.output import to_json
         >>> to_json.write_to_file(data, "/exported_json/invoice.json")
         >>> to_json.write_to_file(data, "invoice.json")
 
