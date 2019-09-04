@@ -21,11 +21,12 @@ def to_text(path):
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not spawn.find_executable("tesseract"):
         raise EnvironmentError("tesseract not installed.")
-    if not spawn.find_executable("convert"):
+    if not spawn.find_executable("magick"):
         raise EnvironmentError("imagemagick not installed.")
 
-    # convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
+    # convert = "magick convert -density 350 %s -depth 8 tiff:-" % (path)
     convert = [
+        "magick",
         "convert",
         "-density",
         "350",
