@@ -12,7 +12,8 @@ jobs:
 #     docker:
 #     - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
 #       command: /sbin/init
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
     # Machine Setup
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
@@ -29,7 +30,7 @@ jobs:
         keys:
         # This branch if available
         - v1-dep-{{ .Branch }}-
-    - run: sudo apt-get update && sudo apt-get install tesseract-ocr xpdf
+    - run: sudo apt-get update && sudo apt-get install tesseract-ocr xpdf imagemagick
     - run: cd /opt/circleci/.pyenv/plugins/python-build/../.. && git pull && cd -
     - run: pyenv install -s 2.7.14
     - run: pyenv install -s 3.5.4
