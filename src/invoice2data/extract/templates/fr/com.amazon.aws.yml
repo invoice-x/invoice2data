@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Amazon Web Services EMEA SARL, succursale française
+fields:
+  amount: TOTAL\s+AMOUNT\s+EUR\s+(\d+.\d{2})
+  amount_tax: TOTAL\s+VAT\s+EUR\s+(\d+.\d{2})
+  date: VAT\s+Invoice\s+Date:\s+(.+\s+\d{1,2},\s+\d{4})
+  invoice_number: VAT\s+Invoice\s+Number:\s+(\w+\-\w+)
+  static_vat: FR30831001334
+keywords:
+  - FR30831001334
+  - EUR
+  - Invoice
+options:
+  currency: EUR
+  date_formats:
+    - '%B %d, %Y'
+  decimal_separator: '.'
