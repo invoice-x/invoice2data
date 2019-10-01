@@ -1,0 +1,24 @@
+issuer: Lampiris S.A.
+fields:
+  amount: '=\s+EUR\s(\d+,\d{2})\s+TVAC'
+  date: 'Date\s+facture\s+:\s+(\d{2}\/\d{2}\/\d{4})'
+  date_due: 'Date\sd.echeance\s:\s(\d{2}/\d{2}/\d{4})\sconformement'
+  date_invoice_start: 'de\scompteur\s+\d{8,}\s+du\s(\d{2}/\d{2}/\d{4})\sau\s\d{2}/\d{2}/\d{4}'
+  date_invoice_end: 'de\scompteur\s+\d{8,}\s+du\s\d{2}/\d{2}/\d{4}\sau\s(\d{2}/\d{2}/\d{4})'
+  invoice_number: 'Reference\s+facture\s+:\s+(E\d{2}\/\d+)'
+  ean: 'de\scompteur\s+(\d{8,})\s+'
+keywords:
+- Lampiris
+- Regularisation
+- BE 0859 655 570
+- BE38 0015 0942 4272
+options:
+  currency: EUR
+  remove_whitespace: false
+  remove_accents: true
+  lowercase: false
+  decimal_separator: ','
+  date_formats:
+    - '%d/%m/%Y'
+  languages:
+    - fr
