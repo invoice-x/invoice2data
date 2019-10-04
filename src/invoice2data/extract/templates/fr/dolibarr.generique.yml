@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-
+issuer: Facture dolibarr generique (1)
+fields:
+  invoice_number: '.*R.f.\s+:\s+(.*)'
+  date: Date\sfacturation\s+:\s+(\d{2}/\d{2}/\d{4})
+  amount: 'Total\sTTC\s+(.*,\d{2})'
+  amount_untaxed: 'Conditions de.*Total\sHT\s+(.*,\d+)'
+  amount_tax: 'Total\sTVA.*%\s+(.*,\d+)'
+  supplier_numtva: '.*APE.*.\sTVA:\s(\w+\d+)\s+'
+tables:
+#  - start: Hotel Details\s+Check In\s+Check Out\s+Rooms
+#    end: Booking ID
+#    body: (?P<hotel_details>[\S ]+),\s+(?P<date_check_in>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<date_check_out>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<amount_rooms>\d+)
+  # example line:
+  #                                   Émetteur:                                                                                  Adressé à:
+  #
+  #
+  #                                   CAP-REL                                                                                  CLIENT
+  #                                   xxx xxx xxx xxx xxx xxxxxxxxxx                                                           10 rue de XXXXXX
+  #                                   00999 VILLE FOURNISSEUR                                                                  99000 VILLE CLIENT
+  #                                                                                                                            Num. TVA: xxxxxx
+  #                                   Tél.: +33xxxxxxx
+  #                                   Email: contact@cap-rel.fr
+  #                                   Web: cap-rel.fr
+  # note:
+  - start: '\s+Emetteur:\s+Adresse\s+a:\s+'
+    end: 'Tel'
+    body: '(?P<supplier_name>[\S ]+?)\s{4,}(?P<customer_name>[\S ]+)'
+#    body: '(?P<supplier_addr>[\w ]+)\s{4,}(?P<customer_addr>[\w ]+)'
+#  line: '(?P<supplier_postalcode>\d+)\s+(?P<supplier_city>\w+)\s{4,}(?P<customer_postalcode>\d+)\s+(?P<customer_city>\w+)'
+#  line: '.*Désignation.*'
+keywords:
+  - Powered by TCPDF
+options:
+  remove_accents: true
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  languages:
+    - fr
+  decimal_separator: ','
+required_fields:
+  - date
+  - amount
+  - invoice_number
+  - amount_untaxed
+  - amount_tax
+  - supplier_numtva
+  - supplier_name
+  - customer_name
