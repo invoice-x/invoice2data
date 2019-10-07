@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+issuer: Vistaprint
+fields:
+  amount: '.*Total\s+(\d+,\d{2})\s+'
+  date: 'Date\sde\sla\sfacture\s:\s+(\d{2}/\d{2}/\d{4}).*'
+  invoice_number: '.*N.\sde\sla\sfacture\s:\s+(\d+)'
+  static_vat: NL812139513B01
+keywords:
+  - NL812139513B01
+  - facture
+  - Vistaprint
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','

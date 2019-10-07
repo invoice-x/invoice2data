@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+issuer: Apple Distribution International
+fields:
+  amount: Total\s+Price\s+\(\w+.VAT\)\s+EUR\s+(\d+,\d{2})
+  date: Invoice\s+Date\s?:\s+(\d{2}.\d{2}.\d{4})
+  invoice_number: Invoice\s+Number\s?:\s+(\w+)
+  static_vat: FR18539565218
+tables:
+  - start: VAT Basis\s+VAT Amount\s+VAT Rate
+    end: 'Pour plus'
+    body: '\s+(?P<amount_untaxed>\d*,\d*)\s+(?P<amount_tax>\d*,\d*)\s+(?P<vat_rate>\d*,\d*)\s+%'
+keywords:
+  - FR18539565218
+  - Apple
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d.%m.%Y'
+  decimal_separator: ','
