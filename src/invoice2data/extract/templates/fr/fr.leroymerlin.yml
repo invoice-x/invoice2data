@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Leroy Merlin France
+fields:
+  amount: Total TTC\s+(\d+.\d{2})
+  amount_untaxed: Total TVA\s+(\d+.\d{2})\s+€\s+
+  date: Date d.emission\s+:\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: FACTURE N°\s+(\w+)
+  static_vat: FR49 384 560 942
+keywords:
+  - Leroy Merlin France
+  - FR49 384 560 942
+  - €
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: '.'
