@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: ALSO France
+fields:
+  date: Date\s+(\d+.\d+.+\d{4})
+  invoice_number: '.*Num.ro\sde\sdocument\s+(\w+)'
+  static_vat: 'FR 76 391 141 140'
+  amount_untaxed: '.*Prix Total H.T.\s+(\d+,\d+)'
+  amount: '.*Montant Total EUR\s+(\d+,\d+)'
+  amount_tax: '.*TVA .*%\s+(\d+,\d+)'
+keywords:
+  - 'ALSO France 10 Avenue des Louvresses'
+  - 'Facture'
+options:
+  currency: EUR
+  date_formats:
+    - '%d.%b.%Y'
+  decimal_separator: ','
