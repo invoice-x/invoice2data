@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+issuer: KUBII
+fields:
+  amount: \sTotal\s+(\d+,\d{2})\s€
+  amount_untaxed: Total\s\(HT\)\s+(\d+,\d{2})\s€
+  amount_tax: Taxe totale\s+(\d+,\d{2})\s€
+  static_vat: FR41808140313
+tables:
+  - start: '.*Num.ro de facture\s+Date de facturation\s+'
+    end: 'R.f.rence\s+.*Produit'
+    body: '(?P<invoice_number>\d+)\s+(?P<date>\d{2}.\d{2}.\d{4}).*'
+keywords:
+  - FR41808140313
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%B/%Y'
+  languages:
+    - fr
+  decimal_separator: ','
+  replace:
+    - ['e´ ', 'é']

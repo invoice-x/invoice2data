@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: Top Office
+fields:
+  amount: '.*TOTAL\sTTC\s+(\d+.\d{2})\sEUR'
+  amount_untaxed: '.*TOTAL\sHT.\s+(\d+.\d{2})\sEUR'
+  amount_tax: '.*TVA.*(\d+.\d{2})\sEUR'
+  date: 'Date\sfacture\s(\d{2}-\d{2}-\d{4}).*'
+  invoice_number: '.*FACTURE\sN.\s:\s(\d+)'
+  static_vat: FR8144917559500031
+keywords:
+  - FR8144917559500031
+  - FACTURE
+  - TOP OFFICE
+options:
+  currency: EUR
+  date_formats:
+    - '%d %m %Y'
+  decimal_separator: '.'
