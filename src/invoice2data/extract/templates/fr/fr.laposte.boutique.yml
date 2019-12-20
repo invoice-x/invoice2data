@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-issuer: La Poste (Coliposte)
+issuer: La Poste (Coliposte et Solutions Business)
 fields:
   amount: Montant\s+à\s+payer\s+en\s+Euros\s+(\d+,\d{2})
   amount_untaxed: Total\s+brut\s+facture\s+(\d+,\d{2})
@@ -10,7 +10,7 @@ keywords:
   - FR 39 356 000 000
   - FACTURE
   - Euros
-  - boutique.laposte.fr
+  - laposte.fr
 options:
   currency: EUR
   date_formats:
