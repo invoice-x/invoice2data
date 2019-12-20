@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 issuer: NYSE Market (DE) Inc.
 fields:
-  amount: Invoice\s+Total\s+:\s+\$([\d,]+\.\d{2})
+  amount: Invoice\s+Amount:\s+\$([\d,]+\.\d{2})
   amount_untaxed: Sub\s+Total\s+:\s+\$([\d,]+\.\d{2})
   date: Invoice\s+Date:\s+(\d{2}\/\d{2}\/\d{4})
   invoice_number: Invoice\s+No:\s+(\w+)
