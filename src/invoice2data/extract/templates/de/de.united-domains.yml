@@ -2,7 +2,10 @@ issuer: united-domains AG
 fields:
   amount: GesamtBrutto(\d{1,10},\d{2})
   date: Rechnungsdatum:(\d{2}.\d{2}.\d{4})
-  invoice_number: Rechnung:(\w)
+  invoice_number: Rechnung:(\w{1,20})
+  static_payment: directdebit
+  static_IBAN:
+  static_BIC:
 keywords:
  - DE203066334
  - Rechnung

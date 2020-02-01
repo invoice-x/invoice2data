@@ -1,0 +1,16 @@
+issuer: Bettina Kast
+fields:
+  amount: Rechnungsbetrag(\d{1,10},\d{2})
+  date: Datum(\d{2}.\d{2}.\d{4})
+  invoice_number: Rechnung(\d{2}/\d{4})
+  IBAN: IBAN:(\w{10,30})
+  BIC: BIC\(SWIFT\):(\w{8,11})
+  static_payment: transfer
+keywords:
+ - DE225792426
+ - Rechnung
+options:
+  remove_whitespace: true
+  date_formats:
+    - '%d.%m.%Y'
+  decimal_separator: ','
