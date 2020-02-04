@@ -72,8 +72,8 @@ class InvoiceTemplate(OrderedDict):
         # Run preprocessors
         for method in self.options["preprocess"]:
             if method == "numbersDotToComma":
-                 extracted_str = re.sub("(\s)([0-9]+)\.([0-9]{2})(\s)", r"\1\2,\3\4", extracted_str)
-        
+                extracted_str = re.sub(r"(\s)([0-9]+)\.([0-9]{2})(\s)", r"\1\2,\3\4", extracted_str)
+
         # Remove withspace
         if self.options["remove_whitespace"]:
             optimized_str = re.sub(" +", "", extracted_str)
