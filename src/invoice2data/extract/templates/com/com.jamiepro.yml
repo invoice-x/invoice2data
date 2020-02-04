@@ -1,0 +1,16 @@
+issuer: JamiePro
+fields:
+  amount: Total.{1}(\d{1,10},\d{2})
+  date: VATNr:\s(\d{2}/\w{3}/\d{4})
+  invoice_number: Invoice:([\w-]{4,11})
+  IBAN: Account:(\w{10,30})
+  BIC: BIC:(\w{8,11})
+  static_payment: transfer
+keywords:
+ - NL818362509B01
+ - Invoice
+options:
+  remove_whitespace: true
+  date_formats:
+    - '%d/%b/%Y'
+  decimal_separator: ','
