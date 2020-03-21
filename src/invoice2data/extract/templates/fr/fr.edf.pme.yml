@@ -3,9 +3,40 @@ issuer: EDF
 fields:
   amount: Facture TTC\s+([\d ]+,\d{2})
   amount_untaxed: Montant Hors TVA\s+([\d ]+,\d{2})
+  amount_TVA: Montant TVA (payée sur les débits) \s+ ([\d ,]*\d+) €
+
+  amount_unit_service_public: Contribution au Service Public de l'Electricité \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ ([\d,]*\d+) c€/kWh
+  amount_service_public: Contribution au Service Public de l'Electricité \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ [\d,]*\d+ c€/kWh \s+ ([\d ,]*\d+) €
+  amount_unit_taxe_departementales: Taxe Départementale sur la Conso Finale Electricité \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ ([\d,]*\d+) c€/kWh
+  amount_taxe_departementales: Taxe Départementale sur la Conso Finale Electricité \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ [\d,]*\d+ c€/kWh \s+ ([\d ,]*\d+) €
+  amount_unit_taxe_communales: Taxe Communale sur la Conso Finale Electricité \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ ([\d,]*\d+) c€/kWh
+  amount_taxe_communales: Taxe Communale sur la Conso Finale Electricité \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ [\d,]*\d+ c€/kWh \s+ ([\d ,]*\d+) €
+  amount_acheminement: Contribution Tarifaire d'Acheminement \s+ [\d,]*\d+ \s+ [\d,]*\d+ % \s+ ([\d ,]*\d+) €
+
+  amount_total_consumption: Conso\s+([\d ]*\d+)
+  amount_consumption_HPH: Electricité Heures Pleines Hiver \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ ([\d ]*\d+) kWh
+  amount_consumption_HCH: Electricité Heures Creuses Hiver \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ ([\d ]*\d+) kWh
+  amount_consumption_HPE: Electricité Heures Pleines Eté \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ ([\d ]*\d+) kWh
+  amount_consumption_HCE: Electricité Heures Creuses Eté \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ ([\d ]*\d+) kWh
+
+  amount_unit_HPH: Electricité Heures Pleines Hiver \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ ([\d,]*\d+) c€/kWh
+  amount_unit_HCH: Electricité Heures Creuses Hiver \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ ([\d,]*\d+) c€/kWh
+  amount_unit_HPE: Electricité Heures Pleines Eté \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ ([\d,]*\d+) c€/kWh
+  amount_unit_HCE: Electricité Heures Creuses Eté \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ ([\d,]*\d+) c€/kWh
+
+  amount_HPH: Electricité Heures Pleines Hiver \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ [\d,]*\d+ c€/kWh \s+ ([\d ,]*\d+) €
+  amount_HCH: Electricité Heures Creuses Hiver \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ [\d,]*\d+ c€/kWh \s+ ([\d ,]*\d+) €
+  amount_HPE: Electricité Heures Pleines Eté \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ [\d,]*\d+ c€/kWh \s+ ([\d ,]*\d+) €
+  amount_HCE: Electricité Heures Creuses Eté \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d ]*\d+ kWh \s+ [\d,]*\d+ c€/kWh \s+ ([\d ,]*\d+) €
+  amount_subscription: Abonnement \s+ du \d{2}/\d{2}/\d{4} au \d{2}/\d{2}/\d{4} \s+ [\d,]*\d+ €/mois \s+ ([\d,]*\d+) €
+
   date: Facture\s+du\s+(\d{2}/\d{2}/\d{4})
   invoice_number: n° (\d+)
+  address: Contrat Garanti\s+([a-zA-Z0-9 ]+)
+  compteur_id: Acheminement Electricit[^0-9]+([0-9]+)
+  static_energy_type: electricity
   static_vat: FR 03 552 081 317
+  
 keywords:
   - EDF
   - RC PME
