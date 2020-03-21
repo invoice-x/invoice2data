@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+issuer: Mycelium Roulement - 123roulement
+fields:
+  amount: Total\sT\.T\.C\.\s+(\d+,\d{2})\s+EUR
+  amount_untaxed: Total\sH\.T\.\s+(\d+,\d{2})\s+EUR
+  date: Date\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: Numero\s+F\s+(.*?)\s+
+  static_vat: FR 43503908576
+keywords:
+  - FR 43503908576
+  - FACTURE
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
+  remove_accents: true
+  
