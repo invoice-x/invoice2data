@@ -31,10 +31,9 @@ def to_text(path):
 
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
-    codec = "utf-8"
     laparams = LAParams()
     laparams.all_texts = True
-    device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+    device = TextConverter(rsrcmgr, retstr, laparams=laparams)
     with open(path, "rb") as fp:
         interpreter = PDFPageInterpreter(rsrcmgr, device)
         password = ""

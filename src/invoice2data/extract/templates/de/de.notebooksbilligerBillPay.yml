@@ -1,0 +1,19 @@
+issuer: notebooksbilliger.de
+fields:
+  amount: Endsumme:(\d{1,10}.\d{2})
+  date: Rechnungs\-\+Lieferdatum(\d{2}.\d{2}.\d{4})
+  invoice_number: RE-Nummer(\w{5,10})
+  IBAN: MartinSchwagerIBAN:(\w{10,22})
+  BIC: MartinSchwagerIBAN:\w{10,22}BIC:([A-Z0-9]{8,11})
+  static_payment: transfer
+  static_recipient: BillPay
+  reference: Verwendungszweck:(\w{9,12}/\w{4})
+keywords:
+ - DE175671991
+ - BillPay
+ - Rechnung
+options:
+  remove_whitespace: true
+  date_formats:
+    - '%d.%m.%Y'
+  decimal_separator: '.'

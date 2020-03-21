@@ -1,0 +1,14 @@
+issuer: Host Europe GmbH
+fields:
+  amount: EndpreisBrutto(\d{1,10},\d{2})
+  date: Datum(\d{2}.\d{2}.\d{4})
+  invoice_number: Rechnung(AR-\d{1,12})
+  static_payment: directdebit
+keywords:
+ - HostEuropeGmbH
+ - Rechnung
+options:
+  remove_whitespace: true
+  date_formats:
+    - '%d.%m.%Y'
+  decimal_separator: ','

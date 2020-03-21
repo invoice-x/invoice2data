@@ -1,0 +1,16 @@
+issuer: NMMN IT-Services
+fields:
+  amount: \d{1,10},\d{2}€\d{1,10}%\d{2},\d{2}€(\d{1,10},\d{2})€
+  date: Datum(\d{2}.\d{2}.\d{4})
+  invoice_number: Rechnung(\d{4}-\d{2}-\d{5})
+  IBAN: Bankverbindung:[\w\s,:\.\-]+IBAN:(\w{10,30})
+  BIC: Bankverbindung:[\w\s,:\.\-]+BIC:(\w{8,11})
+  static_payment: directdebit
+keywords:
+ - DE289115734
+ - Rechnung
+options:
+  remove_whitespace: true
+  date_formats:
+    - '%d.%m.%Y'
+  decimal_separator: ','
