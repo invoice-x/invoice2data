@@ -4,7 +4,7 @@
 import argparse
 import shutil
 import os
-from os.path import join
+from os.path import join, basename
 import logging
 
 from .input import pdftotext
@@ -80,7 +80,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
 
     # print(templates[0])
     extracted_str = input_module.to_text(invoicefile).decode("utf-8")
-
+    filename = basename(invoicefile)
     logger.debug("START pdftotext result ===========================")
     logger.debug(extracted_str)
     logger.debug("END pdftotext result =============================")
@@ -90,7 +90,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         optimized_str = t.prepare_input(extracted_str)
 
         if t.matches_input(optimized_str):
-            return t.extract(optimized_str)
+            return t.extract(optimized_str, filename=filename)
 
     logger.error("No template for %s", invoicefile)
     return False
@@ -210,6 +210,7 @@ def main(args=None):
         res = extract_data(f.name, templates=templates, input_module=input_module)
         if res:
             logger.info(res)
+            res['filename'] = f.name
             output.append(res)
             if args.copy:
                 filename = args.filename.format(

@@ -130,7 +130,7 @@ class InvoiceTemplate(OrderedDict):
             return self.parse_date(value)
         assert False, "Unknown type"
 
-    def extract(self, optimized_str):
+    def extract(self, optimized_str, filename=None):
         """
         Given a template file and a string, extract matching data fields.
         """
@@ -202,6 +202,9 @@ class InvoiceTemplate(OrderedDict):
                     logger.warning("regexp for field %s didn't match", k)
 
         output["currency"] = self.options["currency"]
+
+        if (filename is not None and "filename" in self.options.keys() and self.options['filename']):
+            output["filename"] = filename
 
         # Run plugins:
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():

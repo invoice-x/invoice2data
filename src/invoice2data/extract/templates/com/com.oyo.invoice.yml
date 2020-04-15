@@ -20,3 +20,4 @@ tables:
 options:
   currency: INR
   decimal_separator: '.'
+  filename: true
