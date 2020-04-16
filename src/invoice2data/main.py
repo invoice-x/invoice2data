@@ -80,7 +80,6 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
 
     # print(templates[0])
     extracted_str = input_module.to_text(invoicefile).decode("utf-8")
-    filename = basename(invoicefile)
     logger.debug("START pdftotext result ===========================")
     logger.debug(extracted_str)
     logger.debug("END pdftotext result =============================")
@@ -90,7 +89,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         optimized_str = t.prepare_input(extracted_str)
 
         if t.matches_input(optimized_str):
-            return t.extract(optimized_str, filename=filename)
+            return t.extract(optimized_str)
 
     logger.error("No template for %s", invoicefile)
     return False
@@ -210,7 +209,6 @@ def main(args=None):
         res = extract_data(f.name, templates=templates, input_module=input_module)
         if res:
             logger.info(res)
-            res['filename'] = f.name
             output.append(res)
             if args.copy:
                 filename = args.filename.format(
@@ -218,6 +216,8 @@ def main(args=None):
                     invoice_number=res["invoice_number"],
                     desc=res["desc"],
                 )
+                res['original_filename'] = basename(f.name)
+                res['copied_file'] = join(args.copy, filename)
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
                 filename = args.filename.format(
@@ -225,6 +225,8 @@ def main(args=None):
                     invoice_number=res["invoice_number"],
                     desc=res["desc"],
                 )
+                res['original_filename'] = basename(f.name)
+                res['moved_file'] = join(args.move, filename)
                 shutil.move(f.name, join(args.move, filename))
         f.close()
 
