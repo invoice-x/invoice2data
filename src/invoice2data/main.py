@@ -208,15 +208,13 @@ def main(args=None):
     for f in args.input_files:
         res = extract_data(f.name, templates=templates, input_module=input_module)
         if res:
-            logger.info(res)
-            output.append(res)
+            res['original_filename'] = basename(f.name)
             if args.copy:
                 filename = args.filename.format(
                     date=res["date"].strftime("%Y-%m-%d"),
                     invoice_number=res["invoice_number"],
                     desc=res["desc"],
                 )
-                res['original_filename'] = basename(f.name)
                 res['copied_file'] = join(args.copy, filename)
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
@@ -225,9 +223,10 @@ def main(args=None):
                     invoice_number=res["invoice_number"],
                     desc=res["desc"],
                 )
-                res['original_filename'] = basename(f.name)
                 res['moved_file'] = join(args.move, filename)
                 shutil.move(f.name, join(args.move, filename))
+            logger.info(res)
+            output.append(res)
         f.close()
 
     if output_module is not None:
