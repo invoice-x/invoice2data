@@ -157,6 +157,7 @@ Example:
         first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
         line: (.*)\$(\d+\.\d+)
         last_line: VAT \*\*
+        lines_join: " "
 
 Development
 -----------

@@ -9,7 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_OPTIONS = {"field_separator": r"\s+", "line_separator": r"\n"}
+DEFAULT_OPTIONS = {"field_separator": r"\s+", "line_separator": r"\n", "lines_join": "\n"}
 
 
 def extract(self, content, output):
@@ -59,7 +59,7 @@ def extract(self, content, output):
                 for field, value in match.groupdict().items():
                     current_row[field] = "%s%s%s" % (
                         current_row.get(field, ""),
-                        current_row.get(field, "") and "\n" or "",
+                        current_row.get(field, "") and self["lines"]["lines_join"] or "",
                         value.strip() if value else "",
                     )
                 if current_row:
@@ -71,7 +71,7 @@ def extract(self, content, output):
             for field, value in match.groupdict().items():
                 current_row[field] = "%s%s%s" % (
                     current_row.get(field, ""),
-                    current_row.get(field, "") and "\n" or "",
+                    current_row.get(field, "") and self["lines"]["lines_join"] or "",
                     value.strip() if value else "",
                 )
             continue
