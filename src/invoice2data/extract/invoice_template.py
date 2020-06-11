@@ -70,7 +70,7 @@ class InvoiceTemplate(OrderedDict):
 
         # Remove withspace
         if self.options["remove_whitespace"]:
-            optimized_str = re.sub(" +", "", extracted_str)
+            optimized_str = re.sub(" +", " ", extracted_str)
         else:
             optimized_str = extracted_str
 
