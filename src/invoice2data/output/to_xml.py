@@ -36,26 +36,31 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
 
     """
 
-    if path.endswith(".xml"):
+    if path.endswith('.xml'):
         filename = path
     else:
-        filename = path + ".xml"
-
-    tag_data = ET.Element("data")
+        filename = path + '.xml'
+    
     xml_file = open(filename, "w")
-    i = 0
+    tag_data = ET.Element('data')
+    data = data[0]
     for line in data:
-        i += 1
-        tag_item = ET.SubElement(tag_data, "item")
-        tag_date = ET.SubElement(tag_item, "date")
-        tag_desc = ET.SubElement(tag_item, "desc")
-        tag_currency = ET.SubElement(tag_item, "currency")
-        tag_amount = ET.SubElement(tag_item, "amount")
-        tag_item.set("id", str(i))
-        tag_date.text = line["date"].strftime(date_format)
-        tag_desc.text = line["desc"]
-        tag_currency.text = line["currency"]
-        tag_amount.text = str(line["amount"])
+        if type(data[line]) == list:
+            tag_list = ET.SubElement(tag_data, 'lines')
+            i = 1
+            for line_dict in data[line]:
+                tag_line = ET.SubElement(tag_list, 'line')
+                tag_line.set('id', str(i))
+                i = i+1
+                for line_item in line_dict:
+                    tag_item = ET.SubElement(tag_line, line_item)
+                    tag_item.text = str(line_dict[line_item])
+        elif type(data[line]) == datetime:
+            tag_item = ET.SubElement(tag_data, line)
+            tag_item.text = data[line].strftime(date_format)
+        else:
+            tag_item = ET.SubElement(tag_data, line)
+            tag_item.text = str(data[line])
 
     xml_file.write(prettify(tag_data))
     xml_file.close()
