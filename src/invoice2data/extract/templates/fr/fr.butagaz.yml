@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: Gaz de Paris
+keywords:
+- Butagaz
+- 22 510 764 335
+fields:
+  amount_electricity: Electricité \(abonnement et consommation\)\s*(\d+,\d{2})
+  amount_local_taxes: Taxes locales et contributions\s*(\d+,\d{2})
+  amount_no_TVA: Total Hors TVA\s*(\d+,\d{2})
+  amount_TVA: \s{2}TVA\s*(\d+,\d{2})
+  amount: TOTAL TTC\s*(\d+,\d{2})
+  date: Ma facture d’électricité du (\d{2}/\d{2}/\d{4})
+  invoice_number: <CODE_REGROUPEMENT>(\d{12})</CODE_REGROUPEMENT>
+
+options:
+  currency: 'EUR'
+  languages:
+    - fr
+  decimal_separator: ','
