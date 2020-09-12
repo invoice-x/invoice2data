@@ -189,6 +189,7 @@ Related Projects
 ----------------
 
 -  `OCR-Invoice <https://github.com/robela/OCR-Invoice>`__ (FOSS \| C#)
+-  `DeepLogic AI <https://deeplogicai.tech/case_list/automatic-key-information-extraction-business-documents/>`__ (Commercial \| SaaS)
 -  `Docparser <https://docparser.com/>`__ (Commercial \| Web Service)
 -  `A-PDF <http://www.a-pdf.com/data-extractor/index.htm>`__
    (Commercial)
