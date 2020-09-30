@@ -47,11 +47,17 @@ If possible get the latest
 included with macOS Homebrew, Debian and Ubuntu. Without it,
 ``pdftotext`` won’t parse tables in PDF correctly.
 
-2. Install ``invoice2data`` using pip
+2. Install ``invoice2data`` using pip/pip3
 
 ::
 
     pip install invoice2data
+    
+or
+
+::
+
+    pip3 install invoice2data
 
 Usage
 -----
