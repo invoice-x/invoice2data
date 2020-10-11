@@ -1,5 +1,5 @@
 """
-Plugin to extract tables from an invoice.
+Plugin to extract area from an invoice.
 """
 
 import logging
