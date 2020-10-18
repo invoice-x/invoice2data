@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 DEFAULT_OPTIONS = {"field_separator": r"\s+", "line_separator": r"\n"}
 
 
-def extract(self, content, output):
+def extract(self, content, path, output):
     """Try to extract tables from an invoice"""
 
     for table in self["tables"]:

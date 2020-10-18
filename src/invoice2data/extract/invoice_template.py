@@ -9,7 +9,7 @@ import dateparser
 from unidecode import unidecode
 import logging
 from collections import OrderedDict
-from .plugins import lines, tables
+from .plugins import lines, tables,area
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +24,7 @@ OPTIONS_DEFAULT = {
     "replace": [],  # example: see templates/fr/fr.free.mobile.yml
 }
 
-PLUGIN_MAPPING = {"lines": lines, "tables": tables}
+PLUGIN_MAPPING = {"lines": lines, "tables": tables, 'area':area}
 
 
 class InvoiceTemplate(OrderedDict):
@@ -130,7 +130,7 @@ class InvoiceTemplate(OrderedDict):
             return self.parse_date(value)
         assert False, "Unknown type"
 
-    def extract(self, optimized_str):
+    def extract(self, optimized_str,path):
         """
         Given a template file and a string, extract matching data fields.
         """
@@ -206,7 +206,7 @@ class InvoiceTemplate(OrderedDict):
         # Run plugins:
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
             if plugin_keyword in self.keys():
-                plugin_func.extract(self, optimized_str, output)
+                plugin_func.extract(self, optimized_str, path, output)
 
         # If required fields were found, return output, else log error.
         if "required_fields" not in self.keys():
