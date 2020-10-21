@@ -103,7 +103,7 @@ class InvoiceTemplate(OrderedDict):
         # replace decimal separator by a |
         amount_pipe = value.replace(self.options["decimal_separator"], "|")
         # remove all possible thousands separators
-        amount_pipe_no_thousand_sep = re.sub(r"[.,\s]", "", amount_pipe)
+        amount_pipe_no_thousand_sep = re.sub(r"[.,'\s]", "", amount_pipe)
         # put dot as decimal sep
         return float(amount_pipe_no_thousand_sep.replace("|", "."))
 
