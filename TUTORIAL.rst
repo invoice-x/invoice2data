@@ -75,6 +75,20 @@ engine <https://docs.python.org/2/library/re.html>`__. It won’t matter
 for the simple expressions we need, but sometimes there are subtle
 differences when e.g. coming from Perl.
 
+Parser ``static``
+~~~~~~~~~~~~~~~~~
+
+This pseudo-parser sets field with a content of ``value`` field.
+
+Example:
+
+::
+
+    fields:
+      friendly_name:
+        parser: static
+        value: Amazon
+
 Legacy regexes
 ~~~~~~~~~~~~~~
 
