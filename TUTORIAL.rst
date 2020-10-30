@@ -53,10 +53,18 @@ Fields
 
 All the regex ``fields`` you need extracted. Required fields are
 ``amount``, ``date``, ``invoice_number``. It’s up to you, if you need
-more fields extracted. Each field has one or more regex with one regex
-capturing group. It’s not required to put add the whole regex to the
-capturing group. Often we use keywords and only capture part of the
-match (e.g. the amount).
+more fields extracted. Each field can be defined as:
+
+-  an **associative array** with ``parser`` specifying parsing method
+-  a single regex with one capturing group
+-  an array of regexes
+
+The first method is preferred. It was introduced to make templates
+syntax cleaner and more flexible. It aims to replace old methods.
+
+It’s not required to put add the whole regex to the capturing group.
+Often we use keywords and only capture part of the match (e.g. the
+amount).
 
 You will need to understand regular expressions to find the right
 values. If you didn’t need them in your life up until now (lucky you),
@@ -66,6 +74,9 @@ here <http://www.regexr.com/>`__. We use `Python’s regex
 engine <https://docs.python.org/2/library/re.html>`__. It won’t matter
 for the simple expressions we need, but sometimes there are subtle
 differences when e.g. coming from Perl.
+
+Legacy regexes
+~~~~~~~~~~~~~~
 
 For non-text fields, the name of the field is important:
 

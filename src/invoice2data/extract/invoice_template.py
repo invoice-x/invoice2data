@@ -9,6 +9,7 @@ import dateparser
 from unidecode import unidecode
 import logging
 from collections import OrderedDict
+from . import parsers
 from .plugins import lines, tables
 
 logger = logging.getLogger(__name__)
@@ -23,6 +24,8 @@ OPTIONS_DEFAULT = {
     "decimal_separator": ".",
     "replace": [],  # example: see templates/fr/fr.free.mobile.yml
 }
+
+PARSERS_MAPPING = {}
 
 PLUGIN_MAPPING = {"lines": lines, "tables": tables}
 
@@ -154,7 +157,20 @@ class InvoiceTemplate(OrderedDict):
         output["issuer"] = self["issuer"]
 
         for k, v in self["fields"].items():
-            if k.startswith("static_"):
+            if isinstance(v, dict):
+                if "parser" in v:
+                    if v["parser"] in PARSERS_MAPPING:
+                        parser = PARSERS_MAPPING[v["parser"]]
+                        value = parser.parse(self, v, optimized_str)
+                        if value is not None:
+                            output[k] = value
+                        else:
+                            logger.error("Failed to parse field %s with parser %s", k, v["parser"])
+                    else:
+                        logger.warning("Field %s has unknown parser %s set", k, v["parser"])
+                else:
+                    logger.warning("Field %s doesn't have parser specified", k)
+            elif k.startswith("static_"):
                 logger.debug("field=%s | static value=%s", k, v)
                 output[k.replace("static_", "")] = v
             else:
