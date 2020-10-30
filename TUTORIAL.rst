@@ -89,6 +89,27 @@ Example:
         parser: static
         value: Amazon
 
+Parser ``lines``
+~~~~~~~~~~~~~~~~
+
+This parser allows parsing selected invoice section as a set of lines
+sharing some pattern. Those can be e.g. invoice items (good or services)
+or VAT rates.
+
+It replaces ``lines`` plugin and should be preferred over it. It allows
+reusing in multiple ``fields``.
+
+Example for ``fields``:
+
+::
+
+    fields:
+      lines:
+        parser: lines
+        start: Item\s+Discount\s+Price$
+        end: \s+Total
+        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price>\d+\d+)
+
 Legacy regexes
 ~~~~~~~~~~~~~~
 

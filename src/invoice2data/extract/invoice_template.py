@@ -25,7 +25,7 @@ OPTIONS_DEFAULT = {
     "replace": [],  # example: see templates/fr/fr.free.mobile.yml
 }
 
-PARSERS_MAPPING = {"static": parsers.static}
+PARSERS_MAPPING = {"lines": parsers.lines, "static": parsers.static}
 
 PLUGIN_MAPPING = {"lines": lines, "tables": tables}
 
