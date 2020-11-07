@@ -75,6 +75,44 @@ engine <https://docs.python.org/2/library/re.html>`__. It won’t matter
 for the simple expressions we need, but sometimes there are subtle
 differences when e.g. coming from Perl.
 
+Parser ``regex``
+~~~~~~~~~~~~~~~~
+
+It's the basic parser that allows parsing content using regexes. The
+only required property is ``regex`` that has to contain one or multiple
+(specified using array) regexes.
+
+By default ``regex`` parser removes all duplicated matches. It results a
+single value or an array (depending an amount of unique matches found).
+
+Optional properties:
+
+-  ``type`` (if present must be one of: ``int``, ``float``, ``date``) -
+   results in parsing every matched value to a specified type
+-  ``group`` (if present must be ``sum``) - results in grouping all
+   matched values using specified method
+
+Example for ``regex``:
+
+::
+
+    fields:
+      amount:
+        parser: regex
+        regex: Total:\s+(\d+\.\d+) EUR
+        type: float
+      date:
+        parser: regex
+        regex: Issued on:\s+(\d{4}-\d{2}-\d{2})
+        type: date
+      advance:
+        parser: regex
+        regex:
+          - Advance payment:\s+(\d+\.\d+)
+          - Paid in advance:\s+(\d+\.\d+)
+        type: float
+        group: sum
+
 Parser ``static``
 ~~~~~~~~~~~~~~~~~
 
