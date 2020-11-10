@@ -1,0 +1,28 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Polski Koncern Naftowy ORLEN spółka akcyjna
+keywords:
+  - Polski Koncern Naftowy ORLEN S.A.
+  - '774-00-01-454'
+fields:
+  date: Data wystawienia:\s+(\d{4}-\d{2}-\d{2})
+  invoice_number: Faktura nr:\s+([\dA-Z/]+)
+  amount: Należność ogółem:\s+(\d+,\d\d)
+  vat:
+    parser: static
+    value: 7740001454
+  sums:
+    parser: lines
+    start: Razem:.*
+    end: Należność ogółem
+    line: ^\s*w tym:\s+(?P<net>\d+,\d\d)\s+(?P<rate>\d+)\s+(?P<vat>\d+,\d\d)\s+(?P<gross>\d+,\d\d)$
+    types:
+      net: float
+      rate: int
+      vat: float
+      gross: float
+options:
+  currency: PLN
+  date_formats:
+    - '%Y-%m-%d'
+  decimal_separator: ','
