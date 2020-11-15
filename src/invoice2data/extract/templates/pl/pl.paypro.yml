@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: PayPro spółka akcyjna
+keywords:
+  - PayPro Spółka Akcyjna
+  - 'NIP: PL779-236-98-87'
+fields:
+  vatin:
+    parser: static
+    value: PL7792369887
+  amount: Do zapłaty:\s+(\d[\d\s]*\.\d{2})
+  date: Data wystawienia:\s+(\d{4}-\d{2}-\d{2})
+  sale_date: Data sprzedaży:\s+(\d{4}-\d{2}-\d{2})
+  invoice_number: NR:\s+([\dA-Z/]+)
+  lines:
+    parser: lines
+    start: Lp.\s+Nazwa towaru lub usługi\s+Ilość\s+J.m.\n.*
+    end: Razem wartość
+    first_line: ^\s*(?P<pos>[\d]+)\s+(?P<name>.+?)\s*$
+    line: ^\s+((?P<vat_rate>.+)\s+(?P<qty>[\d\.]+)\s+(?P<unit>[\w\.]+)\s+(?P<unit_net>\d+\.\d\d)\s+(?P<total_net>\d+\.\d\d)\s+(?P<total_gross>\d+\.\d\d)|(?P<name>.+))\s*$
+    types:
+      pos: int
+      qty: float
+      unit_net: float
+      total_net: float
+      total_gross: float
+  vat_lines:
+    parser: lines
+    start: Wg stawek VAT\s+Kwota VAT\s+Wartość brutto\n.*
+    end: 'Razem:'
+    line: ^\s+(?P<vat_rate>.+)\s+(?P<net>\d+\.\d\d)\s+(?P<vat>\d+\.\d\d)\s+(?P<gross>\d+\.\d\d)$
+    types:
+      net: float
+      vat: float
+      gross: float
+options:
+  currency: PLN
+  date_formats:
+    - '%Y-%m-%d'
+  decimal_separator: '.'
