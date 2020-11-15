@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: BMW Financial Services Polska spółka z ograniczoną odpowiedzialnością
+keywords:
+  - BMW Financial Services Polska Sp. z o. o.
+  - '7010308447'
+fields:
+  date: Data wystawienia:\s+(\d{4}-\d{2}-\d{2})
+  sale_date: Data wystawienia:\s+(\d{4}-\d{2}-\d{2})
+  invoice_number: Faktura VAT Nr:\s+([\dA-Z/]+)
+  amount: Do zapłaty:\s+-*\s+([\d\s]+,\d\d)
+  vat:
+    parser: static
+    value: 7010308447
+  vat_lines:
+    parser: lines
+    start: RAZEM:.*
+    end: Słownie
+    line: ^.*W tym:\s+(?P<net>\d[\d\s]*,\d\d)\s+(?P<rate>\d+)\s+(?P<vat>\d[\d\s]*,\d\d)\s+(?P<gross>\d[\d\s]*,\d\d)$
+    types:
+      net: float
+      rate: int
+      vat: float
+      gross: float
+options:
+  currency: PLN
+  date_formats:
+    - '%Y-%m-%d'
+  decimal_separator: ','
