@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: P4 spółka z ograniczoną odpowiedzialnością
+keywords:
+  - P4 Sp. z o.o.
+  - 'NIP: 951-21-20-077'
+fields:
+  vatin:
+    parser: static
+    value: 9512120077
+  amount: WARTOŚĆ FAKTURY:\s+(\d[\d\s]*,[\d][\d])
+  date: Data wystawienia\n\s*(\d{2}\.\d{2}\.\d{4})
+  invoice_number: Numer faktury\n\s*([\dA-Z/]+)
+  nrb: Numer konta bankowego.*\n([0-9]{2}(?:\s?[0-9]{4}){6})
+  lines:
+    parser: lines
+    start: NAZWA TOWARU LUB USŁUGI\s+NETTO \(ZŁ\)\s+STAWKA VAT\s+VAT \(ZŁ\)\s+BRUTTO \(ZŁ\)
+    end: WARTOŚĆ FAKTURY
+    line: ^\s*(?P<name>.+?)\s+(?P<total_net>\d[\d\s]*,\d+)\s+(?P<vat_rate>\d+)\s*%\s+(?P<total_vat>\d[\d\s]*,\d+)\s+(?P<total_gross>\d[\d\s]*,\d+)\s*$
+    types:
+      pos: int
+      qty: float
+      unit_net: float
+      total_net: float
+      vat_rate: int
+      total_vat: float
+      total_gross: float
+options:
+  currency: PLN
+  date_formats:
+    - '%d.%m.%Y'
+  decimal_separator: ','
