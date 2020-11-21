@@ -1,10 +1,11 @@
 Data extractor for PDF invoices - invoice2data
 ==============================================
 
-![Test](https://github.com/invoice-x/invoice2data/workflows/Test/badge.svg)
+.. image:: https://github.com/invoice-x/invoice2data/workflows/Test/badge.svg
+   :alt: invoice2data build status on GitHub Actions
+   :target: https://github.com/invoice-x/invoice2data/actions
 
-A modular Python library to support your accounting process. Tested on
-Python 3.6+. Main steps:
+A command line tool and Python library to support your accounting process.
 
 1. extracts text from PDF files using different techniques, like
    ``pdftotext``, ``pdfminer`` or OCR – ``tesseract``, ``tesseract4`` or
