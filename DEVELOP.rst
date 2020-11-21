@@ -43,17 +43,9 @@ Testing
 Every new feature should have a test to make sure it still works after
 modifications done by you or someone else in the future.
 
-To run tests using the current Python version: ``pytest invoice2data``
+To install dependencies required for tests: ``pip install ".[test]"``
+
+To run tests using the current Python version: ``pytest``
 
 To run tests using all supported Python versions: ``tox`` (needs
 ``pyenv`` and corresponding Python versions installed.)
-
-Coverage
---------
-To test coverage we recommend using ``pytest-cov``
-
-::
-
-   pip install pytest-cov
-   pytest --cov-report html --cov invoice2data --verbose
-   [yourbrowser] htmlconv/index.hml
