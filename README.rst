@@ -1,14 +1,11 @@
 Data extractor for PDF invoices - invoice2data
 ==============================================
 
-|Circle CI|
+.. image:: https://github.com/invoice-x/invoice2data/workflows/Test/badge.svg
+   :alt: invoice2data build status on GitHub Actions
+   :target: https://github.com/invoice-x/invoice2data/actions
 
-This project has been selected for `GSoC
-2018 <https://developers.google.com/open-source/gsoc/>`__. Read more
-`here <https://wiki.debian.org/SummerOfCode2018/Projects/ExtractingDataFromPDFInvoicesAndBillsDetails>`__.
-
-A modular Python library to support your accounting process. Tested on
-Python 2.7 and 3.4+. Main steps:
+A command line tool and Python library to support your accounting process.
 
 1. extracts text from PDF files using different techniques, like
    ``pdftotext``, ``pdfminer`` or OCR – ``tesseract``, ``tesseract4`` or
@@ -197,5 +194,3 @@ Related Projects
 -  `CVision <http://www.cvisiontech.com/library/document-automation/forms-processing/extract-data-from-invoice.html>`__
    (Commercial)
 
-.. |Circle CI| image:: https://circleci.com/gh/invoice-x/invoice2data.svg?style=svg
-   :target: https://circleci.com/gh/invoice-x/invoice2data
