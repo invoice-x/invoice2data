@@ -90,12 +90,14 @@ adding new templates in templates.py)
 
 Recognize test invoices: `invoice2data invoice2data/test/pdfs/* --debug`
 
-If you want to use it as a lib just do
+### Use as Python Library
+
+You can easily add `invoice2data` to your own Python scripts as library.
 
     from invoice2data import extract_data
     result = extract_data('path/to/my/file.pdf')
 
-If you want to use your own templates, you may do
+Using in-house templates
 
     from invoice2data import extract_data
     from invoice2data.extract.loader import read_templates
@@ -103,12 +105,13 @@ If you want to use your own templates, you may do
     templates = read_templates('/path/to/your/templates/')
     result = extract_data(filename, templates=templates)
 
+
 ## Template system
 
 See `invoice2data/extract/templates` for existing templates. Just extend
 the list to add your own. If deployed by a bigger organisation, there
 should be an interface to edit templates for new suppliers. 80-20 rule.
-For a short tutorial on how to add new templates, see [TUTORIAL.rst](TUTORIAL.rst).
+For a short tutorial on how to add new templates, see [TUTORIAL.md](TUTORIAL.md).
 
 Templates are based on Yaml. They define one or more keywords to find
 the right template and regexp for fields to be extracted. They could
@@ -145,7 +148,7 @@ Example:
 ## Development
 
 If you are interested in improving this project, have a look at our
-[developer guide](DEVELOP.rst) to get you started quickly.
+[developer guide](DEVELOP.md) to get you started quickly.
 
 ## Roadmap and open tasks
 
