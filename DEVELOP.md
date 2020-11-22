@@ -1,21 +1,19 @@
-Development
-===========
+# Development
 
 If you are looking to get involved improving `invoice2data`, this guide
 will help you get started quickly.
 
-Install
--------
+## Install
 
-1.  Fork main repository (optional)
-2.  Clone repository: `git clone https://github.com/m3nu/invoice2data`
-3.  Install as editable: `pip install -e invoice2data`
+1. Fork main repository (optional)
+2. Clone repository: `git clone https://github.com/m3nu/invoice2data`
+3. Install as editable: `pip install -e invoice2data`
 
 Some little-used dependencies are optional. Like `pytesseract` and
 `pdfminer`. Install if needed.
 
-Organization
-------------
+
+## Folders
 
 Major folders in the `invoice2data` package and their purpose:
 
@@ -30,14 +28,8 @@ Major folders in the `invoice2data` package and their purpose:
 -   `output`: Modules to output structured data. Currently `CSV`, `JSON`
     and `XML` are supported.
 
-Documentation
--------------
 
-This project uses [numpydoc](https://numpydoc.readthedocs.io/en/latest/)
-extension for [Sphinx](http://sphinx-doc.org/).
-
-Testing
--------
+## Testing
 
 Every new feature should have a test to make sure it still works after
 modifications done by you or someone else in the future.

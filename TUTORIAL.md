@@ -1,5 +1,4 @@
-Tutorial for template creation
-==============================
+# Tutorial for template creation
 
 A template defines which data attributes you wish to retrieve from an
 invoice. Each template should work on all invoices of a company or
@@ -16,8 +15,7 @@ you add or improve templates that could be useful for everyone, we
 encourage you to file a pull request to the main repo, so everyone can
 use it.
 
-Simple invoice template
------------------------
+## Simple invoice template
 
 Here is a sample of a minimal invoice template to read invoiced issued
 by Microsoft Hong Kong:
@@ -38,13 +36,12 @@ by Microsoft Hong Kong:
 
 Let's look at each field:
 
--   `issuer`: The name of the invoice issuer. Can have the company name
-    and country.
--   `keywords`: Also a required field. These are used to pick the
-    correct template. Be as specific as possible. As we add more
-    templates, we need to avoid duplicate matches. Using the VAT number,
-    email, website, phone, etc are generally good choices. ALL keywords
-    need to match to use the template.
+- `issuer`: The name of the invoice issuer. Can have the company name and country.
+- `keywords`: Also a required field. These are used to pick the
+   correct template. Be as specific as possible. As we add more
+   templates, we need to avoid duplicate matches. Using the VAT number,
+   email, website, phone, etc are generally good choices. ALL keywords
+   need to match to use the template.
 
 ### Fields
 
@@ -52,9 +49,9 @@ All the regex `fields` you need extracted. Required fields are `amount`,
 `date`, `invoice_number`. It's up to you, if you need more fields
 extracted. Each field can be defined as:
 
--   an **associative array** with `parser` specifying parsing method
--   a single regex with one capturing group
--   an array of regexes
+- an **associative array** with `parser` specifying parsing method
+- a single regex with one capturing group
+- an array of regexes
 
 The first method is preferred. It was introduced to make templates
 syntax cleaner and more flexible. It aims to replace old methods.
@@ -83,10 +80,10 @@ single value or an array (depending an amount of unique matches found).
 
 Optional properties:
 
--   `type` (if present must be one of: `int`, `float`, `date`) -results
-    in parsing every matched value to a specified type
--   `group` (if present must be `sum`) - results in grouping all matched
-    values using specified method
+- `type` (if present must be one of: `int`, `float`, `date`) -results
+  in parsing every matched value to a specified type
+- `group` (if present must be `sum`) - results in grouping all matched
+  values using specified method
 
 Example for `regex`:
 
@@ -140,16 +137,16 @@ Example for `fields`:
 
 For non-text fields, the name of the field is important:
 
--   the name of the field for date fields should start with **date**
--   the name of the field for float fields should start with **amount**
+- the name of the field for date fields should start with **date**
+- the name of the field for float fields should start with **amount**
 
 There are also special prefixes that you can add to your field name:
 
--   **static\_**: it will return the defined value (no regular
-    expression is executed)
--   **sum\_**: combined with a list of several regexps, it will return
-    the sum of the amounts caught by each regexp (instead of returning
-    the amount caught by the first regexp that caught something)
+- **static\_**: it will return the defined value (no regular
+  expression is executed)
+- **sum\_**: combined with a list of several regexps, it will return
+  the sum of the amounts caught by each regexp (instead of returning
+  the amount caught by the first regexp that caught something)
 
 Note that these special prefix for field names are removed when
 returning the result.
@@ -164,6 +161,7 @@ Example with the *sum\_* prefix:
 If the first regexp for VAT 10% catches 1.5 and the second regexp for
 VAT 20% catches 4.0, the result will be {'amount\_tax': 5.50, 'date':
 ...} (the *sum\_* prefix is removed).
+
 
 ### Lines
 
@@ -210,7 +208,7 @@ one doesn't match either, this line is ignored. This implies that you
 need to take care that the `first_line` regex is the most specific one,
 and `line` the least specific.
 
-Tables \~\~\~\~\~
+### Tables
 
 The `tables` plugin allows you to parse table-oriented fields that have
 a row of column headers followed by a row of values on the next line.
@@ -264,27 +262,27 @@ Everything under `options` is optional. We expect to add more options in
 the future to handle edge cases we find. Currently the most important
 options and their defaults are:
 
--   `currency` (default = `EUR`): The currency code returned. Many
-    people will want to change this.
--   `decimal_separator` (default = `.`): German invoices use `,` as
-    decimal separator. So here is your chance to change it.
--   `remove_whitespace` (default = `False`): Ignore any spaces. Often
-    makes regex easier to write. Also used quite often.
--   `remove_accents` (default = `False`): Useful when in France. Saves
-    you from putting accents in your regular expressions.
--   `lowercase` (default = `False`): Similar to whitespace removal.
--   `date_formats` (default = `[]`): We use dateparser/dateutil to
-    'guess' the correct date format. Sometimes this doesn't work and you
-    can set one or more additional date formats. These are passed
-    directly to [dateparser](https://github.com/scrapinghub/dateparser).
--   `languages` (default = \[\]): Also passed to `dateparser` to parse
-    names of months.
--   `replace` (default = `[]`): Additional search and replace before
-    matching. Not needed usually.
--   `required_fields`: By default the template should have regex for
-    date, amount, invoice\_number and issuer. If you wish to extract
-    different fields, you can supply a list here. The extraction will
-    fail if not all fields are matched.
+- `currency` (default = `EUR`): The currency code returned. Many
+  people will want to change this.
+- `decimal_separator` (default = `.`): German invoices use `,` as
+  decimal separator. So here is your chance to change it.
+- `remove_whitespace` (default = `False`): Ignore any spaces. Often
+  makes regex easier to write. Also used quite often.
+- `remove_accents` (default = `False`): Useful when in France. Saves
+  you from putting accents in your regular expressions.
+- `lowercase` (default = `False`): Similar to whitespace removal.
+- `date_formats` (default = `[]`): We use dateparser/dateutil to
+  'guess' the correct date format. Sometimes this doesn't work and you
+  can set one or more additional date formats. These are passed
+  directly to [dateparser](https://github.com/scrapinghub/dateparser).
+- `languages` (default = \[\]): Also passed to `dateparser` to parse
+  names of months.
+- `replace` (default = `[]`): Additional search and replace before
+  matching. Not needed usually.
+- `required_fields`: By default the template should have regex for
+  date, amount, invoice\_number and issuer. If you wish to extract
+  different fields, you can supply a list here. The extraction will
+  fail if not all fields are matched.
 
 ### Example of template using most options
 
@@ -311,8 +309,8 @@ options and their defaults are:
       replace:
         - ['e´ ', 'é']
 
-Steps to add new template
--------------------------
+
+## Steps to add new template
 
 To add a new template, we recommend this workflow:
 
