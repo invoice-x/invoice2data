@@ -1,22 +1,18 @@
 # -*- coding: utf-8 -*-
 issuer: Trainline.eu
 fields:
-  amount: Paiement Trainline du.+\s(\d+,\d{2})\s+€
-  amount_untaxed: Paiement Trainline du.+\s(\d+,\d{2})\s+€
-  date: \d+,\d{2}\D+(\d+\s.+\s\d{4})
-  description:
-    - Billet aller\s+[A-Z]+ − (.+?(?=\s{3}))
-    - Billet\s+[A-Z]+ − (.+?(?=\s{3}))
-  invoice_number:
-    - Billet aller\s+([A-Z]+)
-    - Billet\s+([A-Z]+)
+  amount: Montant\s+total\s+:\s+€(\d+.\d{2})
+  amount_untaxed: Montant\s+total\s+:\s+€(\d+.\d{2})
+  date: (\d{1,2}\s.{3,5},\s\d{4})\s+\d{2}:\d{2}
+  description: \s+(.+)\s:\s\d{1,2}\s.{3,5},\s\d{4}
+  invoice_number: Identifiant\s+de\s+transaction\s+:\s+(\d+)
   static_vat: FR58512277450
 keywords:
-  - FR58512277450
-  - PAIEMENT
+  - TVA FR 58 512 277 450
+  - Justificatif de paiement
   - €
 options:
   currency: EUR
   date_formats:
-    - '%d %B %Y'
-  decimal_separator: ','
+    - '%d %B, %Y'
+  decimal_separator: '.'
