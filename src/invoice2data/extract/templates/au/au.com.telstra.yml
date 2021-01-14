@@ -1,0 +1,15 @@
+issuer: Telstra Corporation Limited
+keywords:
+  - Telstra Corporation Limited
+  - ABN 33 051 775 556
+fields:
+  account_number: 'Account\s+(\d{3}\s+\d{4}\s+\d{3})'
+  amount: 'Total\s+\$(\d+,\d+.\d{2})'
+  date: 'Tax Invoice - issued\s+(\d{2}\s[a-zA-Z]{3}\D+\d{2})'
+  invoice_number: 'Bill number\s+([A-Z]\s+\d{3}\s+\d{3}\s+\d{3}\S\d)'
+  gst: 'GST\s+included\s+in\s+new\s+charges\s+\$(\d+,?\d+.\d{2})'
+options:
+  currency: AUD
+  remove_whitespace: false
+  date_formats:
+    - "%d/%m/%Y"
