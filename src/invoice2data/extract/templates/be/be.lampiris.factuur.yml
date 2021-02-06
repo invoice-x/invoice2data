@@ -1,0 +1,20 @@
+issuer: Lampiris S.A.
+fields:
+  amount: 'Bedrag+\s+incl.+\s+btw+\s+:+\s+(\d+,\d{2})'
+  date: 'Factuurdatum+\s+(\d{2}\/\d{2}\/\d{4})'
+  invoice_number: 'Factuurnummer+\s+(E\d{2}\/\d+)'
+keywords:
+- Lampiris
+- Factuur
+- Klantnummer
+- BE38 0015 0942 4272
+options:
+  currency: EUR
+  remove_whitespace: false
+  remove_accents: true
+  lowercase: false
+  decimal_separator: ','
+  date_formats:
+    - '%d/%m/%Y'
+  languages:
+    - nl
