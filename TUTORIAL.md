@@ -297,7 +297,7 @@ options and their defaults are:
       - FR25499247138
       - Facture
     required_fields:
-      - static_vat
+      - vat
       - invoice_number
     options:
       currency: EUR
