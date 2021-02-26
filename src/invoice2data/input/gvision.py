@@ -24,8 +24,8 @@ def to_text(path, bucket_name="cloud-vision-84893", language="fr"):
     import os
     from google.cloud import vision
     from google.cloud import storage
-    from google.protobuf import json_format
-    import re, json
+    import re
+    import json
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
     mime_type = "application/pdf"
     path_dir, filename = os.path.split(path)
@@ -51,7 +51,7 @@ def to_text(path, bucket_name="cloud-vision-84893", language="fr"):
         # How many pages should be grouped into each json output file.
         batch_size = 10
 
-        client = vision.ImageAnnotatorClient()        
+        client = vision.ImageAnnotatorClient()
         feature = vision.Feature(type_=vision.Feature.Type.DOCUMENT_TEXT_DETECTION)
         gcs_source = vision.GcsSource(uri=input_blob_uri)
         input_config = vision.InputConfig(gcs_source=gcs_source, mime_type=mime_type)
