@@ -92,7 +92,7 @@ class InvoiceTemplate(OrderedDict):
 
         return optimized_str
 
-    def matches_input(self, optimized_str: str) -> bool:
+    def matches_input(self, optimized_str):
         """See if string matches all keyword patterns and no exclude_keyword patterns set in template file.
         
         Args:
