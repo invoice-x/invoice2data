@@ -98,6 +98,13 @@ def read_templates(folder=None):
                 # Keywords as list, if only one.
                 if type(tpl["keywords"]) is not list:
                     tpl["keywords"] = [tpl["keywords"]]
+                
+                # Define excluded_keywords as empty list if not provided
+                # Convert to list if only one provided
+                if "exclude_keywords" not in tpl.keys():
+                    tpl["exclude_keywords"] = []
+                elif type(tpl["exclude_keywords"]) is not list:
+                    tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
 
                 output.append(InvoiceTemplate(tpl))
     return output

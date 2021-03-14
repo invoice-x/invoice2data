@@ -92,12 +92,30 @@ class InvoiceTemplate(OrderedDict):
 
         return optimized_str
 
-    def matches_input(self, optimized_str):
-        """See if string matches keywords set in template file"""
+    def matches_input(self, optimized_str: str) -> bool:
+        """See if string matches all keyword patterns and no exclude_keyword patterns set in template file.
+        
+        Args:
+        optimized_str: String of the text from OCR of the pdf after applying options defined in the template.
+        
+        Return:
+        Boolean
+            - True if all keywords are found and none of the exclude_keywords are found.
+            - False if either not all keywords are found or at least one exclude_keyword is found."""
 
-        if all([keyword in optimized_str for keyword in self["keywords"]]):
+        if all([re.search(keyword, optimized_str) for keyword in self["keywords"]]):
+            # All keyword patterns matched
+            if self["exclude_keywords"]:
+                if any([re.search(exclude_keyword, optimized_str) for exclude_keyword in self["exclude_keywords"]]):
+                    # At least one exclude_keyword matches
+                    logger.debug("All keywords matched, but also found at least one exclusion keyword in template %s", self["template_name"])
+                    return False
+            # No exclude_keywords or none match, template is good
             logger.debug("Matched template %s", self["template_name"])
             return True
+        else:
+            logger.debug("Failed to match all keywords in template %s", self["template_name"])
+            return False
 
     def parse_number(self, value):
         assert (
