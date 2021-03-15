@@ -114,8 +114,9 @@ should be an interface to edit templates for new suppliers. 80-20 rule.
 For a short tutorial on how to add new templates, see [TUTORIAL.md](TUTORIAL.md).
 
 Templates are based on Yaml. They define one or more keywords to find
-the right template and regexp for fields to be extracted. They could
-also be a static value, like the full company name.
+the right template, one or more exclude_keywords to further narrow it down
+and regexp for fields to be extracted. They could also be a static value,
+like the full company name.
 
 Template files are tried in alphabetical order.
 
@@ -127,6 +128,8 @@ Example:
     issuer: Amazon Web Services, Inc.
     keywords:
     - Amazon Web Services
+    exclude_keywords:
+    - San Jose
     fields:
       amount: TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)
       amount_untaxed: TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)
