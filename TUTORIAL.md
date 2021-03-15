@@ -24,6 +24,9 @@ by Microsoft Hong Kong:
     keywords:
     - Microsoft
     - M9-0002526-N
+    exclude_keywords:
+    - Already\s+paid
+    - Do not pay
     fields:
       amount: GrandTotal(\d+\.\d+)HKD
       date: DocumentDate:(\d{1,2}\/\d{1,2}\/\d{4})
@@ -42,6 +45,12 @@ Let's look at each field:
    templates, we need to avoid duplicate matches. Using the VAT number,
    email, website, phone, etc are generally good choices. ALL keywords
    need to match to use the template.
+   These keywords are regex patterns, so 'Company US' and 'Company\s+US' both work.
+   This also allows some flexibility as 'Company\s+(US|UK)' will match on both
+   Company US and Company UK.
+- `exclude_keywords`: Optional field. These are used to exclude invoices.
+   These are regex patterns which, if any match, will exclude a template from
+   being used.
 
 ### Fields
 
@@ -297,7 +306,7 @@ options and their defaults are:
       - FR25499247138
       - Facture
     required_fields:
-      - static_vat
+      - vat
       - invoice_number
     options:
       currency: EUR
