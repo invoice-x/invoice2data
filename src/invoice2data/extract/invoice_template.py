@@ -9,6 +9,7 @@ import dateparser
 from unidecode import unidecode
 import logging
 from collections import OrderedDict
+from . import parsers
 from .plugins import lines, tables
 
 logger = logging.getLogger(__name__)
@@ -23,6 +24,8 @@ OPTIONS_DEFAULT = {
     "decimal_separator": ".",
     "replace": [],  # example: see templates/fr/fr.free.mobile.yml
 }
+
+PARSERS_MAPPING = {"lines": parsers.lines, "regex": parsers.regex, "static": parsers.static}
 
 PLUGIN_MAPPING = {"lines": lines, "tables": tables}
 
@@ -89,12 +92,30 @@ class InvoiceTemplate(OrderedDict):
 
         return optimized_str
 
-    def matches_input(self, optimized_str):
-        """See if string matches keywords set in template file"""
+    def matches_input(self, optimized_str: str) -> bool:
+        """See if string matches all keyword patterns and no exclude_keyword patterns set in template file.
 
-        if all([keyword in optimized_str for keyword in self["keywords"]]):
-            logger.debug("Matched template %s", self["template_name"])
+        Args:
+        optimized_str: String of the text from OCR of the pdf after applying options defined in the template.
+
+        Return:
+        Boolean
+            - True if all keywords are found and none of the exclude_keywords are found.
+            - False if either not all keywords are found or at least one exclude_keyword is found."""
+
+        if all([re.search(keyword, optimized_str) for keyword in self["keywords"]]):
+            # All keyword patterns matched
+            if self["exclude_keywords"]:
+                if any([re.search(exclude_keyword, optimized_str) for exclude_keyword in self["exclude_keywords"]]):
+                    # At least one exclude_keyword matches
+                    logger.debug("Template: %s. Keywords matched. Exclude keyword found!", self["template_name"])
+                    return False
+            # No exclude_keywords or none match, template is good
+            logger.debug("Template: %s. Keywords matched. No exclude keywords found.", self["template_name"])
             return True
+        else:
+            logger.debug("Template: %s. Failed to match all keywords.", self["template_name"])
+            return False
 
     def parse_number(self, value):
         assert (
@@ -154,52 +175,42 @@ class InvoiceTemplate(OrderedDict):
         output["issuer"] = self["issuer"]
 
         for k, v in self["fields"].items():
-            if k.startswith("static_"):
+            if isinstance(v, dict):
+                if "parser" in v:
+                    if v["parser"] in PARSERS_MAPPING:
+                        parser = PARSERS_MAPPING[v["parser"]]
+                        value = parser.parse(self, v, optimized_str)
+                        if value is not None:
+                            output[k] = value
+                        else:
+                            logger.error("Failed to parse field %s with parser %s", k, v["parser"])
+                    else:
+                        logger.warning("Field %s has unknown parser %s set", k, v["parser"])
+                else:
+                    logger.warning("Field %s doesn't have parser specified", k)
+            elif k.startswith("static_"):
                 logger.debug("field=%s | static value=%s", k, v)
                 output[k.replace("static_", "")] = v
             else:
+                # Legacy syntax support (backward compatibility)
                 logger.debug("field=%s | regexp=%s", k, v)
 
-                sum_field = False
+                result = None
                 if k.startswith("sum_amount") and type(v) is list:
-                    k = k[4:]  # remove 'sum_' prefix
-                    sum_field = True
-                # Fields can have multiple expressions
-                if type(v) is list:
-                    res_find = []
-                    for v_option in v:
-                        res_val = re.findall(v_option, optimized_str)
-                        if res_val:
-                            if sum_field:
-                                res_find += res_val
-                            else:
-                                res_find.extend(res_val)
+                    k = k[4:]
+                    result = parsers.regex.parse(self, {"regex": v, "type": "float", "group": "sum"}, optimized_str,
+                                                 True)
+                elif k.startswith("date") or k.endswith("date"):
+                    result = parsers.regex.parse(self, {"regex": v, "type": "date"}, optimized_str, True)
+                elif k.startswith("amount"):
+                    result = parsers.regex.parse(self, {"regex": v, "type": "float"}, optimized_str, True)
                 else:
-                    res_find = re.findall(v, optimized_str)
-                if res_find:
-                    logger.debug("res_find=%s", res_find)
-                    if k.startswith("date") or k.endswith("date"):
-                        output[k] = self.parse_date(res_find[0])
-                        if not output[k]:
-                            logger.error(
-                                "Date parsing failed on date '%s'", res_find[0]
-                            )
-                            return None
-                    elif k.startswith("amount"):
-                        if sum_field:
-                            output[k] = 0
-                            for amount_to_parse in res_find:
-                                output[k] += self.parse_number(amount_to_parse)
-                        else:
-                            output[k] = self.parse_number(res_find[0])
-                    else:
-                        res_find = list(set(res_find))
-                        if len(res_find) == 1:
-                            output[k] = res_find[0]
-                        else:
-                            output[k] = res_find
-                else:
+                    result = parsers.regex.parse(self, {"regex": v}, optimized_str, True)
+
+                if result is None:
                     logger.warning("regexp for field %s didn't match", k)
+                else:
+                    output[k] = result
 
         output["currency"] = self.options["currency"]
 
