@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
         os: [ubuntu-latest]
 
     steps:
@@ -18,9 +18,13 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install system dependencies (Linux)
-      run: sudo apt update && sudo apt install tesseract-ocr xpdf imagemagick
+      run: |
+        sudo apt update
+        sudo apt install tesseract-ocr poppler-utils imagemagick
     - name: Install testing dependencies
-      run: pip install -U ".[test]"
+      run: |
+        pip install -U wheel pip
+        pip install -U ".[test]"
     - name: Lint with flake8
       run: flake8
     - name: Test with pytest
