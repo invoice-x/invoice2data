@@ -174,6 +174,7 @@ If you are interested in improving this project, have a look at our
 ## Related Projects
 
 - [OCR-Invoice](https://github.com/robela/OCR-Invoice) (FOSS \| C\#)
+- [DeepLogic AI](https://deeplogicai.tech/case_list/automatic-key-information-extraction-business-documents/) (Commercial \| SaaS)
 - [Docparser](https://docparser.com/) (Commercial \| Web Service)
 - [A-PDF](http://www.a-pdf.com/data-extractor/index.htm) (Commercial)
 - [PDFdeconstruct](http://www.glyphandcog.com/PDFdeconstruct.html?g6)
