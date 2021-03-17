@@ -214,7 +214,7 @@ class InvoiceTemplate(OrderedDict):
                     # e.g. "parser: regex" requires "regex: [pattern]"
                     if v["parser"] in PARSERS_MAPPING:
                         parser = PARSERS_MAPPING[v["parser"]]
-                        value = parser.parse(self, k, v, optimized_str)
+                        value = parser.parse(self, k, v, optimized_str_for_parser)
                         if value is not None:
                             output[k] = value
                         else:
