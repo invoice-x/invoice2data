@@ -90,7 +90,9 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         optimized_str = t.prepare_input(extracted_str)
 
         if t.matches_input(optimized_str):
-            return t.extract(optimized_str)
+            # Call extract with entire text and the invoicefile path
+            # The path is used if an area is called as a field option
+            return t.extract(optimized_str, invoicefile, input_module)
 
     logger.error("No template for %s", invoicefile)
     return False
