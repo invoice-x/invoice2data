@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def to_text(path: str, area_details: dict=None):
+def to_text(path: str, area_details: dict = None):
     """Wrapper around Poppler pdftotext.
 
     Parameters
@@ -39,15 +39,15 @@ def to_text(path: str, area_details: dict=None):
                 area_details[key] = str(area_details[key])
             # Extract the data for the specified region
             out, err = subprocess.Popen(
-                ["pdftotext","-layout", "-enc", "UTF-8", 
-                '-f',area_details['f'], 
-                '-l',area_details['l'], 
-                '-r',area_details['r'], 
-                '-x',area_details['x'], 
-                '-y',area_details['y'], 
-                '-W',area_details['W'], 
-                '-H',area_details['H'], 
-                path, '-'],
+                ["pdftotext", "-layout", "-enc", "UTF-8",
+                    '-f', area_details['f'],
+                    '-l', area_details['l'],
+                    '-r', area_details['r'],
+                    '-x', area_details['x'],
+                    '-y', area_details['y'],
+                    '-W', area_details['W'],
+                    '-H', area_details['H'],
+                    path, '-'],
                 stdout=subprocess.PIPE
             ).communicate()
         else:
