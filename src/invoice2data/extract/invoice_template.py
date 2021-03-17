@@ -11,6 +11,9 @@ import logging
 from collections import OrderedDict
 from . import parsers
 from .plugins import lines, tables
+# Area extraction is currently only added for pdftotext
+from ..input import pdftotext
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +74,7 @@ class InvoiceTemplate(OrderedDict):
         Input raw string and do transformations, as set in template file.
         """
 
-        # Remove withspace
+        # Remove whitespace
         if self.options["remove_whitespace"]:
             optimized_str = re.sub(" +", "", extracted_str)
         else:
@@ -81,11 +84,11 @@ class InvoiceTemplate(OrderedDict):
         if self.options["remove_accents"]:
             optimized_str = unicodedata.normalize('NFKC', optimized_str).encode('ascii', 'ignore').decode('ascii')
 
-        # convert to lower case
+        # Convert to lower case
         if self.options["lowercase"]:
             optimized_str = optimized_str.lower()
 
-        # specific replace
+        # Specific replace
         for replace in self.options["replace"]:
             assert len(replace) == 2, "A replace should be a list of exactly 2 elements."
             optimized_str = re.sub(replace[0], replace[1], optimized_str)
@@ -151,12 +154,23 @@ class InvoiceTemplate(OrderedDict):
             return self.parse_date(value)
         assert False, "Unknown type"
 
-    def extract(self, optimized_str):
+    def extract(self, optimized_str: str, invoice_file: str, input_module: str) -> Optional[dict]:
         """
         Given a template file and a string, extract matching data fields.
-        """
 
-        logger.debug("START optimized_str ========================\n" + optimized_str)
+        Args:
+        optimized_str: String of the full text from pdf with template options applied.
+        invoice_file: String of the path to the file being processed.
+            - This is used when processing areas
+        input_module: String of the input module to be used for pdf conversion
+            - This is used when processing areas
+
+        Returns:
+        Dictionary of results if all required fields were found.
+        None if required fields are missing.
+        """
+        logger.debug("START optimized_str ========================")
+        logger.debug(optimized_str)
         logger.debug("END optimized_str ==========================")
         logger.debug(
             "Date parsing: languages=%s date_formats=%s",
@@ -174,8 +188,30 @@ class InvoiceTemplate(OrderedDict):
         output["issuer"] = self["issuer"]
 
         for k, v in self["fields"].items():
+            # k is the key of the field
+            # v is the value
             if isinstance(v, dict):
+                # Options were supplied to this field
+                if "area" in v:
+                    # area is optional and re-extracts the text being searched
+                    # This obviously has a performance impact, so use wisely
+                    # Verify that the input_module is set to pdftotext ... this is the only one included right now
+                    assert input_module == pdftotext, 'Area is currently only supported for pdftotext.'
+                    logger.debug(f"Area was specified with parameters {v['area']}")
+                    # Extract the text for the specified area
+                    # Do NOT overwrite optimized_str. We're inside a loop and it will affect all other fields!
+                    optimized_str_area = input_module.to_text(invoice_file, v['area']).decode("utf-8")
+                    # Log the text
+                    logger.debug("START pdftotext area result ===========================")
+                    logger.debug(optimized_str_area)
+                    logger.debug("END pdftotext area result =============================")
+                    optimized_str_for_parser = optimized_str_area
+                else:
+                    # No area specified
+                    optimized_str_for_parser = optimized_str
                 if "parser" in v:
+                    # parser is required and may require additional options
+                    # e.g. "parser: regex" requires "regex: [pattern]"
                     if v["parser"] in PARSERS_MAPPING:
                         parser = PARSERS_MAPPING[v["parser"]]
                         value = parser.parse(self, k, v, optimized_str)
