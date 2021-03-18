@@ -1,6 +1,7 @@
 import csv
 import sys
 
+
 def write_to_file(data, path, date_format="%Y-%m-%d"):
     """Export extracted fields to csv
 
