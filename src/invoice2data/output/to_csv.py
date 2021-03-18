@@ -1,7 +1,6 @@
 import csv
 import sys
 
-
 def write_to_file(data, path, date_format="%Y-%m-%d"):
     """Export extracted fields to csv
 
@@ -40,17 +39,29 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
     with openfile as csv_file:
         writer = csv.writer(csv_file, delimiter=",")
 
-        for line in data:
-            first_row = []
-            for k, v in line.items():
-                first_row.append(k)
+        # Write header to csv
+        writer.writerow(data.keys())
 
-        writer.writerow(first_row)
-        for line in data:
-            csv_items = []
-            for k, v in line.items():
-                # first_row.append(k)
-                if k.startswith("date") or k.endswith("date"):
-                    v = v.strftime(date_format)
-                csv_items.append(v)
-            writer.writerow(csv_items)
+        # Loop through data and see which had lists of results (e.g. from lines parser)
+        csv_items = []
+        for key in data.keys():
+            value = data[key]
+            if isinstance(value, list):
+                # List of results, process each in turn
+                result_list = []
+                for item in value:
+                    if isinstance(item, dict):
+                        # The item in the list is a dictionary, so parse each key-value pair for datetime formatting
+                        for sub_key in item.keys():
+                            sub_value = item[sub_key]
+                            if sub_key.startswith("date") or sub_key.endswith("date"):
+                                # Key appears to indicate a date, so parse it as such
+                                sub_value = sub_value.strftime(date_format)
+                    result_list.append(item)
+                csv_items.append(result_list)
+            else:
+                # Single value, so parse as date if necessary
+                if key.startswith("date") or key.endswith("date"):
+                    value = value.strftime(date_format)
+                csv_items.append(value)
+        writer.writerow(csv_items)
