@@ -33,6 +33,10 @@ def extract(self, content, output):
             continue
 
         table_body = content[start.end() : end.start()]
+        logger.debug("START table body content ========================")
+        logger.debug(table_body)
+        logger.debug("END table body content ==========================")
+        logger.debug(f"Regex pattern = {table['body']}")
 
         for line in re.split(table["line_separator"], table_body):
             # if the line has empty lines in it , skip them
