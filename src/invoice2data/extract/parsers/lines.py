@@ -27,13 +27,15 @@ def parse(template, _settings, content):
     start = re.search(settings["start"], content)
     end = re.search(settings["end"], content)
     if not start or not end:
-        logger.warning("no lines found - start %s, end %s", start, end)
+        logger.warning(f"No lines found. Start match: {start}. End match: {end}")
         return
     content = content[start.end() : end.start()]
     lines = []
     current_row = {}
     if "first_line" not in settings and "last_line" not in settings:
         settings["first_line"] = settings["line"]
+    # Set boolean for first_line being found
+    first_line_found = False
     for line in re.split(settings["line_separator"], content):
         # if the line has empty lines in it , skip them
         if not line.strip("").strip("\n") or not line:
@@ -51,7 +53,12 @@ def parse(template, _settings, content):
                     field: value.strip() if value else ""
                     for field, value in match.groupdict().items()
                 }
+                # Flip boolean as first_line has been found
+                first_line_found = True
                 continue
+        # If the first_line has not yet been found, do not look for lines or last_line
+        if first_line_found is not True:
+            continue
         if "last_line" in settings:
             match = re.search(settings["last_line"], line)
             if match:
@@ -64,6 +71,8 @@ def parse(template, _settings, content):
                 if current_row:
                     lines.append(current_row)
                 current_row = {}
+                # Flip boolean to look for first_line again
+                first_line_found = False
                 continue
         match = re.search(settings["line"], line)
         if match:
