@@ -287,7 +287,9 @@ options and their defaults are:
 - `languages` (default = \[\]): Also passed to `dateparser` to parse
   names of months.
 - `replace` (default = `[]`): Additional search and replace before
-  matching. Not needed usually.
+  matching. Each replace entry must be a list of two elements.
+  The first is the regex pattern to be replaced, the second the string
+  to replace any matches with. Replacing is not typically needed.
 - `required_fields`: By default the template should have regex for
   date, amount, invoice\_number and issuer. If you wish to extract
   different fields, you can supply a list here. The extraction will
@@ -317,6 +319,7 @@ options and their defaults are:
       decimal_separator: '.'
       replace:
         - ['e´ ', 'é']
+        - ['\s{5,}', ' ']
 
 
 ## Steps to add new template
