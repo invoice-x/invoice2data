@@ -87,7 +87,7 @@ class InvoiceTemplate(OrderedDict):
 
         # specific replace
         for replace in self.options["replace"]:
-            assert len(replace) == 2, "A replace should be a list of 2 items"
+            assert len(replace) == 2, "A replace should be a list of exactly 2 elements."
             optimized_str = re.sub(replace[0], replace[1], optimized_str)
 
         return optimized_str
