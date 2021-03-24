@@ -2,17 +2,18 @@ import csv
 import sys
 
 
-def write_to_file(data, path, date_format="%Y-%m-%d"):
+def write_to_file(data: list, path: str, date_format="%Y-%m-%d") -> None:
     """Export extracted fields to csv
 
     Appends .csv to path if missing and generates csv file in specified directory, if not then in root
 
     Parameters
     ----------
-    data : dict
-        Dictionary of extracted fields
+    data : list
+        A list of dictionaries of extracted fields.
+        If only a single file was processed, it must be passed as a single-element list.
     path : str
-        directory to save generated csv file
+        csv file to save output csv to
     date_format : str
         Date format used in generated file
 
