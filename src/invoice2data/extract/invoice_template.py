@@ -69,7 +69,7 @@ class InvoiceTemplate(OrderedDict):
         if "issuer" not in self.keys():
             self["issuer"] = self["keywords"][0]
 
-    def prepare_input(self, extracted_str):
+    def prepare_input(self, extracted_str: str) -> str:
         """
         Input raw string and do transformations, as set in template file.
         """
@@ -90,8 +90,8 @@ class InvoiceTemplate(OrderedDict):
 
         # Specific replace
         for replace in self.options["replace"]:
-            assert len(replace) == 2, "A replace should be a list of 2 items"
-            optimized_str = optimized_str.replace(replace[0], replace[1])
+            assert len(replace) == 2, "A replace should be a list of exactly 2 elements."
+            optimized_str = re.sub(replace[0], replace[1], optimized_str)
 
         return optimized_str
 
