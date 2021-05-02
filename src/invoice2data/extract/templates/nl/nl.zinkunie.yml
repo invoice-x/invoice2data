@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+issuer: Zinkunie B.V.
+fields:
+  amount: Totaal\s+EURO\s+:\s+(\d+,\d{2})
+  amount_tax: B\.T\.W\.\s+(\d+,\d{2})
+  date: Factuurdatum\s+:\s+(\d{1,2}-\d{1,2}-\d{4})
+  invoice_number: Factuurnummer\s+:\s+(\d+)
+keywords:
+  - www.zinkunie.nl
+  - F A C T U U R
+options:
+  currency: EUR
+  date_formats:
+    - '%d-%m-%Y'
+  languages:
+    - nl
+  decimal_separator: ','
