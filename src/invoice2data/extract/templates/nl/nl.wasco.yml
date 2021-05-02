@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+issuer: Wasco Groothandelsgroep B.V.
+fields:
+  amount: Factuurbedrag\s+EUR\s+\(Incl\.\s+BTW\)\s+(\d+,\d{2})
+  amount_tax: BTW\s+(\d+,\d{2})
+  amount_untaxed: Subtotaal\(Excl.\s+BTW\)\s+(\d+,\d{2})
+  date: Datum\s+(\d{1,2}-\d{1,2}-\d{4})
+  invoice_number: Factuur\s+(\d+)
+keywords:
+  - Wasco Groothandelsgroep B.V.
+  - NL 8016 03 729 B01
+  - Factuur
+options:
+  currency: EUR
+  date_formats:
+    - '%d-%m-%Y'
+  languages:
+    - nl
+  decimal_separator: ','
