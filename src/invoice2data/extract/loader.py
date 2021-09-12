@@ -6,7 +6,6 @@ Templates are initially read from .yml files and then kept as class.
 
 import os
 import yaml
-import pkg_resources
 from collections import OrderedDict
 import logging
 from .invoice_template import InvoiceTemplate
@@ -38,7 +37,7 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     return yaml.load(stream, OrderedLoader)
 
 
-def read_templates(folder=None):
+def read_templates(folder):
     """
     Load yaml templates from template folder. Return list of dicts.
 
@@ -77,9 +76,6 @@ def read_templates(folder=None):
     """
 
     output = []
-
-    if folder is None:
-        folder = pkg_resources.resource_filename(__name__, "templates")
 
     for path, subdirs, files in os.walk(folder):
         for name in sorted(files):

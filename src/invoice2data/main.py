@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import pkg_resources
 import shutil
 import os
 from os.path import join
@@ -161,6 +162,7 @@ def create_parser():
     parser.add_argument(
         "--template-folder",
         "-t",
+        action='append',
         dest="template_folder",
         help="Folder containing invoice templates in yml file. Always adds built-in templates.",
     )
@@ -197,14 +199,19 @@ def main(args=None):
     input_module = input_mapping[args.input_reader]
     output_module = output_mapping[args.output_format]
 
-    templates = []
+    templates_folders = []
     # Load templates from external folder if set.
     if args.template_folder:
-        templates += read_templates(os.path.abspath(args.template_folder))
-
+        for folder in args.template_folder:
+            templates_folders.append(os.path.abspath(folder))
     # Load internal templates, if not disabled.
     if not args.exclude_built_in_templates:
-        templates += read_templates()
+        templates_folders.append(pkg_resources.resource_filename(__name__, "templates"))
+
+    templates = []
+    for folder in templates_folders:
+        templates += read_templates(folder)
+
     output = []
     for f in args.input_files:
         res = extract_data(f.name, templates=templates, input_module=input_module)
