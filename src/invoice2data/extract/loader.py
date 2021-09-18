@@ -113,4 +113,7 @@ def read_templates(folder=None):
                     tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
 
                 output.append(InvoiceTemplate(tpl))
+
+    logger.info("Loaded %d templates from %s", len(output), folder)
+
     return output
