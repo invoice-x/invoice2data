@@ -192,7 +192,7 @@ def main(args=None):
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
     else:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.INFO, format="%(message)s")
 
     input_module = input_mapping[args.input_reader]
     output_module = output_mapping[args.output_format]
