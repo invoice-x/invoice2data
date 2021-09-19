@@ -18,8 +18,9 @@ from collections import OrderedDict
 logger = logging.getLogger(__name__)
 
 
-def parse(template, settings, content, legacy=False):
+def parse(template, field, settings, content, legacy=False):
     if "regex" not in settings:
+        logger.warning("Field \"%s\" doesn't have regex specified", field)
         return None
 
     if isinstance(settings["regex"], list):
@@ -30,6 +31,7 @@ def parse(template, settings, content, legacy=False):
     result = []
     for regex in regexes:
         matches = re.findall(regex, content)
+        logger.debug("field=%s | regex=%s | matches=%s", field, settings["regex"], matches)
         if matches:
             for match in matches:
                 if isinstance(match, tuple):
