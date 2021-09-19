@@ -54,9 +54,10 @@ Let's look at each field:
 
 ### Fields
 
-All the regex `fields` you need extracted. Required fields are `amount`,
-`date`, `invoice_number`. It's up to you, if you need more fields
-extracted. Each field can be defined as:
+This section defines what information (fields) should be extracted from
+invoice and how.
+
+Each field can be defined as:
 
 - an **associative array** with `parser` specifying parsing method
 - a single regex with one capturing group
@@ -64,6 +65,35 @@ extracted. Each field can be defined as:
 
 The first method is preferred. It was introduced to make templates
 syntax cleaner and more flexible. It aims to replace old methods.
+
+Every template must specify at least `amount`, `date` and
+`invoice_number` fields.
+
+More fields can be extracted as required. For some common fields
+following names should be used:
+
+-  Seller:
+
+   -  ``company_id``: tax identifier (e.g. VAT identification number)
+   -  ``electronic_mail``: e-mail address
+   -  ``telephone``: phone number
+
+-  Amounts:
+
+   -  ``tax_exclusive_amount``: invoice amount with taxes excluded
+
+-  Data:
+
+   -  ``sale_date``: date of actual sale (may differ from issue date)
+
+-  Payment:
+
+   -  ``bic``: Business Identifier Code
+   -  ``due_date``: date by which invoice has to be paid
+   -  ``iban``: International Bank Account Number
+   -  ``payment_means_name``: payment method
+
+Other fields can use custom field names.
 
 ### Parser `regex`
 
