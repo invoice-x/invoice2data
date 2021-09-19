@@ -65,6 +65,12 @@ extracted. Each field can be defined as:
 The first method is preferred. It was introduced to make templates
 syntax cleaner and more flexible. It aims to replace old methods.
 
+### Parser `regex`
+
+It\'s the basic parser that allows parsing content using regexes. The
+only required property is `regex` that has to contain one or multiple
+(specified using array) regexes.
+
 It's not required to put add the whole regex to the capturing group.
 Often we use keywords and only capture part of the match (e.g. the
 amount).
@@ -77,12 +83,6 @@ here](http://www.regexr.com/). We use [Python's regex
 engine](https://docs.python.org/2/library/re.html). It won't matter for
 the simple expressions we need, but sometimes there are subtle
 differences when e.g. coming from Perl.
-
-### Parser `regex`
-
-It\'s the basic parser that allows parsing content using regexes. The
-only required property is `regex` that has to contain one or multiple
-(specified using array) regexes.
 
 By default `regex` parser removes all duplicated matches. It results a
 single value or an array (depending an amount of unique matches found).
