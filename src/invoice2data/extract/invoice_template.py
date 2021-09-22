@@ -179,7 +179,7 @@ class InvoiceTemplate(OrderedDict):
                 if "parser" in v:
                     if v["parser"] in PARSERS_MAPPING:
                         parser = PARSERS_MAPPING[v["parser"]]
-                        value = parser.parse(self, v, optimized_str)
+                        value = parser.parse(self, k, v, optimized_str)
                         if value is not None:
                             output[k] = value
                         else:
@@ -193,19 +193,17 @@ class InvoiceTemplate(OrderedDict):
                 output[k.replace("static_", "")] = v
             else:
                 # Legacy syntax support (backward compatibility)
-                logger.debug("field=%s | regexp=%s", k, v)
-
                 result = None
                 if k.startswith("sum_amount") and type(v) is list:
                     k = k[4:]
-                    result = parsers.regex.parse(self, {"regex": v, "type": "float", "group": "sum"}, optimized_str,
+                    result = parsers.regex.parse(self, k, {"regex": v, "type": "float", "group": "sum"}, optimized_str,
                                                  True)
                 elif k.startswith("date") or k.endswith("date"):
-                    result = parsers.regex.parse(self, {"regex": v, "type": "date"}, optimized_str, True)
+                    result = parsers.regex.parse(self, k, {"regex": v, "type": "date"}, optimized_str, True)
                 elif k.startswith("amount"):
-                    result = parsers.regex.parse(self, {"regex": v, "type": "float"}, optimized_str, True)
+                    result = parsers.regex.parse(self, k, {"regex": v, "type": "float"}, optimized_str, True)
                 else:
-                    result = parsers.regex.parse(self, {"regex": v}, optimized_str, True)
+                    result = parsers.regex.parse(self, k, {"regex": v}, optimized_str, True)
 
                 if result is None:
                     logger.warning("regexp for field %s didn't match", k)

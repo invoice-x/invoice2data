@@ -10,6 +10,6 @@ from .. import parsers
 
 
 def extract(self, content, output):
-    lines = parsers.lines.parse(self, self["lines"], content)
+    lines = parsers.lines.parse(self, "lines", self["lines"], content)
     if lines is not None:
         output["lines"] = lines

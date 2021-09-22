@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 DEFAULT_OPTIONS = {"line_separator": r"\n"}
 
 
-def parse(template, _settings, content):
+def parse(template, field, _settings, content):
     """Try to extract lines from the invoice"""
 
     # First apply default options.
