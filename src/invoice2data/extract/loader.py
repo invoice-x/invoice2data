@@ -13,6 +13,8 @@ from .invoice_template import InvoiceTemplate
 import codecs
 import chardet
 
+logger = logging.getLogger(__name__)
+
 logging.getLogger("chardet").setLevel(logging.WARNING)
 
 
@@ -89,7 +91,11 @@ def read_templates(folder=None):
                 with codecs.open(
                     os.path.join(path, name), encoding=encoding
                 ) as template_file:
-                    tpl = ordered_load(template_file.read())
+                    try:
+                        tpl = ordered_load(template_file.read())
+                    except yaml.parser.ParserError as error:
+                        logger.warning("Failed to load %s template:\n%s", name, error)
+                        continue
                 tpl["template_name"] = name
 
                 # Test if all required fields are in template:
@@ -107,4 +113,7 @@ def read_templates(folder=None):
                     tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
 
                 output.append(InvoiceTemplate(tpl))
+
+    logger.info("Loaded %d templates from %s", len(output), folder)
+
     return output

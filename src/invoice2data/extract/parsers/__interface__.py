@@ -13,7 +13,7 @@ and settings it may be e.g.:
 Each parser is a module (file) in the package `parsers` and provides at
 a minimum the `parse` function with those arguments:
 
-def parse(template, settings, content)
+def parse(template, field, settings, content)
 
 Parser has to return a single value (e.g. number, date, string, array)
 or None in case of error. Such a value will be included in the output.

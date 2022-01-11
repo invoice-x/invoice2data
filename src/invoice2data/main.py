@@ -85,11 +85,11 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
     logger.debug(extracted_str)
     logger.debug("END pdftotext result =============================")
 
-    logger.debug("Testing {} template files".format(len(templates)))
     for t in templates:
         optimized_str = t.prepare_input(extracted_str)
 
         if t.matches_input(optimized_str):
+            logger.info("Using %s template", t["template_name"])
             return t.extract(optimized_str)
 
     logger.error("No template for %s", invoicefile)
@@ -192,7 +192,7 @@ def main(args=None):
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
     else:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.INFO, format="%(message)s")
 
     input_module = input_mapping[args.input_reader]
     output_module = output_mapping[args.output_format]
