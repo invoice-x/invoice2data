@@ -11,9 +11,7 @@ fields:
   line_items:
     parser: lines
     start: 'Item\s+Quantity\s+Rate\s+Amount'
-    first_line: '(?P<item>[\S| ]+)\s+(?P<qty>\S+)\s+\$(?P<rate>[\d|\.]+)\s+\$(?P<amount>[\d|\.]+)\s+'
-    # Troubleshooting lack of lines with CI testing on github
-    # first_line: '(?P<item>.*)'
+    first_line: 'Service (?P<item>\w)'
     line: '(?P<desc>.*)'
     skip_line: ['Description:', "Notes:"]
     last_line: '(?P<desc>Parts:.*)'
