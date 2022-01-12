@@ -69,8 +69,10 @@ def parse(template, field, _settings, content):
                 first_line_found = True
                 continue
         # If the first_line has not yet been found, do not look for line or last_line
+        # Just continue to the next line
         if first_line_found is False:
             continue
+        # If last_line was provided, check that
         if "last_line" in settings:
             # last_line pattern provided, so check if the current line is that line
             match = re.search(settings["last_line"], line)
@@ -85,12 +87,27 @@ def parse(template, field, _settings, content):
                 # Flip first_line_found boolean to look for first_line again on next loop
                 first_line_found = False
                 continue
+        # Next we see if this is a line that should be skipped
+        if "skip_line" in settings:
+            # If skip_line was provided, check for a match now
+            if isinstance(settings["skip_line"], list):
+                # Accepts a list
+                skip_line_results = [re.search(x, line) for x in settings["skip_line"]]
+            else:
+                # Or a simple string
+                skip_line_results = [re.search(settings["skip_line"], line)]
+            if any(skip_line_results):
+                # There was at least one match to a skip_line
+                logger.debug("skip_line match on *%s*", line)
+                continue
+        # If none of those have continued the loop, check if this is just a normal line
         match = re.search(settings["line"], line)
         if match:
             # This is one of the lines between first_line and last_line
             # Parse the data and add it to the current_row
             current_row = parse_current_row(match, current_row)
             continue
+        # If the line doesn't match anything, log and continue to next line
         logger.debug("ignoring *%s* because it doesn't match anything", line)
     if current_row:
         # All lines processed, so append whatever the final current_row was to output

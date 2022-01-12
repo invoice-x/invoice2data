@@ -1,0 +1,25 @@
+[
+    {
+        "issuer": "Sammy Maystone - For Lines testing",
+        "invoice_number": "invoice_number_1",
+        "date": "2022-01-01",
+        "line_items": [
+            {
+                "item": "Service A",
+                "qty": "12",
+                "rate": "10.00",
+                "amount": "120.00",
+                "desc": "Parts: 1 x cap_a"
+            },
+            {
+                "item": "Service B",
+                "qty": "5",
+                "rate": "1.50",
+                "amount": "7.50",
+                "desc": "Parts: 2 x shop supplies"
+            }
+        ],
+        "currency": "USD",
+        "desc": "Invoice from Sammy Maystone - For Lines testing"
+    }
+]

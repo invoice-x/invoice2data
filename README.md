@@ -146,7 +146,16 @@ Example:
         end: \* May include estimated US sales tax
         first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
         line: (.*)\$(\d+\.\d+)
+        skip_line: Note
         last_line: VAT \*\*
+
+The lines package has multiple settings:
+- start > The pattern where the lines begin. This is typically the header row of the table. This row is not included in the line matching.
+- end > The pattern denoting where the lines end. Typically some text at the very end or immediately below the table. Also not included in the line matching.
+- first_line > Optional. This is the primary line item for each entry.
+- line > If first_line is not provided, this will be used as the primary line pattern. If first_line is provided, this is the pattern for any sub-lines such as line item details.
+- skip_line > Optional. If first_line is passed, this pattern indicates which sub-lines will be skipped and their data not recorded. This is useful if tables span multiple pages and you need to skip over page numbers or headers that appear mid-table.
+- last_line > Optional. If first_line is passed, this pattern denotes the final line of the sub-lines and is included in the output data.
 
 ## Development
 
