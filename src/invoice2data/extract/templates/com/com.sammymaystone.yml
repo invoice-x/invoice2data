@@ -1,0 +1,24 @@
+issuer: Sammy Maystone - For Lines testing
+keywords:
+  - 'Sammy Maystone'
+required_fields:
+  - invoice_number
+  - date
+  - line_items
+fields:
+  invoice_number: '\s+\#\s+(\S+)'
+  date: '\s{10,}Date:\s+(.*)[\r\n]*'
+  line_items:
+    parser: lines
+    start: 'Item\s+Quantity\s+Rate\s+Amount'
+    first_line: 'Service (?P<item>\w)'
+    line: '(?P<desc>.*)'
+    skip_line: ['Description:', "Notes:"]
+    last_line: '(?P<desc>Parts:.*)'
+    end: 'Subtotal'
+options:
+  remove_whitespace: false
+  currency: USD
+  languages:
+    - en
+  decimal_separator: '.'

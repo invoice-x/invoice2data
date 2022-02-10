@@ -1,0 +1,19 @@
+[
+    {
+        "issuer": "Sammy Maystone - For Lines testing",
+        "invoice_number": "invoice_number_1",
+        "date": "2022-01-01",
+        "line_items": [
+            {
+                "item": "A",
+                "desc": "Parts: 1 x cap_a"
+            },
+            {
+                "item": "B",
+                "desc": "Parts: 2 x shop supplies"
+            }
+        ],
+        "currency": "USD",
+        "desc": "Invoice from Sammy Maystone - For Lines testing"
+    }
+]
