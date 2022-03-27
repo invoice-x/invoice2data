@@ -7,12 +7,12 @@ def to_text(path):
     Parameters
     ----------
     path : str
-        path of electronic invoice in JPG or PNG format
+        path of electronic invoice in JPG, PNG or PDF format
 
     Returns
     -------
     extracted_str : str
-        returns extracted text from image in JPG or PNG format
+        returns extracted text from image or PDF file
 
     """
     import subprocess
@@ -24,9 +24,11 @@ def to_text(path):
     if not spawn.find_executable("convert"):
         raise EnvironmentError("imagemagick not installed.")
 
-    # convert = "convert -density 350 %s -depth 8 tiff:-" % (path)
+    # convert the (multi-page) pdf file to a 300dpi png
     convert = [
         "convert",
+        "-units",
+        "PixelsPerInch",
         "-density",
         "350",
         path,
@@ -34,6 +36,9 @@ def to_text(path):
         "8",
         "-alpha",
         "off",
+        "-resample",
+        "300x300",
+        "-append",
         "png:-",
     ]
     p1 = subprocess.Popen(convert, stdout=subprocess.PIPE)
