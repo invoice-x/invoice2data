@@ -140,22 +140,22 @@ def create_parser():
         "--copy",
         "-c",
         dest="copy",
-        help="Copy and rename processed PDFs to specified folder.",
+        help="Copy and rename processed files to specified folder.",
     )
 
     parser.add_argument(
         "--move",
         "-m",
         dest="move",
-        help="Move and rename processed PDFs to specified folder.",
+        help="Move and rename processed files to specified folder.",
     )
 
     parser.add_argument(
         "--filename-format",
         dest="filename",
-        default="{date} {invoice_number} {desc}.pdf",
-        help="Filename format to use when moving or copying processed PDFs."
-        'Default: "{date} {invoice_number} {desc}.pdf"',
+        default="{date} {invoice_number} {desc}",
+        help="Filename format to use when moving or copying processed files."
+        'Default: "{date} {invoice_number} {desc}"',
     )
 
     parser.add_argument(
