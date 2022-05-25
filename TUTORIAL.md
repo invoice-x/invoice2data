@@ -130,8 +130,7 @@ This parser allows parsing selected invoice section as a set of lines
 sharing some pattern. Those can be e.g. invoice items (good or services)
 or VAT rates.
 
-It replaces `lines` plugin and should be preferred over it. It allows
-reusing in multiple `fields`.
+It allows reusing in multiple `fields`.
 
 Example for `fields`:
 
@@ -216,6 +215,54 @@ current line is commited, if not, `line` regex is checked, and if this
 one doesn't match either, this line is ignored. This implies that you
 need to take care that the `first_line` regex is the most specific one,
 and `line` the least specific.
+
+It is possible to use multiple lines groups.
+The syntax is
+
+    lines:
+     - start: Item\s+Discount\s+Price$
+       end:  \s+Total
+       line: (?P<line_note>(FOOD))
+     - start: Item\s+Discount\s+Price$
+       end:  \s+Total
+       line: (?P<description>(.+))\s+(?P<price>\d+\d+)
+
+It is also possible to contentate multi line tags.
+Very usefull when the description of the invoiced item spans multiple lines.
+
+This can be done by defining the capturing group multiple times.
+In the example below the `item` is contentated.
+If the invoice looks like:
+
+
+    Service A                                                                     12                      $10.00         $120.00
+    Description: Repair
+    Notes: Replaced capacitor
+    Parts: 1 x cap_a
+    Tax: 0.2%
+
+
+The template is:
+
+    lines:
+     - start: Item\s+Quantity\s+Rate\s+Amount
+       end:  Subtotal
+       first_line: 'Service (?P<item>\w)\s+(?P<qty>\S+)\s+.(?P<unitprice>\d+.\d{2})\s+.?(?P<linetotal>\d+.\d{2})'
+       line: '(?P<item>.*)'
+       skip_line: ['Pino \w'] # 'Description:', "Notes:", 
+       last_line: '(?P<desc>Parts:.*)'
+       types:
+         qty: int
+         unitprice: float
+         linetotal: float
+
+
+
+Output:
+
+    'lines': [{'item': 'A\nDescription: Repair\nNotes: Replaced capacitor', 'qty': 12, 'unitprice': 10.0, 'linetotal': 120.0, 'desc': 'Parts: 1 x cap_a'}]
+
+
 
 ### Tables
 
