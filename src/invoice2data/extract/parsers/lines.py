@@ -10,9 +10,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-    # Initialize the settings
-    # by setting the first_line_found boolean to False,
-    # This indicates the we are looking for the first_line pattern
+# Initialize the settings
+# by setting the first_line_found boolean to False,
+# This indicates the we are looking for the first_line pattern
 DEFAULT_OPTIONS = {"line_separator": r"\n", "first_line_found": False}
 
 
@@ -26,16 +26,15 @@ def parse(template, field, _settings, content):
 
     # Backward Compatability if someone trys to pass something else instead of a list
     if type(_settings) != list:
-        l = []
-        l.append(_settings)
-        _settings = l
+        li = []
+        li.append(_settings)
+        _settings = li
 
     for setting in _settings:
         logger.debug(" Settingcheck: is \n *%s*", setting)
         # As first_line and last_line are optional, if neither were provided,
         # set the first_line to be the provided line parameter.
         # In this way the code will simply loop through and extract the lines as expected.
-        
 
         if "first_line" not in setting and "last_line" not in setting:
             logger.debug("temp Setting : is \n *%s*", setting)
@@ -44,7 +43,7 @@ def parse(template, field, _settings, content):
             # Move this code outside of the line section
 
         # Set the setting number to act as an index for the current_row dict
-        indexno +=1
+        indexno += 1
         setting["index"] = indexno
         logger.debug("Setting %s: is \n *%s*", indexno, setting)
         current_row.append("")
@@ -65,7 +64,6 @@ def parse(template, field, _settings, content):
             logger.warning(f"No lines found. Start match: {start}. End match: {end}")
             continue
 
-
     for line_content in re.split(plugin_settings["line_separator"], content):
 
         # not sure if code below should stay.
@@ -78,7 +76,7 @@ def parse(template, field, _settings, content):
         if not line_content.strip("").strip("\n").strip("\r") or not line_content:
             continue
         # added .strip("^\s+$")
-        logger.debug("Parsing line *%s*", line_content )
+        logger.debug("Parsing line *%s*", line_content)
         # Loop trough settings from the template file.
         # As we want to have the output in the same order as the invoice file.
         for setting in _settings:
@@ -96,8 +94,9 @@ def parse(template, field, _settings, content):
             # continue to the next setting in the for loop.
             content_is_between_start_end = re.search(re.escape(line_content), content_of_setting)
             if content_is_between_start_end:
-                logger.debug("Setting %s: This line is between start and end tag", setting["index"] )
-            else: continue
+                logger.debug("Setting %s: This line is between start and end tag", setting["index"])
+            else:
+                continue
 
             # We assume that structured line fields may either be individual lines or
             # they may be main line items with descriptions or details following beneath.
@@ -141,7 +140,7 @@ def parse(template, field, _settings, content):
                     # Or a simple string
                     skip_line_results = [re.search(setting["skip_line"], line_content)]
                 if any(skip_line_results):
-                   # There was at least one match to a skip_line
+                    # There was at least one match to a skip_line
                     logger.debug("skip_line match on *%s*", line_content)
                     continue
 
@@ -157,7 +156,8 @@ def parse(template, field, _settings, content):
                     current_row[setting["index"]] = parse_current_row(match, current_row[setting["index"]])
                     if current_row[setting["index"]]:
                         lines.append(current_row[setting["index"]])
-                        logger.debug("Setting %s: last_line found, assembled result:\n *%s*", setting["index"], current_row[setting["index"]])
+                        logger.debug("Setting %s: last_line found, assembled result:\n *%s*",
+                            setting["index"], current_row[setting["index"]])
                     current_row[setting["index"]] = {}
                     # Flip first_line_found boolean to look for first_line again on next loop
                     setting["first_line_found"] = False
@@ -175,7 +175,8 @@ def parse(template, field, _settings, content):
             # All lines processed, so append whatever the final current_row was to output
             if current_row[setting["index"]]:
                 lines.append(current_row[setting["index"]])
-                logger.debug("Setting %s: all lines processed, result: %s", setting["index"], current_row[setting["index"]])
+                logger.debug("Setting %s: all lines processed, result: %s",
+                    setting["index"], current_row[setting["index"]])
                 current_row[setting["index"]] = {}
             # else:
                 # If the line doesn't match anything, log and continue to next line
@@ -198,5 +199,5 @@ def parse_current_row(match, current_row):
             current_row.get(field, ""),
             current_row.get(field, "") and "\n" or "",
             value.strip() if value else "",
-            )
+        )
     return current_row
