@@ -156,8 +156,10 @@ def parse(template, field, _settings, content):
                     current_row[setting["index"]] = parse_current_row(match, current_row[setting["index"]])
                     if current_row[setting["index"]]:
                         lines.append(current_row[setting["index"]])
-                        logger.debug("Setting %s: last_line found, assembled result:\n *%s*",
-                            setting["index"], current_row[setting["index"]])
+                        logger.debug(
+                            "Setting %s: last_line found, assembled result:\n *%s*",
+                            setting["index"], current_row[setting["index"]]
+                        )
                     current_row[setting["index"]] = {}
                     # Flip first_line_found boolean to look for first_line again on next loop
                     setting["first_line_found"] = False
@@ -175,8 +177,10 @@ def parse(template, field, _settings, content):
             # All lines processed, so append whatever the final current_row was to output
             if current_row[setting["index"]]:
                 lines.append(current_row[setting["index"]])
-                logger.debug("Setting %s: all lines processed, result: %s",
-                    setting["index"], current_row[setting["index"]])
+                logger.debug(
+                    "Setting %s: all lines processed, result: %s", setting["index"],
+                    current_row[setting["index"]]
+                )
                 current_row[setting["index"]] = {}
             # else:
                 # If the line doesn't match anything, log and continue to next line
