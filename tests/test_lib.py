@@ -66,7 +66,13 @@ class TestCLI(unittest.TestCase):
     def test_extract_data_pdfminer(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
-            extract_data(file, None, pdfminer_wrapper)
+            try:
+                res = extract_data(file, None, pdfminer_wrapper)
+                print(res)  # Check why logger.info is not working, for the time being using print
+            except ImportError:
+                # print("pdfminer module not installed!")
+                self.assertTrue(False, "pdfminer is not installed")
+                self.assertTrue(type(res) is dict, "return is not a dict")
 
     def test_tesseract_for_return(self):
         png_files = get_sample_files('.png')
