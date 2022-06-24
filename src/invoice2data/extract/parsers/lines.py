@@ -62,7 +62,7 @@ def parse(template, field, _settings, content):
         end = re.search(setting["end"], content)
         if not start or not end:
             logger.warning(f"No lines found. Start match: {start}. End match: {end}")
-            continue
+            return
 
     for line_content in re.split(plugin_settings["line_separator"], content):
 
