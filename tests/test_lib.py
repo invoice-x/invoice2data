@@ -9,7 +9,11 @@ import unittest
 from invoice2data.main import extract_data
 from invoice2data.input import pdftotext, tesseract, pdfminer_wrapper
 from invoice2data.output import to_csv, to_json, to_xml
-from common import get_sample_files
+
+try:
+    from .common import get_sample_files
+except ImportError:
+    from common import get_sample_files
 
 
 def _extract_data_for_export():
