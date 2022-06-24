@@ -126,7 +126,7 @@ class TestCLI(unittest.TestCase):
         main(args)
         i = 0
         for path, subdirs, files in os.walk(
-            pkg_resources.resource_filename(__name__, 'copy_test/pdf')
+            pkg_resources.resource_filename(__name__, directory)
         ):
             for file in files:
                 if file.endswith(".pdf"):
