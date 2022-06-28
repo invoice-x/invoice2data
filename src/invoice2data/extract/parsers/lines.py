@@ -62,7 +62,7 @@ def parse(template, field, _settings, content):
         end = re.search(setting["end"], content)
         if not start or not end:
             logger.warning(f"No lines found. Start match: {start}. End match: {end}")
-            return
+            continue
 
     for line_content in re.split(plugin_settings["line_separator"], content):
 
@@ -110,9 +110,19 @@ def parse(template, field, _settings, content):
 
             # here loop trough settings
             if "first_line" in setting:
-                # Check if the current lines the first_line pattern
+                # Check if the current lines matches the first_line pattern
                 match = re.search(setting["first_line"], line_content)
                 if match:
+                    # if the previous match of this setting was also a firstline, write to output
+                    if setting['first_line_found'] and current_row[setting["index"]]:
+                        lines.append(current_row[setting["index"]])
+                        logger.debug(
+                            "Setting %s: another first_line is found, so all lines processed, result: %s",
+                            setting["index"],
+                            current_row[setting["index"]]
+                        )
+                        current_row[setting["index"]] = {}
+                        setting["first_line_found"] = False
                     # The line matches the first_line pattern so append
                     logger.debug("Setting %s: first_line matched", setting["index"])
                     logger.debug("Setting %s: converting first_line to data:", setting["index"])
