@@ -211,19 +211,13 @@ def main(args=None):
         if res:
             logger.info(res)
             output.append(res)
+            res['date'] = res['date'].strftime("%Y-%m-%d")
+            res = {key: str(value) for key, value in res.items()}
             if args.copy:
-                filename = args.filename.format(
-                    date=res["date"].strftime("%Y-%m-%d"),
-                    invoice_number=res["invoice_number"],
-                    desc=res["desc"],
-                )
+                filename = args.filename.format(**res)
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
-                filename = args.filename.format(
-                    date=res["date"].strftime("%Y-%m-%d"),
-                    invoice_number=res["invoice_number"],
-                    desc=res["desc"],
-                )
+                filename = args.filename.format(**res)
                 shutil.move(f.name, join(args.move, filename))
         f.close()
 
