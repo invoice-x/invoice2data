@@ -17,7 +17,7 @@ use it.
 
 ## Simple invoice template
 
-Here is a sample of a minimal invoice template to read invoiced issued
+Here is a sample of a minimal invoice template to read invoices issued
 by Microsoft Hong Kong:
 
     issuer: Microsoft Regional Sales Corporation
