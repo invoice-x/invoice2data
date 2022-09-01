@@ -4,6 +4,7 @@ setup(
     include_package_data=True,
     packages=find_packages('src'),
     package_dir={'': 'src'},
+    license='MIT License',
     package_data={
         'invoice2data.extract': [
             'templates/com/*.yml',
