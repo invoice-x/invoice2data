@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# file pyquasar_test.py
-# Run: python -m unittest test.pyquasar_test
+# Run: python -m unittest tests.test_extraction
 
 # Or: python -m unittest discover
 
@@ -9,7 +8,7 @@
 # 3. You run the tests by placing unittest.main() in your file,
 #    usually at the bottom.
 
-# https://docs.python.org/2/library/unittest.html#test-cases
+# https://docs.python.org/3.10/library/unittest.html#test-cases
 
 import unittest
 import pkg_resources
