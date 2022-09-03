@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+# Run: python -m unittest tests.test_cli
+
+# Or: python -m unittest discover
+
+# 1. You define your own class derived from unittest.TestCase.
+# 2. Then you fill it with functions that start with 'test_'
+# 3. You run the tests by placing unittest.main() in your file,
+#    usually at the bottom.
+
+# https://docs.python.org/3.10/library/unittest.html#test-cases
+
 import datetime
 import os
 import json
