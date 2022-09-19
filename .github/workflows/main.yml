@@ -20,7 +20,7 @@ jobs:
     - name: Install system dependencies (Linux)
       run: |
         sudo apt update
-        sudo apt install tesseract-ocr poppler-utils imagemagick pdfplumber
+        sudo apt install tesseract-ocr poppler-utils imagemagick
     - name: Install testing dependencies
       run: |
         pip install -U wheel pip
