@@ -72,7 +72,7 @@ class TestCLI(unittest.TestCase):
             except ImportError:
                 # print("pdfminer module not installed!")
                 self.assertTrue(False, "pdfminer is not installed")
-                self.assertTrue(type(res) is dict, "return is not a dict")
+                self.assertTrue(type(res) is str, "return is not a string")
 
     def test_tesseract_for_return(self):
         png_files = get_sample_files('.png')
