@@ -53,7 +53,7 @@ Choose any of the following input readers:
 
 - pdftotext `invoice2data --input-reader pdftotext invoice.pdf`
 - tesseract `invoice2data --input-reader tesseract invoice.pdf`
-- pdf miner `invoice2data --input-reader pdfminer invoice.pdf`
+- pdfminer.six `invoice2data --input-reader pdfminer invoice.pdf`
 - pdf plumber `invoice2data --input-reader pdfplumber invoice.pdf`
 - tesseract4 `invoice2data --input-reader tesseract4 invoice.pdf`
 - gvision `invoice2data --input-reader gvision invoice.pdf` (needs `GOOGLE_APPLICATION_CREDENTIALS` env var)
