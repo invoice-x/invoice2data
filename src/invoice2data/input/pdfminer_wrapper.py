@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 def to_text(path):
-    """Wrapper around `pdfminer`.
+    """Wrapper around `pdfminer.six`.
 
     Parameters
     ----------
