@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+# Run: python -m unittest tests.test_lib
+
+# Or: python -m unittest discover
+
+# 1. You define your own class derived from unittest.TestCase.
+# 2. Then you fill it with functions that start with 'test_'
+# 3. You run the tests by placing unittest.main() in your file,
+#    usually at the bottom.
+
+# https://docs.python.org/3.10/library/unittest.html#test-cases
+
 import os
 
 try:
@@ -20,7 +32,7 @@ def _extract_data_for_export():
             return res
 
 
-class TestCLI(unittest.TestCase):
+class TestLIB(unittest.TestCase):
     def test_extract_data(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
@@ -66,7 +78,13 @@ class TestCLI(unittest.TestCase):
     def test_extract_data_pdfminer(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
-            extract_data(file, None, pdfminer_wrapper)
+            try:
+                res = extract_data(file, None, pdfminer_wrapper)
+                print(res)  # Check why logger.info is not working, for the time being using print
+            except ImportError:
+                # print("pdfminer module not installed!")
+                self.assertTrue(False, "pdfminer is not installed")
+                self.assertTrue(type(res) is str, "return is not a string")
 
     def test_tesseract_for_return(self):
         png_files = get_sample_files('.png')
