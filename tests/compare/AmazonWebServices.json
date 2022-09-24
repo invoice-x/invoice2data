@@ -1,12 +1,13 @@
 [
     {
+        "issuer": "Amazon Web Services",
         "amount": 4.11,
         "amount_untaxed": 4.11,
-        "currency": "USD",
         "date": "2014-08-03",
-        "desc": "Invoice from Amazon Web Services",
         "invoice_number": "42183017",
-        "issuer": "Amazon Web Services",
+        "partner_name": "Amazon Web Services, Inc.",
+        "partner_website": "aws.amazon.com",
+        "currency": "USD",
         "lines": [
             {
                 "description": "AWS Data Transfer",
@@ -25,7 +26,6 @@
                 "price_unit": "0.01"
             }
         ],
-        "partner_name": "Amazon Web Services, Inc.",
-        "partner_website": "aws.amazon.com"
+        "desc": "Invoice from Amazon Web Services"
     }
 ]

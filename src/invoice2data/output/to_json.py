@@ -48,7 +48,7 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
             data,
             json_file,
             indent=4,
-            sort_keys=True,
+            sort_keys=False,
             default=myconverter,
             ensure_ascii=False,
         )

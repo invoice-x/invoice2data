@@ -1,6 +1,8 @@
 # Data extractor for PDF invoices - invoice2data
 
 [![invoice2data build status on GitHub Actions](https://github.com/invoice-x/invoice2data/workflows/Test/badge.svg)](https://github.com/invoice-x/invoice2data/actions)
+[![Version](https://img.shields.io/pypi/v/invoice2data.svg)](https://pypi.python.org/pypi/invoice2data)
+[![Support Python versions](https://img.shields.io/pypi/pyversions/invoice2data.svg)](https://pypi.python.org/pypi/invoice2data)
 
 A command line tool and Python library to support your accounting
 process.
@@ -168,11 +170,13 @@ If you are interested in improving this project, have a look at our
 - integrate with online OCR?
 - try to 'guess' parameters for new invoice formats.
 - can apply machine learning to guess new parameters?
+- advanced table parsing with [camelot](https://github.com/camelot-dev/camelot)
 
 ## Maintainers
 
 - [Manuel Riel](https://github.com/m3nu)
 - [Alexis de Lattre](https://github.com/alexis-via)
+- [bosd](https://github.com/bosd)
 
 ## Contributors
 
