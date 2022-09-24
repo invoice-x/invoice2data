@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import copy
+import datetime
 import shutil
 import os
 from os.path import join
@@ -222,19 +224,19 @@ def main(args=None):
         if res:
             logger.info(res)
             output.append(res)
+
+            kwargs = copy.deepcopy(res)
+            for key, value in kwargs.items():
+                if type(value) is list and len(value) >= 1:
+                    kwargs[key] = value[0]
+            for key, value in kwargs.items():
+                if type(value) is datetime.datetime:
+                    kwargs[key] = value.strftime('%Y-%m-%d')
             if args.copy:
-                filename = args.filename.format(
-                    date=res["date"].strftime("%Y-%m-%d"),
-                    invoice_number=res["invoice_number"],
-                    desc=res["desc"],
-                )
+                filename = args.filename.format(**kwargs)
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
-                filename = args.filename.format(
-                    date=res["date"].strftime("%Y-%m-%d"),
-                    invoice_number=res["invoice_number"],
-                    desc=res["desc"],
-                )
+                filename = args.filename.format(**kwargs)
                 shutil.move(f.name, join(args.move, filename))
         f.close()
 
