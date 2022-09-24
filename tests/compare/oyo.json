@@ -1,18 +1,18 @@
 [
     {
+        "issuer": "OYO",
         "amount": 1939.0,
-        "amount_rooms": 1.0,
-        "booking_id": "IBZY2087",
-        "cin": "U63090DL2012PTC231770",
-        "currency": "INR",
         "date": "2017-12-31",
+        "invoice_number": "IBZY2087",
+        "currency": "INR",
+        "hotel_details": " OYO 4189 Resort Nanganallur",
         "date_check_in": "2017-12-31",
         "date_check_out": "2018-01-01",
-        "desc": "Invoice from OYO",
+        "amount_rooms": 1.0,
+        "booking_id": "IBZY2087",
+        "payment_method": "Cash at Hotel",
         "gstin": "06AABCO6063D1ZQ",
-        "hotel_details": " OYO 4189 Resort Nanganallur",
-        "invoice_number": "IBZY2087",
-        "issuer": "OYO",
-        "payment_method": "Cash at Hotel"
+        "cin": "U63090DL2012PTC231770",
+        "desc": "Invoice from OYO"
     }
 ]
