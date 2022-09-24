@@ -32,7 +32,7 @@ def _extract_data_for_export():
             return res
 
 
-class TestCLI(unittest.TestCase):
+class TestLIB(unittest.TestCase):
     def test_extract_data(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
