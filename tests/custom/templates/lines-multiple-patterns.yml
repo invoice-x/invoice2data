@@ -26,6 +26,23 @@ fields:
       - ^Subgroup:\s*(?P<subgroup>.+)$
     types:
       pos: int
+  dimensions:
+    parser: lines
+    rules:
+      - start: No.*Angle.*Length
+        end: Count
+        line: ^(?P<pos>\d+)\s+(?P<angle>\d+)\s+(?P<length>\d+)$
+        types:
+          pos: int
+          angle: int
+          length: int
+      - start: No.*Length.*Angle
+        end: Count
+        line: ^(?P<pos>\d+)\s+(?P<length>\d+)\s+(?P<angle>\d+)$
+        types:
+          pos: int
+          angle: int
+          length: int
 options:
   currency: EUR
   date_formats:

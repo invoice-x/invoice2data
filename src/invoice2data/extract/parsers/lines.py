@@ -115,10 +115,10 @@ def parse_block(template, field, settings, content):
     return lines
 
 
-def parse(template, field, _settings, content):
+def parse_by_rule(template, field, rule, content):
     # First apply default options.
     settings = DEFAULT_OPTIONS.copy()
-    settings.update(_settings)
+    settings.update(rule)
 
     # Validate settings
     assert "start" in settings, "Lines start regex missing"
@@ -148,6 +148,24 @@ def parse(template, field, _settings, content):
         logger.warning("Failed to find any matching block (part) of invoice for \"%s\"", field)
     elif not lines:
         logger.warning("Failed to find any lines for \"%s\"", field)
+
+    return lines
+
+
+def parse(template, field, settings, content):
+    if "rules" in settings:
+        # One field can have multiple sets of line-parsing rules
+        rules = settings['rules']
+    else:
+        # Original syntax stored line-parsing rules in top field YAML object
+        keys = ('start', 'end', 'line', 'first_line', 'last_line', 'skip_line', 'types')
+        rules = [{k: v for k, v in settings.items() if k in keys}]
+
+    lines = []
+    for rule in rules:
+        new_lines = parse_by_rule(template, field, rule, content)
+        if new_lines is not None:
+            lines += new_lines
 
     return lines
 

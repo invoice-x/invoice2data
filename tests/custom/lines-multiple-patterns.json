@@ -17,6 +17,13 @@
             { "pos": 6, "name": "Penguin" },
             { "pos": 7, "name": "Ostrich" }
         ],
+        "dimensions": [
+            { "pos": 1, "angle": 30, "length": 30 },
+            { "pos": 2, "angle": 45, "length": 40 },
+            { "pos": 3, "angle": 90, "length": 60 },
+            { "pos": 4, "length": 80, "angle": 135 },
+            { "pos": 5, "length": 100, "angle": 180 }
+        ],
         "currency": "EUR",
         "desc": "Invoice from Lines Tests"
     }
