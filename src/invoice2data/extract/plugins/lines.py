@@ -10,6 +10,14 @@ from .. import parsers
 
 
 def extract(self, content, output):
-    lines = parsers.lines.parse(self, "lines", self["lines"], content)
-    if lines is not None:
+    lines = []
+
+    rules = self['lines']
+    if not isinstance(self['lines'], list):
+        rules = [rules]
+
+    for rule in rules:
+        lines += parsers.lines.parse(self, "lines", rule, content)
+
+    if len(lines):
         output["lines"] = lines
