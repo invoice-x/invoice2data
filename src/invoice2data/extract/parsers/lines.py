@@ -87,6 +87,10 @@ def parse(template, field, _settings, content):
             # Strip the content down to the items between start and end tag of this setting
             start = re.search(setting["start"], content)
             end = re.search(setting["end"], content)
+            if not start or not end:
+                logger.warning(f"No content found between:\n Start match: {start}.\n End match: {end}")
+                continue
+
             content_of_setting = content[start.end() : end.start()]
 
             # search if the current line is in the content.
