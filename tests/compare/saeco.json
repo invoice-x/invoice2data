@@ -1,0 +1,50 @@
+[
+    {
+        "issuer": "e-Luscious Nederland B.V.",
+        "amount": 49.99,
+        "amount_tax": 8.68,
+        "amount_untaxed": 41.31,
+        "date": "2022-09-08",
+        "date_due": "2022-09-22",
+        "invoice_number": "VF1005193039",
+        "payment_method": "Credit Card",
+        "static_vat": "NL815254295B01",
+        "bic": "RABONL2U",
+        "iban": "NL58RABO0198723202",
+        "telephone": "020 7604101",
+        "partner_website": "saeco.com",
+        "partner_email": "verkoop-nl@saeco.com",
+        "partner_name": "e-Luscious Nederland B.V.",
+        "country_code": "nl",
+        "partner_zip": "8401 BL",
+        "partner_city": "Gorredijk",
+        "partner_street": "Badweg 48",
+        "partner_coc": "04080176",
+        "narration": [
+            "SCONL0303006280999",
+            "SCONL000000444"
+        ],
+        "currency": "EUR",
+        "lines": [
+            {
+                "code": "E103184",
+                "name": "Onderhoudsset CA6707/10",
+                "price_unit": 49.99,
+                "taxpercent": 21.0,
+                "qty": 1.0,
+                "uom": "PCS",
+                "price_subtotal": 49.99
+            },
+            {
+                "code": "E103560",
+                "name": "SX Flyer SAECO Korting KVDNL",
+                "price_unit": 0.0,
+                "taxpercent": 21.0,
+                "qty": 1.0,
+                "uom": "PCS",
+                "price_subtotal": 0.0
+            }
+        ],
+        "desc": "Invoice from e-Luscious Nederland B.V."
+    }
+]

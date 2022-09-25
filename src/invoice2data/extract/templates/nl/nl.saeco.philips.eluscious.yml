@@ -1,0 +1,92 @@
+# -*- coding: utf-8 -*-
+# This one needs OCR
+# before the template can be matched
+issuer: e-Luscious Nederland B.V.
+fields:
+  amount:
+    parser: regex
+    regex: 'Factuur\s+totaal\s+EUR\s+(\d{1,4}[,]\d{2})'
+    type: float
+  amount_tax: 
+    parser: regex
+    regex: '\d{1,2}\s%\s+\d{1,4},\d{2}\s+(\d{1,4},\d{2})'
+    group: sum
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex: '[%]\s+(\d{1,4}[,]\d{2})\s+\d{1,4}[,]\d{2}'
+    type: float
+  date:
+    parser: regex
+    regex: '(\d{1,2}-\d{1,2}-\d{4})\s+V'
+    type: date
+  date_due:
+    parser: regex
+    regex: '\d{10}\s+(\d{1,2}[-]\d{1,2}[-]\d{4})'
+    type: date
+  invoice_number:
+    parser: regex
+    regex: VF\d{10}
+  payment_method:
+    parser: regex
+    regex: 
+    - (?i)(iDeal)
+    - (Credit Card)
+  static_vat:
+    parser: static
+    value: NL815254295B01
+  bic:
+    parser: regex
+    regex: 'BiC[:]\s+(\w{8,11})'
+  iban:
+    parser: regex
+    regex: '[A-Z]{2}\d{2}?\w{4}?\d{4}?\d{4}?\d{0,2}'
+  telephone:
+    parser: regex
+    regex: '\d{3}\s\d{7}'
+  partner_website:
+    parser: static
+    value: saeco.com
+  partner_email:
+    parser: static
+    value: verkoop-nl@saeco.com
+  partner_name:
+    parser: static
+    value:  e-Luscious Nederland B.V.
+  country_code:
+    parser: static
+    value: nl
+  partner_zip:
+    parser: regex
+    regex: 8401\sBL
+  partner_city:
+    parser: regex
+    regex: Gorredijk
+  partner_street:
+    parser: static
+    value: Badweg 48
+  partner_coc:
+    parser: static
+    value: 04080176
+  narration:
+    parser: regex
+    regex: (SCONL\S+)
+lines:
+    start: Product|Artikel
+    end: (?i)Totaal
+    line: (?P<code>\w\d{5,7})\s+(?P<name>(\w+(?:\s+\S+){1,8}))\s+(?P<price_unit>\d+[,]?\d{2})\s+(?P<taxpercent>\d+)\s?[%]\s+(?P<qty>\d+)\s+(?P<uom>\w{3})\s+(?P<price_subtotal>\d+[,]\d{2})
+    types:
+      qty: float
+      price_unit: float
+      price_subtotal: float
+      taxpercent: float
+keywords:
+  - saeco
+  - 'Factuur'
+  - NL8152[.]54[.]295[.]B01
+  - 04080176
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
