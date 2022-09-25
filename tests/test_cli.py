@@ -75,7 +75,7 @@ class TestCLI(unittest.TestCase):
                     compare_verified = self.compare_json_content(test_files, jfile)
                     print(compare_verified)
                     if not compare_verified:
-                        self.assertTrue(False)
+                        self.assertTrue(False, 'Failed to verify parsing result for ' + jfile)
                     os.remove(test_files)
 
     def test_output_format_date_json(self):
