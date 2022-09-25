@@ -7,16 +7,18 @@ fields:
   invoice_number: Invoice Number:\s+(\d+)
   partner_name: (Amazon Web Services, Inc\.)
   static_partner_website: aws.amazon.com
+  lines:
+    parser: lines
+    rules:
+      - start: Detail
+        end: \* May include estimated US sales tax
+        first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
+        line: (.*)\$(\d+\.\d+)
+        last_line: VAT \*\*
 keywords:
   - Amazon Web Services
   - $
   - Invoice
-lines:
-    start: Detail
-    end: \* May include estimated US sales tax
-    first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
-    line: (.*)\$(\d+\.\d+)
-    last_line: VAT \*\*
 options:
   currency: USD
   date_formats:
