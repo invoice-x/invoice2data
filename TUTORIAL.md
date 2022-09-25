@@ -130,6 +130,10 @@ This parser allows parsing selected invoice section as a set of lines
 sharing some pattern. Those can be e.g. invoice items (good or services)
 or VAT rates.
 
+Some companies may use multiple formats for their line-based data. In
+such cases multiple sets of parsing regexes can be added to the `rules`.
+Results from multiple `rules` get merged into a single array.
+
 It replaces `lines` plugin and should be preferred over it. It allows
 reusing in multiple `fields`.
 
@@ -141,6 +145,17 @@ Example for `fields`:
         start: Item\s+Discount\s+Price$
         end: \s+Total
         line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price>\d+\d+)
+
+    fields:
+      lines:
+        parser: lines
+        rules:
+          - start: Item\s+Discount\s+Price$
+            end: \s+Total
+            line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price>\d+\d+)
+          - start: Item\s+Price$
+            end: \s+Total
+            line: (?P<description>.+)\s+(?P<price>\d+\d+)
 
 ### Legacy regexes
 

@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 DEFAULT_OPTIONS = {"line_separator": r"\n"}
 
 
-def parse(template, field, _settings, content):
+def parse_by_rule(field, rule, content):
     """Try to extract lines from the invoice"""
 
     # First apply default options.
     settings = DEFAULT_OPTIONS.copy()
-    settings.update(_settings)
+    settings.update(rule)
 
     # Validate settings
     assert "start" in settings, "Lines start regex missing"
@@ -112,6 +112,24 @@ def parse(template, field, _settings, content):
     if current_row:
         # All lines processed, so append whatever the final current_row was to output
         lines.append(current_row)
+
+    return lines
+
+
+def parse(template, field, settings, content):
+    if "rules" in settings:
+        # One field can have multiple sets of line-parsing rules
+        rules = settings['rules']
+    else:
+        # Original syntax stored line-parsing rules in top field YAML object
+        keys = ('start', 'end', 'line', 'first_line', 'last_line', 'skip_line')
+        rules = [{k: v for k, v in settings.items() if k in keys}]
+
+    lines = []
+    for rule in rules:
+        new_lines = parse_by_rule(field, rule, content)
+        if new_lines is not None:
+            lines += new_lines
 
     types = settings.get("types", [])
     for row in lines:
