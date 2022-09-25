@@ -5,6 +5,7 @@ Total: 50.00 EUR
 
 Lines with multiple patterns
 
+
 Lines start
 
 Group: Mammals
@@ -21,3 +22,15 @@ Subgroup: Flightless
 7. Ostrich
 
 Lines end
+
+
+No  Angle [°]  Length [cm]
+1   30         30
+2   45         40
+3   90         60
+Count: 3
+
+No  Length [cm]  Angle [°]
+4   80           135
+5   100          180
+Count: 2
