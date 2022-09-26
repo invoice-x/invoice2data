@@ -48,7 +48,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         path of electronic invoice file in PDF,JPEG,PNG (example: "/home/duskybomb/pdf/invoice.pdf")
     templates : list of instances of class `InvoiceTemplate`, optional
         Templates are loaded using `read_template` function in `loader.py`
-    input_module : {'pdftotext', 'pdfminer', 'tesseract'}, optional
+    input_module : {'pdftotext', 'pdfminer', 'tesseract', 'tesseract4'}, optional
         library to be used to extract text from given `invoicefile`,
 
     Returns
