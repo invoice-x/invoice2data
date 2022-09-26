@@ -1,0 +1,19 @@
+[
+    {
+        "issuer": "Polski Koncern Naftowy ORLEN spółka akcyjna",
+        "date": "2021-01-01",
+        "invoice_number": "F",
+        "amount": 316.83,
+        "vat": 7740001454,
+        "sums":[
+            {
+              "net": 257.59,
+              "rate": 23,
+              "vat": 59.24,
+              "gross": 316.83
+            }
+        ],
+        "currency": "PLN",
+        "desc": "Invoice from Polski Koncern Naftowy ORLEN spółka akcyjna"
+    }
+]
