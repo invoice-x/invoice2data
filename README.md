@@ -49,6 +49,7 @@ won't parse tables in PDF correctly.
 Basic usage. Process PDF files and write result to CSV.
 
 - `invoice2data invoice.pdf`
+- `invoice2data invoice.txt`
 - `invoice2data *.pdf`
 
 Choose any of the following input readers:

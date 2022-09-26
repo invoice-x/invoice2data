@@ -35,7 +35,7 @@ input_mapping = {
 output_mapping = {"csv": to_csv, "json": to_json, "xml": to_xml, "none": None}
 
 
-def extract_data(invoicefile, templates=None, input_module=pdftotext):
+def extract_data(invoicefile, templates=None, input_module=None):
     """Extracts structured data from PDF/image invoices.
 
     This function uses the text extracted from a PDF file or image and
@@ -81,6 +81,13 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         templates = read_templates()
 
     # print(templates[0])
+
+    if input_module is None:
+        if invoicefile.lower().endswith('.txt'):
+            input_module = text
+        else:
+            input_module = pdftotext
+
     extracted_str = input_module.to_text(invoicefile).decode("utf-8")
     if not isinstance(extracted_str, str) or not extracted_str.strip():
         logger.error("Failed to extract text from %s using %s", invoicefile, input_module.__name__)
@@ -111,8 +118,7 @@ def create_parser():
     parser.add_argument(
         "--input-reader",
         choices=input_mapping.keys(),
-        default="pdftotext",
-        help="Choose text extraction function. Default: pdftotext",
+        help="Choose text extraction function. Default: auto-detect between text & pdftotext",
     )
 
     parser.add_argument(
@@ -199,7 +205,7 @@ def main(args=None):
     else:
         logging.basicConfig(level=logging.INFO, format="%(message)s")
 
-    input_module = input_mapping[args.input_reader]
+    input_module = input_mapping[args.input_reader] if args.input_reader is not None else None
     output_module = output_mapping[args.output_format]
 
     templates = []
