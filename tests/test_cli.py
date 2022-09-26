@@ -62,14 +62,14 @@ class TestCLI(unittest.TestCase):
     # TODO: parse output files instaed of comparing them byte-by-byte.
 
     def test_content_json(self):
-        pdf_files = get_sample_files('.pdf')
+        input_files = get_sample_files(('.pdf', '.txt'))
         json_files = get_sample_files('.json')
         test_files = 'test_compare.json'
-        for pfile in pdf_files:
+        for ifile in input_files:
             for jfile in json_files:
-                if pfile[:-4] == jfile[:-5]:
+                if ifile[:-4] == jfile[:-5]:
                     args = self.parser.parse_args(
-                        ['--output-name', test_files, '--output-format', 'json', pfile]
+                        ['--output-name', test_files, '--output-format', 'json', ifile]
                     )
                     main(args)
                     compare_verified = self.compare_json_content(test_files, jfile)
@@ -145,7 +145,7 @@ class TestCLI(unittest.TestCase):
                     i += 1
 
         shutil.rmtree('tests/copy_test/', ignore_errors=True)
-        self.assertEqual(i, len(get_sample_files('.json')))
+        self.assertEqual(i, len(get_sample_files('.pdf')))
         '''
         if i != len(self._get_test_file_json_path()):
             print(i)
@@ -187,7 +187,7 @@ class TestCLI(unittest.TestCase):
                 root, ext = os.path.splitext(file)
                 if root not in data:
                     data[root] = {}
-                if file.endswith('.pdf'):
+                if file.endswith(('.pdf', '.txt')):
                     data[root]['input_fpath'] = os.path.join(path, file)
                 if file.endswith('.json'):
                     with open(os.path.join(path, file), 'r') as f:
