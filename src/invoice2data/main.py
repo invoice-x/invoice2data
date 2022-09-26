@@ -12,6 +12,7 @@ from .input import pdfminer_wrapper
 from .input import tesseract
 from .input import tesseract4
 from .input import gvision
+from .input import text
 
 from invoice2data.extract.loader import read_templates
 
@@ -28,6 +29,7 @@ input_mapping = {
     "tesseract4": tesseract4,
     "pdfminer": pdfminer_wrapper,
     "gvision": gvision,
+    "text": text,
 }
 
 output_mapping = {"csv": to_csv, "json": to_json, "xml": to_xml, "none": None}
@@ -48,7 +50,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         path of electronic invoice file in PDF,JPEG,PNG (example: "/home/duskybomb/pdf/invoice.pdf")
     templates : list of instances of class `InvoiceTemplate`, optional
         Templates are loaded using `read_template` function in `loader.py`
-    input_module : {'pdftotext', 'pdfminer', 'tesseract'}, optional
+    input_module : {'pdftotext', 'pdfminer', 'tesseract', 'text'}, optional
         library to be used to extract text from given `invoicefile`,
 
     Returns
