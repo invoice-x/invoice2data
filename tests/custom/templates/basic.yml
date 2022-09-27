@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Basic Test
+keywords:
+  - Basic Test
+fields:
+  date:
+    parser: regex
+    regex: Issue date:\s*(\d{4}-\d{2}-\d{2})
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Invoice number:\s*([\d/]+)
+  amount:
+    parser: regex
+    regex: Total:\s*(\d+\.\d\d)
+    type: float
+options:
+  currency: EUR
+  date_formats:
+    - '%Y-%m-%d'
+  decimal_separator: '.'
