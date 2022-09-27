@@ -10,6 +10,8 @@
 
 # https://docs.python.org/3.10/library/unittest.html#test-cases
 
+import datetime
+import json
 import unittest
 import pkg_resources
 import os
@@ -36,6 +38,25 @@ class TestExtraction(unittest.TestCase):
     def test_internal_pdfs(self):
         folder = pkg_resources.resource_filename(__name__, 'pdfs')
         self._run_test_on_folder(folder)
+
+    def test_custom_invoices(self):
+        directory = os.path.dirname("tests/custom/templates/")
+        templates = read_templates(directory)
+
+        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'custom')):
+            for file in files:
+                if file.endswith(('.pdf', '.txt')):
+                    ifile = os.path.join(path, file)
+                    jfile = os.path.join(path, file[:-4] + '.json')
+
+                    res = extract_data(ifile, templates)
+                    for key, value in res.items():
+                        if type(value) is datetime.datetime:
+                            res[key] = value.strftime('%Y-%m-%d')
+                    res = [res]
+                    with open(jfile) as json_file:
+                        ref_json = json.load(json_file)
+                        self.assertTrue(res == ref_json, 'Unexpected data extracted from ' + ifile)
 
 
 if __name__ == '__main__':

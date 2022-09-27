@@ -1,0 +1,4 @@
+Issue date: 2022-09-27
+Issuer: Basic Test
+Invoice number: 0999/09/2022
+Total: 123.45 EUR
