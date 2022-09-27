@@ -1,0 +1,11 @@
+Issue date: 2020-10-31
+Issuer: Lines Tester
+Invoice number: 123
+Total: 99 EUR
+
+No Name Total Price
+ 1 Foo  1000
+ 2 Bar  90
+ 3 Qux  50
+
+Amount to pay 1140 EUR

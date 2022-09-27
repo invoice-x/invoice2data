@@ -1,0 +1,30 @@
+[
+    {
+        "issuer": "Lines Tester",
+        "date": "2020-10-31",
+        "invoice_number": "123",
+        "amount": 99.0,
+        "lines": [
+            {
+                "pos": 1,
+                "name": "Foo",
+                "qty": 100,
+                "total": 1000
+            },
+            {
+                "pos": 2,
+                "name": "Bar",
+                "qty": 1,
+                "total": 90
+            },
+            {
+                "pos": 3,
+                "name": "Qux",
+                "qty": 5,
+                "total": 50
+            }
+        ],
+        "currency": "EUR",
+        "desc": "Invoice from Lines Tester"
+    }
+]

@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Lines Tester
+keywords:
+  - Lines Tester
+fields:
+  date:
+    parser: regex
+    regex: Issue date:\s*(\d{4}-\d{2}-\d{2})
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Invoice number:\s*(\d+)
+  amount:
+    parser: regex
+    regex: Total:\s*(\d+)
+    type: float
+  lines:
+    parser: lines
+    rules:
+      - start: 'No\s+Name\s+Quantity\s+Total Price'
+        line: ^\s*(?P<pos>[\d]+)\s+(?P<name>.+?)\s+(?P<qty>\d+)\s+(?P<total>\d+)
+        end: 'Amount to pay'
+      - start: 'No\s+Name\s+Total Price'
+        line: ^\s*(?P<pos>[\d]+)\s+(?P<name>.+?)\s+(?P<total>\d+)
+        end: 'Amount to pay'
+    types:
+        pos: int
+        qty: int
+        total: int
+options:
+  currency: EUR
+  date_formats:
+    - '%Y-%m-%d'
+  decimal_separator: '.'
