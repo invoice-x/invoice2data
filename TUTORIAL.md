@@ -301,6 +301,21 @@ options and their defaults are:
   different fields, you can supply a list here. The extraction will
   fail if not all fields are matched.
 
+### Priority
+
+In case of multiple templates matching single invoice the one with the
+highest priority will be used. Default `priority` value (assigned if
+missing) is 5.
+
+This property needs to be specified only when designing some generic or
+very specific templates.
+
+Suggested values:
+
+- 0-4: accounting/invoice software specific template
+- 5: company specific template
+- 6-10: company department/unit specific template
+
 ### Example of template using most options
 
     issuer: Free Mobile

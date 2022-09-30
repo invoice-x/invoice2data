@@ -79,10 +79,6 @@ def extract_data(invoicefile, templates=None, input_module=None):
      'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
 
     """
-    if templates is None:
-        templates = read_templates()
-
-    # print(templates[0])
 
     if input_module is None:
         if invoicefile.lower().endswith('.txt'):
@@ -98,18 +94,18 @@ def extract_data(invoicefile, templates=None, input_module=None):
     logger.debug("START pdftotext result ===========================\n" + extracted_str)
     logger.debug("END pdftotext result =============================")
 
-    for t in templates:
-        optimized_str = t.prepare_input(extracted_str)
+    if templates is None:
+        templates = read_templates()
+    templates = filter(lambda t: t.matches_input(t.prepare_input(extracted_str)), templates)
+    templates = sorted(templates, key=lambda k: k['priority'], reverse=True)
+    if not templates:
+        logger.error("No template for %s", invoicefile)
+        return False
 
-        if t.matches_input(optimized_str):
-            logger.info("Using %s template", t["template_name"])
-            # Call extract with entire text and the invoicefile path
-            # The path is used if an area is called as a field option
-            return t.extract(optimized_str, invoicefile, input_module)
-
-    logger.error("No template for %s", invoicefile)
-    return False
-
+    t = templates[0]
+    logger.info("Using %s template", t["template_name"])
+    optimized_str = t.prepare_input(extracted_str)
+    return t.extract(optimized_str, invoicefile, input_module)
 
 def create_parser():
     """Returns argument parser """
