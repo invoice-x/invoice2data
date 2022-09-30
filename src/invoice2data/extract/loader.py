@@ -107,6 +107,9 @@ def read_templates(folder=None):
                 elif type(tpl["exclude_keywords"]) is not list:
                     tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
 
+                if 'priority' not in tpl.keys():
+                    tpl['priority'] = 5
+
                 output.append(InvoiceTemplate(tpl))
 
     logger.info("Loaded %d templates from %s", len(output), folder)
