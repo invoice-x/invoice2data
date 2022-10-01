@@ -12,6 +12,15 @@ logger = logging.getLogger(__name__)
 DEFAULT_OPTIONS = {"line_separator": r"\n"}
 
 
+def parse_line(patterns, line):
+    patterns = patterns if isinstance(patterns, list) else [patterns]
+    for pattern in patterns:
+        match = re.search(pattern, line)
+        if match:
+            return match
+    return None
+
+
 def parse(template, field, _settings, content):
     """Try to extract lines from the invoice"""
 
@@ -57,7 +66,7 @@ def parse(template, field, _settings, content):
             continue
         if "first_line" in settings:
             # Check if the current lines the first_line pattern
-            match = re.search(settings["first_line"], line)
+            match = parse_line(settings["first_line"], line)
             if match:
                 # The line matches the first_line pattern so append current row to output
                 # then assign a new current_row
@@ -75,7 +84,7 @@ def parse(template, field, _settings, content):
         # If last_line was provided, check that
         if "last_line" in settings:
             # last_line pattern provided, so check if the current line is that line
-            match = re.search(settings["last_line"], line)
+            match = parse_line(settings["last_line"], line)
             if match:
                 # This is the last_line, so parse all lines thus far,
                 # append to output,
@@ -101,7 +110,7 @@ def parse(template, field, _settings, content):
                 logger.debug("skip_line match on *%s*", line)
                 continue
         # If none of those have continued the loop, check if this is just a normal line
-        match = re.search(settings["line"], line)
+        match = parse_line(settings["line"], line)
         if match:
             # This is one of the lines between first_line and last_line
             # Parse the data and add it to the current_row
