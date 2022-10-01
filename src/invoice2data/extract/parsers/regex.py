@@ -49,6 +49,14 @@ def parse(template, field, settings, content, legacy=False):
     if "group" in settings:
         if settings["group"] == "sum":
             result = sum(result)
+        elif settings["group"] == "min":
+            result = min(result)
+        elif settings["group"] == "max":
+            result = max(result)
+        elif settings["group"] == "first":
+            result = result[0]
+        elif settings["group"] == "last":
+            result = result[-1]
         else:
             logger.warning("Unsupported grouping method: " + settings["group"])
             return None
