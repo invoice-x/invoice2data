@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: MIT
+keywords:
+  - 'Miejsce wystawienia:'
+  - 'Data wystawienia:'
+  - 'Sprzedawca:'
+  - 'Nabywca:'
+  - 'według stawki VAT'
+  - 'Razem do zapłaty:'
+  - 'Wystawił\(a\)'
+  - 'Odebrał\(a\)'
+  - 'Podpis osoby upoważnionej'
+fields:
+  issuer:
+    parser: regex
+    regex: Sprzedawca:.*\n(.*?)\s{3,}
+  vatin:
+    parser: regex
+    regex: NIP:\s+(\d{10})
+    type: int
+    group: first
+  date:
+    parser: regex
+    regex:
+      - Data wystawienia:\n.*(\d{2}\.\d{2}\.\d{4})
+      - Data wystawienia:\n.*(\d{4}-\d{2}-\d{2})
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Faktura VAT\s+(.*?)\s+oryginał
+  amount:
+    parser: regex
+    regex: Razem do zapłaty:\s+([\d\s]+,[\d][\d])
+    type: float
+  nrb:
+    parser: regex
+    regex: PLN:\s+([0-9]{2}(?:\s?[0-9]{4}){6})
+options:
+  currency: PLN
+  date_formats:
+    - '%d.%m.%Y'
+    - '%Y-%m-%d'
+  decimal_separator: ','
+priority: 3

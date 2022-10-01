@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: MIT
+keywords:
+  - 'InsERT nexo'
+fields:
+  issuer:
+    parser: regex
+    regex: Sprzedawca.*\n(.*?)\s{3,}
+  vatin:
+    parser: regex
+    regex: NIP:\s+(\d{10})
+    type: int
+    group: first
+  date:
+    parser: regex
+    regex: Data wystawienia\s+(\d{2}-\d{2}-\d{4})
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Faktura VAT sprzedaży\s+(.*)
+    group: first
+  amount:
+    parser: regex
+    regex: Razem do zapłaty:\s+([\d\s]+,[\d][\d])
+    type: float
+  nrb:
+    parser: regex
+    regex: PL\s+([0-9]{2}(?:\s?[0-9]{4}){6})
+options:
+  currency: PLN
+  date_formats:
+    - '%d-%m-%Y'
+  decimal_separator: ','
+priority: 3
