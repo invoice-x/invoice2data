@@ -95,8 +95,7 @@ def extract_data(invoicefile, templates=None, input_module=None):
         logger.error("Failed to extract text from %s using %s", invoicefile, input_module.__name__)
         return False
 
-    logger.debug("START pdftotext result ===========================")
-    logger.debug(extracted_str)
+    logger.debug("START pdftotext result ===========================\n" + extracted_str)
     logger.debug("END pdftotext result =============================")
 
     for t in templates:

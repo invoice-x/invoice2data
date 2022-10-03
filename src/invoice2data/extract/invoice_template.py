@@ -156,8 +156,7 @@ class InvoiceTemplate(OrderedDict):
         Given a template file and a string, extract matching data fields.
         """
 
-        logger.debug("START optimized_str ========================")
-        logger.debug(optimized_str)
+        logger.debug("START optimized_str ========================\n" + optimized_str)
         logger.debug("END optimized_str ==========================")
         logger.debug(
             "Date parsing: languages=%s date_formats=%s",
