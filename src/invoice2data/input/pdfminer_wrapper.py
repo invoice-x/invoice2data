@@ -51,6 +51,6 @@ def to_text(path):
         for page in pages:
             interpreter.process_page(page)
     device.close()
-    str = retstr.getvalue()
+    out = retstr.getvalue()
     retstr.close()
-    return str.encode("utf-8")
+    return out.encode("utf-8")
