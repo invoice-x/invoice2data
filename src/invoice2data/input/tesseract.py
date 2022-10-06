@@ -54,8 +54,14 @@ def to_text(path, language="en"):
         "-append",
         "png:-",
     ]
-    p1 = Popen(convert, stdout=PIPE)
-    # logger.warning("Imagemagick took too long to OCR - skipping")
+    if path.endswith(".pdf"):
+        # pre processing pdf file by converting to png
+        p1 = Popen(convert, stdout=PIPE)
+        tess_input = "stdin"
+        stdin = p1.stdout
+    else:
+        tess_input = path
+        stdin = None
 
     inputfile = Path(path)
     filename = inputfile.stem
@@ -75,15 +81,14 @@ def to_text(path, language="en"):
         "preserve_interword_spaces=1",
         "-c",
         "textonly_pdf=1",
-        # "pdf",
-        "stdin",
+        tess_input,
         TMP_FOLDER + filename,
         "pdf",
         "txt"
     ]
 
     logger.debug("Calling tesseract with args, %s", tess_cmd)
-    p2 = Popen(tess_cmd, stdin=p1.stdout, stdout=PIPE)
+    p2 = Popen(tess_cmd, stdin=stdin, stdout=PIPE)
 
     # Wait for p2 to finish generating the pdf
     try:
