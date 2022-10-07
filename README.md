@@ -70,11 +70,13 @@ pacman -S tesseract-data-eng tesseract-data-deu # Example: Install the English a
 Basic usage. Process PDF files and write result to CSV.
 
 - `invoice2data invoice.pdf`
+- `invoice2data invoice.txt`
 - `invoice2data *.pdf`
 
 Choose any of the following input readers:
 
 - pdftotext `invoice2data --input-reader pdftotext invoice.pdf`
+- pdftotext `invoice2data --input-reader text invoice.txt`
 - tesseract `invoice2data --input-reader tesseract invoice.pdf`
 - pdfminer.six `invoice2data --input-reader pdfminer invoice.pdf`
 - gvision `invoice2data --input-reader gvision invoice.pdf` (needs `GOOGLE_APPLICATION_CREDENTIALS` env var)
