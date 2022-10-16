@@ -21,24 +21,10 @@ def parse_line(patterns, line):
     return None
 
 
-def parse(template, field, _settings, content):
-    """Try to extract lines from the invoice"""
-
-    # First apply default options.
-    settings = DEFAULT_OPTIONS.copy()
-    settings.update(_settings)
-
+def parse_block(template, field, settings, content):
     # Validate settings
-    assert "start" in settings, "Lines start regex missing"
-    assert "end" in settings, "Lines end regex missing"
     assert "line" in settings, "Line regex missing"
 
-    start = re.search(settings["start"], content)
-    end = re.search(settings["end"], content)
-    if not start or not end:
-        logger.warning(f"No lines found. Start match: {start}. End match: {end}")
-        return
-    content = content[start.end() : end.start()]
     lines = []
     current_row = {}
 
@@ -127,6 +113,43 @@ def parse(template, field, _settings, content):
         for name in row.keys():
             if name in types:
                 row[name] = template.coerce_type(row[name], types[name])
+
+    return lines
+
+
+def parse(template, field, _settings, content):
+    # First apply default options.
+    settings = DEFAULT_OPTIONS.copy()
+    settings.update(_settings)
+
+    # Validate settings
+    assert "start" in settings, "Lines start regex missing"
+    assert "end" in settings, "Lines end regex missing"
+
+    blocks_count = 0
+    lines = []
+
+    # Try finding & parsing blocks of lines one by one
+    while True:
+        start = re.search(settings["start"], content)
+        if not start:
+            break
+        content = content[start.end():]
+
+        end = re.search(settings["end"], content)
+        if not end:
+            logger.warning("Failed to find lines block end")
+            break
+
+        blocks_count += 1
+        lines += parse_block(template, field, settings, content[0:end.start()])
+
+        content = content[end.end():]
+
+    if blocks_count == 0:
+        logger.warning("Failed to find any matching block (part) of invoice for \"%s\"", field)
+    elif not lines:
+        logger.warning("Failed to find any lines for \"%s\"", field)
 
     return lines
 
