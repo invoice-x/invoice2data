@@ -1,0 +1,17 @@
+[
+    {
+        "issuer": "Lines Tests",
+        "date": "2022-10-15",
+        "invoice_number": "1234/10/2022",
+        "amount": 99.99,
+        "lines": [
+            { "pos": 1, "name": "Cat" },
+            { "pos": 2, "name": "Dog" },
+            { "pos": 3, "name": "Frog" },
+            { "pos": 4, "name": "Lizard" },
+            { "pos": 5, "name": "Unicorn" }
+        ],
+        "currency": "EUR",
+        "desc": "Invoice from Lines Tests"
+    }
+]
