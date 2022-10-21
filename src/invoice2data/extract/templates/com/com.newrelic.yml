@@ -5,7 +5,7 @@ keywords:
   - 'San Francisco, CA 94105'
 fields:
   amount: 'Invoice Total \(USD\):\s+\$([\d\,]+\.\d{1,2})'
-  date: '\s\sDate:\s+(\d{2}.\d{2}.\d{4})'
+  date: '\s\sDate:\s+(\d{2}/\d{2}/\d{4})'
   invoice_number: 'Invoice No:\s+(\w+)'
   tax_id:
     parser: static
