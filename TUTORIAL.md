@@ -8,8 +8,8 @@ Adding templates is easy and shouldn't take longer than adding 2-3
 invoices by hand. We use a simple YML-format. Many options are optional
 and you just need them to take care of edge cases.
 
-Existing templates can be found in the project folder or the installed
-package under `/invoice2data/templates/`. During testing you can use the
+Existing templates can be found in the [templates folder](https://github.com/invoice-x/invoice2data/tree/master/src/invoice2data/extract/templates) of the installed
+package under `/invoice2data/extract/templates`. You can use the
 `--template-folder` option to point to your own, new template files. If
 you add or improve templates that could be useful for everyone, we
 encourage you to file a pull request to the main repo, so everyone can
