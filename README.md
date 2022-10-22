@@ -8,7 +8,7 @@ A command line tool and Python library to support your accounting
 process.
 
 1. extracts text from PDF files using different techniques, like
-   `pdftotext`, `pdfminer` or OCR -- `tesseract`, or
+   `pdftotext`, `text`, `pdfminer` or OCR -- `tesseract`, or
    `gvision` (Google Cloud Vision).
 2. searches for regex in the result using a YAML-based template system
 3. saves results as CSV, JSON or XML or renames PDF files to match the content.
