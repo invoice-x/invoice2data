@@ -1,0 +1,36 @@
+Faktura nr: F 1234K20/1234/12                                                            Data wystawienia: 2021-01-01
+Sprzedawca: Polski Koncern Naftowy ORLEN S.A.
+NIP:               774-00-01-454
+Adres:             Chemików 7 09-411 Płock
+                   Polski Koncern Naftowy ORLEN S.A.
+                   Stacja Paliw Nr 4445
+                   58-100 Słotwina
+                   Słotwina 62x
+Nabywca:           GŁÓWNY URZĄD STATYSTYCZNY
+NIP:               5261040828
+Adres:             Aleja Niepodległości 208 00-925 Warszawa
+
+
+                                                                               Cena
+                                                         Cena      Wartość                Wartość    VAT                 Wartość
+ Lp Nazwa towaru                       Jm   Ilość [jm]                       brutto po                   Kwota VAT
+                                                         brutto    rabatu                  netto     [%]                  brutto
+                                                                              rabacie
+
+1   EFECTA 95 CN27101245                l     54,910        5,79      1,10       5,77       257,59       23      59,24     316,83
+
+
+
+                                                                      Razem:         257,59                   59,24      316,83
+                                                                       w tym:         257,59        23        59,24       316,83
+
+
+
+Należność ogółem: 316,83 PLN
+
+Słownie: trzysta szesnaście PLN, 83/100
+
+
+Do dokumentów: Dok. wydania: 1234567 Dok.fisk.nr 12345 z dnia 2021-01-01
+Zapłacono: Aplikacja mobilna ORLEN Pay
+Faktura wygenerowana automatycznie

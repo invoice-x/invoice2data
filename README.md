@@ -8,7 +8,7 @@ A command line tool and Python library to support your accounting
 process.
 
 1. extracts text from PDF files using different techniques, like
-   `pdftotext`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, `tesseract4` or
+   `pdftotext`, `text`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, `tesseract4` or
    `gvision` (Google Cloud Vision).
 2. searches for regex in the result using a YAML-based template system
 3. saves results as CSV, JSON or XML or renames PDF files to match the content.
@@ -49,11 +49,13 @@ won't parse tables in PDF correctly.
 Basic usage. Process PDF files and write result to CSV.
 
 - `invoice2data invoice.pdf`
+- `invoice2data invoice.txt`
 - `invoice2data *.pdf`
 
 Choose any of the following input readers:
 
 - pdftotext `invoice2data --input-reader pdftotext invoice.pdf`
+- pdftotext `invoice2data --input-reader text invoice.txt`
 - tesseract `invoice2data --input-reader tesseract invoice.pdf`
 - pdfminer.six `invoice2data --input-reader pdfminer invoice.pdf`
 - pdfplumber `invoice2data --input-reader pdfplumber invoice.pdf`

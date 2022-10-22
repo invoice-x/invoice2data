@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import copy
+import datetime
 import shutil
 import os
 from os.path import join
@@ -13,6 +15,7 @@ from .input import pdfplumber
 from .input import tesseract
 from .input import tesseract4
 from .input import gvision
+from .input import text
 
 from invoice2data.extract.loader import read_templates
 
@@ -30,12 +33,13 @@ input_mapping = {
     "pdfminer": pdfminer_wrapper,
     "pdfplumber": pdfplumber,
     "gvision": gvision,
+    "text": text,
 }
 
 output_mapping = {"csv": to_csv, "json": to_json, "xml": to_xml, "none": None}
 
 
-def extract_data(invoicefile, templates=None, input_module=pdftotext):
+def extract_data(invoicefile, templates=None, input_module=None):
     """Extracts structured data from PDF/image invoices.
 
     This function uses the text extracted from a PDF file or image and
@@ -50,7 +54,7 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         path of electronic invoice file in PDF,JPEG,PNG (example: "/home/duskybomb/pdf/invoice.pdf")
     templates : list of instances of class `InvoiceTemplate`, optional
         Templates are loaded using `read_template` function in `loader.py`
-    input_module : {'pdftotext', 'pdfminer', 'tesseract'}, optional
+    input_module : {'pdftotext', 'pdfminer', 'tesseract', 'text'}, optional
         library to be used to extract text from given `invoicefile`,
 
     Returns
@@ -81,10 +85,19 @@ def extract_data(invoicefile, templates=None, input_module=pdftotext):
         templates = read_templates()
 
     # print(templates[0])
-    extracted_str = input_module.to_text(invoicefile).decode("utf-8")
 
-    logger.debug("START pdftotext result ===========================")
-    logger.debug(extracted_str)
+    if input_module is None:
+        if invoicefile.lower().endswith('.txt'):
+            input_module = text
+        else:
+            input_module = pdftotext
+
+    extracted_str = input_module.to_text(invoicefile).decode("utf-8")
+    if not isinstance(extracted_str, str) or not extracted_str.strip():
+        logger.error("Failed to extract text from %s using %s", invoicefile, input_module.__name__)
+        return False
+
+    logger.debug("START pdftotext result ===========================\n" + extracted_str)
     logger.debug("END pdftotext result =============================")
 
     for t in templates:
@@ -108,8 +121,7 @@ def create_parser():
     parser.add_argument(
         "--input-reader",
         choices=input_mapping.keys(),
-        default="pdftotext",
-        help="Choose text extraction function. Default: pdftotext",
+        help="Choose text extraction function. Default: auto-detect between text & pdftotext",
     )
 
     parser.add_argument(
@@ -196,7 +208,7 @@ def main(args=None):
     else:
         logging.basicConfig(level=logging.INFO, format="%(message)s")
 
-    input_module = input_mapping[args.input_reader]
+    input_module = input_mapping[args.input_reader] if args.input_reader is not None else None
     output_module = output_mapping[args.output_format]
 
     templates = []
@@ -213,19 +225,19 @@ def main(args=None):
         if res:
             logger.info(res)
             output.append(res)
+
+            kwargs = copy.deepcopy(res)
+            for key, value in kwargs.items():
+                if type(value) is list and len(value) >= 1:
+                    kwargs[key] = value[0]
+            for key, value in kwargs.items():
+                if type(value) is datetime.datetime:
+                    kwargs[key] = value.strftime('%Y-%m-%d')
             if args.copy:
-                filename = args.filename.format(
-                    date=res["date"].strftime("%Y-%m-%d"),
-                    invoice_number=res["invoice_number"],
-                    desc=res["desc"],
-                )
+                filename = args.filename.format(**kwargs)
                 shutil.copyfile(f.name, join(args.copy, filename))
             if args.move:
-                filename = args.filename.format(
-                    date=res["date"].strftime("%Y-%m-%d"),
-                    invoice_number=res["invoice_number"],
-                    desc=res["desc"],
-                )
+                filename = args.filename.format(**kwargs)
                 shutil.move(f.name, join(args.move, filename))
         f.close()
 

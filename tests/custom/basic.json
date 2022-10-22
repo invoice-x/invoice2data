@@ -1,0 +1,10 @@
+[
+    {
+        "issuer": "Basic Test",
+        "date": "2022-09-27",
+        "invoice_number": "0999/09/2022",
+        "amount": 123.45,
+        "currency": "EUR",
+        "desc": "Invoice from Basic Test"
+    }
+]
