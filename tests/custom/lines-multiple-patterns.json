@@ -1,0 +1,23 @@
+[
+    {
+        "issuer": "Lines Tests",
+        "date": "2022-10-22",
+        "invoice_number": "9999/10/2022",
+        "amount": 50.0,
+        "lines": [
+            { "group": "Mammals" },
+            { "pos": 1, "name": "Hedgehog" },
+            { "pos": 2, "name": "Squirrel" },
+            { "group": "Birds" },
+            { "subgroup": "Flying" },
+            { "pos": 3, "name": "Raven" },
+            { "pos": 4, "name": "Owl" },
+            { "pos": 5, "name": "Crow" },
+            { "subgroup": "Flightless" },
+            { "pos": 6, "name": "Penguin" },
+            { "pos": 7, "name": "Ostrich" }
+        ],
+        "currency": "EUR",
+        "desc": "Invoice from Lines Tests"
+    }
+]

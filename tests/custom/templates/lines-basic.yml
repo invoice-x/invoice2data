@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Lines Tests
+keywords:
+  - Lines Tests
+  - Lines basic
+fields:
+  date:
+    parser: regex
+    regex: Issue date:\s*(\d{4}-\d{2}-\d{2})
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Invoice number:\s*([\d/]+)
+  amount:
+    parser: regex
+    regex: Total:\s*(\d+\.\d\d)
+    type: float
+  simple_lines:
+    parser: lines
+    start: Simple lines start
+    end: Simple lines end
+    line: ^(?P<number>.+)$
+  column_lines:
+    parser: lines
+    start: Columns start
+    end: Columns end
+    line: ^(?P<pos>\d+)\.\s+(?P<name>.+)\s+(?P<qty>\d+(\.\d+)?)(?:\s+(?P<unit>.+))?$
+    types:
+      pos: int
+      qty: float
+options:
+  currency: EUR
+  date_formats:
+    - '%Y-%m-%d'
+  decimal_separator: '.'

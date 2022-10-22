@@ -1,0 +1,20 @@
+[
+    {
+        "issuer": "Lines Tests",
+        "date": "2022-10-22",
+        "invoice_number": "007/10/2022",
+        "amount": 123.4,
+        "simple_lines": [
+            { "number": "One" },
+            { "number": "Two" },
+            { "number": "Three" }
+        ],
+        "column_lines": [
+            { "pos": 1, "name": "Apple", "qty": 2.0, "unit": "kg" },
+            { "pos": 2, "name": "Tomato", "qty": 0.5, "unit": "kg" },
+            { "pos": 3, "name": "Watermelon", "qty": 1.0, "unit": "" }
+        ],
+        "currency": "EUR",
+        "desc": "Invoice from Lines Tests"
+    }
+]
