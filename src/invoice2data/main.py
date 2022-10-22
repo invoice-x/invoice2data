@@ -11,6 +11,7 @@ import logging
 
 from .input import pdftotext
 from .input import pdfminer_wrapper
+from .input import pdfplumber
 from .input import tesseract
 from .input import tesseract4
 from .input import gvision
@@ -30,6 +31,7 @@ input_mapping = {
     "tesseract": tesseract,
     "tesseract4": tesseract4,
     "pdfminer": pdfminer_wrapper,
+    "pdfplumber": pdfplumber,
     "gvision": gvision,
     "text": text,
 }

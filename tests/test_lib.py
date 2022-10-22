@@ -19,7 +19,7 @@ except ImportError:
 import unittest
 
 from invoice2data.main import extract_data
-from invoice2data.input import pdftotext, tesseract, pdfminer_wrapper
+from invoice2data.input import pdftotext, tesseract, pdfminer_wrapper, pdfplumber
 from invoice2data.output import to_csv, to_json, to_xml
 from .common import get_sample_files
 
@@ -86,6 +86,11 @@ class TestLIB(unittest.TestCase):
                 # print("pdfminer module not installed!")
                 self.assertTrue(False, "pdfminer is not installed")
                 self.assertTrue(type(res) is str, "return is not a string")
+
+    def test_extract_data_pdfplumber(self):
+        pdf_files = get_sample_files('.pdf')
+        for file in pdf_files:
+            extract_data(file, None, pdfplumber)
 
     def test_tesseract_for_return(self):
         png_files = get_sample_files('.png')
