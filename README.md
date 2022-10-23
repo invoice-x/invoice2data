@@ -8,7 +8,7 @@ A command line tool and Python library to support your accounting
 process.
 
 1. extracts text from PDF files using different techniques, like
-   `pdftotext`, `text`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, `tesseract4` or
+   `pdftotext`, `text`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, or
    `gvision` (Google Cloud Vision).
 2. searches for regex in the result using a YAML-based template system
 3. saves results as CSV, JSON or XML or renames PDF files to match the content.
@@ -44,6 +44,27 @@ won't parse tables in PDF correctly.
 
     pip install invoice2data
 
+### Installation of input modules
+
+An [tesseract](https://github.com/tesseract-ocr/tessdoc/blob/main/FAQ.md#how-do-i-get-tesseract) wrapper is included in auto language mode. It will test your input files against the languages installed on your system. To use it tesseract and imagemagick needs to be installed.
+tesseract supports multiple OCR engine modes. By default the available engine installed on the system will be used.
+
+Languages:
+tesseract-ocr recognize more than [100 languages](https://github.com/tesseract-ocr/tessdata)
+For Linux users, you can often find packages that provide language packs:
+
+```
+# Display a list of all Tesseract language packs
+apt-cache search tesseract-ocr
+
+# Debian/Ubuntu users
+apt-get install tesseract-ocr-chi-sim  # Example: Install Chinese Simplified language pack
+
+# Arch Linux users
+pacman -S tesseract-data-eng tesseract-data-deu # Example: Install the English and German language packs
+
+```
+
 ## Usage
 
 Basic usage. Process PDF files and write result to CSV.
@@ -59,7 +80,6 @@ Choose any of the following input readers:
 - tesseract `invoice2data --input-reader tesseract invoice.pdf`
 - pdfminer.six `invoice2data --input-reader pdfminer invoice.pdf`
 - pdfplumber `invoice2data --input-reader pdfplumber invoice.pdf`
-- tesseract4 `invoice2data --input-reader tesseract4 invoice.pdf`
 - gvision `invoice2data --input-reader gvision invoice.pdf` (needs `GOOGLE_APPLICATION_CREDENTIALS` env var)
 
 Choose any of the following output formats:
