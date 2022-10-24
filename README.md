@@ -207,6 +207,9 @@ If you are interested in improving this project, have a look at our
 -   [Holger Brunn](https://github.com/hbrunn): Add support for parsing
     invoice items.
 
+## Used By
+- Odoo, OCA module [account_invoice_import_invoice2data](https://github.com/OCA/edi)
+
 ## Related Projects
 
 - [OCR-Invoice](https://github.com/robela/OCR-Invoice) (FOSS \| C\#)
