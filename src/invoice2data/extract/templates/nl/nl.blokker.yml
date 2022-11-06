@@ -1,0 +1,79 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: blokker
+fields:
+  amount:
+    parser: regex
+    regex:
+      - Totaal [(]incl. BTW[)]\s+[€]\s=(\d{1,3}[.]\d{2})
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex:
+      - Subtotaal\s+[€]\s+(\d{1,3}[.]\d{2})
+    type: float
+    group: sum
+  partner_coc:
+    parser: regex
+    regex:
+      - KvK\s+(\d{8})
+  telephone:
+    parser: regex
+    regex:
+      - WhatsApp. \s+(\d{2}[-]\d{8})
+  partner_website:
+    parser: regex
+    regex:
+      - (blokker.nl)
+  partner_name:
+    parser: static
+    value: Blokker B.V.
+  country_code:
+    parser: static
+    value: nl
+  partner_zip:
+    parser: static
+    value: 1114 AM
+  partner_city:
+    parser: static
+    value: Amsterdam-Duivendrecht
+  partner_street:
+    parser: static
+    value: Van der Madeweg 13
+  bic: BIC.(\w{8,11})
+  iban: IBAN.(\w{10,30})
+  date: Besteldatum\s+.?\s+[:]\s+(\d{1,2}[-]\d{1,2}[-]\d{2})
+  invoice_number: Factuurnummer\s+.?\s+(\d{7,10})
+  static_vat: NL854525154B01
+  payment_method:
+    - (iDEAL)
+    - (AMEX)
+    - (AMERICAN EXPRESS)
+    - (VISA)
+    - (MCARD)
+    - (CONTANT)
+    - (?i)(Paypal)
+lines:
+ - start: Artikel
+   end:  Totaal [(]incl. BTW[)]\s+[€]
+   first_line: (?P<barcode>\w+.*)\s+(?P<product>\w+.*)\s+(?P<qty>\d+)\s+(?P<price_unit>[€]\s+(\d+.\d{2}))\s+(?P<price_subtotal>[€]\s+(\d+.\d{2}))
+   line: (?P<product>\w+.*) # needs check
+   types:
+     qty: float
+     price_unit: float
+     price_subtotal: float
+ - start: Subtotaal
+   end:  Totaal [(]incl. BTW[)]\s+[€]
+   line: (?P<name>(\w+(?:\s\S+)*))\s+(?P<price_unit>(\d+.\d+))?
+keywords:
+  - blokker
+  - NL854525154B01
+  - €
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: '.'
+  replace:
+    - ['é' ,'€']
+

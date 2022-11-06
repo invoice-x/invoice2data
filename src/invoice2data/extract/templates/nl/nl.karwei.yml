@@ -1,0 +1,54 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Karwei
+fields:
+  amount:
+    parser: regex
+    regex:
+      - 'TOTAAL\s+\d{1,3}[,]\d{2}\s+\d{1,3}[,]\d{2}\s+(\d{1,3}[,]\d{2})'
+      - Totaal\s+(\d{1,3}[.|,]\d{2})
+    type: float
+  amount_tax:
+    parser: regex
+    regex:
+      - 'BTW\s+\d{1,2}[,|.]\d{2}\s+[%]\s+\w+\s+\d{1,3}[,|.]\d{2}\s+(\d{1,3}[,]\d{2})'
+    type: float
+  telephone:
+    parser: regex
+    regex:
+      - '([+]\d{2}\s+\d{1,4}\s+\d{3,7})'
+  date: Datum[:]\s+(\d{1,2}[-|\/]\d{2}[-|\/]\d{4})
+  invoice_number: (\d{1,2}[-|\/]\d{2}[-|\/]\d{4})
+  payment_method:
+    - (AMEX)
+    - (VISA)
+    - (MCARD)
+    - (CONTANT)
+    - (CHIP)
+    - (KAS):\s.\s\d+\.\d+
+lines:
+    start: AANT
+    end: Totaal
+    line: '(?P<qty>\d+.\d{1,2})\s+(?P<product>\w+).?\s+.?(?P<price_unit>\d{1,4}[,|.]\d{2})'
+    types:
+      qty: float
+      price_unit: float
+keywords:
+  - karwei
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - '%d-%m-%Y'
+  languages:
+    - nl
+  decimal_separator: ','
+  replace:
+    - ['é' ,'€']
+    - ['Contant' ,'CONTANT']
+    - ['\s[l|&|@]' ,' ℓ']
+    - ['B.W', 'BTW']
+    - [', ', ',']
+    - ['°', ' ']
+    - ['©', ' ']
+    - [',.', ',']

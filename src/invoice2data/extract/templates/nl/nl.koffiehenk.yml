@@ -1,0 +1,45 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: KoffieHenk
+fields:
+  amount:
+    parser: regex
+    regex:
+      - Eindtotaal [(]incl. BTW[)][:]\s+[€]\s+(\d{1,4}[,]\d{2})
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex:
+      - Eindtotaal [(]excl. BTW[)][:]\s+[€]\s+(\d{1,4}.\d{2})
+    type: float
+    group: sum
+  bic: BIC.(\w{8,11})
+  iban: IBAN.(\w{10,30})
+  date: datum\s+(\d{1,2} .+ \d{4})
+  invoice_number: Factuurnummer.?\s+(\d{5,17})
+  static_vat: NL001409338B42
+  payment_method:
+    - (iDEAL)
+    - (AMEX)
+    - (VISA)
+    - (MCARD)
+    - (CONTANT)
+    - (?i)(Paypal)
+lines:
+    start: Art.nr.
+    end: Subtotaal (excl. BTW)
+    line: (?P<barcode>\d+)\s+(?P<product>\w+.*)\s+(?P<price_unit>[€]\s+(\d+,\d{2}))\s+(?P<qty>\d+)
+    types:
+      qty: float
+      price_unit: float
+keywords:
+  - Koffie Henk
+  - NL001409338B42
+  - €
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
+  replace:
+    - ['é' ,'€']

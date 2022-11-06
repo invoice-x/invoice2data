@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Simpel
+fields:
+  amount: inclusief Btw\s+[€|E]\s+(\d+.\d{2})
+  amount_tax: Btw\s21\s[%]\s+€\s+(\d+,\d{2})
+  date: Factuurdatum.\s+(\d{2}-\d{2}-\d{4})
+  invoice_number: Factuurnummer.\s+(F\d{10})
+  static_vat: NL853855249B01
+  partner_coc: KvK.\s+(\d+)
+keywords:
+  - NL853855249B01
+  - KvK. 60316306
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
