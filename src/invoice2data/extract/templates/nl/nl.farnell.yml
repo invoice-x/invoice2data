@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Farnell (Netherlands) B.V.
+fields:
+  amount: Eindtotaal\s+EUR\s+(\d{1,4}[.]\d{2})
+  amount_tax: BTW\s+(\d{1,4}[.]\d{2})
+  amount_untaxed: Subtotaal\s+(\d{1,4}[.]\d{2})
+  date: Factuurdatum\s+(\d{2}\s+\w+\s+\d{4})
+  date_due: 'Niet Later Dan[:]\s+\S+\n(\d{2}\s\w+\s\d{4})'
+  invoice_number: Factuur-Nr.\s+(\d+)
+  static_vat: NL800391007B01
+  bic:
+    parser: regex
+    regex: 'BIC[:]\s+(\w{8,11})'
+  iban:
+    parser: regex
+    regex: '[A-Z]{2}\d{2}?\w{4}?\d{4}?\d{4}?\d{0,2}'
+  telephone:
+    parser: static
+    value: '0302417373'
+  partner_website:
+    parser: static
+    value: nl.farnell.com
+  partner_email:
+    parser: regex
+    regex: \w+[@]farnell.com
+  partner_name:
+    parser: static
+    value: Farnell (Netherlands) B.V.
+  country_code:
+    parser: static
+    value: nl
+  partner_zip:
+    parser: static
+    value: 3600 BV
+  partner_city:
+    parser: regex
+    regex: Maarssen
+  partner_street:
+    parser: static
+    value: Postbus 1815
+  partner_coc:
+    parser: regex
+    regex: Handelsregister Utrecht nr.(\S{10})
+  narration:
+    parser: regex
+    regex: 'Uw Ordernummer\s+(\S+)'
+  note:
+    parser: regex
+    regex: '(Order geplaatst door \S+(?:\s+\S+)*)\n\s+[*]'
+lines:
+    start: 'Lijn Nr'
+    end: BELANGRIJK
+    first_line: '\d+\s+(?P<code>\d{7})\s+(?P<uom>\w+)\s+(?P<qty>\d+)\s+(?P<price_unit>\d+[.]\d{2,4})\s+(?P<netto_price>\d+[.]\d{2,4})\s+(?P<btw_percent>\d+[.]\d{2})\s+(?P<price_subtotal>\d+[.]\d{2})'
+    line: '^\s{9,11}(?P<name>(\S+(?:\s\S+)*))\s+'
+    last_line: '\s+(?P<name>(Tariff Code[:]\s+\d+))'
+    types:
+      qty: float
+      price_unit: float
+      price_subtotal: float
+      netto_price: float
+      price_subtotal: float
+      btw_percent: float
+keywords:
+  - Farnell
+  - 'Factuur'
+  - NL800391007B01
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: '.'
+  replace:
+    - ['NL31 BOFA 0266 5038 53' ,'NL31BOFA0266503853']

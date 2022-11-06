@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: connected information systems B.V.
+fields:
+  amount:
+    parser: regex
+    regex:
+      - Totaal te incasseren\s+(\d{1,3}[,]\d{2})
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex:
+      - Totaalbedrag excl[.] BTW\s+(\d{1,3}[,]\d{2})
+    type: float
+  amount_tax:
+    parser: regex
+    regex:
+      - 'Totaal BTW-bedrag\s+(\d{1,3}[,]\d{2})'
+    type: float
+  partner_coc:
+    parser: regex
+    regex:
+      - KvK\s+(\d{8})
+  telephone:
+    parser: regex
+    regex:
+      - (\d{3}-\d{7})
+  partner_website:
+    parser: regex
+    regex:
+      - (we-id.nl)
+  partner_name:
+    parser: static
+    value: connected information systems B.V.
+  country_code:
+    parser: static
+    value: nl
+  partner_zip:
+    parser: static
+    value: 8200 AA
+  bic: BIC\s+(\w{8,11})
+  iban: IBAN\s+([A-Z]{2}\d{2}?\w{4}?\d{4}?\d{4}?\d{0,2})
+  date: Factuurdatum\s+[:|;]\s+(\d{1,2}[\/]\d{1,2}[\/]\d{4})
+  invoice_number: Factuurnummer\s+[:|;]\s+(\d{3,10})
+  static_vat: NL819935177B01
+  payment_method:
+    - (iDEAL)
+    - (AMEX)
+    - (AMERICAN EXPRESS)
+    - (VISA)
+    - (MCARD)
+    - (CONTANT)
+    - (?i)(Paypal)
+lines:
+   start: 'Aantal'
+   end: 'Totaalbedrag'
+   line: (?P<qty>\d+[,|.]\d{2})\s+(?P<product>\w+.*)\s+(?P<price_unit>(\d+[,]\d{2}))\s+(?P<tax_percent>\d+?[,]?\d{0,2})\s+(?P<price_subtotal>(\d+[,]\d{2}))
+   types:
+     qty: float
+     price_unit: float
+     price_subtotal: float
+     tax_percent: float
+keywords:
+  - we-id
+  - We-ID
+  - EUR
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
+  replace:
+    - ['é' ,'€']
+

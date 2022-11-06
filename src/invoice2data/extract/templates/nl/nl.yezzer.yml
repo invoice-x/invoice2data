@@ -1,0 +1,27 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Yezzer
+fields:
+  amount: Totaal\s+(\d+.\d{2})
+  date: Datum\s+(\d{2}-\d{2}-\d{4})
+  invoice_number: Notanummer\s+(\d{7})
+  static_vat: NL855570477B01
+  date_start: (\d{2}-\d{2}-\d{4}) tot
+  date_end: tot (\d{2}-\d{2}-\d{4})
+lines:
+    start: (\d{2}-\d{2}-\d{4}) tot (\d{2}-\d{2}-\d{4})
+    end: Totaal
+    line: \s+(?P<description>\w+)\s+(?P<price_unit>\d+.\d{2})
+    types:
+      price_unit: float
+keywords:
+  - Yezzer
+  - Surebusiness
+options:
+  date_formats:
+    - '%d %m %Y'
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
+

@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+issuer: Vodafone Libertel B.V.
+fields:
+  amount: Totaal te betalen\s+.\s(\d+,\d{2})
+  amount_untaxed: Totaal exclusief btw\s+(\d+.\d{2})
+  date: Datum\s+(\d{1,2} \w{3,9}\s\d{4})
+  date_due: Dit bedrag wordt omstreeks (\d{1,2}\s\w{3,8}\s\d{4})
+  invoice_number: Rekeningnummer.\s+(\d+)
+  static_vat: NL800755133B01
+keywords:
+  - NL800755133B01
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','

@@ -1,19 +1,29 @@
 # -*- coding: utf-8 -*-
-issuer: TransIP BV
+# SPDX-License-Identifier: MIT
+issuer: Transip
 fields:
-  amount: Totaal\s+€\s+(\d+,\d{2})
-  amount_untaxed: Subtotaal\s+\(excl\s+BTW\)\s+€\s+(\d+,\d{2})
-  date: Datum:\s+(\d{1,2}-\d{1,2}-\d{4})
-  invoice_number: Factuurnummer:\s+(.+)
+  amount: Totaal.\s+[€]\s+(\d+.\d{2})
+  amount_untaxed: Subtotaal\s+[€]\s+(\d+.\d{2})
+  sum_amount_tax:
+    - BTW [(] 21[%] [)]\s+€\s+(\d+,\d{2})
+    - BTW [(] 9[%] [)]\s+€\s+(\d+,\d{2})
+  date: Factuurdatum.\s+(\d{2}-\d{2}-\d{4})
+  invoice_number: Factuur.\s+(F\d+[.]\d+[.]\d+[.]\d+)
   static_vat: NL812334966B01
+  partner_coc: KvK\s(\d{8})
+lines:
+    start: Aantal
+    end: Subtotaal\s
+    line: (?P<description>\w+.*)\s+(?P<period>\w+.*)\s+(?P<date_start>\d{2}-\d{2}-\d{4})\s-\s(?P<date_end>\d{2}-\d{2}-\d{4})\s+(?P<qty>\d+)\s+[€]\s+(?P<price_unit>(\d+,\d{2}))
+    types:
+      qty: float
+      vat_percent: float
+      price_unit: float
 keywords:
   - NL812334966B01
-  - Factuurnummer
-  - €
+  - TransIP
 options:
   currency: EUR
-  date_formats:
-    - '%d-%m-%Y'
   languages:
     - nl
   decimal_separator: ','
