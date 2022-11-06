@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: MIT
+issuer: NS Reizigers
+fields:
+  amount: Totaalbedrag\s+[€]\s+(\d+.\d{2})
+  amount_untaxed: Totaal exclusief BTW\s+[€]\s+(\d+.\d{2})
+  sum_amount_tax:
+    - Totaal BTW\s9[%]\s+€\s+(\d+,\d{2})
+    - Totaal BTW\s21[%]\s+€\s+(\d+,\d{2})
+  date: Factuurdatum\s+(\d{2} .+ \d{4})
+  invoice_number: Factuurnummer\s+(\d{2} \d{3} \d{2} \d{3} \d{2})
+  date_start:
+    parser: regex
+    regex: (\W+\s\d{4})\s+Factuurdatum
+  date_end:
+    parser: regex
+    regex: (\W+\s\d{4})\s+Factuurdatum
+  purchase_order_id:
+    parser: regex
+    regex: Overeenkomstnummer\s((?:\d+\s)*)
+  partner_ref:
+    parser: regex
+    regex: Debiteurnummer\s((?:\d+\s)*)
+  customer_order_number:
+    parser: regex
+    regex: Uw kenmerk\s(\d+)
+  vat:
+    parser: static
+    value: NL803882804B01
+  mandate_id: machtiging is (\d{12}).
+  Incassant-ID: is (NL\d{2}\s+ZZZ\s+\d{4}\s+\d{4}\s+\d{4}).
+  payment_unece_code:
+    parser: static
+    value:  49
+  partner_name:
+    parser: static
+    value:  NS Reizigers B.V.
+  partner_street:
+    parser: static
+    value: Laan van Puntenburg 100
+  partner_zip:
+    parser: regex
+    regex: 3511\sER
+  partner_city:
+    parser: regex
+    regex: Utrecht
+  country_code:
+    parser: static
+    value: nl
+  state_code:
+    parser: static
+    value: UT
+  telephone:
+    parser: regex
+    regex: '\d{3}\s-\s\d{3}\s\d{4}'
+  partner_coc:
+    parser: static
+    value: "30124362"
+  partner_website:
+    parser: static
+    value: ns.nl
+lines:
+    start: Omschrijving
+    end: Subtotaal
+    line: '^\s+(?P<name>\w+(?:\S|[ ]\w\w+){1}).+(?P<line_tax_percent>\d{1,2})[%]\s[€]\s+(?P<price_unit>\d{1,}.\d{2})'
+    types:
+      line_tax_percent: float
+      price_unit: float
+keywords:
+  - NS Reizigers
+  - NL803882804B01
+options:
+  date_formats:
+    - '%Y %B %d'
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
+  replace:
+    - ['\n\s+0000', ' 0000']
+

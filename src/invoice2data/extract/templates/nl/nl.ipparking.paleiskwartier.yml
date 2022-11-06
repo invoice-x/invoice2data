@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: MIT
+issuer: Ipparking
+fields:
+  amount:
+    parser: regex
+    regex:
+      - Betaald[:]\s+(\d{1,3}[,]\d{2})
+    type: float
+  amount_tax:
+    parser: regex
+    regex:
+      - BTW[:]\s+(\d{1,3}[,]\d{2})
+    type: float
+    group: sum
+  partner_coc:
+    parser: static
+    value: 17180180
+  telephone:
+    parser: static
+    value: +31492521133
+  partner_website:
+    parser: regex
+    regex:
+      - ipparking.nl
+  partner_name:
+    parser: static
+    value: IP Parking Europe B.V.
+  country_code:
+    parser: static
+    value: nl
+  partner_zip:
+    parser: static
+    value: 5753 PB
+  partner_city:
+    parser: static
+    value: Deurne
+  partner_street:
+    parser: static
+    value: Industrieweg 19
+  bic:
+    parser: static
+    value: INGBNL2A 
+  date: 
+    parser: regex
+    regex:
+      - Betaald[:]\s+(\d{1,2}[-]\d{1,2}[-]\d{4})
+    type: date    
+  invoice_number: Kwitantienummer[:]\s+(\d{3,10})
+  vat:
+    parser: static
+    value: NL815432811B01
+  payment_method:
+    - (iDEAL)
+    - (AMEX)
+    - (AMERICAN EXPRESS)
+    - (VISA)
+    - (MASTERCARD)
+    - (CONTANT)
+    - (?i)(Paypal)
+lines:
+   start: 'Parkeren'
+   end: 'Terminal'
+   line: (?P<line_note>Parkeerduur[:]\s+\S+)
+keywords:
+  - Parkeren
+  - Paleiskwartier
+  - EUR
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
+  replace:
+    - ['é' ,'€']
+    - ['~' ,'-']
+
