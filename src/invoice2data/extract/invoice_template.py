@@ -6,7 +6,7 @@ Templates are initially read from .yml files and then kept as class.
 
 import re
 import dateparser
-from unidecode import unidecode
+import unicodedata
 import logging
 from collections import OrderedDict
 from . import parsers
@@ -79,7 +79,7 @@ class InvoiceTemplate(OrderedDict):
 
         # Remove accents
         if self.options["remove_accents"]:
-            optimized_str = unidecode(optimized_str)
+            optimized_str = unicodedata.normalize('NFKC', optimized_str).encode('ascii', 'ignore').decode('ascii')
 
         # convert to lower case
         if self.options["lowercase"]:
