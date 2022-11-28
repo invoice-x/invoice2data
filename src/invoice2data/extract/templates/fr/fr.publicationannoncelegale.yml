@@ -3,7 +3,11 @@ issuer: NETPRESSE
 fields:
   amount: Total TTC\s+:\s+([\d ]+,\d{2})
   amount_untaxed: Total HT\s+:\s+([\d ]+,\d{2})
-  date: Date\s+:\s+(\d{2}/\d{2}/\d{4})
+  date:
+        parser: regex
+        area: {f: 1, l: 1, x: 0, y: 155, r: 100, W: 825, H: 170}
+        regex: (\d{2}/\d{2}/\d{4})
+        type: date
   invoice_number: Facture\s+n°\s+(\d+)
   static_siren: 530848134
 keywords:

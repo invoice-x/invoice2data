@@ -24,6 +24,7 @@ def to_text(path: str, area_details: dict = None):
     from distutils import spawn  # py2 compat
 
     if spawn.find_executable("pdftotext"):  # shutil.which('pdftotext'):
+        cmd = ["pdftotext", "-layout", "-enc", "UTF-8"]
         if area_details is not None:
             # An area was specified
             # Validate the required keys were provided
@@ -37,25 +38,18 @@ def to_text(path: str, area_details: dict = None):
             # Convert all of the values to strings
             for key in area_details.keys():
                 area_details[key] = str(area_details[key])
-            # Extract the data for the specified region
-            out, err = subprocess.Popen(
-                ["pdftotext", "-layout", "-enc", "UTF-8",
-                    '-f', area_details['f'],
-                    '-l', area_details['l'],
-                    '-r', area_details['r'],
-                    '-x', area_details['x'],
-                    '-y', area_details['y'],
-                    '-W', area_details['W'],
-                    '-H', area_details['H'],
-                    path, '-'],
-                stdout=subprocess.PIPE
-            ).communicate()
-        else:
-            # No area was specified, so extract the entire pdf
-            out, err = subprocess.Popen(
-                ["pdftotext", "-layout", "-enc", "UTF-8", path, "-"],
-                stdout=subprocess.PIPE
-            ).communicate()
+            cmd += [
+                '-f', area_details['f'],
+                '-l', area_details['l'],
+                '-r', area_details['r'],
+                '-x', area_details['x'],
+                '-y', area_details['y'],
+                '-W', area_details['W'],
+                '-H', area_details['H'],
+            ]
+        cmd += [path, "-"]
+        # Run the extraction
+        out, err = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()
         return out
     else:
         raise EnvironmentError(

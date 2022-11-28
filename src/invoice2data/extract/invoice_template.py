@@ -11,8 +11,8 @@ import logging
 from collections import OrderedDict
 from . import parsers
 from .plugins import lines, tables
-# Area extraction is currently only added for pdftotext
-from ..input import pdftotext
+# Area extraction is currently added for pdftotext and tesseract (which uses pdftotext)
+from ..input import pdftotext, tesseract
 from typing import Optional
 
 logger = logging.getLogger(__name__)
@@ -169,8 +169,7 @@ class InvoiceTemplate(OrderedDict):
         Dictionary of results if all required fields were found.
         None if required fields are missing.
         """
-        logger.debug("START optimized_str ========================")
-        logger.debug(optimized_str)
+        logger.debug("START optimized_str ========================\n" + optimized_str)
         logger.debug("END optimized_str ==========================")
         logger.debug(
             "Date parsing: languages=%s date_formats=%s",
@@ -192,11 +191,11 @@ class InvoiceTemplate(OrderedDict):
             # v is the value
             if isinstance(v, dict):
                 # Options were supplied to this field
-                if "area" in v:
+                if "area" in v and input_module in (pdftotext, tesseract):
+                    # Area is currently only supported for pdftotext
                     # area is optional and re-extracts the text being searched
                     # This obviously has a performance impact, so use wisely
                     # Verify that the input_module is set to pdftotext ... this is the only one included right now
-                    assert input_module == pdftotext, 'Area is currently only supported for pdftotext.'
                     logger.debug(f"Area was specified with parameters {v['area']}")
                     # Extract the text for the specified area
                     # Do NOT overwrite optimized_str. We're inside a loop and it will affect all other fields!

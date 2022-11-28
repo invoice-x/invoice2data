@@ -240,6 +240,21 @@ class TestCLI(unittest.TestCase):
 
         shutil.rmtree(os.path.dirname(copy_dir), ignore_errors=True)
 
+    def test_area(self):
+        pdf_files = get_sample_files('NetpresseInvoice.pdf')
+        test_file = 'test_area.json'
+        for pfile in pdf_files:
+            args = self.parser.parse_args(
+                ['--output-name', test_file, '--output-format', 'json', '--output-date-format', "%Y-%m-%d", pfile]
+            )
+            main(args)
+            with open(test_file) as json_test_file:
+                jdatatest = json.load(json_test_file)
+            compare_verified = jdatatest[0]['date'] == '2022-11-28'
+            if not compare_verified:
+                self.assertTrue(False, 'Failure in area rule')
+            os.remove(test_file)
+
 
 if __name__ == '__main__':
     unittest.main()
