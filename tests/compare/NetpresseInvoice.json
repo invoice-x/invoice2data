@@ -1,0 +1,12 @@
+[
+        {
+                "issuer": "NETPRESSE",
+                "amount": 56.02,
+                "amount_untaxed": 46.68,
+                "date": "2022-11-28",
+                "invoice_number": "2022089083",
+                "siren": 530848134,
+                "currency": "EUR",
+                "desc": "Invoice from NETPRESSE"
+        }
+]
