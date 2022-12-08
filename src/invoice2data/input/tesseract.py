@@ -13,13 +13,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def to_text(path):
+def to_text(path: str, area_details: dict = None):
     """Wraps Tesseract OCR with auto language model.
 
     Parameters
     ----------
     path : str
         path of electronic invoice in PDF, JPG or PNG format
+    area_details : dictionary
+        of the format {x: int, y: int, r: int, W: int, H: int}
+        used when extracting an area of the pdf rather than the whole document
 
     Returns
     -------
@@ -105,9 +108,30 @@ def to_text(path):
         "-layout",
         "-enc",
         "UTF-8",
-        TMP_FOLDER + filename + ".pdf",
-        "-",
     ]
+    if area_details is not None:
+        # An area was specified
+        # Validate the required keys were provided
+        assert 'f' in area_details, 'Area r details missing'
+        assert 'l' in area_details, 'Area r details missing'
+        assert 'r' in area_details, 'Area r details missing'
+        assert 'x' in area_details, 'Area x details missing'
+        assert 'y' in area_details, 'Area y details missing'
+        assert 'W' in area_details, 'Area W details missing'
+        assert 'H' in area_details, 'Area H details missing'
+        # Convert all of the values to strings
+        for key in area_details.keys():
+            area_details[key] = str(area_details[key])
+        pdftotext_cmd += [
+            '-f', area_details['f'],
+            '-l', area_details['l'],
+            '-r', area_details['r'],
+            '-x', area_details['x'],
+            '-y', area_details['y'],
+            '-W', area_details['W'],
+            '-H', area_details['H'],
+        ]
+    pdftotext_cmd += [TMP_FOLDER + filename + ".pdf", "-"]
 
     logger.debug("Calling pdfttext with, %s", pdftotext_cmd)
     p3 = Popen(pdftotext_cmd, stdin=p2.stdout, stdout=PIPE)
