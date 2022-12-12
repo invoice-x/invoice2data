@@ -4,4 +4,4 @@ pypi-release:
 	git push upstream master
 	git push upstream master --tags
 	python setup.py sdist bdist_egg
-	twine upload dist/invoice2data-0.3.6*
+	twine upload dist/invoice2data-0.4.0*
