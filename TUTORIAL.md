@@ -58,11 +58,11 @@ All the regex `fields` you need extracted. Required fields are `amount`,
 `date`, `invoice_number`. It's up to you, if you need more fields
 extracted. Each field can be defined as:
 
-- an **associative array** with 
-`parser` (required) specifying parsing method and 
-`area` (optional) specifying the region of the pdf to search. 
-This takes the following arguments: `f` (first page), `l` (last page), `x` (top-left x-coord), `y` (top-left y-coord), 
-`r` (resolution), `W` (width in pixels) and `H` (height in pixels). When setting your region, ensure the resolution in your 
+- an **associative array** with
+`parser` (required) specifying parsing method and
+`area` (optional) specifying the region of the pdf to search.
+This takes the following arguments: `f` (first page), `l` (last page), `x` (top-left x-coord), `y` (top-left y-coord),
+`r` (resolution), `W` (width in pixels) and `H` (height in pixels). When setting your region, ensure the resolution in your
 image editor matches the resolution specified for `r` in this option. If not, it will not line up properly.
 - a single regex with one capturing group
 - an array of regexes
@@ -300,6 +300,10 @@ options and their defaults are:
   date, amount, invoice\_number and issuer. If you wish to extract
   different fields, you can supply a list here. The extraction will
   fail if not all fields are matched.
+- `encoding` (default: None): in some cases the automatic template encoding
+  detection fails and the loaded template yields unexpected parsing results.
+  Then you can specify the actual template encoding.
+
 
 ### Example of template using most options
 
@@ -326,6 +330,7 @@ options and their defaults are:
       replace:
         - ['e´ ', 'é']
         - ['\s{5,}', ' ']
+      encoding: 'utf-8'
 
 
 ## Steps to add new template

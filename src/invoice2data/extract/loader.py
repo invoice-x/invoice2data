@@ -1,17 +1,12 @@
-"""
-This module abstracts templates for invoice providers.
-
-Templates are initially read from .yml files and then kept as class.
-"""
-
-import os
-import yaml
-import pkg_resources
-from collections import OrderedDict
 import logging
-from .invoice_template import InvoiceTemplate
-import codecs
+import os
+from collections import OrderedDict
+
 import chardet
+import pkg_resources
+import yaml
+
+from .invoice_template import InvoiceTemplate
 
 logger = logging.getLogger(__name__)
 
@@ -42,78 +37,88 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
 
 def read_templates(folder=None):
     """
-    Load yaml templates from template folder. Return list of dicts.
-
-    Use built-in templates if no folder is set.
+    Load yaml templates from template folder. Use built-in templates if no folder is set.
 
     Parameters
     ----------
     folder : str
-        user defined folder where they stores their files, if None uses built-in templates
 
     Returns
     -------
-    output : Instance of `InvoiceTemplate`
-        template which match based on keywords
-
-    Examples
-    --------
-
-    >>> read_template("home/duskybomb/invoice-templates/")
-    InvoiceTemplate([('issuer', 'OYO'), ('fields', OrderedDict([('amount', 'GrandTotalRs(\\d+)'),
-    ('date', 'Date:(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})'), ('invoice_number', '([A-Z0-9]+)CashatHotel')])),
-    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', OrderedDict([('currency', 'INR'), ('decimal_separator', '.'),
-    ('remove_whitespace', True)])), ('template_name', 'com.oyo.invoice.yml')])
-
-    After reading the template you can use the result as an instance of `InvoiceTemplate` to extract fields from
-    `extract_data()`
-
-    >>> my_template = InvoiceTemplate([('issuer', 'OYO'), ('fields', OrderedDict([('amount', 'GrandTotalRs(\\d+)'),
-    ('date', 'Date:(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})'), ('invoice_number', '([A-Z0-9]+)CashatHotel')])),
-    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', OrderedDict([('currency', 'INR'), ('decimal_separator', '.'),
-    ('remove_whitespace', True)])), ('template_name', 'com.oyo.invoice.yml')])
-    >>> extract_data("invoice2data/test/pdfs/oyo.pdf", my_template, pdftotext)
-    {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087',
-     'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
-
+    output : list of `InvoiceTemplate`
     """
 
-    output = []
+    templates = []
 
     if folder is None:
         folder = pkg_resources.resource_filename(__name__, "templates")
 
-    for path, subdirs, files in os.walk(folder):
-        for name in sorted(files):
-            if name.endswith(".yml"):
-                with open(os.path.join(path, name), "rb") as f:
-                    encoding = chardet.detect(f.read())["encoding"]
-                with codecs.open(
-                    os.path.join(path, name), encoding=encoding
-                ) as template_file:
-                    try:
-                        tpl = ordered_load(template_file.read())
-                    except yaml.parser.ParserError as error:
-                        logger.warning("Failed to load %s template:\n%s", name, error)
-                        continue
-                tpl["template_name"] = name
+    for templatefile, templatename in get_templatefiles(folder).items():
+        try:
+            encoding = detect_template_encoding(templatefile)
+            template = load_template(templatefile, encoding)
+        except yaml.parser.ParserError as error:
+            logger.warning(
+                "Failed to load {} template:\n{}".format(templatename, error)
+            )
+            continue
 
-                # Test if all required fields are in template:
-                assert "keywords" in tpl.keys(), "Missing keywords field."
+        invoicetemplate = optimise_template(template, templatename)
+        templates.append(invoicetemplate)
 
-                # Keywords as list, if only one.
-                if type(tpl["keywords"]) is not list:
-                    tpl["keywords"] = [tpl["keywords"]]
+    logger.info("Loaded {} templates from {}".format(len(templates), folder))
 
-                # Define excluded_keywords as empty list if not provided
-                # Convert to list if only one provided
-                if "exclude_keywords" not in tpl.keys():
-                    tpl["exclude_keywords"] = []
-                elif type(tpl["exclude_keywords"]) is not list:
-                    tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
+    return templates
 
-                output.append(InvoiceTemplate(tpl))
 
-    logger.info("Loaded %d templates from %s", len(output), folder)
+def detect_template_encoding(templatefile: str) -> str:
+    with open(templatefile, "rb") as file:
+        detection_result = chardet.detect(file.read())
+        detected_encoding = detection_result["encoding"]
 
-    return output
+    template = load_template(templatefile, detected_encoding)
+    template_options = template.get("options", {})
+    template_encoding = template_options.get("encoding", detected_encoding)
+
+    return template_encoding
+
+
+def get_templatefiles(directory: str):
+    templatefiles = {}
+
+    for path, _, files in os.walk(directory):
+        for filename in sorted(files):
+            if filename.endswith(".yml"):
+                filepath = os.path.join(path, filename)
+                templatefiles[filepath] = filename
+
+    return templatefiles
+
+
+def load_template(templatefile: str, encoding: str) -> OrderedDict:
+    with open(templatefile, "r", encoding=encoding) as file:
+        return ordered_load(file.read())
+
+
+def optimise_template(template: OrderedDict, templatename: str) -> InvoiceTemplate:
+    template["template_name"] = templatename
+
+    # Ensure that all required fields are in template
+    try:
+        template["keywords"]
+    except KeyError:
+        raise AttributeError("Missing keywords field in '{}'".format(templatename))
+
+    # Keywords as list, if only one.
+    if not isinstance(template["keywords"], list):
+        template["keywords"] = [template["keywords"]]
+
+    # Define excluded_keywords as empty list if not provided
+    # Convert to list if only one provided
+    if "exclude_keywords" not in template.keys():
+        template["exclude_keywords"] = []
+
+    if not isinstance(template["exclude_keywords"], list):
+        template["exclude_keywords"] = [template["exclude_keywords"]]
+
+    return InvoiceTemplate(template)
