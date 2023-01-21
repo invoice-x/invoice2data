@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: MIT
 issuer: Begra Magazijninrichting B.V.
 fields:
-  amount: Totaal EUR incl[.] btw\s+(\d{1,4}[,]\d{2})
+  amount: 'Totaal EUR incl[.] btw\s+(\d{1,4}[,]\d{2})'
   amount_tax: BTW\s+(\d{1,4}[,]\d{2})
   amount_untaxed: Totaal EUR excl[.] btw\s+(\d{1,4}[,]\d{2})
   date: Factuurdatum\s+(\d{1,2}[.]\s\w+\s\d{4})
   invoice_number: Factuurnr[.]\s+(\S+)
   static_vat: NL818038524B01
   bic: SWIFT[\/]BIC[:]\s+(\w{8,11})
-  iban: [A-Z]{2}\d{2}?\w{4}?\d{4}?\d{4}?\d{0,2}
+  iban: '[A-Z]{2}\d{2}?\w{4}?\d{4}?\d{4}?\d{0,2}'
   telephone:
     parser: regex
     regex: '[+]\d{11}'
