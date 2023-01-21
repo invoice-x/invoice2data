@@ -3,7 +3,6 @@ import pkg_resources
 import logging
 
 # Reduce log level of various modules
-logging.getLogger('chardet').setLevel(logging.WARNING)
 logging.getLogger('pdfminer').setLevel(logging.WARNING)
 
 
