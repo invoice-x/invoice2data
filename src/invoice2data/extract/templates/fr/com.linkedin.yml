@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: LinkedIn Ireland Unlimited
 fields:
   amount: Facture\s*:\s+([\d\s]+,\d{2})

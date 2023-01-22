@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: My Flying Box
 fields:
   amount: \d+,\d{2}\s+€\s+\d+,\d{2}\s+€\s+(\d+,\d{2})\s+€

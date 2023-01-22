@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Pixartprinting SpA
 fields:
   amount: \d+\.\d+\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+[\d,]+\.\d{2}\s+([\d,]+\.\d{2})

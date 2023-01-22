@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Adobe Systems Software
 fields:
   amount: Montant\s+TTC\s+(\d+.\d{2})

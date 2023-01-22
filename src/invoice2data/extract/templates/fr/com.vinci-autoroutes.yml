@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Vinci Autoroutes
 fields:
   amount: NET A PAYER TTC\s+(\d+,\d{2})

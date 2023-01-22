@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: PC Engines GmbH
 fields:
   amount: Total\s+EUR\s+([\d,]+.\d{2})

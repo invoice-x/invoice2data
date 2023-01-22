@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: fountain.fr
 fields:
   amount: Montant total\s+([\d ]+,\d{2})

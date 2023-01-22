@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Hootsuite Media Inc.
 fields:
   amount: Montant payé\s?:\s+€(\d+,\d{2})

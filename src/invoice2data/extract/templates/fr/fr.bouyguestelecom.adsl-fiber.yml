@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Bouygues Telecom (ADSL/Fibre)
 fields:
   amount: Montant total de cette facture\s+(\d+.\d{2})

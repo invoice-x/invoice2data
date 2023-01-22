@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Amazon Web Services EMEA SARL, succursale française
 fields:
   amount: TOTAL\s+AMOUNT\s+EUR\s+(\d+.\d{2})

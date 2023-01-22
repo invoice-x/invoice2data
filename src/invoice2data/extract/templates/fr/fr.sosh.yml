@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Sosh by Orange
 fields:
   amount: total auprès d\'Orange\s+\d+,\d{2}\s+(\d+,\d{2})

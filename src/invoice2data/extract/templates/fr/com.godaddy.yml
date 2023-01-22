@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Go Daddy
 fields:
   amount: Total\s?:\s+(\d+,\d{2})

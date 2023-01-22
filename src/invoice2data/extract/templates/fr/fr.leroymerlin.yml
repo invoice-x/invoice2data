@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Leroy Merlin France
 fields:
   amount: Total TTC\s+(\d+.\d{2})

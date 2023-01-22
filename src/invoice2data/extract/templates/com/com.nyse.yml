@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: NYSE Market (DE) Inc.
 fields:
   amount: Invoice\s+Amount:\s+\$([\d,]+\.\d{2})

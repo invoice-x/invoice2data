@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: AEP - ASSURANCE EPARGNE PENSION
 fields:
   amount: Soit un net à payer de :\s+([\d\s]+,\d{2})

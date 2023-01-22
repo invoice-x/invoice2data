@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Google Ireland Limited
 fields:
   amount: Montant dû en EUR\s+:\s+([\d ]+,\d{2})

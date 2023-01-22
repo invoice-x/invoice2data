@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Orange Business Services
 fields:
   amount: somme\sà\spayer\s\(EUR\sTTC\)\s+(\d+,\d{2})

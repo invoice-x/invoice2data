@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Eau du grand Lyon (eaudugrandlyon.com)
 fields:
   amount: Total\s+général\s+:\s+\d+,\d{2}\s+€\s+HT\s+\d+,\d{2}\s+(\d+,\d{2})

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Bloomberg
 fields:
   amount: TOTAL \(USD \)\s+([\d,]+\.\d{2})

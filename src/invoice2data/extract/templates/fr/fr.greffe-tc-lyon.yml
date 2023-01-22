@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Greffe du tribunal de commerce de Lyon
 fields:
   amount: TOTAL\s+TTC\s?:\s+(\d+,\d{2})

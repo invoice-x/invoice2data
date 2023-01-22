@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Online SAS / Scaleway
 fields:
   amount: '.*Total\s+due\s+€(\d+.\d{2})'

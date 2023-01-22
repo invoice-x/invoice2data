@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: So you Start (OVH)
 fields:
   amount: TOTAL\s+TTC\s+(\d+.\d{2})

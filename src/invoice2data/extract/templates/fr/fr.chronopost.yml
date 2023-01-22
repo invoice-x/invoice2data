@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Chronopost
 fields:
   amount: TOTAL FACTURE\s+\d+.\d{2}\s+\d+.\d{2}\s+(\d+.\d{2})

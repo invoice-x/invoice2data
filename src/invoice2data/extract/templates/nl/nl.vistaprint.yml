@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Vistaprint
 fields:
   amount: '.*Total\s+(\d+,\d{2})\s+'

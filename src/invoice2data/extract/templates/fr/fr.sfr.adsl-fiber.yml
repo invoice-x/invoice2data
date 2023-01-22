@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: SFR
 fields:
   amount: TOTAL\s+prestations\s+facturées\s.+\d+,\d{2}\s+\d+,\d{2}\s+(\d+,\d{2})

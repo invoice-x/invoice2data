@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: PepePhone (Mobile & Internet)
 fields:
   amount: Total\sfactura\s+(\d+,\d{2})

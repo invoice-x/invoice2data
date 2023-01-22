@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Easytrip France
 fields:
   amount: TOTAL\s+A\s+PAYER\s+[\d ]+,\d{2}\s+[\d ]+,\d{2}\s+([\d ]+,\d{2})
