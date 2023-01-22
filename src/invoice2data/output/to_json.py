@@ -3,10 +3,18 @@ import datetime
 import codecs
 
 
-def myconverter(o):
-    """function to serialise datetime"""
-    if isinstance(o, datetime.datetime):
-        return o.__str__()
+def format_item(item, date_format):
+    if isinstance(item, datetime.date):
+        return item.strftime(date_format)
+    elif isinstance(item, datetime.date):
+        return item.__str__()
+    elif isinstance(item, dict):
+        for k, v in item.items():
+            item[k] = format_item(v, date_format)
+    elif isinstance(item, list):
+        for k, v in enumerate(item):
+            item[k] = format_item(v, date_format)
+    return item
 
 
 def write_to_file(data, path, date_format="%Y-%m-%d"):
@@ -34,21 +42,20 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
         >>> to_json.write_to_file(data, "invoice.json")
 
     """
+    for invoice in data:
+        for k, v in invoice.items():
+            invoice[k] = format_item(v, date_format)
+
     if path.endswith(".json"):
         filename = path
     else:
         filename = path + ".json"
 
     with codecs.open(filename, "w", encoding="utf-8") as json_file:
-        for line in data:
-            for k, v in line.items():
-                if k.startswith("date") or k.endswith("date"):
-                    line[k] = v.strftime(date_format)
         json.dump(
             data,
             json_file,
             indent=4,
             sort_keys=False,
-            default=myconverter,
             ensure_ascii=False,
         )
