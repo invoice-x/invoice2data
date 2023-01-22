@@ -41,13 +41,16 @@ def write_to_file(data: list, path: str, date_format="%Y-%m-%d") -> None:
     with openfile as csv_file:
         writer = csv.writer(csv_file, delimiter=",")
 
+        last_header = None
         for line in data:
             first_row = []
             for k, v in line.items():
                 first_row.append(k)
 
-        writer.writerow(first_row)
-        for line in data:
+            if first_row != last_header:
+                writer.writerow(first_row)
+            last_header = first_row
+
             csv_items = []
             for k, v in line.items():
                 # first_row.append(k)
