@@ -30,6 +30,9 @@ def parse(template, field, settings, content, legacy=False):
 
     result = []
     for regex in regexes:
+        if not isinstance(regex, str):
+            logger.warning("Field \"%s\" regex is not a string (%s)", field, str(regex))
+            continue
         matches = re.findall(regex, content)
         logger.debug("field=%s | regex=%s | matches=%s", field, settings["regex"], matches)
         if matches:
