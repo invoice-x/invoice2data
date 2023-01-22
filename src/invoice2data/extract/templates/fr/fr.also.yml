@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: ALSO France
 fields:
   date: Date\s+(\d+.\d+.+\d{4})

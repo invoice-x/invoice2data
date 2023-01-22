@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Free Mobile
 fields:
   amount: \spayer TTC\*\s+(\d+.\d{2})

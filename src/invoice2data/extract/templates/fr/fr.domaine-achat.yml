@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: PRIVIANET SARL
 fields:
   amount: Total TTC\s+(\d+.\d{2})

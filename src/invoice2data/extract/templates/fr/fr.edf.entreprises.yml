@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: EDF
 fields:
   amount: Total TTC en euros \(détails au verso\) :\s+([\d ]+,\d{2})

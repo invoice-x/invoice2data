@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Wasco Groothandelsgroep B.V.
 fields:
   amount: Factuurbedrag\s+EUR\s+\(Incl\.\s+BTW\)\s+(\d+,\d{2})

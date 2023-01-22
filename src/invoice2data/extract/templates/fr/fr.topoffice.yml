@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Top Office
 fields:
   amount: '.*TOTAL\sTTC\s+(\d+.\d{2})\sEUR'

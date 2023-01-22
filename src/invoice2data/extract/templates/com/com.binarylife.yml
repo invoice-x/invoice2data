@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: BinaryLife Inc.
 fields:
   amount: Total\s?:\s+\$(\d+\.\d{2})

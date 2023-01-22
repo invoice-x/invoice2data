@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: kavautoverhuur
 fields:
   amount: Totaal\s+[€]\s+-?(\d+.\d{2})

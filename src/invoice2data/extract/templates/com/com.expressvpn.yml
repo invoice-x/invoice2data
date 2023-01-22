@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: ExpressVPN
 fields:
   amount: Grand Total:\s+\$([\d,]+.\d{2})

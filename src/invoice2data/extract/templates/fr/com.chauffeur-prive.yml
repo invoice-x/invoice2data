@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Chauffeur Privé (TRANSOPCO France SAS)
 fields:
   amount: Totalfacturé([\d ]+,\d{2})

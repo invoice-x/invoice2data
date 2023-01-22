@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: dirafi.fr
 fields:
   amount: Total TTC\s+([\d\s]+,\d{2})

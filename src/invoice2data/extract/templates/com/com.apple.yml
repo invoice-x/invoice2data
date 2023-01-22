@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Apple Distribution International
 fields:
   amount: Total\s+Price\s+\(\w+.VAT\)\s+EUR\s+(\d+,\d{2})

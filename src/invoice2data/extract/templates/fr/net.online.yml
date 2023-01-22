@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Online SAS
 fields:
   amount: '[\d ]+,\d{2}\s+Euros\s+\d+,\d{2}\s\%\s+[\d ]+,\d{2}\s+Euros\s+([\d ]+,\d{2})\sEuros'

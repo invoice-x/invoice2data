@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Akretion France
 fields:
   amount: Total TTC :\s+(\d+,\d{2})

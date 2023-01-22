@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: EDF
 fields:
   amount: Facture TTC\s+([\d ]+,\d{2})

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: FINAGAZ
 fields:
   amount: Montant TTC en notre faveur\s+([\d ]+,\d{2})

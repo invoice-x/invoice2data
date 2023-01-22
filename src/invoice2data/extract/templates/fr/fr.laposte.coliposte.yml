@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: La Poste (Coliposte)
 fields:
   amount: Total TTC:\s+(\d+,\d{2})

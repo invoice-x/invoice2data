@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: GE IROISE
 fields:
   amount: Total\s+T.T.C.\s+([\d\s]+,\d{2})

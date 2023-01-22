@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: CPE B.V.
 fields:
   amount: Te\s+betalen\s+in\s+EUR:\s+(\d+,\d{2})

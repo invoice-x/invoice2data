@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Linode
 fields:
   amount: Invoice\s+Total:\$(\d+.\d{2})

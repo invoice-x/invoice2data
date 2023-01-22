@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Prestaclic
 fields:
   amount: TOTAL\s+TTC\s+([\d ]+,\d{2})

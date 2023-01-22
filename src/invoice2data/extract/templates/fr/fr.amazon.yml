@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Amazon France
 fields:
   amount: Facture Total\s+([\d ]+,\d{2})

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Napsis (Iperlink)
 fields:
   amount: TOTAL TTC À PAYER\s+(\d+,\d{2})

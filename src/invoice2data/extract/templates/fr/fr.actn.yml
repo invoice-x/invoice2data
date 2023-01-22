@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: ACTN
 fields:
   date: Date\s+facture\s+:\s+(\d+/\d+/+\d{4})

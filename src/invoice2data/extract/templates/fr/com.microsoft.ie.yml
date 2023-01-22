@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Microsoft Ireland Operations Ltd
 fields:
   amount: Total\sdes\sfrais\sactuels\s+(\d+,\d{2})

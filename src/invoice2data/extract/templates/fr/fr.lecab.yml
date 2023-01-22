@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: leCab
 fields:
   amount: Montant\s+total\s+à\s+régler\s+([\d\s]+,\d{2})

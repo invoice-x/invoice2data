@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: TSX Inc.
 fields:
   amount: Total\s+Amount\s+Due\s+USD\s+\$([\d,]+\.\d{2})

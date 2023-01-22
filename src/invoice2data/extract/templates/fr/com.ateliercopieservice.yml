@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Atelier Copy Service
 fields:
   amount: Total TTC\s+([\d ]+.\d{2})

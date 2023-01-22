@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: MoonGroup (mooncard.co)
 fields:
   amount: Total\s+à\s+payer\s+(\d+,\d{2})\s+€

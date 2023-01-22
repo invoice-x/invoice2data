@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: La Poste (Coliposte et Solutions Business)
 fields:
   amount: Montant\s+à\s+payer\s+en\s+Euros\s+(\d+,\d{2})

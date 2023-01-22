@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: mongoDB Cloud
 fields:
   amount: PAID\s+\w+\s\d{1,2},\s\d{4}\s+\$[\d,]+\.\d{2}\s+\$[\d,]+\.\d{2}\s+\$[\d,]+\.\d{2}\s+\$([\d,]+\.\d{2})

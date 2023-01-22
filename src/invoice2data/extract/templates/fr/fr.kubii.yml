@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: KUBII
 fields:
   amount: \sTotal\s+(\d+,\d{2})\s€

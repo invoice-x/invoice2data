@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Mention Solutions SAS
 fields:
   amount: Total\s\(incl\.\sVAT\)\s+(\d+,\d{2})

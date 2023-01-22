@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Easyjet
 fields:
   amount: MONTANT TOTAL\s+([\d ]+,\d{2})

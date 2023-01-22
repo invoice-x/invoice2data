@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Office TIMELINE
 fields:
   amount: Total\spayé\s\(\w{3}\)\s+\$(\d+)

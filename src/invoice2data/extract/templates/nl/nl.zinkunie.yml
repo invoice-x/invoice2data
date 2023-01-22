@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Zinkunie B.V.
 fields:
   amount: Totaal\s+EURO\s+:\s+(\d+,\d{2})

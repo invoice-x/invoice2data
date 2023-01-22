@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Facture dolibarr generique (1)
 fields:
   invoice_number: '.*R.f.\s+:\s+(.*)'

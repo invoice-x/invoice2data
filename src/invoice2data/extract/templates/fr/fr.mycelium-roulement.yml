@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Mycelium Roulement - 123roulement
 fields:
   amount: Total\sT\.T\.C\.\s+(\d+,\d{2})\s+EUR

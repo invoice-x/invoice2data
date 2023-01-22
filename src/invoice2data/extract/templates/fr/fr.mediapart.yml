@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Mediapart
 fields:
   amount: TOTAL\sTTC\s+(\d+.\d{2})

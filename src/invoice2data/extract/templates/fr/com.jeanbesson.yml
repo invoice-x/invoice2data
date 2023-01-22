@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Transports Jean Besson
 fields:
   amount: MONTANT\s+TTC\s+A\s+REGLER\s+EN\s+EUROS\s+(\d+.\d{2})

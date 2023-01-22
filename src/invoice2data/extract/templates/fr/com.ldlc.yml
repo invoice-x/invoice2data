@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: LDLC.com
 fields:
   amount: Montant TTC\s+(\d+,\d{2})

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Nexity
 fields:
   amount: SOLDE\sÀ\sPAYER\s+\(en\s€\)\s+([\d ]+,\d{2})

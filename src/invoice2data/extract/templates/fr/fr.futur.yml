@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: Futur Telecom SAS
 fields:
   amount: Total T.T.C.\s+\(€\)\s+(\d+,\d{2})

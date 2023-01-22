@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 issuer: supplies24.es
 fields:
   amount: Importe total:\s+(\d+,\d{2})
