@@ -214,7 +214,7 @@ class InvoiceTemplate(OrderedDict):
                     if v["parser"] in PARSERS_MAPPING:
                         parser = PARSERS_MAPPING[v["parser"]]
                         value = parser.parse(self, k, v, optimized_str_for_parser)
-                        if value is not None:
+                        if value:
                             output[k] = value
                         else:
                             logger.error("Failed to parse field %s with parser %s", k, v["parser"])
@@ -239,7 +239,7 @@ class InvoiceTemplate(OrderedDict):
                 else:
                     result = parsers.regex.parse(self, k, {"regex": v}, optimized_str, True)
 
-                if result is None:
+                if not result:
                     logger.warning("regexp for field %s didn't match", k)
                 else:
                     output[k] = result
