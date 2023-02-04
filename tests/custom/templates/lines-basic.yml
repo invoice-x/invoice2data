@@ -21,6 +21,11 @@ fields:
     start: Simple lines start
     end: Simple lines end
     line: ^(?P<number>.+)$
+  zero_lines:
+    parser: lines
+    start: Simple lines start
+    end: Simple lines end
+    line: ^Nonexistent lines pattern (?P<name>.+)$
   column_lines:
     parser: lines
     start: Columns start

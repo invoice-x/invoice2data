@@ -15,6 +15,9 @@ fields:
     parser: regex
     regex: Total:\s*(\d+\.\d\d)
     type: float
+  missing:
+    parser: regex
+    regex: This field is missing (.*)
 options:
   currency: EUR
   date_formats:
