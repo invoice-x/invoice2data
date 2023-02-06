@@ -6,7 +6,7 @@ will help you get started quickly.
 ## Install
 
 1. Fork main repository (optional)
-2. Clone repository: `git clone https://github.com/m3nu/invoice2data`
+2. Clone repository: `git clone https://github.com/invoice-x/invoice2data`
 3. Install as editable: `pip install -e invoice2data`
 
 Some little-used dependencies are optional. Like `pytesseract` and
