@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from distutils import spawn
+import shutil
 import tempfile
 import mimetypes
 
@@ -29,9 +29,9 @@ def to_text(path):
     """
 
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
-    if not spawn.find_executable("tesseract"):
+    if not shutil.which("tesseract"):
         raise EnvironmentError("tesseract not installed.")
-    if not spawn.find_executable("convert"):
+    if not shutil.which("convert"):
         raise EnvironmentError("imagemagick not installed.")
 
     language = get_languages()
