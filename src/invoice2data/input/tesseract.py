@@ -2,6 +2,7 @@
 
 from distutils import spawn
 import tempfile
+import mimetypes
 
 from subprocess import Popen, PIPE, STDOUT, CalledProcessError, TimeoutExpired
 from subprocess import run
@@ -54,8 +55,10 @@ def to_text(path):
         "-append",
         "png:-",
     ]
-    if path.endswith(".pdf"):
-        # pre processing pdf file by converting to png
+    mt = mimetypes.guess_type(path)
+    if mt[0] == "application/pdf":
+        # tesseract does not support pdf files, pre-processing is needed.
+        logger.debug("PDF file detected, start pre-processing by converting to png")
         p1 = Popen(convert, stdout=PIPE)
         tess_input = "stdin"
         stdin = p1.stdout
