@@ -21,9 +21,9 @@ def to_text(path: str, area_details: dict = None):
         If pdftotext library is not found
     """
     import subprocess
-    from distutils import spawn  # py2 compat
+    import shutil
 
-    if spawn.find_executable("pdftotext"):  # shutil.which('pdftotext'):
+    if shutil.which('pdftotext'):
         cmd = ["pdftotext", "-layout", "-enc", "UTF-8"]
         if area_details is not None:
             # An area was specified
