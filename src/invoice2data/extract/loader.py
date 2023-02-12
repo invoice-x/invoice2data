@@ -7,34 +7,11 @@ Templates are initially read from .yml files and then kept as class.
 import os
 import yaml
 import pkg_resources
-from collections import OrderedDict
 import logging
 from .invoice_template import InvoiceTemplate
 import codecs
 
 logger = logging.getLogger(__name__)
-
-
-# borrowed from http://stackoverflow.com/a/21912744
-def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
-    """load mappings and ordered mappings
-
-    loader to load mappings and ordered mappings into the Python 2.7+ OrderedDict type,
-    instead of the vanilla dict and the list of pairs it currently uses.
-    """
-
-    class OrderedLoader(Loader):
-        pass
-
-    def construct_mapping(loader, node):
-        loader.flatten_mapping(node)
-        return object_pairs_hook(loader.construct_pairs(node))
-
-    OrderedLoader.add_constructor(
-        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_mapping
-    )
-
-    return yaml.load(stream, OrderedLoader)
 
 
 def read_templates(folder=None):
@@ -57,21 +34,21 @@ def read_templates(folder=None):
     --------
 
     >>> read_template("home/duskybomb/invoice-templates/")
-    InvoiceTemplate([('issuer', 'OYO'), ('fields', OrderedDict([('amount', 'GrandTotalRs(\\d+)'),
-    ('date', 'Date:(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})'), ('invoice_number', '([A-Z0-9]+)CashatHotel')])),
-    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', OrderedDict([('currency', 'INR'), ('decimal_separator', '.'),
-    ('remove_whitespace', True)])), ('template_name', 'com.oyo.invoice.yml')])
+    InvoiceTemplate([('issuer', 'OYO'), ('fields', {'amount': 'Grand Total\\s+Rs (\\d+)',
+    'date': 'Date:\\s(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})', 'invoice_number': '([A-Z0-9]+)\\s+Cash at Hotel'}),
+    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', {'currency': 'INR', 'decimal_separator': '.'}),
+    ('template_name', 'com.oyo.invoice.yml'), ('exclude_keywords', [])])
 
     After reading the template you can use the result as an instance of `InvoiceTemplate` to extract fields from
     `extract_data()`
 
-    >>> my_template = InvoiceTemplate([('issuer', 'OYO'), ('fields', OrderedDict([('amount', 'GrandTotalRs(\\d+)'),
-    ('date', 'Date:(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})'), ('invoice_number', '([A-Z0-9]+)CashatHotel')])),
-    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', OrderedDict([('currency', 'INR'), ('decimal_separator', '.'),
-    ('remove_whitespace', True)])), ('template_name', 'com.oyo.invoice.yml')])
+    >>> my_template = InvoiceTemplate([('issuer', 'OYO'), ('fields', {'amount': 'Grand Total\\s+Rs (\\d+)',
+    'date': 'Date:\\s(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})', 'invoice_number': '([A-Z0-9]+)\\s+Cash at Hotel'}),
+    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', {'currency': 'INR', 'decimal_separator': '.'}),
+    ('template_name', 'com.oyo.invoice.yml'), ('exclude_keywords', [])])
     >>> extract_data("invoice2data/test/pdfs/oyo.pdf", my_template, pdftotext)
     {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087',
-     'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
+    'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
 
     """
 
@@ -82,35 +59,36 @@ def read_templates(folder=None):
 
     for path, subdirs, files in os.walk(folder):
         for name in sorted(files):
-            if name.endswith(".yml"):
-                with codecs.open(
-                    os.path.join(path, name), encoding="utf-8"
-                ) as template_file:
+            with codecs.open(
+                os.path.join(path, name), encoding="utf-8"
+            ) as template_file:
+                if name.endswith(".yml"):
                     try:
                         tpl = ordered_load(template_file.read())
                     except yaml.parser.ParserError as error:
                         logger.warning("Failed to load %s template:\n%s", name, error)
                         continue
-                tpl["template_name"] = name
 
-                # Test if all required fields are in template:
-                assert "keywords" in tpl.keys(), "Missing keywords field."
+            tpl["template_name"] = name
 
-                # Keywords as list, if only one.
-                if type(tpl["keywords"]) is not list:
-                    tpl["keywords"] = [tpl["keywords"]]
+            # Test if all required fields are in template:
+            assert "keywords" in tpl.keys(), "Missing keywords field."
 
-                # Define excluded_keywords as empty list if not provided
-                # Convert to list if only one provided
-                if "exclude_keywords" not in tpl.keys():
-                    tpl["exclude_keywords"] = []
-                elif type(tpl["exclude_keywords"]) is not list:
-                    tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
+            # Keywords as list, if only one.
+            if type(tpl["keywords"]) is not list:
+                tpl["keywords"] = [tpl["keywords"]]
 
-                if 'priority' not in tpl.keys():
-                    tpl['priority'] = 5
+            # Define excluded_keywords as empty list if not provided
+            # Convert to list if only one provided
+            if "exclude_keywords" not in tpl.keys():
+                tpl["exclude_keywords"] = []
+            elif type(tpl["exclude_keywords"]) is not list:
+                tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
 
-                output.append(InvoiceTemplate(tpl))
+            if 'priority' not in tpl.keys():
+                tpl['priority'] = 5
+
+            output.append(InvoiceTemplate(tpl))
 
     logger.info("Loaded %d templates from %s", len(output), folder)
 
