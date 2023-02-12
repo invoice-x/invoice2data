@@ -8,7 +8,7 @@ A command line tool and Python library to support your accounting
 process.
 
 1. extracts text from PDF files using different techniques, like
-   `pdftotext`, `text`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, or
+   `pdftotext`, `text`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, or
    `gvision` (Google Cloud Vision).
 2. searches for regex in the result using a YAML-based template system
 3. saves results as CSV, JSON or XML or renames PDF files to match the content.
@@ -95,7 +95,7 @@ Save output file with custom name or a specific folder
 **Note:** You must specify the `output-format` in order to create
 `output-name`
 
-Specify folder with yml templates. (e.g. your suppliers)
+Specify folder with yml templates. (e.g. your suppliers)
 
 `invoice2data --template-folder ACME-templates invoice.pdf`
 
