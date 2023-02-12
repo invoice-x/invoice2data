@@ -381,9 +381,7 @@ Look at the invoice and find the best identifying string. Tax number +
 company name are good options. Remember, *all* keywords need to be found
 for the template to be used.
 
-Keywords are compared *after* processing the extracted text. So if you
-use lowercase or remove-whitespace processing, adapt keywords
-accordingly.
+Keywords are compared *before* processing the extracted text.
 
 ### 4. First test run
 

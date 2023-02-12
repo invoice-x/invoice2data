@@ -96,7 +96,7 @@ def extract_data(invoicefile, templates=None, input_module=None):
 
     if templates is None:
         templates = read_templates()
-    templates = filter(lambda t: t.matches_input(t.prepare_input(extracted_str)), templates)
+    templates = filter(lambda t: t.matches_input(extracted_str), templates)
     templates = sorted(templates, key=lambda k: k['priority'], reverse=True)
     if not templates:
         logger.error("No template for %s", invoicefile)
