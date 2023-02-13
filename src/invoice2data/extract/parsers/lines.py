@@ -5,9 +5,9 @@ Initial work and maintenance by Holger Brunn @hbrunn
 """
 
 import re
-import logging
+from logging import getLogger
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 DEFAULT_OPTIONS = {"line_separator": r"\n"}
 
@@ -97,7 +97,7 @@ def parse_block(template, field, settings, content):
                     skip_line_results = [re.search(settings["skip_line"], line)]
                 if any(skip_line_results):
                     # There was at least one match to a skip_line
-                    logger.debug("skip_line match on *%s*", line)
+                    logger.debug("skip_line match on \ns*%s*", line)
                     continue
             # If none of those have continued the loop, check if this is just a normal line
             match = parse_line(settings["line"], line)
@@ -107,7 +107,7 @@ def parse_block(template, field, settings, content):
                 current_row = parse_current_row(match, current_row)
                 continue
         # If the line doesn't match anything, log and continue to next line
-        logger.debug("ignoring *%s* because it doesn't match anything", line)
+        logger.debug("The following line doesn't match anything:\n*%s*", line)
     if current_row:
         # All lines processed, so append whatever the final current_row was to output
         lines.append(current_row)
@@ -141,7 +141,7 @@ def parse_by_rule(template, field, rule, content):
     while True:
         start = re.search(settings["start"], content)
         if not start:
-            logger.debug("Failed to find the lines block start")
+            logger.debug("Failed to find lines block start")
             break
         content = content[start.end():]
 
