@@ -11,11 +11,11 @@ try:
 except ImportError:  # pragma: no cover
     from yaml import load, SafeLoader, YAMLError
 import pkg_resources
-import logging
+from logging import getLogger
 from .invoice_template import InvoiceTemplate
 import codecs
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 def read_templates(folder=None):

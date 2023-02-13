@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import argparse
@@ -23,8 +23,7 @@ from .output import to_csv
 from .output import to_json
 from .output import to_xml
 
-
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 input_mapping = {
     "pdftotext": pdftotext,
@@ -36,7 +35,61 @@ input_mapping = {
     "ocrmypdf": ocrmypdf,
 }
 
-output_mapping = {"csv": to_csv, "json": to_json, "xml": to_xml, "none": None}
+output_mapping = {
+    "csv": to_csv,
+    "json": to_json,
+    "xml": to_xml,
+    "none": None,
+}
+
+
+class Color:
+
+    """A class for terminal color codes."""
+
+    BOLD = "\033[1m"
+    BLUE = "\033[94m"
+    GREEN = "\033[92m"
+    RED = "\033[91m"
+    YELLOW_BACK = "\033[1;43m"
+    RED_BACK = "\033[1;41m"
+    BOLD_RED = BOLD + RED
+    END = "\033[0m"
+
+
+class ColorLogFormatter(logging.Formatter):
+
+    """A class for formatting colored logs."""
+
+    FORMAT = \
+        "%(prefix)s%(levelname)s:%(suffix)s%(name)s:%(prefix)s %(message)s%(suffix)s"
+
+    LOG_LEVEL_COLOR = {
+        "DEBUG": {"prefix": "", "suffix": Color.END},
+        "INFO": {"prefix": Color.BLUE, "suffix": Color.END},
+        "WARNING": {"prefix": Color.YELLOW_BACK, "suffix": Color.END},
+        "ERROR": {"prefix": Color.RED_BACK, "suffix": Color.END},
+        "CRITICAL": {"prefix": Color.BOLD_RED, "suffix": Color.END},
+    }
+
+    def format(self, record):
+        """Format log records with a default prefix and suffix
+           to terminal color codes that corresponds to the log level name."""
+
+        if not hasattr(record, "prefix"):
+            record.prefix = self.LOG_LEVEL_COLOR.get(record.levelname.upper()).get("prefix")
+
+        if not hasattr(record, "suffix"):
+            record.suffix = self.LOG_LEVEL_COLOR.get(record.levelname.upper()).get("suffix")
+
+        formatter = logging.Formatter(self.FORMAT)
+        return formatter.format(record)
+
+
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(ColorLogFormatter())
+logger.addHandler(stream_handler)
+logger.propagate = False
 
 
 def extract_data(invoicefile, templates=None, input_module=None):
@@ -93,7 +146,8 @@ def extract_data(invoicefile, templates=None, input_module=None):
         logger.error("Failed to extract text from %s using %s", invoicefile, input_module.__name__)
         return False
 
-    logger.debug("START pdftotext result ===========================\n" + extracted_str)
+    logger.debug("START pdftotext result ===========================\n%s"
+                 , extracted_str)
     logger.debug("END pdftotext result =============================")
 
     if templates is None:
@@ -213,24 +267,28 @@ def create_parser():
 
 def main(args=None):
     """Take folder or single file and analyze each."""
+
     if args is None:
         parser = create_parser()
         args = parser.parse_args()
 
     if args.debug:
-        logging.basicConfig(level=logging.DEBUG)
+        logger.setLevel(logging.DEBUG)
     else:
-        logging.basicConfig(level=logging.INFO, format="%(message)s")
+        logger.setLevel(level=logging.INFO)
 
     input_module = input_mapping[args.input_reader] if args.input_reader is not None else None
     output_module = output_mapping[args.output_format]
 
     templates = []
+
     # Load templates from external folder if set.
+
     if args.template_folder:
         templates += read_templates(os.path.abspath(args.template_folder))
 
     # Load internal templates, if not disabled.
+
     if not args.exclude_built_in_templates:
         templates += read_templates()
     output = []
