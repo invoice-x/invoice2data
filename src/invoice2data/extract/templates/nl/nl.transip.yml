@@ -10,6 +10,9 @@ fields:
   invoice_number: Factuur.\s+(F\d+[.]\d+[.]\d+[.]\d+)
   static_vat: NL812334966B01
   partner_coc: KvK\s(\d{8})
+  country_code:
+    parser: static
+    value: nl
 lines:
     start: Aantal
     end: Subtotaal\s
