@@ -1,0 +1,73 @@
+issuer: Accor Invest Belgium nv SA
+fields:
+  amount:
+    parser: regex
+    regex: Total to pay EUR\s+(\d?.?\d{1,4},\d{2})
+    type: float
+  amount_tax:
+    parser: regex
+    regex: \d{2}[%]\s+\w\s+\d{1,4}[,]\d{2}\s+(\d{1,4}[,]\d{2})
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex: \d{2}[%]\s+\w\s+(\d{1,4}[,]\d{2})\s+\d{1,4}[,]\d{2}
+    type: float
+  date:
+    parser: regex
+    regex: '\w+\S\s(\d{1,2}[/]\d{1,2}[/]\d{4})\n'
+    type: date
+  date_due:
+    parser: regex
+    regex: '\w+\S\s(\d{1,2}[/]\d{1,2}[/]\d{4})\n'
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Our ref[.]\s[:](.*)\s[(]
+  iban:
+    parser: regex
+    regex: '[A-Z]{2}\d{2}?\w{4}?\d{4}?\d{4}?\d{0,2}'
+  bic:
+    parser: regex
+    regex: '(?i)BIC[:]\s+(\w{8,11})'
+  static_vat: BE0673923435
+  partner_website:
+    parser: static
+    value: all.accor.com
+  partner_name:
+    parser: static
+    value:  Accor Invest Belgium nv SA
+  country_code:
+    parser: static
+    value: be
+  partner_zip:
+    parser: static
+    value: B-1000
+  partner_city:
+    parser: regex
+    regex: Brussel
+  partner_street:
+    parser: static
+    value: Square de Meeus 35
+  narration:
+    parser: regex
+    regex: Ibis\s+\S+
+lines:
+    start: Datum\s\S\s+Omschrijving
+    end: (?i)Totaal\ste
+    line: (?P<name>(\d+[-]\d+[-]\w+(?:\s+\S+){1,8}))\s+(?P<qty>\d+)\s+(?P<price_subtotal>\d+[,]\d{2})
+    types:
+      qty: float
+      price_unit: float
+      price_subtotal: float
+      taxpercent: float
+keywords:
+  - (?i)Accor
+  - 'BE\s0673\s923'
+  - 'Factuur'
+options:
+  currency: EUR
+  languages:
+    - nl
+    - be
+    - en
+  decimal_separator: ','      

@@ -1,15 +1,37 @@
 issuer: Namecheap, Inc.
 fields:
-  amount: Ordertotal\$(\d+\.\d+)
+  amount:
+    parser: regex
+    regex: TOTAL\s+[$](\d+\.\d+)
+    type: float
   date:
-    - Orderdate(\d+\­\d+\­\d{2})
+    parser: regex
+    regex: Order\sDate\s+[:]\s+(\d+.\d+.\d{4})
+    type: date
   invoice_number:
-    - Ordernumber(\d+)
+    parser: regex
+    regex: Order\sNumber\s+[:]\s(\d+)
+  partner_website:
+    parser: static
+    value: namecheap.com
+  partner_name:
+    parser: static
+    value:  Namecheap, Inc.
+  partner_city:
+    parser: regex
+    regex: Phoenix
+  partner_street:
+    parser: static
+    value: East Washington Street 305
+    partner_email:
+    parser: static
+    value:  support@namecheap.com
+country_code:
+    parser: static
+    value: US
 keywords:
-- NameSilo
-- 0818922
+- (?i)NameCheap
+- RECEIPT
 options:
-  remove_whitespace: true
+  remove_whitespace: false
   currency: USD
-  date_formats:
-    - '%Y-%m-%d'

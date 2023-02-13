@@ -1,0 +1,60 @@
+issuer: Digital River Ireland, Ltd.
+fields:
+  amount:
+    parser: regex
+    regex: Totaal [(]EUR[)]\s+(\d?.?\d{1,4}[,]\d{2})
+    type: float
+  amount_tax:
+    parser: regex
+    regex: Totale btw-kosten\s+(\d?.?\d{1,4}[,]\d{2})
+    type: float
+  date:
+    parser: regex
+    regex: 'Factuurdatum\s+(\d{1,2}[.]\d{1,2}[.]\d{4})'
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Factuurnummer\s+(\d+)
+  iban:
+    parser: regex
+    regex: '[A-Z]{2}\d{2}?\w{4}?\d{4}?\d{4}?\d{0,2}'
+  bic:
+    parser: regex
+    regex: '(?i)BIC[:]\s+(\w{8,11})'
+  static_vat: NL815471166B01
+  partner_website:
+    parser: static
+    value: lenovo.com
+  partner_name:
+    parser: static
+    value:  Digital River Ireland, Ltd.
+  country_code:
+    parser: static
+    value: ie
+  partner_city:
+    parser: regex
+    regex: Dublin
+  partner_street:
+    parser: static
+    value: Park Lane
+  narration:
+    parser: regex
+    regex: Volgnummer factuur:\s+\S+
+lines:
+    start: Productbeschrijving
+    end: (?i)Producttotaal
+    line: (?P<name>(\w+(?:\s+\S+){1,8}))\s+(?P<qty>\d)\s+(?P<price_subtotal>\d?[.]?\d+[,]\d{2})
+    types:
+      qty: float
+      price_unit: float
+      price_subtotal: float
+      taxpercent: float
+keywords:
+  - (?i)Digital\sRiver
+  - 'NL815471166B01'
+  - 'Factuur'
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','

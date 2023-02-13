@@ -7,6 +7,9 @@ fields:
   static_vat: NL855570477B01
   date_start: (\d{2}-\d{2}-\d{4}) tot
   date_end: tot (\d{2}-\d{2}-\d{4})
+  country_code:
+    parser: static
+    value: nl
 lines:
     start: (\d{2}-\d{2}-\d{4}) tot (\d{2}-\d{2}-\d{4})
     end: Totaal

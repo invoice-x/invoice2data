@@ -7,6 +7,9 @@ fields:
   date_due: Dit bedrag wordt omstreeks (\d{1,2}\s\w{3,8}\s\d{4})
   invoice_number: Rekeningnummer.\s+(\d+)
   static_vat: NL800755133B01
+  country_code:
+    parser: static
+    value: nl
 keywords:
   - NL800755133B01
 options:
