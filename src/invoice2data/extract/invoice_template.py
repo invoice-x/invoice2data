@@ -245,6 +245,7 @@ class InvoiceTemplate(OrderedDict):
                     output[k] = result
 
         output["currency"] = self.options["currency"]
+        output["options"] = self.options
 
         # Run plugins:
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
