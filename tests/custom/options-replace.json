@@ -1,0 +1,11 @@
+[
+    {
+        "issuer": "Options Replace Test",
+        "date": "2023-02-18",
+        "invoice_number": 1234,
+        "amount": 99.99,
+        "hamlet": "To be, or not to be: that is the question.",
+        "currency": "EUR",
+        "desc": "Invoice from Options Replace Test"
+    }
+]

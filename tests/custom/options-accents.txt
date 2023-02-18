@@ -1,0 +1,4 @@
+Issuer: Options Accents Test
+
+German: Tschüss
+Polish: Szczęście

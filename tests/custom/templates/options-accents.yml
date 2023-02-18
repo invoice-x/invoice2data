@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: MIT
+issuer: Options Accents Test
+keywords:
+  - Options Accents Test
+fields:
+  date:
+    parser: static
+    value: 2023-02-18
+  invoice_number:
+    parser: static
+    value: 1234
+  amount:
+    parser: static
+    value: 99.99
+  german:
+    parser: regex
+    regex: German:\s+(.*)
+  polish:
+    parser: regex
+    regex: Polish:\s+(.*)
+options:
+  currency: EUR
+  date_formats:
+    - '%Y-%m-%d'
+  remove_accents: true

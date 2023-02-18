@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: MIT
+issuer: Options Replace Test
+keywords:
+  - Options Replace Test
+fields:
+  date:
+    parser: static
+    value: 2023-02-18
+    type: date
+  invoice_number:
+    parser: static
+    value: 1234
+  amount:
+    parser: static
+    value: 99.99
+    type: float
+  hamlet:
+    parser: regex
+    regex: Hamlet:\s+"(.*)"
+options:
+  currency: EUR
+  replace:
+    - ['“', '"']
+    - ['„', '"']
+    - ['”', '"']

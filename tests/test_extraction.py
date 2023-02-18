@@ -51,7 +51,7 @@ class TestExtraction(unittest.TestCase):
 
                     res = extract_data(ifile, templates)
                     for key, value in res.items():
-                        if type(value) is datetime.datetime:
+                        if type(value) is datetime.datetime or type(value) is datetime.date:
                             res[key] = value.strftime('%Y-%m-%d')
                     res = [res]
                     with open(jfile) as json_file:

@@ -1,0 +1,12 @@
+[
+    {
+        "issuer": "Options Accents Test",
+        "date": "2023-02-18",
+        "invoice_number": 1234,
+        "amount": 99.99,
+        "german": "Tschuss",
+        "polish": "Szczescie",
+        "currency": "EUR",
+        "desc": "Invoice from Options Accents Test"
+    }
+]
