@@ -82,7 +82,7 @@ class InvoiceTemplate(OrderedDict):
 
         # Remove accents
         if self.options["remove_accents"]:
-            optimized_str = unicodedata.normalize('NFKD', optimized_str).encode('ascii', 'ignore').decode('ascii')
+            optimized_str = re.sub('[\u0300-\u0362]', '', unicodedata.normalize('NFKD', optimized_str))
 
         # Convert to lower case
         if self.options["lowercase"]:
