@@ -11,20 +11,14 @@ from .invoice_template import InvoiceTemplate
 logger = logging.getLogger(__name__)
 
 
-# borrowed from http://stackoverflow.com/a/21912744
-def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
-    """load mappings and ordered mappings
-
-    loader to load mappings and ordered mappings into the Python 2.7+ OrderedDict type,
-    instead of the vanilla dict and the list of pairs it currently uses.
-    """
-
-    class OrderedLoader(Loader):
+def ordered_load(stream):
+    # Simplified version of http://stackoverflow.com/a/21912744
+    class OrderedLoader(yaml.Loader):
         pass
 
     def construct_mapping(loader, node):
         loader.flatten_mapping(node)
-        return object_pairs_hook(loader.construct_pairs(node))
+        return OrderedDict(loader.construct_pairs(node))
 
     OrderedLoader.add_constructor(
         yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_mapping
