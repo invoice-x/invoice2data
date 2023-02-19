@@ -47,32 +47,35 @@ def read_templates(folder=None):
 
     for path, _, files in os.walk(folder):
         for name in sorted(files):
-            if name.endswith(".yml"):
-                with codecs.open(
-                    os.path.join(path, name), encoding="utf-8"
-                ) as template_file:
-                    try:
-                        template = ordered_load(template_file.read())
-                    except yaml.parser.ParserError as error:
-                        logger.warning("Failed to load %s template:\n%s", name, error)
-                        continue
-                template["template_name"] = name
+            if name.endswith(".yml") is False:
+                continue
 
-                # Test if all required fields are in template:
-                assert "keywords" in template.keys(), "Missing keywords field."
+            with codecs.open(
+                os.path.join(path, name), encoding="utf-8"
+            ) as template_file:
+                try:
+                    template = ordered_load(template_file.read())
+                except yaml.parser.ParserError as error:
+                    logger.warning("Failed to load %s template:\n%s", name, error)
+                    continue
 
-                # Keywords as list, if only one.
-                if type(template["keywords"]) is not list:
-                    template["keywords"] = [template["keywords"]]
+            template["template_name"] = name
 
-                # Define excluded_keywords as empty list if not provided
-                # Convert to list if only one provided
-                if "exclude_keywords" not in template.keys():
-                    template["exclude_keywords"] = []
-                elif type(template["exclude_keywords"]) is not list:
-                    template["exclude_keywords"] = [template["exclude_keywords"]]
+            # Test if all required fields are in template:
+            assert "keywords" in template.keys(), "Missing keywords field."
 
-                invoicetemplates.append(InvoiceTemplate(template))
+            # Keywords as list, if only one.
+            if type(template["keywords"]) is not list:
+                template["keywords"] = [template["keywords"]]
+
+            # Define excluded_keywords as empty list if not provided
+            # Convert to list if only one provided
+            if "exclude_keywords" not in template.keys():
+                template["exclude_keywords"] = []
+            elif type(template["exclude_keywords"]) is not list:
+                template["exclude_keywords"] = [template["exclude_keywords"]]
+
+            invoicetemplates.append(InvoiceTemplate(template))
 
     logger.info("Loaded %d templates from %s", len(invoicetemplates), folder)
 
