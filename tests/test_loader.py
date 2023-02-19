@@ -40,6 +40,15 @@ def test_template_with_missing_keywords_raises_valueerror(templatedirectory: Pat
     assert "keywords" in str(exc)
 
 
+def test_template_name_is_yaml_filename(templatedirectory: Path):
+    yamlfile = templatedirectory / "thisnameisimportant.yml"
+    yamlfile.write_text(template_with_single_special_char, encoding="utf-8")
+
+    templates = read_templates(str(templatedirectory))
+
+    assert templates[0]["template_name"] == "thisnameisimportant.yml"
+
+
 def test_template_with_single_specialchar_is_loaded(templatedirectory: Path):
     yamlfile = templatedirectory / "specialchartemplate.yml"
     yamlfile.write_text(template_with_single_special_char, encoding="utf-8")
