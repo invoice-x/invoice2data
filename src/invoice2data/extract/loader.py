@@ -61,18 +61,20 @@ def read_templates(folder=None):
 
             template["template_name"] = name
 
-            # Test if all required fields are in template:
-            assert "keywords" in template.keys(), "Missing keywords field."
+            # Test if all required fields are in template
+            if "keywords" not in template.keys():
+                raise ValueError("Missing mandatory 'keywords' field.")
 
-            # Keywords as list, if only one.
-            if type(template["keywords"]) is not list:
+            # Convert keywords to list, if only one
+            if not isinstance(template["keywords"], list):
                 template["keywords"] = [template["keywords"]]
 
-            # Define excluded_keywords as empty list if not provided
-            # Convert to list if only one provided
+            # Set excluded_keywords as empty list, if not provided
             if "exclude_keywords" not in template.keys():
                 template["exclude_keywords"] = []
-            elif type(template["exclude_keywords"]) is not list:
+
+            # Convert excluded_keywords to list, if only one
+            if not isinstance(template["exclude_keywords"], list):
                 template["exclude_keywords"] = [template["exclude_keywords"]]
 
             invoicetemplates.append(InvoiceTemplate(template))
