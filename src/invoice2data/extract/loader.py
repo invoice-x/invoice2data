@@ -53,7 +53,7 @@ def read_templates(folder: str = None):
             logger.warning(f"Failed to load {yamlfile.name} template:\n{error}")
             continue
 
-        template["template_name"] = yamlfile.name
+        template["template_name"] = yamlfile.stem
 
         # Test if all required fields are in template
         if "keywords" not in template.keys():
