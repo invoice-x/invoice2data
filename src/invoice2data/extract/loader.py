@@ -1,4 +1,3 @@
-import codecs
 import logging
 from collections import OrderedDict
 from pathlib import Path
@@ -48,12 +47,11 @@ def read_templates(folder: str = None):
     templatedirectory: Path = Path(folder)
 
     for yamlfile in sorted(templatedirectory.glob("**/*.yml")):
-        with codecs.open(str(yamlfile), encoding="utf-8") as templatefile:
-            try:
-                template = ordered_load(templatefile.read())
-            except yaml.parser.ParserError as error:
-                logger.warning(f"Failed to load {yamlfile.name} template:\n{error}")
-                continue
+        try:
+            template = ordered_load(yamlfile.read_text(encoding="utf-8"))
+        except yaml.parser.ParserError as error:
+            logger.warning(f"Failed to load {yamlfile.name} template:\n{error}")
+            continue
 
         template["template_name"] = yamlfile.name
 
