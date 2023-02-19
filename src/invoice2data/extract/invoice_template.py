@@ -11,8 +11,8 @@ import logging
 from collections import OrderedDict
 from . import parsers
 from .plugins import lines, tables
-# Area extraction is currently added for pdftotext and tesseract (which uses pdftotext)
-from ..input import pdftotext, tesseract
+# Area extraction is currently added for pdftotext, ocrmypdf and tesseract (which uses pdftotext)
+from ..input import pdftotext, ocrmypdf, tesseract
 from typing import Optional
 
 logger = logging.getLogger(__name__)
@@ -198,7 +198,7 @@ class InvoiceTemplate(OrderedDict):
             # v is the value
             if isinstance(v, dict):
                 # Options were supplied to this field
-                if "area" in v and input_module in (pdftotext, tesseract):
+                if "area" in v and input_module in (pdftotext, ocrmypdf, tesseract):
                     # Area is currently only supported for pdftotext
                     # area is optional and re-extracts the text being searched
                     # This obviously has a performance impact, so use wisely

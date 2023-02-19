@@ -15,6 +15,7 @@ from .input import pdfplumber
 from .input import tesseract
 from .input import gvision
 from .input import text
+from .input import ocrmypdf
 
 from invoice2data.extract.loader import read_templates
 
@@ -32,6 +33,7 @@ input_mapping = {
     "pdfplumber": pdfplumber,
     "gvision": gvision,
     "text": text,
+    "ocrmypdf": ocrmypdf,
 }
 
 output_mapping = {"csv": to_csv, "json": to_json, "xml": to_xml, "none": None}

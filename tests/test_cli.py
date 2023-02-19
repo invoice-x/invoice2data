@@ -256,6 +256,10 @@ class TestCLI(unittest.TestCase):
                 self.assertTrue(False, 'Failure in area rule')
             os.remove(test_file)
 
+    # todo add advanced test case (saeco)
+    # Where the pdf has to be ocr'd first
+    # before any keywords can be matched
+
 
 if __name__ == '__main__':
     unittest.main()
