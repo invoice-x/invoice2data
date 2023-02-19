@@ -7,11 +7,6 @@ from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import read_templates
 
 
-@pytest.fixture(autouse=True)
-def prepare_template(templatefile: Path) -> None:
-    templatefile.write_text(template_with_single_special_char, encoding="utf-8")
-
-
 @pytest.fixture
 def templatedirectory() -> Path:
     templatedirectory = Path("tests/templatedirectory/")
@@ -22,11 +17,6 @@ def templatedirectory() -> Path:
     shutil.rmtree(templatedirectory, ignore_errors=True)
 
 
-@pytest.fixture
-def templatefile(templatedirectory: Path) -> Path:
-    return templatedirectory / "template.yml"
-
-
 def test_default_templates_are_loaded():
     templates = read_templates()
 
@@ -34,10 +24,31 @@ def test_default_templates_are_loaded():
     assert all(isinstance(template, InvoiceTemplate) for template in templates)
 
 
+def test_template_with_missing_keywords_raises_valueerror(templatedirectory: Path):
+    yamlfile = templatedirectory / "specialchartemplate.yml"
+    yamlfile.write_text(template_with_missing_keywords, encoding="utf-8")
+
+    with pytest.raises(ValueError) as exc:
+        read_templates(str(templatedirectory))
+
+    assert "keywords" in str(exc)
+
+
 def test_template_with_single_specialchar_is_loaded(templatedirectory: Path):
+    yamlfile = templatedirectory / "specialchartemplate.yml"
+    yamlfile.write_text(template_with_single_special_char, encoding="utf-8")
+
     templates = read_templates(str(templatedirectory))
 
     assert templates[0]["fields"]["single_specialchar"]["value"] == "ä"
+
+
+template_with_missing_keywords = """
+fields:
+  foo:
+    parser: static
+    value: bar
+"""
 
 
 template_with_single_special_char = """

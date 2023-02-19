@@ -79,22 +79,24 @@ def read_templates(folder=None):
                         logger.warning("json Loader Failed to load %s template:\n%s", name, error)
             tpl["template_name"] = name
 
-            # Test if all required fields are in template:
-            assert "keywords" in tpl.keys(), "Missing keywords field."
+            # Test if all required fields are in template
+            if "keywords" not in tpl.keys():
+                raise ValueError("Missing mandatory 'keywords' field.")
 
-            # Keywords as list, if only one.
-            if type(tpl["keywords"]) is not list:
+            # Convert keywords to list, if only one
+            if not isinstance(tpl["keywords"], list):
                 tpl["keywords"] = [tpl["keywords"]]
 
-            # Define excluded_keywords as empty list if not provided
-            # Convert to list if only one provided
+            # Set excluded_keywords as empty list, if not provided
             if "exclude_keywords" not in tpl.keys():
                 tpl["exclude_keywords"] = []
-            elif type(tpl["exclude_keywords"]) is not list:
+
+            # Convert excluded_keywords to list, if only one
+            if not isinstance(tpl["exclude_keywords"], list):
                 tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
 
-            if 'priority' not in tpl.keys():
-                tpl['priority'] = 5
+            if "priority" not in tpl.keys():
+                tpl["priority"] = 5
 
             output.append(InvoiceTemplate(tpl))
 
