@@ -1,10 +1,12 @@
-import os
-import yaml
-import pkg_resources
-from collections import OrderedDict
-import logging
-from .invoice_template import InvoiceTemplate
 import codecs
+import logging
+import os
+from collections import OrderedDict
+
+import pkg_resources
+import yaml
+
+from .invoice_template import InvoiceTemplate
 
 logger = logging.getLogger(__name__)
 
