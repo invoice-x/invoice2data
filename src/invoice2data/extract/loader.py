@@ -37,43 +37,43 @@ def read_templates(folder=None):
 
     Returns
     -------
-    output : list of `InvoiceTemplate`
+    invoicetemplates : list of `InvoiceTemplate`
     """
 
-    output = []
+    invoicetemplates = []
 
     if folder is None:
         folder = pkg_resources.resource_filename(__name__, "templates")
 
-    for path, subdirs, files in os.walk(folder):
+    for path, _, files in os.walk(folder):
         for name in sorted(files):
             if name.endswith(".yml"):
                 with codecs.open(
                     os.path.join(path, name), encoding="utf-8"
                 ) as template_file:
                     try:
-                        tpl = ordered_load(template_file.read())
+                        template = ordered_load(template_file.read())
                     except yaml.parser.ParserError as error:
                         logger.warning("Failed to load %s template:\n%s", name, error)
                         continue
-                tpl["template_name"] = name
+                template["template_name"] = name
 
                 # Test if all required fields are in template:
-                assert "keywords" in tpl.keys(), "Missing keywords field."
+                assert "keywords" in template.keys(), "Missing keywords field."
 
                 # Keywords as list, if only one.
-                if type(tpl["keywords"]) is not list:
-                    tpl["keywords"] = [tpl["keywords"]]
+                if type(template["keywords"]) is not list:
+                    template["keywords"] = [template["keywords"]]
 
                 # Define excluded_keywords as empty list if not provided
                 # Convert to list if only one provided
-                if "exclude_keywords" not in tpl.keys():
-                    tpl["exclude_keywords"] = []
-                elif type(tpl["exclude_keywords"]) is not list:
-                    tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
+                if "exclude_keywords" not in template.keys():
+                    template["exclude_keywords"] = []
+                elif type(template["exclude_keywords"]) is not list:
+                    template["exclude_keywords"] = [template["exclude_keywords"]]
 
-                output.append(InvoiceTemplate(tpl))
+                invoicetemplates.append(InvoiceTemplate(template))
 
-    logger.info("Loaded %d templates from %s", len(output), folder)
+    logger.info("Loaded %d templates from %s", len(invoicetemplates), folder)
 
-    return output
+    return invoicetemplates
