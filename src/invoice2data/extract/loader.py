@@ -56,7 +56,7 @@ def read_templates(folder=None):
                 try:
                     template = ordered_load(template_file.read())
                 except yaml.parser.ParserError as error:
-                    logger.warning("Failed to load %s template:\n%s", name, error)
+                    logger.warning(f"Failed to load {name} template:\n{error}")
                     continue
 
             template["template_name"] = name
@@ -77,6 +77,6 @@ def read_templates(folder=None):
 
             invoicetemplates.append(InvoiceTemplate(template))
 
-    logger.info("Loaded %d templates from %s", len(invoicetemplates), folder)
+    logger.info(f"Loaded {len(invoicetemplates)} templates from {folder}")
 
     return invoicetemplates
