@@ -88,7 +88,11 @@ def extract_data(invoicefile, templates=None, input_module=None):
         else:
             input_module = pdftotext
 
-    extracted_str = input_module.to_text(invoicefile)
+    try:
+        extracted_str = input_module.to_text(invoicefile)
+    except Exception as e:
+        logger.error("Error has occured %s", e)
+        return False
     if not isinstance(extracted_str, str) or not extracted_str.strip():
         logger.error("Failed to extract text from %s using %s", invoicefile, input_module.__name__)
         return False
@@ -235,7 +239,11 @@ def main(args=None):
         templates += read_templates()
     output = []
     for f in args.input_files:
-        res = extract_data(f.name, templates=templates, input_module=input_module)
+        try:
+            res = extract_data(f.name, templates=templates, input_module=input_module)
+        except Exception as e:
+            logger.error("Error has occured %s", e)
+            continue
         if res:
             logger.info(res)
             output.append(res)

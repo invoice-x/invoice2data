@@ -19,7 +19,8 @@ def to_text(path):
     try:
         import pdfplumber
     except ImportError:
-        logger.debug("Cannot import pdfplumber")
+        logger.error("Cannot import pdfplumber")
+        raise ImportError("Cannot import pdfplumber")
 
     raw_text = ""
     raw_text = raw_text.encode(encoding='UTF-8')
