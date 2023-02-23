@@ -24,6 +24,17 @@ from invoice2data.output import to_csv, to_json, to_xml
 from .common import get_sample_files
 
 
+def have_pdfplumber():
+    try:
+        import pdfplumber  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
+needs_pdfplumber = unittest.skipIf(not have_pdfplumber(), reason="requires pdfplumber\n")
+
+
 def _extract_data_for_export():
     pdf_files = get_sample_files('.pdf')
     for file in pdf_files:
@@ -87,6 +98,7 @@ class TestLIB(unittest.TestCase):
                 self.assertTrue(False, "pdfminer is not installed")
                 self.assertTrue(type(res) is str, "return is not a string")
 
+    @needs_pdfplumber
     def test_extract_data_pdfplumber(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
