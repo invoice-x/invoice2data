@@ -98,16 +98,31 @@ def extract_data(invoicefile, templates=None, input_module=None):
 
     if templates is None:
         templates = read_templates()
-    templates = filter(lambda t: t.matches_input(extracted_str), templates)
-    templates = sorted(templates, key=lambda k: k['priority'], reverse=True)
-    if not templates:
-        logger.error("No template for %s", invoicefile)
-        return False
+    templates_matched = filter(lambda t: t.matches_input(extracted_str), templates)
+    templates_matched = sorted(templates_matched, key=lambda k: k['priority'], reverse=True)
+    if not templates_matched:
+        if ocrmypdf.have_ocrmypdf() and input_module is not ocrmypdf:
+            logger.debug("Text extraction failed, falling back to ocrmypdf")
+            extracted_str, invoicefile, templates_matched = extract_data_fallback_ocrmypdf(invoicefile, templates)
+            if not templates_matched:
+                logger.error("No template for %s", invoicefile)
+                return False
+        else:
+            logger.error("No template for %s", invoicefile)
+            return False
 
-    t = templates[0]
+    t = templates_matched[0]
     logger.info("Using %s template", t["template_name"])
     optimized_str = t.prepare_input(extracted_str)
     return t.extract(optimized_str, invoicefile, input_module)
+
+
+def extract_data_fallback_ocrmypdf(invoicefile, templates):
+    logger.debug("Text extraction failed, falling back to ocrmypdf")
+    extracted_str = ocrmypdf.to_text(invoicefile)
+    templates_matched = filter(lambda t: t.matches_input(extracted_str), templates)
+    templates_matched = sorted(templates_matched, key=lambda k: k['priority'], reverse=True)
+    return extracted_str, invoicefile, templates_matched
 
 
 def create_parser():
