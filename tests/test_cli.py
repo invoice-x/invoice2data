@@ -300,6 +300,35 @@ class TestCLI(unittest.TestCase):
                 self.assertTrue(False, "Failure in ocrmypdf test")
             os.remove(test_file)
 
+    # Test the fallback from pdf to text to ocrmypdf.
+    # with ocrmypdf installed
+
+    @needs_ocrmypdf
+    def test_fallback_with_ocrmypdf(self):
+        pdf_files = get_sample_files("saeco.pdf", exclude_input_specific=False)
+        test_file = "test_fallback_ocrmypdf.json"
+        for pfile in pdf_files:
+            args = self.parser.parse_args(
+                [
+                    "--output-name",
+                    test_file,
+                    "--input-reader",
+                    "pdftotext",
+                    "--output-format",
+                    "json",
+                    "--output-date-format",
+                    "%Y-%m-%d",
+                    pfile,
+                ]
+            )
+            main(args)
+            with open(test_file) as json_test_file:
+                jdatatest = json.load(json_test_file)
+            compare_verified = jdatatest[0]["date"] == "2022-09-08"
+            if not compare_verified:
+                self.assertTrue(False, "Failure in fallback to ocrmypdf test with ocrmypdf installed")
+            os.remove(test_file)
+
 
 if __name__ == '__main__':
     unittest.main()
