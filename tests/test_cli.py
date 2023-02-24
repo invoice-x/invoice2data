@@ -30,6 +30,17 @@ from invoice2data.extract.loader import read_templates
 from .common import get_sample_files, exclude_template, inputparser_specific
 
 
+def have_ocrmypdf():
+    try:
+        import ocrmypdf  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
+needs_ocrmypdf = unittest.skipIf(not have_ocrmypdf(), reason="requires ocrmypdf")
+
+
 class TestCLI(unittest.TestCase):
     def setUp(self):
         self.templates = read_templates()
@@ -259,9 +270,35 @@ class TestCLI(unittest.TestCase):
                 self.assertTrue(False, 'Failure in area rule')
             os.remove(test_file)
 
-    # todo add advanced test case (saeco)
+    # advanced test case (saeco)
     # Where the pdf has to be ocr'd first
     # before any keywords can be matched
+
+    @needs_ocrmypdf
+    def test_ocrmypdf(self):
+        pdf_files = get_sample_files("saeco.pdf", exclude_input_specific=False)
+        test_file = "test_ocrmypdf.json"
+        for pfile in pdf_files:
+            args = self.parser.parse_args(
+                [
+                    "--output-name",
+                    test_file,
+                    "--input-reader",
+                    "ocrmypdf",
+                    "--output-format",
+                    "json",
+                    "--output-date-format",
+                    "%Y-%m-%d",
+                    pfile,
+                ]
+            )
+            main(args)
+            with open(test_file) as json_test_file:
+                jdatatest = json.load(json_test_file)
+            compare_verified = jdatatest[0]["date"] == "2022-09-08"
+            if not compare_verified:
+                self.assertTrue(False, "Failure in ocrmypdf test")
+            os.remove(test_file)
 
 
 if __name__ == '__main__':
