@@ -1,6 +1,7 @@
 import shutil
 from pathlib import Path
 
+import os
 import pytest
 
 from invoice2data.extract.invoice_template import InvoiceTemplate
@@ -20,7 +21,12 @@ def templatedirectory() -> Path:
 def test_default_templates_are_loaded():
     templates = read_templates()
 
-    assert len(templates) == 165
+    builtin_tpl_folder = "./src/invoice2data/extract/templates"
+    qty_templ_files = sum(len(files) for _, _, files in os.walk(builtin_tpl_folder))
+
+    print("Amount of loaded templates %s" % len(templates))
+    print("Amount of template files %s" % qty_templ_files)
+    assert len(templates) == qty_templ_files
     assert all(isinstance(template, InvoiceTemplate) for template in templates)
 
 
