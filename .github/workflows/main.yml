@@ -20,7 +20,8 @@ jobs:
     - name: Install system dependencies (Linux)
       run: |
         sudo apt update
-        sudo apt install tesseract-ocr poppler-utils imagemagick
+        sudo apt install tesseract-ocr poppler-utils imagemagick ghostscript
+        pip install -U ocrmypdf
     - name: Install testing dependencies
       run: |
         pip install -U wheel pip
