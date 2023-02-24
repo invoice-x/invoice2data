@@ -27,7 +27,7 @@ import pkg_resources
 from invoice2data.main import create_parser, main
 from invoice2data.extract.loader import read_templates
 
-from .common import get_sample_files, exclude_template
+from .common import get_sample_files, exclude_template, inputparser_specific
 
 
 class TestCLI(unittest.TestCase):
@@ -183,6 +183,9 @@ class TestCLI(unittest.TestCase):
             for file in files:
                 root, ext = os.path.splitext(file)
                 if "AzureInterior" in file:
+                    continue
+                if inputparser_specific(file):
+                    print("input parser specific file found!!!")
                     continue
                 if root not in data:
                     data[root] = {}
