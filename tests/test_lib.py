@@ -17,9 +17,10 @@ try:
 except ImportError:
     from io import StringIO  # noqa: F401
 import unittest
+from unittest import mock
 
 from invoice2data.main import extract_data
-from invoice2data.input import pdftotext, tesseract, pdfminer_wrapper, pdfplumber
+from invoice2data.input import pdftotext, tesseract, pdfminer_wrapper, pdfplumber, ocrmypdf
 from invoice2data.output import to_csv, to_json, to_xml
 from .common import get_sample_files
 
@@ -111,6 +112,18 @@ class TestLIB(unittest.TestCase):
                 self.assertTrue(False, "Tesseract returned None")
             else:
                 self.assertTrue(True)
+
+    def test_have_ocrmypdf_unavailable(self):
+        with mock.patch.dict('sys.modules', {'ocrmypdf': None}):
+            have = ocrmypdf.have_ocrmypdf()
+            print("ocrmypdf should not be available have is %s" % have)
+            self.assertFalse(have, "ocrmypdf is NOT installed")
+
+    def test_haveocrmypdf_available(self):
+        with mock.patch.dict('sys.modules', {'ocrmypdf': True}):
+            have = ocrmypdf.have_ocrmypdf()
+            print("ocrmypdf should be available have is %s" % have)
+            self.assertTrue(have, "ocrmypdf is installed")
 
 
 if __name__ == '__main__':
