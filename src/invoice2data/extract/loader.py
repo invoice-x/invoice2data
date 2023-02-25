@@ -81,7 +81,11 @@ def read_templates(folder=None):
 
             # Test if all required fields are in template
             if "keywords" not in tpl.keys():
-                raise ValueError("Missing mandatory 'keywords' field.")
+                logger.warning(
+                    "Failed to load template %s Missing mandatory 'keywords' field.",
+                    name,
+                )
+                continue
 
             # Convert keywords to list, if only one
             if not isinstance(tpl["keywords"], list):
