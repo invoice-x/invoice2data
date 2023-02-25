@@ -56,6 +56,23 @@ def test_template_with_single_specialchar_is_loaded(templatedirectory: Path):
     assert templates[0]["fields"]["single_specialchar"]["value"] == "ä"
 
 
+def test_template_with_keyword_is_not_list(templatedirectory: Path):
+    yamlfile = templatedirectory / "keywordnotlist.yml"
+    yamlfile.write_text(template_keyword_not_list, encoding="utf-8")
+
+    tpl = read_templates(str(templatedirectory))
+    assert tpl[0]["keywords"] == ['Basic Test']
+
+
+def test_template_with_exclude_keyword_is_not_list(templatedirectory: Path):
+    yamlfile = templatedirectory / "excludekeywordnotlist.yml"
+    yamlfile.write_text(template_exclude_keyword_not_list, encoding="utf-8")
+
+    tpl = read_templates(str(templatedirectory))
+
+    assert tpl[0]["exclude_keywords"] == ['Exclude_this']
+
+
 template_with_missing_keywords = """
 fields:
   foo:
@@ -71,4 +88,15 @@ fields:
   single_specialchar:
     parser: static
     value: ä
+"""
+
+
+template_keyword_not_list = """
+keywords: Basic Test
+"""
+
+
+template_exclude_keyword_not_list = """
+keywords: Basic Test
+exclude_keywords: Exclude_this
 """
