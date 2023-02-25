@@ -30,14 +30,12 @@ def test_default_templates_are_loaded():
     assert all(isinstance(template, InvoiceTemplate) for template in templates)
 
 
-def test_template_with_missing_keywords_raises_valueerror(templatedirectory: Path):
-    yamlfile = templatedirectory / "specialchartemplate.yml"
+def test_template_with_missing_keywords_is_not_loaded(templatedirectory: Path):
+    yamlfile = templatedirectory / "template_with_missing_keywords.yml"
     yamlfile.write_text(template_with_missing_keywords, encoding="utf-8")
 
-    with pytest.raises(ValueError) as exc:
-        read_templates(str(templatedirectory))
-
-    assert "keywords" in str(exc)
+    templates = read_templates(str(templatedirectory))
+    assert templates == []
 
 
 def test_template_name_is_yaml_filename(templatedirectory: Path):
