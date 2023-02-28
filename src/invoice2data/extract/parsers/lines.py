@@ -23,7 +23,9 @@ def parse_line(patterns, line):
 
 def parse_block(template, field, settings, content):
     # Validate settings
-    assert "line" in settings, "Line regex missing"
+    assert "line" in settings, (
+        "Error in Template %s Line regex missing" % template["template_name"]
+    )
 
     logger.debug(
         "START lines block content ========================\n%s", content
@@ -125,8 +127,12 @@ def parse_by_rule(template, field, rule, content):
     settings.update(rule)
 
     # Validate settings
-    assert "start" in settings, "Lines start regex missing"
-    assert "end" in settings, "Lines end regex missing"
+    assert "start" in settings, (
+        "Error in Template %s Lines start regex missing" % template["template_name"]
+    )
+    assert "end" in settings, (
+        "Error in Template %s Lines end regex missing" % template["template_name"]
+    )
 
     blocks_count = 0
     lines = []

@@ -63,7 +63,10 @@ class InvoiceTemplate(OrderedDict):
             self.options.update(self["options"])
 
         for lang in self.options["languages"]:
-            assert len(lang) == 2, "lang code must have 2 letters"
+            assert len(lang) == 2, (
+                "Error in Template %s lang code must have 2 letters"
+                % self["template_name"]
+            )
 
         # Set issuer, if it doesn't exist.
         if "issuer" not in self.keys():
@@ -90,7 +93,10 @@ class InvoiceTemplate(OrderedDict):
 
         # Specific replace
         for replace in self.options["replace"]:
-            assert len(replace) == 2, "A replace should be a list of exactly 2 elements."
+            assert len(replace) == 2, (
+                "Error in Template %s A replace should be a list of exactly 2 elements."
+                % self["template_name"]
+            )
             optimized_str = re.sub(replace[0], replace[1], optimized_str)
 
         return optimized_str
@@ -121,9 +127,10 @@ class InvoiceTemplate(OrderedDict):
             return False
 
     def parse_number(self, value):
-        assert (
-            value.count(self.options["decimal_separator"]) < 2
-        ), "Decimal separator cannot be present several times"
+        assert value.count(self.options["decimal_separator"]) < 2, (
+            "Error in Template %s Decimal separator cannot be present several times"
+            % self["template_name"]
+        )
         # replace decimal separator by a |
         amount_pipe = value.replace(self.options["decimal_separator"], "|")
         # remove all possible thousands separators
