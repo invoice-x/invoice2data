@@ -59,11 +59,11 @@ class InvoiceTemplate(OrderedDict):
         # Merge template-specific options with defaults
         self.options = OPTIONS_DEFAULT.copy()
 
-        for lang in self.options["languages"]:
-            assert len(lang) == 2, "lang code must have 2 letters"
-
         if "options" in self:
             self.options.update(self["options"])
+
+        for lang in self.options["languages"]:
+            assert len(lang) == 2, "lang code must have 2 letters"
 
         # Set issuer, if it doesn't exist.
         if "issuer" not in self.keys():
