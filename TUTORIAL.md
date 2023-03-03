@@ -2,7 +2,7 @@
 
 A template defines which data attributes you wish to retrieve from an
 invoice. Each template should work on all invoices of a company or
-subsidiary (e.g. Amazon Germany vs Amazon US).
+subsidiary (e.g. Amazon Germany vs Amazon US).
 
 Adding templates is easy and shouldn't take longer than adding 2-3
 invoices by hand. We use a simple YML-format. Many options are optional
@@ -77,7 +77,7 @@ only required property is `regex` that has to contain one or multiple
 (specified using array) regexes.
 
 It's not required to put add the whole regex to the capturing group.
-Often we use keywords and only capture part of the match (e.g. the
+Often we use keywords and only capture part of the match (e.g. the
 amount).
 
 You will need to understand regular expressions to find the right
@@ -87,7 +87,7 @@ you can learn about them
 here](http://www.regexr.com/). We use [Python's regex
 engine](https://docs.python.org/2/library/re.html). It won't matter for
 the simple expressions we need, but sometimes there are subtle
-differences when e.g. coming from Perl.
+differences when e.g. coming from Perl.
 
 By default `regex` parser removes all duplicated matches. It results a
 single value or an array (depending an amount of unique matches found).
@@ -97,7 +97,7 @@ Optional properties:
 - `type` (if present must be one of: `int`, `float`, `date`) -results
   in parsing every matched value to a specified type
 - `group` (if present must be one of: `sum`, `min`, `max`, `first`,
-  `last`) - specifies grouping function (defines what value to return in
+  `last`, join) - specifies grouping function (defines what value to return in
   case of multiple matches)
 
 Example for `regex`:

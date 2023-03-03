@@ -57,6 +57,8 @@ def parse(template, field, settings, content, legacy=False):
             result = result[0]
         elif settings["group"] == "last":
             result = result[-1]
+        elif settings["group"] == "join":
+            result = " ".join(str(v) for v in result)
         else:
             logger.warning("Unsupported grouping method: " + settings["group"])
             return None
