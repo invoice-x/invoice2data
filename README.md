@@ -182,6 +182,14 @@ The lines package has multiple settings:
 - skip_line > Optional. If first_line is passed, this pattern indicates which sub-lines will be skipped and their data not recorded. This is useful if tables span multiple pages and you need to skip over page numbers or headers that appear mid-table.
 - last_line > Optional. If first_line is passed, this pattern denotes the final line of the sub-lines and is included in the output data.
 
+:warning: Invoice2data uses a yaml templating system. The yaml templates are loaded with [pyyaml](https://github.com/yaml/pyyaml) which is a pure python implementation. (thus rather slow)
+As an alternative json templates can be used. Which are natively better supported by python.
+
+The performance with yaml templates can be greatly increased **10x** by using [libyaml](https://github.com/yaml/libyaml)
+It can be installed on most distributions by:
+`sudo apt-get libyaml-dev`
+
+
 ## Development
 
 If you are interested in improving this project, have a look at our
