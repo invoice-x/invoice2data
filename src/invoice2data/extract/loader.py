@@ -5,7 +5,10 @@ Templates are initially read from .yml files and then kept as class.
 """
 
 import os
-import yaml
+try:
+    from yaml import load, YAMLError, CSafeLoader as SafeLoader
+except ImportError:  # pragma: no cover
+    from yaml import load, SafeLoader, YAMLError
 import pkg_resources
 import logging
 from .invoice_template import InvoiceTemplate
@@ -64,8 +67,8 @@ def read_templates(folder=None):
             ) as template_file:
                 if name.endswith(".yml"):
                     try:
-                        tpl = ordered_load(template_file.read())
-                    except yaml.parser.ParserError as error:
+                        tpl = load(template_file.read(), Loader=SafeLoader)
+                    except YAMLError as error:
                         logger.warning("Failed to load %s template:\n%s", name, error)
                         continue
 
