@@ -1,10 +1,11 @@
 """
 This module abstracts templates for invoice providers.
 
-Templates are initially read from .yml files and then kept as class.
+Templates are initially read from .yml or .json files and then kept as class.
 """
 
 import os
+import json
 try:
     from yaml import load, YAMLError, CSafeLoader as SafeLoader
 except ImportError:  # pragma: no cover
@@ -71,7 +72,11 @@ def read_templates(folder=None):
                     except YAMLError as error:
                         logger.warning("Failed to load %s template:\n%s", name, error)
                         continue
-
+                else:
+                    try:
+                        tpl = json.loads(template_file.read())
+                    except ValueError as error:
+                        logger.warning("json Loader Failed to load %s template:\n%s", name, error)
             tpl["template_name"] = name
 
             # Test if all required fields are in template:

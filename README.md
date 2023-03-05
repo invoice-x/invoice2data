@@ -10,7 +10,7 @@ process.
 1. extracts text from PDF files using different techniques, like
    `pdftotext`, `text`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, or
    `gvision` (Google Cloud Vision).
-2. searches for regex in the result using a YAML-based template system
+2. searches for regex in the result using a YAML or JSON-based template system
 3. saves results as CSV, JSON or XML or renames PDF files to match the content.
 
 With the flexible template system you can:
@@ -138,7 +138,7 @@ the list to add your own. If deployed by a bigger organisation, there
 should be an interface to edit templates for new suppliers. 80-20 rule.
 For a short tutorial on how to add new templates, see [TUTORIAL.md](TUTORIAL.md).
 
-Templates are based on Yaml. They define one or more keywords to find
+Templates are based on Yaml or JSON. They define one or more keywords to find
 the right template, one or more exclude_keywords to further narrow it down
 and regexp for fields to be extracted. They could also be a static value,
 like the full company name.
