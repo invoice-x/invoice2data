@@ -1,0 +1,49 @@
+issuer: ExpressVPN
+fields:
+  amount:
+    parser: regex
+    regex: '[$]\s\d{2}[.]\d{2}\s+[$]\s(\d{2}[.]\d{2})'
+    type: float
+    # amount_untaxed: '[$]\s\d{2}[.]\d{2}\s+[$]\s(\d{2}[.]\d{2})'
+  invoice_number:
+    parser: regex
+    regex: Invoice No. \#(\d+)
+  partner_name:
+    parser: static
+    value: ExpressVPN
+  partner_website:
+    parser: static
+    value: expressvpn.com
+  country_code:
+    parser: static
+    value: us
+  lines:
+    parser: lines
+    start: 'Status\s+'
+    end: '\Z'
+    line:
+      - '(?P<name>\w+)\s[(](?P<date_start>\w{3}\s\d{2},\s\d{4})\sto\s(?P<date_end>\w{3}\s\d{2},\s\d{4})[)]\s+[$]\s(?P<price_unit>\d{2}[.]\d{2})\s+[$]\s(?P<amount>\d{2}[.]\d{0,2})'
+    types:
+      price_unit: float
+      amount: float
+      date_start: date
+      date_end: date
+tables:
+  - start: Date\s+
+    end: 'Qty'
+    body: '(?P<date>\w{3}\s\d{2},\s\d{4})'
+  - start: Status\s+
+    end: '\Z'
+    body: '(?P<name>\w+)\s[(](?P<date_start>\w{3}\s\d{2},\s\d{4})\sto\s(?P<date_end>\w{3}\s\d{2},\s\d{4})[)]\s+[$]\s(?P<price_unit>\d{2}[.]\d{2})\s+[$]\s(?P<amount>\d{2}[.]\d{0,2})'
+keywords:
+  - ExpressVPN
+  - Invoice
+  - $
+options:
+  currency: USD
+  date_formats:
+    - '%Y-%m-%d'
+  languages:
+    - en
+  decimal_separator: '.'
+priority: 6
