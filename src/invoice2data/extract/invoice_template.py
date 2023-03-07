@@ -280,4 +280,6 @@ class InvoiceTemplate(OrderedDict):
                     required_fields, fields
                 )
             )
+            missing = set(required_fields) - set(fields)
+            raise ValueError("Unable to parse required field(s): {0}".format(missing))
             return None
