@@ -69,8 +69,15 @@ def test_template_with_exclude_keyword_is_not_list(templatedirectory: Path):
     yamlfile.write_text(template_exclude_keyword_not_list, encoding="utf-8")
 
     tpl = read_templates(str(templatedirectory))
-
     assert tpl[0]["exclude_keywords"] == ['Exclude_this']
+
+
+def test_template_bad_yaml_format_not_loaded(templatedirectory: Path):
+    yamlfile = templatedirectory / "template_bad_yaml.yml"
+    yamlfile.write_text(template_bad_yaml, encoding="utf-8")
+
+    tpl = read_templates(str(templatedirectory))
+    assert tpl == [], "Bad Yaml Template is loaded!"
 
 
 template_with_missing_keywords = """
@@ -99,4 +106,12 @@ keywords: Basic Test
 template_exclude_keyword_not_list = """
 keywords: Basic Test
 exclude_keywords: Exclude_this
+"""
+
+
+template_bad_yaml = """
+keywords: Basic Test
+exclude_keywords Exclude_this
+options:
+  language: EN
 """
