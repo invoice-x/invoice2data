@@ -50,7 +50,7 @@ def to_text(path: str, area_details: dict = None):
         cmd += [path, "-"]
         # Run the extraction
         out, err = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()
-        return out
+        return out.decode('utf-8')
     else:
         raise EnvironmentError(
             "pdftotext not installed. Can be downloaded from https://poppler.freedesktop.org/"

@@ -53,4 +53,4 @@ def to_text(path):
     device.close()
     out = retstr.getvalue()
     retstr.close()
-    return out.encode("utf-8")
+    return out

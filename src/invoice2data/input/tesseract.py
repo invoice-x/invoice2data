@@ -142,7 +142,7 @@ def to_text(path: str, area_details: dict = None):
     except TimeoutExpired:
         p3.kill()
         logger.warning("pdftotext took too long - skipping")
-    return extracted_str
+    return extracted_str.decode('utf-8')
 
 
 def get_languages():

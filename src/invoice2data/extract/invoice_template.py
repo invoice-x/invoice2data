@@ -206,7 +206,7 @@ class InvoiceTemplate(OrderedDict):
                     logger.debug(f"Area was specified with parameters {v['area']}")
                     # Extract the text for the specified area
                     # Do NOT overwrite optimized_str. We're inside a loop and it will affect all other fields!
-                    optimized_str_area = input_module.to_text(invoice_file, v['area']).decode("utf-8")
+                    optimized_str_area = input_module.to_text(invoice_file, v['area'])
                     # Log the text
                     logger.debug("START pdftotext area result ===========================\n%s", optimized_str_area)
                     logger.debug("END pdftotext area result =============================")
