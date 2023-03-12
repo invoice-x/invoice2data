@@ -84,4 +84,4 @@ def to_text(path, bucket_name="cloud-vision-84893", language="en"):
     first_page_response = response.responses[0]
     annotation = first_page_response.full_text_annotation
 
-    return annotation.text.encode("utf-8")
+    return annotation.text
