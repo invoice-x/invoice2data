@@ -38,7 +38,7 @@ def to_text(path):
     logger.debug("Text extraction made with pdfplumber")
 
     raw_text = res_to_raw_text(res)
-    return raw_text.encode("utf-8")
+    return raw_text
 
 
 def res_to_raw_text(res):

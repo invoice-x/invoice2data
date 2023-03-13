@@ -23,8 +23,14 @@ def parse_line(patterns, line):
 
 def parse_block(template, field, settings, content):
     # Validate settings
-    assert "line" in settings, "Line regex missing"
+    assert "line" in settings, (
+        "Error in Template %s Line regex missing" % template["template_name"]
+    )
 
+    logger.debug(
+        "START lines block content ========================\n%s", content
+    )
+    logger.debug("END lines block content ==========================")
     lines = []
     current_row = {}
 
@@ -121,8 +127,12 @@ def parse_by_rule(template, field, rule, content):
     settings.update(rule)
 
     # Validate settings
-    assert "start" in settings, "Lines start regex missing"
-    assert "end" in settings, "Lines end regex missing"
+    assert "start" in settings, (
+        "Error in Template %s Lines start regex missing" % template["template_name"]
+    )
+    assert "end" in settings, (
+        "Error in Template %s Lines end regex missing" % template["template_name"]
+    )
 
     blocks_count = 0
     lines = []
@@ -131,12 +141,13 @@ def parse_by_rule(template, field, rule, content):
     while True:
         start = re.search(settings["start"], content)
         if not start:
+            logger.debug("Failed to find the lines block start")
             break
         content = content[start.end():]
 
         end = re.search(settings["end"], content)
         if not end:
-            logger.warning("Failed to find lines block end")
+            logger.debug("Failed to find lines block end")
             break
 
         blocks_count += 1
@@ -162,7 +173,8 @@ def parse(template, field, settings, content):
         rules = [{k: v for k, v in settings.items() if k in keys}]
 
     lines = []
-    for rule in rules:
+    for i, rule in enumerate(rules):
+        logger.debug("Testing Rules set #%s", i)
         new_lines = parse_by_rule(template, field, rule, content)
         if new_lines is not None:
             lines += new_lines

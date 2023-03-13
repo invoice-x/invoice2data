@@ -86,7 +86,7 @@ def extract_data(invoicefile, templates=None, input_module=None):
         else:
             input_module = pdftotext
 
-    extracted_str = input_module.to_text(invoicefile).decode("utf-8")
+    extracted_str = input_module.to_text(invoicefile)
     if not isinstance(extracted_str, str) or not extracted_str.strip():
         logger.error("Failed to extract text from %s using %s", invoicefile, input_module.__name__)
         return False

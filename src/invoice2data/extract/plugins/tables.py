@@ -21,9 +21,15 @@ def extract(self, content, output):
         table = plugin_settings
 
         # Validate settings
-        assert "start" in table, "Table start regex missing"
-        assert "end" in table, "Table end regex missing"
-        assert "body" in table, "Table body regex missing"
+        assert "start" in table, (
+            "Error in Template %s Table start regex missing" % self["template_name"]
+        )
+        assert "end" in table, (
+            "Error in Template %s Table end regex missing" % self["template_name"]
+        )
+        assert "body" in table, (
+            "Error in Template %s Table body regex missing" % self["template_name"]
+        )
 
         start = re.search(table["start"], content)
         end = re.search(table["end"], content)
