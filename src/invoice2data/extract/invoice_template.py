@@ -223,11 +223,11 @@ class InvoiceTemplate(OrderedDict):
                         if value:
                             output[k] = value
                         else:
-                            logger.error("Failed to parse field %s with parser %s", k, v["parser"])
+                            logger.warning("Failed to parse field %s with parser %s", k, v["parser"])
                     else:
-                        logger.warning("Field %s has unknown parser %s set", k, v["parser"])
+                        logger.error("Field %s has unknown parser %s set", k, v["parser"])
                 else:
-                    logger.warning("Field %s doesn't have parser specified", k)
+                    logger.error("Field %s doesn't have parser specified", k)
             elif k.startswith("static_"):
                 logger.debug("field=%s | static value=%s", k, v)
                 output[k.replace("static_", "")] = v
