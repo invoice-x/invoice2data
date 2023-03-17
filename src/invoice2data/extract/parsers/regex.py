@@ -47,6 +47,7 @@ def parse(template, field, settings, content, legacy=False):
             result[k] = template.coerce_type(v, settings["type"])
 
     if "group" in settings:
+        result = list(filter(None, result))
         if settings["group"] == "sum":
             result = sum(result)
         elif settings["group"] == "min":
