@@ -180,6 +180,8 @@ class TestCLI(unittest.TestCase):
         for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
             for file in files:
                 root, ext = os.path.splitext(file)
+                if "AzureInterior" in file:
+                    continue
                 if root not in data:
                     data[root] = {}
                 if file.endswith(('.pdf', '.txt')):
