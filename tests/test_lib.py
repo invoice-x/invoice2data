@@ -103,6 +103,7 @@ class TestLIB(unittest.TestCase):
     def test_extract_data_pdfplumber(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
+            print("Testing pdfplumber with file", file)
             extract_data(file, None, pdfplumber)
 
     def test_tesseract_for_return(self):
