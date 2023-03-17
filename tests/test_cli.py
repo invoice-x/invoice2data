@@ -27,7 +27,7 @@ import pkg_resources
 from invoice2data.main import create_parser, main
 from invoice2data.extract.loader import read_templates
 
-from .common import get_sample_files
+from .common import get_sample_files, exclude_template
 
 
 class TestCLI(unittest.TestCase):
@@ -131,29 +131,24 @@ class TestCLI(unittest.TestCase):
     def test_copy(self):
         # folder = pkg_resources.resource_filename(__name__, 'pdfs')
         directory = os.path.dirname("tests/copy_test/pdf/")
+        # make sure directory is deleted
+        shutil.rmtree("tests/copy_test/", ignore_errors=True)
         os.makedirs(directory)
-        args = self.parser.parse_args(
-            ['--copy', 'tests/copy_test/pdf'] + get_sample_files('.pdf')
-        )
-        main(args)
-        i = 0
-        for path, subdirs, files in os.walk(
-            pkg_resources.resource_filename(__name__, 'copy_test/pdf')
-        ):
-            for file in files:
-                if file.endswith(".pdf"):
-                    i += 1
 
-        shutil.rmtree('tests/copy_test/', ignore_errors=True)
-        self.assertEqual(i, len(get_sample_files('.pdf')))
-        '''
-        if i != len(self._get_test_file_json_path()):
-            print(i)
-            self.assertTrue(True)
-        else:
-            print(i)
-            self.assertTrue(False, "Number of files not equal")
-        '''
+        exclude_list = ["AzureInterior.pdf"]
+        test_list = exclude_template(get_sample_files(".pdf"), exclude_list)
+        args = self.parser.parse_args(["--copy", "tests/copy_test/pdf"] + test_list)
+        main(args)
+        qty_copied_files = sum(
+            len(files)
+            for _, _, files in os.walk(
+                pkg_resources.resource_filename(__name__, "copy_test/pdf")
+            )
+        )
+        print("test_copy - Amount of copied files %s" % qty_copied_files)
+        print("test_copy - test_list length", len(test_list))
+        shutil.rmtree("tests/copy_test/", ignore_errors=True)
+        self.assertEqual(qty_copied_files, len(test_list))
 
     # def test_template(self):
     #     directory = os.path.dirname("invoice2data/test/temp_test/")

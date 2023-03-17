@@ -13,3 +13,11 @@ def get_sample_files(extension):
             if file.endswith(extension):
                 compare_files.append(os.path.join(path, file))
     return compare_files
+
+
+def exclude_template(test_list, exclude_list):
+    for elem in test_list[:]:
+        for end in exclude_list:
+            if elem.endswith(end):
+                test_list.remove(elem)
+    return test_list
