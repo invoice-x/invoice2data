@@ -201,6 +201,8 @@ class TestCLI(unittest.TestCase):
 
     def test_copy_with_default_filename_format(self):
         copy_dir = os.path.join('tests', 'copy_test', 'pdf')
+        # make sure directory is deleted
+        shutil.rmtree(os.path.dirname(copy_dir), ignore_errors=True)
         filename_format = "{date} {invoice_number} {desc}.pdf"
 
         data = self.get_filename_format_test_data(filename_format)
