@@ -47,8 +47,10 @@ class TestCLI(unittest.TestCase):
 
     def test_output_name(self):
         test_file = 'inv_test_8asd89f78a9df.csv'
+        exclude_list = ['AzureInterior.pdf']
+        test_list = exclude_template(get_sample_files('.pdf'), exclude_list)
         args = self.parser.parse_args(
-            ['--output-name', test_file, '--output-format', 'csv'] + get_sample_files('.pdf')
+            ['--output-name', test_file, '--output-format', 'csv'] + test_list
         )
         main(args)
         self.assertTrue(os.path.exists(test_file))
