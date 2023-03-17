@@ -257,6 +257,8 @@ class InvoiceTemplate(OrderedDict):
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
             if plugin_keyword in self.keys():
                 plugin_func.extract(self, optimized_str, output)
+            else:
+                logger.error("Template %s calls an unknown plugin %s ", self["template_name"], plugin_keyword)
 
         # If required fields were found, return output, else log error.
         if "required_fields" not in self.keys():
