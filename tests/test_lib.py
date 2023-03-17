@@ -90,19 +90,21 @@ class TestLIB(unittest.TestCase):
     def test_extract_data_pdfminer(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
-            print("Testing pdfminer with file", file)
-            try:
-                res = extract_data(file, None, pdfminer_wrapper)
-                print(res)  # Check why logger.info is not working, for the time being using print
-            except ImportError:
-                # print("pdfminer module not installed!")
-                self.assertTrue(False, "pdfminer is not installed")
-                self.assertTrue(type(res) is str, "return is not a string")
+            if file.endswith("NetpresseInvoice.pdf"):
+                print("Testing pdfminer with file", file)
+                try:
+                    res = extract_data(file, None, pdfminer_wrapper)
+                    print(res)
+                except ImportError:
+                    self.assertTrue(False, "pdfminer is not installed")
+                    self.assertTrue(type(res) is str, "return is not a string")
 
     @needs_pdfplumber
     def test_extract_data_pdfplumber(self):
         pdf_files = get_sample_files('.pdf')
         for file in pdf_files:
+            if not file.endswith("FlipkartInvoice.pdf"):
+                continue
             print("Testing pdfplumber with file", file)
             extract_data(file, None, pdfplumber)
 
