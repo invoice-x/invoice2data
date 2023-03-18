@@ -64,8 +64,8 @@ def extract(self, content, output):
                             return None
                     elif field.startswith("amount"):
                         output[field] = self.parse_number(value)
-                    elif field.name in types:
-                        output[field] = template.coerce_type(output[field], types[name])
+                    elif field in types:
+                        output[field] = self.template.coerce_type(output[field], types[name])
                     else:
                         output[field] = value
             logger.debug("ignoring *%s* because it doesn't match anything", line)
