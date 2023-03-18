@@ -6,6 +6,9 @@ fields:
   date_due: Date limite de paiement le (\d+ .+ \d{4})
   invoice_number: Facture n°(\d+)
   static_vat: FR60421938861
+  date_start: (\d{1,2}\w*\s\w+\s\d{4})\sau
+  date_end: au\s(\d{2}\s\w+\s\d{4})\s+
+  siren: 421 938 861
 keywords:
   - FR 604 219 388 61
   - Facture
@@ -21,3 +24,6 @@ options:
   languages:
     - fr
   decimal_separator: '.'
+  replace:
+    # We have to rewrite the start and end date for datepasrser to handle it.
+    - ['\sdu\s(?P<from>\d{1,2}\w*)(?P<separator>\sau\s\d{2})(?P<month_year>\s\w+\s\d{4})\s+', ' du \g<from>\g<month_year>\g<separator>\g<month_year> ']
