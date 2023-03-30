@@ -37,6 +37,7 @@ def extract(self, content, output):
         if not start or not end:
             logger.warning("no table body found - start %s, end %s", start, end)
             continue
+        types = table.get("types", [])
 
         table_body = content[start.end() : end.start()]
         logger.debug("START table body content ========================")
@@ -63,6 +64,8 @@ def extract(self, content, output):
                             return None
                     elif field.startswith("amount"):
                         output[field] = self.parse_number(value)
+                    elif field in types:
+                        output[field] = self.template.coerce_type(output[field], types[value])
                     else:
                         output[field] = value
             logger.debug("ignoring *%s* because it doesn't match anything", line)
