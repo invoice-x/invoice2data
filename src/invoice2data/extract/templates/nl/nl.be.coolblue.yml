@@ -1,0 +1,117 @@
+# SPDX-License-Identifier: MIT
+fields:
+  issuer:
+    parser: regex
+    regex:
+      - '(Coolblue\s(?:B.V.|Belgi.\sN.V.))'
+  amount:
+    parser: regex
+    regex:
+      - Totaal\s+[€]\s+([-]?\d{0,3}[.]?\d{1,3}[,]\d{2})\n
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex:
+      - Exclusief BTW\s+[€]\s+([-]?\d{0,3}[.]?\d{1,3}[,]\d{2})
+    type: float
+  partner_coc:
+    parser: regex
+    regex:
+      - KvK\s\w+\s+(\d{8})
+  narration:
+    parser: regex
+    regex:
+      - (Ordernummer[:]\s+\d+)
+  note:
+    parser: regex
+    regex:
+      - (Klantnummer[:]\s+\d+)
+      - (Ordernummer[:]\s+\d+)
+      - (Orderdatum[:]\s+\d{1,2} \w+ \d{4})
+      - (Alles voor een glimlach[.])
+    group: join
+  partner_website:
+    parser: regex
+    regex:
+      - www[.](coolblue[.]\w{2})
+  partner_name:
+    parser: regex
+    regex:
+      - '(Coolblue\s(?:B.V.|Belgi.\sN.V.))'
+  country_code:
+    parser: regex
+    regex: BTW\s(\w{2})\d{9}
+  partner_zip:
+    parser: regex
+    regex: '(3012 CN|2600)'
+  partner_city:
+    parser: regex
+    regex: (Rotterdam|Berchem)
+  partner_street:
+    parser: regex
+    regex: '(Gildeweg\s+8|Borsbeeksebrug\s+28|Weena\s+\d+)'
+  vat:
+    parser: regex
+    regex:
+      - 'BTW\s+((?:BE|NL)\w+)'
+  bic:
+    parser: regex
+    regex:
+    - BIC\s+(\w{8,11})
+  iban:
+    parser: regex
+    regex:
+      - IBAN\s+(\w{10,30})
+  date:
+    parser: regex
+    regex:
+      - Factuurdatum[:]\s+(\d{1,2} \w+ \d{4})
+    type: date
+  invoice_number: 
+    parser: regex
+    regex:
+      - actuurnummer[:]\s+(\d{8,12})
+  payment_method:
+    - (iDEAL)
+    - (Bancontact)
+    - (AMEX)
+    - (AMERICAN EXPRESS)
+    - (VISA)
+    - (MCARD)
+    - (CONTANT)
+    - (?i)(Paypal)
+  lines:
+    parser: lines
+    rules:
+      - start: 'Artikel\s+Aantal'
+        end: 'Exclusief BTW'
+        first_line:
+          - ^(?P<name>(\S+(?:\s\S+)*))\s+(?P<qty>[-]?\d+)\s+[€]?\s+(?P<price_unit>(\d{,3}[.]?\d{,3}[,]\d{2}))\s+(?P<line_tax_percent>\d+)[%]?\s+[€]?\s(?P<price_subtotal>([-]?\d{,3}[.]?\d+[,]\d{2}))
+          - ^\s+(?P<line_note>(Serienummer[:]\s\w+(?:\s\S+)*))
+        line:
+          - ^\s+(?P<name>(\w+(?:\s\S+)*))\s+(?:P<qty>[-]?\d+)\s*$
+        types:
+          qty: int
+          price_unit: float
+          line_tax_percent: int
+          price_subtotal: float
+      # second block to specific parse thuiskopij heffing
+      - start: 'Artikel\s+Aantal'
+        end: 'Exclusief BTW'
+        line:
+          - ^\s+(?P<name>(\S+(?:\s\S+)*))\s+(?P<qty>[-]?\d+)\s+[€]?\s+(?P<line_tax_percent>\d+)[%]?\s+[€]?\s(?P<price_subtotal>([-]?\d{0,3}[.]?\d+[,]\d{2}))
+        types:
+          qty: int
+          price_unit: float
+          line_tax_percent: int
+          price_subtotal: float
+keywords:
+  - Coolblue
+  - (NL810433941B01|BE0867686774)
+  - factuur
+  - €
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','

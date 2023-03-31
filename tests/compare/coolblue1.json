@@ -1,0 +1,69 @@
+[
+    {
+        "issuer": "Coolblue B.V.",
+        "amount": 717.97,
+        "amount_untaxed": 593.36,
+        "partner_coc": "24330087",
+        "narration": "Ordernummer: 12572103",
+        "note": "Klantnummer: 6669263 Ordernummer: 12572103 Orderdatum: 18 april 2014 Alles voor een glimlach.",
+        "partner_name": "Coolblue B.V.",
+        "country_code": "NL",
+        "partner_zip": "3012 CN",
+        "partner_city": "Rotterdam",
+        "partner_street": "Weena 664",
+        "vat": "NL810433941B01",
+        "bic": "INGBNL2A",
+        "iban": "NL50INGB0683251309",
+        "date": "2014-04-19",
+        "invoice_number": "993548900",
+        "payment_method": "iDEAL",
+        "lines": [
+            {
+                "name": "Apple iPad Air Wifi 16 GB Zilver",
+                "qty": 1,
+                "price_unit": 399.0,
+                "line_tax_percent": 21,
+                "price_subtotal": 399.0
+            },
+            {
+                "line_note": "Serienummer: SDMPP373MPP15"
+            },
+            {
+                "name": "Decoded Leather Slim Cover Apple iPad Air 2 Zwart",
+                "qty": 1,
+                "price_unit": 69.99,
+                "line_tax_percent": 21,
+                "price_subtotal": 69.99
+            },
+            {
+                "name": "Nintendo 3DS XL Wit + Blauw",
+                "qty": 1,
+                "price_unit": 189.0,
+                "line_tax_percent": 21,
+                "price_subtotal": 189.0
+            },
+            {
+                "name": "Nintendo AC-adapter",
+                "qty": 1,
+                "price_unit": 14.99,
+                "line_tax_percent": 21,
+                "price_subtotal": 14.99
+            },
+            {
+                "name": "Mario Kart 7 3DS",
+                "qty": 1,
+                "price_unit": 44.99,
+                "line_tax_percent": 21,
+                "price_subtotal": 44.99
+            },
+            {
+                "name": "Incl. Thuiskopieheffing: Thuiskopie €3.50",
+                "qty": 1,
+                "line_tax_percent": 21,
+                "price_subtotal": 4.24
+            }
+        ],
+        "currency": "EUR",
+        "desc": "Invoice from Coolblue"
+    }
+]
