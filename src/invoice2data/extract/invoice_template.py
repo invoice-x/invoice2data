@@ -221,7 +221,7 @@ class InvoiceTemplate(OrderedDict):
                     if v["parser"] in PARSERS_MAPPING:
                         parser = PARSERS_MAPPING[v["parser"]]
                         value = parser.parse(self, k, v, optimized_str_for_parser)
-                        if value:
+                        if value or value == 0.0:
                             output[k] = value
                         else:
                             logger.warning("Failed to parse field %s with parser %s", k, v["parser"])
