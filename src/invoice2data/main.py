@@ -295,25 +295,29 @@ def main(args=None):
         templates += read_templates()
     output = []
     for f in args.input_files:
-        res = extract_data(f.name, templates=templates, input_module=input_module)
-        if res:
-            logger.info(res)
-            output.append(res)
+        try:
+            res = extract_data(f.name, templates=templates, input_module=input_module)
+            if res:
+                logger.info(res)
+                output.append(res)
 
-            kwargs = copy.deepcopy(res)
-            for key, value in kwargs.items():
-                if type(value) is list and len(value) >= 1:
-                    kwargs[key] = value[0]
-            for key, value in kwargs.items():
-                if type(value) is datetime.datetime:
-                    kwargs[key] = value.strftime('%Y-%m-%d')
-            if args.copy:
-                filename = args.filename.format(**kwargs)
-                shutil.copyfile(f.name, join(args.copy, filename))
-            if args.move:
-                filename = args.filename.format(**kwargs)
-                shutil.move(f.name, join(args.move, filename))
-        f.close()
+                kwargs = copy.deepcopy(res)
+                for key, value in kwargs.items():
+                    if type(value) is list and len(value) >= 1:
+                        kwargs[key] = value[0]
+                for key, value in kwargs.items():
+                    if type(value) is datetime.datetime:
+                        kwargs[key] = value.strftime('%Y-%m-%d')
+                if args.copy:
+                    filename = args.filename.format(**kwargs)
+                    shutil.copyfile(f.name, join(args.copy, filename))
+                if args.move:
+                    filename = args.filename.format(**kwargs)
+                    shutil.move(f.name, join(args.move, filename))
+            f.close()
+        except Exception as e:
+            logger.critical("Invoice2data failed to process %s. \nError message: %s", f.name, e)
+            continue
 
     if output_module is not None:
         output_module.write_to_file(output, args.output_name, args.output_date_format)
