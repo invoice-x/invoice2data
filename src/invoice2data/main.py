@@ -88,8 +88,10 @@ class ColorLogFormatter(logging.Formatter):
 
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(ColorLogFormatter())
-logger.addHandler(stream_handler)
 logger.propagate = False
+
+if not logger.handlers:
+    logger.addHandler(stream_handler)
 
 
 def extract_data(invoicefile, templates=None, input_module=None):
