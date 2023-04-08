@@ -5,7 +5,7 @@ invoice. Each template should work on all invoices of a company or
 subsidiary (e.g. Amazon Germany vs Amazon US).
 
 Adding templates is easy and shouldn't take longer than adding 2-3
-invoices by hand. We use a simple YML-format. Many options are optional
+invoices by hand. We use a simple YAML or json-format. Many options are optional
 and you just need them to take care of edge cases.
 
 Existing templates can be found in the [templates folder](https://github.com/invoice-x/invoice2data/tree/master/src/invoice2data/extract/templates) of the installed
@@ -381,9 +381,7 @@ Look at the invoice and find the best identifying string. Tax number +
 company name are good options. Remember, *all* keywords need to be found
 for the template to be used.
 
-Keywords are compared *after* processing the extracted text. So if you
-use lowercase or remove-whitespace processing, adapt keywords
-accordingly.
+Keywords are compared *before* processing the extracted text.
 
 ### 4. First test run
 

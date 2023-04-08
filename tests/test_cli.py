@@ -27,7 +27,18 @@ import pkg_resources
 from invoice2data.main import create_parser, main
 from invoice2data.extract.loader import read_templates
 
-from .common import get_sample_files
+from .common import get_sample_files, exclude_template, inputparser_specific
+
+
+def have_ocrmypdf():
+    try:
+        import ocrmypdf  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
+needs_ocrmypdf = unittest.skipIf(not have_ocrmypdf(), reason="requires ocrmypdf")
 
 
 class TestCLI(unittest.TestCase):
@@ -47,8 +58,10 @@ class TestCLI(unittest.TestCase):
 
     def test_output_name(self):
         test_file = 'inv_test_8asd89f78a9df.csv'
+        exclude_list = ['AzureInterior.pdf']
+        test_list = exclude_template(get_sample_files('.pdf'), exclude_list)
         args = self.parser.parse_args(
-            ['--output-name', test_file, '--output-format', 'csv'] + get_sample_files('.pdf')
+            ['--output-name', test_file, '--output-format', 'csv'] + test_list
         )
         main(args)
         self.assertTrue(os.path.exists(test_file))
@@ -131,29 +144,24 @@ class TestCLI(unittest.TestCase):
     def test_copy(self):
         # folder = pkg_resources.resource_filename(__name__, 'pdfs')
         directory = os.path.dirname("tests/copy_test/pdf/")
+        # make sure directory is deleted
+        shutil.rmtree("tests/copy_test/", ignore_errors=True)
         os.makedirs(directory)
-        args = self.parser.parse_args(
-            ['--copy', 'tests/copy_test/pdf'] + get_sample_files('.pdf')
-        )
-        main(args)
-        i = 0
-        for path, subdirs, files in os.walk(
-            pkg_resources.resource_filename(__name__, 'copy_test/pdf')
-        ):
-            for file in files:
-                if file.endswith(".pdf"):
-                    i += 1
 
-        shutil.rmtree('tests/copy_test/', ignore_errors=True)
-        self.assertEqual(i, len(get_sample_files('.pdf')))
-        '''
-        if i != len(self._get_test_file_json_path()):
-            print(i)
-            self.assertTrue(True)
-        else:
-            print(i)
-            self.assertTrue(False, "Number of files not equal")
-        '''
+        exclude_list = ["AzureInterior.pdf"]
+        test_list = exclude_template(get_sample_files(".pdf"), exclude_list)
+        args = self.parser.parse_args(["--copy", "tests/copy_test/pdf"] + test_list)
+        main(args)
+        qty_copied_files = sum(
+            len(files)
+            for _, _, files in os.walk(
+                pkg_resources.resource_filename(__name__, "copy_test/pdf")
+            )
+        )
+        print("test_copy - Amount of copied files %s" % qty_copied_files)
+        print("test_copy - test_list length", len(test_list))
+        shutil.rmtree("tests/copy_test/", ignore_errors=True)
+        self.assertEqual(qty_copied_files, len(test_list))
 
     # def test_template(self):
     #     directory = os.path.dirname("invoice2data/test/temp_test/")
@@ -185,6 +193,11 @@ class TestCLI(unittest.TestCase):
         for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
             for file in files:
                 root, ext = os.path.splitext(file)
+                if "AzureInterior" in file:
+                    continue
+                if inputparser_specific(file):
+                    print("input parser specific file found!!!")
+                    continue
                 if root not in data:
                     data[root] = {}
                 if file.endswith(('.pdf', '.txt')):
@@ -202,6 +215,8 @@ class TestCLI(unittest.TestCase):
 
     def test_copy_with_default_filename_format(self):
         copy_dir = os.path.join('tests', 'copy_test', 'pdf')
+        # make sure directory is deleted
+        shutil.rmtree(os.path.dirname(copy_dir), ignore_errors=True)
         filename_format = "{date} {invoice_number} {desc}.pdf"
 
         data = self.get_filename_format_test_data(filename_format)
@@ -253,6 +268,65 @@ class TestCLI(unittest.TestCase):
             compare_verified = jdatatest[0]['date'] == '2022-11-28'
             if not compare_verified:
                 self.assertTrue(False, 'Failure in area rule')
+            os.remove(test_file)
+
+    # advanced test case (saeco)
+    # Where the pdf has to be ocr'd first
+    # before any keywords can be matched
+
+    @needs_ocrmypdf
+    def test_ocrmypdf(self):
+        pdf_files = get_sample_files("saeco.pdf", exclude_input_specific=False)
+        test_file = "test_ocrmypdf.json"
+        for pfile in pdf_files:
+            args = self.parser.parse_args(
+                [
+                    "--output-name",
+                    test_file,
+                    "--input-reader",
+                    "ocrmypdf",
+                    "--output-format",
+                    "json",
+                    "--output-date-format",
+                    "%Y-%m-%d",
+                    pfile,
+                ]
+            )
+            main(args)
+            with open(test_file) as json_test_file:
+                jdatatest = json.load(json_test_file)
+            compare_verified = jdatatest[0]["date"] == "2022-09-08"
+            if not compare_verified:
+                self.assertTrue(False, "Failure in ocrmypdf test")
+            os.remove(test_file)
+
+    # Test the fallback from pdf to text to ocrmypdf.
+    # with ocrmypdf installed
+
+    @needs_ocrmypdf
+    def test_fallback_with_ocrmypdf(self):
+        pdf_files = get_sample_files("saeco.pdf", exclude_input_specific=False)
+        test_file = "test_fallback_ocrmypdf.json"
+        for pfile in pdf_files:
+            args = self.parser.parse_args(
+                [
+                    "--output-name",
+                    test_file,
+                    "--input-reader",
+                    "pdftotext",
+                    "--output-format",
+                    "json",
+                    "--output-date-format",
+                    "%Y-%m-%d",
+                    pfile,
+                ]
+            )
+            main(args)
+            with open(test_file) as json_test_file:
+                jdatatest = json.load(json_test_file)
+            compare_verified = jdatatest[0]["date"] == "2022-09-08"
+            if not compare_verified:
+                self.assertTrue(False, "Failure in fallback to ocrmypdf test with ocrmypdf installed")
             os.remove(test_file)
 
 

@@ -1,0 +1,83 @@
+[
+    {
+        "issuer": "Coolblue B.V.",
+        "amount": 4904.94,
+        "amount_untaxed": 4053.67,
+        "partner_coc": "24330087",
+        "narration": "Ordernummer: 12508334",
+        "note": "Klantnummer: 6669263 Ordernummer: 12508334 Orderdatum: 29 maart 2014 Alles voor een glimlach.",
+        "partner_name": "Coolblue B.V.",
+        "country_code": "NL",
+        "partner_zip": "3012 CN",
+        "partner_city": "Rotterdam",
+        "partner_street": "Weena 664",
+        "vat": "NL810433941B01",
+        "bic": "INGBNL2A",
+        "iban": "NL50INGB0683251309",
+        "date": "2014-03-29",
+        "invoice_number": "992288600",
+        "payment_method": "iDEAL",
+        "lines": [
+            {
+                "name": "Decoded Leather Sleeve 15,4'' Vintage Bruin",
+                "qty": 2,
+                "price_unit": 99.99,
+                "line_tax_percent": 21,
+                "price_subtotal": 199.98
+            },
+            {
+                "name": "Apple MacBook Pro Retina 13,3'' + Apple Magic Mouse",
+                "qty": 1,
+                "price_unit": 2321.0,
+                "line_tax_percent": 21,
+                "price_subtotal": 2321.0
+            },
+            {
+                "name": "Microsoft Office Mac Home and Student 2011 NL PKC",
+                "qty": 1,
+                "price_unit": 124.99,
+                "line_tax_percent": 21,
+                "price_subtotal": 124.99
+            },
+            {
+                "name": "HP USB 3.0 Port Replicator 3005pr (H1L08ET)",
+                "qty": 1,
+                "price_unit": 159.99,
+                "line_tax_percent": 21,
+                "price_subtotal": 159.99
+            },
+            {
+                "name": "MSI GS60 2QE-226NL Ghost Pro",
+                "qty": 1,
+                "price_unit": 1999.0,
+                "line_tax_percent": 21,
+                "price_subtotal": 1999.0
+            },
+            {
+                "line_note": "Serienummer: GS60 2QE-226NLK141900003666"
+            },
+            {
+                "name": "Hex Outpost Origin Rugzak 15'' Grijs",
+                "qty": 1,
+                "price_unit": 79.99,
+                "line_tax_percent": 21,
+                "price_subtotal": 79.99
+            },
+            {
+                "name": "Case-Mate Barely There Case Sony Xperia Z3 Transparant",
+                "qty": 1,
+                "price_unit": 19.99,
+                "line_tax_percent": 21,
+                "price_subtotal": 19.99
+            },
+            {
+                "name": "Incl. Thuiskopieheffing: Thuiskopie €3.50",
+                "qty": 1,
+                "line_tax_percent": 21,
+                "price_subtotal": 4.24
+            }
+        ],
+        "currency": "EUR",
+        "desc": "Invoice from Coolblue"
+    }
+]

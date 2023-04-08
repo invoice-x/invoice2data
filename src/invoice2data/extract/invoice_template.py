@@ -7,15 +7,16 @@ Templates are initially read from .yml files and then kept as class.
 import re
 import dateparser
 import unicodedata
-import logging
+from logging import getLogger
+from pprint import pformat
 from collections import OrderedDict
 from . import parsers
 from .plugins import lines, tables
-# Area extraction is currently added for pdftotext and tesseract (which uses pdftotext)
-from ..input import pdftotext, tesseract
+# Area extraction is currently added for pdftotext, ocrmypdf and tesseract (which uses pdftotext)
+from ..input import pdftotext, ocrmypdf, tesseract
 from typing import Optional
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 OPTIONS_DEFAULT = {
     "remove_whitespace": False,
@@ -41,7 +42,7 @@ class InvoiceTemplate(OrderedDict):
     -------
     prepare_input(extracted_str)
         Input raw string and do transformations, as set in template file.
-    matches_input(optimized_str)
+    matches_input(extracted_str)
         See if string matches keywords set in template file
     parse_number(value)
         Parse number, remove decimal separator and add other options
@@ -101,29 +102,29 @@ class InvoiceTemplate(OrderedDict):
 
         return optimized_str
 
-    def matches_input(self, optimized_str: str) -> bool:
+    def matches_input(self, extracted_str: str) -> bool:
         """See if string matches all keyword patterns and no exclude_keyword patterns set in template file.
 
         Args:
-        optimized_str: String of the text from OCR of the pdf after applying options defined in the template.
+        extracted_str: String of the text from OCR of the pdf before applying options defined in the template.
 
         Return:
         Boolean
             - True if all keywords are found and none of the exclude_keywords are found.
             - False if either not all keywords are found or at least one exclude_keyword is found."""
 
-        if all([re.search(keyword, optimized_str) for keyword in self["keywords"]]):
+        if all([re.search(keyword, extracted_str) for keyword in self["keywords"]]):
             # All keyword patterns matched
             if self["exclude_keywords"]:
-                if any([re.search(exclude_keyword, optimized_str) for exclude_keyword in self["exclude_keywords"]]):
+                if any([re.search(exclude_keyword, extracted_str) for exclude_keyword in self["exclude_keywords"]]):
                     # At least one exclude_keyword matches
-                    logger.debug("Template: %s. Keywords matched. Exclude keyword found!", self["template_name"])
+                    logger.debug("Template: %s | Keywords matched. Exclude keyword found!", self["template_name"])
                     return False
             # No exclude_keywords or none match, template is good
-            logger.debug("Template: %s. Keywords matched. No exclude keywords found.", self["template_name"])
+            logger.debug("Template: %s | Keywords matched. No exclude keywords found.", self["template_name"])
             return True
         else:
-            logger.debug("Template: %s. Failed to match all keywords.", self["template_name"])
+            logger.debug("Template: %s | Failed to match all keywords.", self["template_name"])
             return False
 
     def parse_number(self, value):
@@ -184,7 +185,7 @@ class InvoiceTemplate(OrderedDict):
             self.options["date_formats"],
         )
         logger.debug(
-            "Float parsing: decimal separator=%s", self.options["decimal_separator"]
+            "Float parsing: decimal separator=[%s]", self.options["decimal_separator"]
         )
         logger.debug("keywords=%s", self["keywords"])
         logger.debug(self.options)
@@ -198,7 +199,7 @@ class InvoiceTemplate(OrderedDict):
             # v is the value
             if isinstance(v, dict):
                 # Options were supplied to this field
-                if "area" in v and input_module in (pdftotext, tesseract):
+                if "area" in v and input_module in (pdftotext, ocrmypdf, tesseract):
                     # Area is currently only supported for pdftotext
                     # area is optional and re-extracts the text being searched
                     # This obviously has a performance impact, so use wisely
@@ -220,14 +221,14 @@ class InvoiceTemplate(OrderedDict):
                     if v["parser"] in PARSERS_MAPPING:
                         parser = PARSERS_MAPPING[v["parser"]]
                         value = parser.parse(self, k, v, optimized_str_for_parser)
-                        if value:
+                        if value or value == 0.0:
                             output[k] = value
                         else:
-                            logger.error("Failed to parse field %s with parser %s", k, v["parser"])
+                            logger.warning("Failed to parse field %s with parser %s", k, v["parser"])
                     else:
-                        logger.warning("Field %s has unknown parser %s set", k, v["parser"])
+                        logger.error("Field %s has unknown parser %s set", k, v["parser"])
                 else:
-                    logger.warning("Field %s doesn't have parser specified", k)
+                    logger.error("Field %s doesn't have parser specified", k)
             elif k.startswith("static_"):
                 logger.debug("field=%s | static value=%s", k, v)
                 output[k.replace("static_", "")] = v
@@ -267,7 +268,8 @@ class InvoiceTemplate(OrderedDict):
 
         if set(required_fields).issubset(output.keys()):
             output["desc"] = "Invoice from %s" % (self["issuer"])
-            logger.debug(output)
+            logger.debug("\n %s", pformat(output, indent=2))
+            # when python 3.7 support stops add sort_dicts=False,
             return output
         else:
             fields = list(set(output.keys()))
@@ -278,4 +280,6 @@ class InvoiceTemplate(OrderedDict):
                     required_fields, fields
                 )
             )
+            missing = set(required_fields) - set(fields)
+            raise ValueError("Unable to parse required field(s): {0}".format(missing))
             return None

@@ -14,9 +14,15 @@ fields:
     group: sum
   bic: BIC.(\w{8,11})
   iban: IBAN.(\w{10,30})
-  date: datum\s+(\d{1,2} .+ \d{4})
+  date: 
+    parser: regex
+    regex: Factuurdatum[:]\s+(\d{1,2} .+[.] \d{4})
+    type: date
   invoice_number: Factuurnummer.?\s+(\d{5,17})
   static_vat: NL001409338B42
+  country_code:
+    parser: static
+    value: nl
   payment_method:
     - (iDEAL)
     - (AMEX)
@@ -26,8 +32,8 @@ fields:
     - (?i)(Paypal)
 lines:
     start: Art.nr.
-    end: Subtotaal (excl. BTW)
-    line: (?P<barcode>\d+)\s+(?P<product>\w+.*)\s+(?P<price_unit>[€]\s+(\d+,\d{2}))\s+(?P<qty>\d+)
+    end: Subtotaal [(]excl. BTW[)]
+    line: (?P<barcode>\d+)\s+(?P<product>\w+.*)\s+[€]\s+(?P<price_unit>(\d+.\d{2}))\s+(?P<qty>\d+)
     types:
       qty: float
       price_unit: float

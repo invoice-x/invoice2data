@@ -16,6 +16,9 @@ fields:
     parser: regex
     regex:
       - '([+]\d{2}\s+\d{1,4}\s+\d{3,7})'
+  country_code:
+    parser: static
+    value: nl
   date: Datum[:]\s+(\d{1,2}[-|\/]\d{2}[-|\/]\d{4})
   invoice_number: (\d{1,2}[-|\/]\d{2}[-|\/]\d{4})
   payment_method:
@@ -50,5 +53,4 @@ options:
     - [', ', ',']
     - ['°', ' ']
     - ['©', ' ']
-    - [',.', ',']
     - ['(\s)([0-9]+)\.([0-9]{2})(\s)', '\1\2,\3\4'] # workaround for ocr 

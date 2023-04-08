@@ -1,0 +1,209 @@
+# The purpose of this template is to incluse as many fields as possible
+# supported by odoo invoice/export
+# It is used as unittest for the account_invoice_import_invoice2data module
+# therefore very strict on the required fields
+# Template is based upon Odoo 14 Light document layout
+# Schema and layout can be use as a base for your own template.
+issuer: Azure Interior
+fields:
+  amount:
+    parser: regex
+    regex: \s+Total\s+[$€]\s(\d*[.,]?\d+[,.]\d+)
+    type: float
+  amount_tax:
+    parser: regex
+    regex: \s+Tax\s\d+[%]\s+\w+\s+.\s\d*[.,]?\d+[,.]\d+\s+[$€]\s+(\d*[.,]?\d+[,.]\d+)
+    group: sum
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex: \s+Subtotal\s{10,40}[$€]\s(\d*[.,]?\d+[,.]\d+)
+    type: float
+  invoice_number:
+    parser: regex
+    regex: Invoice\s(\w{3}[\/]\S+)\s+
+    group: first
+  partner_email:
+    parser: regex
+    regex: \d+\s+(.+@[^\.].*\.[a-z]{2,})\s+http
+  partner_website:
+    parser: regex
+    regex: (http:..www.\S+)\s+
+  partner_name:
+    parser: regex
+    regex: Azure Interior
+  partner_street:
+    parser: regex
+    regex: 4557 De Silva St
+  partner_city:
+    parser: regex
+    regex: Fremont
+  state_code:
+    parser: regex
+    regex: CA
+  country_code:
+    parser: static
+    value: US
+  partner_zip:
+    parser: regex
+    regex: '94538'
+  partner_street2:
+    parser: static
+    value: Building AA
+  partner_street3:
+    parser: static
+    value: 10th Floor
+  partner_ref:
+    parser: static
+    value: Azure_Int
+  currency_symbol:
+    parser: regex
+    regex: '[$€]'
+    group: first
+  telephone:
+    parser: regex
+    regex: '[(]\d+[)]-?\d+-\d+'
+  iban:
+    parser: regex
+    regex: Bank\sAccount[:] (US\d+)
+  bic:
+    parser: static
+    value: bic
+  incoterm:
+    parser: regex
+    regex: Incoterm[:]\s(\w+)
+  payment_reference:
+    parser: regex
+    regex: Please use the following communication for your payment\s?[:]\s?(\S+)
+  customer_order_free_ref:
+    parser: regex
+    regex: \d{2}[-|\/]\d{2}[-|\/]\d{4}\s+\d{2}[-|\/]\d{2}[-|\/]\d{4}\s+(\S+)\s+
+  date:
+    parser: regex
+    regex:
+      - \s(\d{2}[-|\/]\d{2}[-|\/]\d{4})
+    group: min
+    type: date
+  date_due:
+    parser: regex
+    regex:
+      - \s(\d{2}[-|\/]\d{2}[-|\/]\d{4})
+    group: max
+    type: date
+    invoice_number: Invoice(\w+)
+  # Fields below are not tested for now, included for future implementation
+  # static value assigned because unused in the invoicefile
+  mandate_id:
+    parser: static
+    value: '111'
+  payment_unece_code:
+    parser: static
+    value: '30'
+  customer_order_number:
+    parser: static
+    value: '333'
+  purchase_order_id:
+    parser: static
+    value: '444'
+  mobile:
+    parser: static
+    value: '555'
+  partner_coc:
+    parser: static
+    value: '666'
+  date_start:
+    parser: static
+    value: 2023-03-01
+    type: date
+  date_end:
+    parser: static
+    value: 2023-03-31
+    type: date
+  # company_vat left blanc, because not set on demo company.
+  # company_vat:
+  #  parser: static
+  #  value: ' '
+  ################
+  # vat excluded from test, it is not present in the invoicefile
+  # Setting a wrong value would lead to partner mismatch
+  # vat:
+  #  parser: static
+  #  value: ''
+
+  lines:
+    parser: lines
+    start: 'Amount'
+    end: 'Subtotal\s{10,40}[$€]'
+    first_line:
+      - '(?P<sectionheader>(--- \w+(?:\s\S+)*) ---)'
+      - '([[](?P<code>\S+)[]]\s)(?P<name>[\S ]+)\s+(?P<qty>\d+[,.]\d+)\s((?P<unece_code>LTR)|(?P<uom>\w+))\s+(?P<price_unit>\d*[.,]?\d+[,.]\d+)\s+(?P<discount>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d{1,2}[,.]\d{2})?%?\s*([$€]\s+)?(?P<price_subtotal>\d*[.,]?\d+[,.]\d+)'
+      - '^(?P<line_note>\w[\S ]{15,120})$'
+        # The line below is not conform odoo standard output, but added for a mocked test.
+        # To be able to parse the following fields: barcode, unece_code (for uom matching)
+        # re-written L to unece code LTR
+      - '([*](?P<barcode>\S+)[*])\s*([[](?P<code>\S+)[]]\s)?(?P<name>[\S ]+)\s+(?P<qty>\d+[,.]\d+)\s(?P<unece_code>LTR)?\s+(?P<price_unit>\d*[.,]?\d+[,.]\d+)\s+(?P<discount>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d{1,2}[,.]\d{2})?%?\s*([$€]\s+)?(?P<price_subtotal>\d*[.,]?\d+[,.]\d+)'
+    line:
+      - '^(?P<name>\w[\S ]{1,40})$'
+    types:
+      qty: float
+      price_unit: float
+      discount: float
+      line_tax_percent: float
+      price_subtotal: float
+
+tables:
+  - start: Bank\sAccount[:] (US\d+)
+    end: Incoterm[:]\s(\w+)
+    body: (?P<narration>[\S ]+)
+    # aditionally parse the same data to the chatter
+  - start: Bank\sAccount[:] (US\d+)
+    end: Incoterm[:]\s(\w+)
+    body: (?P<note>[\S ]+)
+
+keywords:
+  - azure
+  - interior
+  - Invoice
+required_fields:
+  - amount_tax
+  - amount_untaxed
+  - partner_email
+  - partner_website
+  - partner_name
+  - partner_street
+  - partner_street2
+  - partner_street3
+  - partner_city
+  - state_code
+  - country_code
+  - partner_zip
+  - partner_ref
+  - currency_symbol
+  - telephone
+  - iban
+  - incoterm
+  - payment_reference
+  - customer_order_free_ref
+  - date_due
+  # - mandate_id
+  # - payment_unece_code
+  # - customer_order_number
+  # - purchase_order_id
+  # - partner_coc
+  # - date_start
+  # - date_end
+  # - company_vat
+  # - mobile
+  - bic
+  # - vat
+  - narration
+  - note
+  - lines
+
+options:
+  languages:
+    - en
+  currency: USD
+  replace:
+    # replace to rewrite olive oil unece code to LTR
+    - ['(?P<qty>\d{2}\s)L', '\g<qty>LTR']

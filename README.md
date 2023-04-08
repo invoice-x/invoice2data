@@ -8,9 +8,9 @@ A command line tool and Python library to support your accounting
 process.
 
 1. extracts text from PDF files using different techniques, like
-   `pdftotext`, `text`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, or
+   `pdftotext`, `text`, `ocrmypdf`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, or
    `gvision` (Google Cloud Vision).
-2. searches for regex in the result using a YAML-based template system
+2. searches for regex in the result using a YAML or JSON-based template system
 3. saves results as CSV, JSON or XML or renames PDF files to match the content.
 
 With the flexible template system you can:
@@ -129,6 +129,7 @@ Choose any of the following input readers:
 - tesseract `invoice2data --input-reader tesseract invoice.pdf`
 - pdfminer.six `invoice2data --input-reader pdfminer invoice.pdf`
 - pdfplumber `invoice2data --input-reader pdfplumber invoice.pdf`
+- ocrmypdf `invoice2data --input-reader ocrmypdf invoice.pdf`
 - gvision `invoice2data --input-reader gvision invoice.pdf` (needs `GOOGLE_APPLICATION_CREDENTIALS` env var)
 
 Choose any of the following output formats:
@@ -187,7 +188,7 @@ the list to add your own. If deployed by a bigger organisation, there
 should be an interface to edit templates for new suppliers. 80-20 rule.
 For a short tutorial on how to add new templates, see [TUTORIAL.md](TUTORIAL.md).
 
-Templates are based on Yaml. They define one or more keywords to find
+Templates are based on Yaml or JSON. They define one or more keywords to find
 the right template, one or more exclude_keywords to further narrow it down
 and regexp for fields to be extracted. They could also be a static value,
 like the full company name.
@@ -230,6 +231,14 @@ The lines package has multiple settings:
 - line > If first_line is not provided, this will be used as the primary line pattern. If first_line is provided, this is the pattern for any sub-lines such as line item details.
 - skip_line > Optional. If first_line is passed, this pattern indicates which sub-lines will be skipped and their data not recorded. This is useful if tables span multiple pages and you need to skip over page numbers or headers that appear mid-table.
 - last_line > Optional. If first_line is passed, this pattern denotes the final line of the sub-lines and is included in the output data.
+
+:warning: Invoice2data uses a yaml templating system. The yaml templates are loaded with [pyyaml](https://github.com/yaml/pyyaml) which is a pure python implementation. (thus rather slow)
+As an alternative json templates can be used. Which are natively better supported by python.
+
+The performance with yaml templates can be greatly increased **10x** by using [libyaml](https://github.com/yaml/libyaml)
+It can be installed on most distributions by:
+`sudo apt-get libyaml-dev`
+
 
 ## Development
 

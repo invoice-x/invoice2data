@@ -1,0 +1,18 @@
+{
+  "issuer": "Flipkart",
+  "fields": {
+    "amount": "GrandTotal\\s*(\\d+\\.\\d+)",
+    "date": "InvoiceDate:\\s*(\\d{1,4}\\-\\d{1,2}\\-\\d{1,4})",
+    "invoice_number": "InvoiceNo:(\\S+)",
+    "order_id": "OrderID:(\\w{2}\\d{16,18})"
+  },
+  "keywords": [
+    "flipkart",
+    "WS\\s?Retail",
+    "OD"
+  ],
+  "options": {
+    "currency": "INR",
+    "remove_whitespace": true
+  }
+}

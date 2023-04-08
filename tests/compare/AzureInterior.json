@@ -1,0 +1,96 @@
+[
+    {
+        "issuer": "Azure Interior",
+        "amount": 279.84,
+        "amount_tax": 16.94,
+        "amount_untaxed": 262.9,
+        "invoice_number": "INV/2023/03/0008",
+        "partner_email": "azure.Interior24@example.com",
+        "partner_website": "http://www.azure-interior.com",
+        "partner_name": "Azure Interior",
+        "partner_street": "4557 De Silva St",
+        "partner_city": "Fremont",
+        "state_code": "CA",
+        "country_code": "US",
+        "partner_zip": "94538",
+        "partner_street2": "Building AA",
+        "partner_street3": "10th Floor",
+        "partner_ref": "Azure_Int",
+        "currency_symbol": "$",
+        "telephone": "(870)-931-0505",
+        "iban": "US1234567890",
+        "bic": "bic",
+        "incoterm": "DPU",
+        "payment_reference": "202309097001",
+        "customer_order_free_ref": "CUSTREF123",
+        "date": "2023-03-20",
+        "date_due": "2023-04-04",
+        "mandate_id": "111",
+        "payment_unece_code": "30",
+        "customer_order_number": "333",
+        "purchase_order_id": "444",
+        "mobile": "555",
+        "partner_coc": "666",
+        "date_start": "2023-03-01",
+        "date_end": "2023-03-31",
+        "lines": [
+            {
+                "sectionheader": "--- Non Food ---"
+            },
+            {
+                "code": "17589684",
+                "name": "Beeswax XL\nAcme beeswax",
+                "qty": 1.0,
+                "unece_code": "",
+                "uom": "kg",
+                "price_unit": 42.0,
+                "discount": 0.0,
+                "line_tax_percent": 15.0,
+                "price_subtotal": 42.0
+            },
+            {
+                "code": "FURN_7777",
+                "name": "Office Chair",
+                "qty": 1.0,
+                "unece_code": "",
+                "uom": "Units",
+                "price_unit": 70.0,
+                "discount": 0.0,
+                "line_tax_percent": 15.0,
+                "price_subtotal": 70.0
+            },
+            {
+                "sectionheader": "--- Food Products ---"
+            },
+            {
+                "barcode": "987123",
+                "code": "",
+                "name": "Olive Oil",
+                "qty": 1.0,
+                "unece_code": "LTR",
+                "price_unit": 1.0,
+                "discount": 10.0,
+                "line_tax_percent": 15.0,
+                "price_subtotal": 0.9
+            },
+            {
+                "line_note": "Our Olive Oil is delivered in a re-usable glass container"
+            },
+            {
+                "code": "LUX_TRF",
+                "name": "Luxury Truffles",
+                "qty": 15.0,
+                "unece_code": "",
+                "uom": "g",
+                "price_unit": 10.0,
+                "discount": 0.0,
+                "line_tax_percent": 0.0,
+                "price_subtotal": 150.0
+            }
+        ],
+        "currency": "USD",
+        "narration": "Due to global inflation our payment term has changed to 15 days.",
+        "note": "Due to global inflation our payment term has changed to 15 days.",
+        "desc": "Invoice from Azure Interior"
+    }
+]
