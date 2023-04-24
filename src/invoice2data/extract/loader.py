@@ -77,6 +77,7 @@ def read_templates(folder=None):
                         tpl = json.loads(template_file.read())
                     except ValueError as error:
                         logger.warning("json Loader Failed to load %s template:\n%s", name, error)
+                        continue
             tpl["template_name"] = name
 
             # Test if all required fields are in template
