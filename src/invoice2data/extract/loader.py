@@ -72,12 +72,14 @@ def read_templates(folder=None):
                     except YAMLError as error:
                         logger.warning("Failed to load %s template:\n%s", name, error)
                         continue
-                else:
+                elif name.endswith(".json"):
                     try:
                         tpl = json.loads(template_file.read())
                     except ValueError as error:
                         logger.warning("json Loader Failed to load %s template:\n%s", name, error)
                         continue
+                else:
+                    continue
             tpl["template_name"] = name
 
             # Test if all required fields are in template
