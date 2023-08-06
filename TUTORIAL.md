@@ -54,9 +54,10 @@ Let's look at each field:
 
 ### Fields
 
-All the regex `fields` you need extracted. Required fields are `amount`,
-`date`, `invoice_number`. It's up to you, if you need more fields
-extracted. Each field can be defined as:
+This section defines what information (fields) should be extracted from
+invoice and how.
+
+Each field can be defined as:
 
 - an **associative array** with 
 `parser` (required) specifying parsing method and 
@@ -69,6 +70,15 @@ image editor matches the resolution specified for `r` in this option. If not, it
 
 The first method is preferred. It was introduced to make templates
 syntax cleaner and more flexible. It aims to replace old methods.
+
+Every template must specify at least `amount`, `date` and
+`invoice_number` fields. More fields can be extracted as required.
+
+Standard fields:
+
+- `date`: the date invoice was issued
+- `invoice_number`: unique number assigned to invoice by an issuer
+- `amount`: total amount (with taxes)
 
 ### Parser `regex`
 
