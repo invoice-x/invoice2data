@@ -66,7 +66,7 @@ def read_templates(folder=None):
             with codecs.open(
                 os.path.join(path, name), encoding="utf-8"
             ) as template_file:
-                if name.endswith(".yml"):
+                if name.endswith((".yaml", ".yml")):
                     try:
                         tpl = load(template_file.read(), Loader=SafeLoader)
                     except YAMLError as error:
