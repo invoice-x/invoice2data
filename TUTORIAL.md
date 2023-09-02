@@ -79,6 +79,7 @@ Standard fields:
 - `date`: the date invoice was issued
 - `invoice_number`: unique number assigned to invoice by an issuer
 - `amount`: total amount (with taxes)
+- `vatin`: [VAT identification number](https://en.wikipedia.org/wiki/VAT_identification_number)
 
 ### Parser `regex`
 
