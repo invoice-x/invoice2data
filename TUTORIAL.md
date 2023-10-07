@@ -107,7 +107,7 @@ Optional properties:
 - `type` (if present must be one of: `int`, `float`, `date`) -results
   in parsing every matched value to a specified type
 - `group` (if present must be one of: `sum`, `min`, `max`, `first`,
-  `last`, join) - specifies grouping function (defines what value to return in
+  `last`, `join`) - specifies grouping function (defines what value to return in
   case of multiple matches)
 
 Example for `regex`:
