@@ -52,21 +52,22 @@ def parse(template, field, settings, content, legacy=False):
 
     if "group" in settings:
         result = list(filter(None, result))
-        if settings["group"] == "sum":
-            result = sum(result)
-        elif settings["group"] == "min":
-            result = min(result)
-        elif settings["group"] == "max":
-            result = max(result)
-        elif settings["group"] == "first":
-            result = result[0]
-        elif settings["group"] == "last":
-            result = result[-1]
-        elif settings["group"] == "join":
-            result = " ".join(str(v) for v in result)
-        else:
-            logger.warning("Unsupported grouping method: %s", settings["group"])
-            return None
+        if result:
+            if settings["group"] == "sum":
+                result = sum(result)
+            elif settings["group"] == "min":
+                result = min(result)
+            elif settings["group"] == "max":
+                result = max(result)
+            elif settings["group"] == "first":
+                result = result[0]
+            elif settings["group"] == "last":
+                result = result[-1]
+            elif settings["group"] == "join":
+                result = " ".join(str(v) for v in result)
+            else:
+                logger.warning("Unsupported grouping method: %s", settings["group"])
+                return None
     else:
 
         # Remove duplicates maintaining the order by default (it's more
