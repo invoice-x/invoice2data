@@ -80,6 +80,7 @@ Standard fields:
 - `invoice_number`: unique number assigned to invoice by an issuer
 - `amount`: total amount (with taxes)
 - `vat`: [VAT identification number](https://en.wikipedia.org/wiki/VAT_identification_number)
+- `tax_lines`: [structure](#tax_lines) containing detailed tax information
 
 ### Parser `regex`
 
@@ -342,6 +343,40 @@ Suggested values:
 - 0-4: accounting/invoice software specific template
 - 5: company specific template
 - 6-10: company department/unit specific template
+
+### tax_lines
+Invoices / receipts often have a table near the bottom with a summary of the appied VAT taxes.
+To correctly process the invoice in accounting programs we need separatly parse the amount per tax type.
+
+Example invoice:
+```
+                                                EXCL. VAT             VAT-PERCENTAGE              VAT-AMOUNT
+                                                      0.00                    0.0                     0.0
+                                                      0.00                    9.0                     0.0
+                                                     42.73                   21.0                     8.97
+```
+Tax line Fields
+| fieldname | type | Description |
+| -------------- | :---------: | :-------------------------------------- |
+| price_subtotal | float | The total amount of the tax rule excluding taxes. |
+| line_tax_percent | float | The percentage of tax |
+| line_tax_amount | float | The amount of tax for the tax line |
+
+
+Example template:
+```
+  tax_lines:
+    parser: lines
+    start: 'EXCL. VAT'
+    end: '\Z'
+    line:
+      - '(?P<price_subtotal>[\d+.]+)\s+(?P<line_tax_percent>[\d+.]+)\s+(?P<line_tax_amount>[\d+.]+)'
+    types:
+      price_subtotal: float
+      line_tax_percent: float
+      line_tax_amount: float
+```
+
 
 ### Example of template using most options
 
