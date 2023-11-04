@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: MIT
+issuer: Parkmobile
+fields:
+  amount: TOTAAL\s+[€] (\d+.\d{2}) #legacy layout
+  amount: TOTAAL TE VOLDOEN\s+\d+[,]\d{2}\s+\d+[,]\d{2}\s+(\d+[,]\d{2})
+  amount_untaxed: TOTAAL TE VOLDOEN\s+(\d+[,]\d{2})\s+
+  invoice_number:
+    parser: regex
+    regex: FACTUUR [#]\s+(\d+)
+    group: first
+  vat:
+    parser: static
+    value: NL813399051B01
+  country_code:
+    parser: static
+    value: NL
+  date:
+    parser: regex
+    regex: DATUM\s+(\d{1,2}-\d{2}-\d{4})
+    type: date
+    group: first
+  date_start: 
+    parser: regex
+    regex: PERIODE \s+(\w+\s\d{4})
+    type: date
+    group: first
+lines:
+    start: OMSCHRIJVING
+    end: VERSCHULDIGD BEDRAG
+    line: (?P<name>(\w+(?:\s\S+)*))\s+(?P<qty>(\d{0,4}))\s+(?P<price_unit>\d+.\d{2})\s+(?P<line_tax_amount>\d+.\d{2})?\s+(?P<line_tax_percent>(\d{2}))?[%]?\s+(?P<line_total>(\d+.\d{2}))
+    types:
+      qty: float
+      price_unit: float
+      line_tax_percent: float
+      line_tax_amount: float
+      unittax: float
+      line_total: float
+keywords:
+  - Parkmobile
+  - NL813399051B01
+options:
+  date_formats:
+    - '%d %m %Y'
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
+

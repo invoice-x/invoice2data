@@ -31,6 +31,55 @@ Go from PDF files to this:
     {'date': (2014, 8, 3), 'invoice_number': '42183017', 'amount': 4.11, 'desc': 'Invoice 42183017 from Amazon Web Services'}
     {'date': (2015, 1, 28), 'invoice_number': '12429647', 'amount': 101.0, 'desc': 'Invoice 12429647 from Envato'}
 
+```mermaid
+flowchart LR
+
+    InvoiceFile[fa:fa-file-invoice Invoicefile\n\npdf\nimage\ntext] --> Input-module(Input Module\n\npdftotext\ntext\npdfminer\npdfplumber\ntesseract\ngvision)
+
+    Input-module --> |Extracted Text| C{keyword\nmatching}
+
+    Invoice-Templates[(fa:fa-file-lines Invoice Templates)] --> C{keyword\nmatching}
+
+    C --> |Extracted Text + fa:fa-file-circle-check Template| E(Template Processing\n apply options from template\nremove accents, replaces etc...)
+
+    E --> |Optimized String|Plugins&Parsers(Call plugins + parsers)
+
+    subgraph Plugins&Parsers
+
+      direction BT
+
+        tables[fa:fa-table tables] ~~~ lines[fa:fa-grip-lines lines]
+
+        lines ~~~ regex[fa:fa-code regex]
+
+        regex ~~~ static[fa:fa-check static]
+
+ 
+
+    end
+
+    Plugins&Parsers --> |output| result[result\nfa:fa-file-csv,\njson,\nXML]
+
+ 
+
+ click Invoice-Templates https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md
+
+ click result https://github.com/invoice-x/invoice2data#usage
+
+ click Input-module https://github.com/invoice-x/invoice2data#installation-of-input-modules
+
+ click E https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#options
+
+ click tables https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#tables
+
+ click lines https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#lines
+
+ click regex https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#regex
+
+ click static https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#parser-static
+
+```
+
 ## Installation
 
 1.  Install pdftotext

@@ -135,13 +135,13 @@ fields:
     start: 'Amount'
     end: 'Subtotal\s{10,40}[$€]'
     first_line:
-      - '(?P<sectionheader>(--- \w+(?:\s\S+)*) ---)'
-      - '([[](?P<code>\S+)[]]\s)(?P<name>[\S ]+)\s+(?P<qty>\d+[,.]\d+)\s((?P<unece_code>LTR)|(?P<uom>\w+))\s+(?P<price_unit>\d*[.,]?\d+[,.]\d+)\s+(?P<discount>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d{1,2}[,.]\d{2})?%?\s*([$€]\s+)?(?P<price_subtotal>\d*[.,]?\d+[,.]\d+)'
+      - '(?P<sectionheader>--- \w+((?:\s\S+)*) ---)'
+      - '(\[(?P<code>\S+)\]\s)(?P<name>[\S ]+)\s+(?P<qty>\d+[,.]\d+)\s((?P<unece_code>LTR)|(?P<uom>\w+))\s+(?P<price_unit>\d*[.,]?\d+[,.]\d+)\s+(?P<discount>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d{1,2}[,.]\d{2})?%?\s*([$€]\s+)?(?P<price_subtotal>\d*[.,]?\d+[,.]\d+)'
       - '^(?P<line_note>\w[\S ]{15,120})$'
         # The line below is not conform odoo standard output, but added for a mocked test.
         # To be able to parse the following fields: barcode, unece_code (for uom matching)
         # re-written L to unece code LTR
-      - '([*](?P<barcode>\S+)[*])\s*([[](?P<code>\S+)[]]\s)?(?P<name>[\S ]+)\s+(?P<qty>\d+[,.]\d+)\s(?P<unece_code>LTR)?\s+(?P<price_unit>\d*[.,]?\d+[,.]\d+)\s+(?P<discount>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d{1,2}[,.]\d{2})?%?\s*([$€]\s+)?(?P<price_subtotal>\d*[.,]?\d+[,.]\d+)'
+      - '([*](?P<barcode>\S+)[*])\s*(\[(?P<code>\S+)\]\s)?(?P<name>[\S ]+)\s+(?P<qty>\d+[,.]\d+)\s(?P<unece_code>LTR)?\s+(?P<price_unit>\d*[.,]?\d+[,.]\d+)\s+(?P<discount>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d{1,2}[,.]\d{2})?%?\s*([$€]\s+)?(?P<price_subtotal>\d*[.,]?\d+[,.]\d+)'
     line:
       - '^(?P<name>\w[\S ]{1,40})$'
     types:

@@ -8,9 +8,9 @@ from subprocess import Popen, PIPE, STDOUT, CalledProcessError, TimeoutExpired
 from subprocess import run
 from pathlib import Path
 
-import logging
+from logging import getLogger
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 def to_text(path: str, area_details: dict = None):

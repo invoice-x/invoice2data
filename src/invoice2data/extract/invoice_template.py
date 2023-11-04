@@ -7,7 +7,8 @@ Templates are initially read from .yml files and then kept as class.
 import re
 import dateparser
 import unicodedata
-import logging
+from logging import getLogger
+from pprint import pformat
 from collections import OrderedDict
 from . import parsers
 from .plugins import lines, tables
@@ -15,7 +16,7 @@ from .plugins import lines, tables
 from ..input import pdftotext, ocrmypdf, tesseract
 from typing import Optional
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 OPTIONS_DEFAULT = {
     "remove_whitespace": False,
@@ -117,13 +118,13 @@ class InvoiceTemplate(OrderedDict):
             if self["exclude_keywords"]:
                 if any([re.search(exclude_keyword, extracted_str) for exclude_keyword in self["exclude_keywords"]]):
                     # At least one exclude_keyword matches
-                    logger.debug("Template: %s. Keywords matched. Exclude keyword found!", self["template_name"])
+                    logger.debug("Template: %s | Keywords matched. Exclude keyword found!", self["template_name"])
                     return False
             # No exclude_keywords or none match, template is good
-            logger.debug("Template: %s. Keywords matched. No exclude keywords found.", self["template_name"])
+            logger.debug("Template: %s | Keywords matched. No exclude keywords found.", self["template_name"])
             return True
         else:
-            logger.debug("Template: %s. Failed to match all keywords.", self["template_name"])
+            logger.debug("Template: %s | Failed to match all keywords.", self["template_name"])
             return False
 
     def parse_number(self, value):
@@ -184,7 +185,7 @@ class InvoiceTemplate(OrderedDict):
             self.options["date_formats"],
         )
         logger.debug(
-            "Float parsing: decimal separator=%s", self.options["decimal_separator"]
+            "Float parsing: decimal separator=[%s]", self.options["decimal_separator"]
         )
         logger.debug("keywords=%s", self["keywords"])
         logger.debug(self.options)
@@ -220,7 +221,7 @@ class InvoiceTemplate(OrderedDict):
                     if v["parser"] in PARSERS_MAPPING:
                         parser = PARSERS_MAPPING[v["parser"]]
                         value = parser.parse(self, k, v, optimized_str_for_parser)
-                        if value:
+                        if value or value == 0.0:
                             output[k] = value
                         else:
                             logger.warning("Failed to parse field %s with parser %s", k, v["parser"])
@@ -267,7 +268,8 @@ class InvoiceTemplate(OrderedDict):
 
         if set(required_fields).issubset(output.keys()):
             output["desc"] = "Invoice from %s" % (self["issuer"])
-            logger.debug(output)
+            logger.debug("\n %s", pformat(output, indent=2))
+            # when python 3.7 support stops add sort_dicts=False,
             return output
         else:
             fields = list(set(output.keys()))
@@ -278,4 +280,6 @@ class InvoiceTemplate(OrderedDict):
                     required_fields, fields
                 )
             )
+            missing = set(required_fields) - set(fields)
+            raise ValueError("Unable to parse required field(s): {0}".format(missing))
             return None

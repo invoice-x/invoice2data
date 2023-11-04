@@ -1,0 +1,82 @@
+# evolved variant of the other esso template. 
+# needs proper pdf file for testing
+#
+# SPDX-License-Identifier: MIT
+issuer: EG Services (Netherlands) B.V.
+fields:
+  amount:
+    parser: regex
+    regex:
+      - TOTAAL\s+€.?\s+(\d+.\d{2})
+      - (?i)Amex\s+€.?\s+(\d{1,3}.\d{2})
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex:
+      - \d{2}.\d{2}\s+. (\d+.\d{2})\s+. \d+.\d{2}
+    type: float
+    group: sum
+  date: (\d{1,2}-\d{2}-\d{4}\s+\d{1,2}.\d{2}.\d{2})
+  invoice_number: (\d{1,2}-\d{2}-\d{4})\s+\d{1,2}.\d{2}.\d{2}
+  vat:
+    parser: static
+    value: NL001784249B01
+  country_code:
+    parser: static
+    value: NL
+  payment_method:
+    - (?i)(AMEX)
+    - (VISA)
+    - (MCARD)
+    - (CONTANT)
+    - (KAS):\s.\s\d+\.\d+
+  lines:
+    parser: lines
+    rules:
+      - start: BTW type
+        end: (\d{1,2}-\d{2}-\d{4})\s+\d{2}.\d{2}.\d{2}
+        line:
+          - (?P<btwtype>\d)\s(?P<line_tax_percent>\d{2}.\d{2})\s+. (?P<amount_untaxed>\d+.\d{2})\s+. (?P<line_tax_amount>\d+.\d{2})
+        types:
+          qty: int
+          price_unit: float
+          line_tax_percent: float
+          line_tax_amount: float
+          price_subtotal: float
+      # 
+      - start: '(i)Artikel\s+(i)Aantal' # this invoice has different layout?
+        end: 'Exclusief BTW'
+        first_line: '(?P<product>\w+).?\s+.\s+[E|€]\s*\d+.\d{0,2}'
+        line:
+          - (?P<name>POMP.*) (?P<qty>\d+.\d{2})\s. .\s+€ (?P<price_unit>\d.\d{3})
+        types:
+          qty: int
+          price_unit: float
+keywords:
+  - eur
+  - EG GROUP
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
+  date_formats:
+    - '%m-%d-%Y hh:mm'
+# Using replace to correct tesseract ocr
+# in Odoo use the following product names 'LPG','E10 (Euro 95)'
+  replace:
+    - ['L.p.9.' ,'LPG']
+    - ['L.P.G.' ,'LPG']
+    - ['L.P.9.' ,'LPG']
+    - ['L.P.\s' ,'LPG']
+    - ['Euro 95 E10' ,'E10 (Euro 95)']
+    - ['Diese.\s+', 'B7 (Diesel) ']
+    - ['LPLG' ,'LPG']
+    - ['Contant' ,'CONTANT']
+    - ['\s[l|&|@]' ,' ℓ']
+    - ['B.W', 'BTW']
+    - [', ', ',']
+    - ['°', ' ']
+    - ['©', ' ']
+# inconsistancy on comma and dot detection
+

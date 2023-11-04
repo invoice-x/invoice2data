@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: MIT
+# Current Status: Working on invoice with one product lines. 
+# importing of amount and qty working, but no product.
+# handling of multiple lines untested.
+issuer: Schellekens Exploitatiemaatschappij B.V.
+fields:
+  amount:
+    parser: regex
+    regex: TOTAAL\S?\s+\S*€\s+(\d+.\d{2})
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex: 21.00\s+. (\d+.\d{2})\s+. \d+.\d{2}
+    type: float
+  date:
+    parser: regex
+    regex:
+      - (\d{2}-\d{2}-\d{4}s+\d{2}[:]\d{2}[:]\d{2})
+      - (\d{2}-\d{2}-\d{4})s+\d{2}.\d{2}.\d{2}
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Rekeningnummer.\s+(\d+)
+  vat:
+    parser: regex
+    regex: (NL\d{9}B\d{2})\s
+  country_code:
+    parser: static
+    value: NL
+  payment_method:
+    - \d+(\S*)atHotel
+    - (AMEX)\s.\s\d+\.\d+
+    - (VISA)\s.\s\d+\.\d+
+    - (MCARD)\s.\s\d+\.\d+
+    - (CONTANT)\s.\s\d+\.\d+
+    - (KAS):\s.\s\d+\.\d+
+  partner_coc:
+    parser: static
+    value: 17208286
+lines:
+    start: BTW type
+    end: (\d{2}-\d{2}-\d{4})\s+\d{2}.\d{2}.\d{2}
+    line: (?P<btwtype>\d)\s(?P<line_tax_percent>\d{2}.\d{2})\s+. (?P<amount_untaxed>\d+.\d{2})\s+. (?P<line_tax_amount>\d+.\d{2})
+# code below works, but without product
+    start: BEDRAG
+    end: TOTAAL\s
+    first_line: '(?P<code>\w+).?\s+.\s+[E|€]\s*\d+.\d{0,2}'
+    line: (?P<name>POMP.*) (?P<qty>\d+.\d{2})\s. .\s+€ (?P<price_unit>\d.\d{3})
+#    line: .* (?P<qty>\d+.\d{2})\s. .\s+€ (?P<price_unit>\d.\d{3})
+    types:
+      qty: float
+      line_tax_percent: float
+      amount_untaxed: float 
+      price_unit: float
+      line_tax_amount: float
+keywords:
+  - Shell
+#  - NL818058109B01
+  - NL
+  - €
+options:
+  currency: EUR
+  languages:
+    - nl
+  decimal_separator: ','
+  replace:
+    - ['0x2B' ,'']
+    - ['\u002B ' ,'-']
+    - ['é' ,'€']
+    - ['L.p.9.' ,'LPG']
+    - ['L.P.G.' ,'LPG']
+    - ['L.P.9.' ,'LPG']
+    - ['LPLG' ,'LPG']
+    - ['Contant' ,'CONTANT']
+    - ['\s[l|&|@]' ,' ℓ']
+    - ['(\s)([0-9]+)\.([0-9]{2})(\s)', '\1\2,\3\4'] # workaround for ocr inconsistancy on comma and dot detection
+  
