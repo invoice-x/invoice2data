@@ -1,0 +1,58 @@
+{
+   "issuer": "FedEx Express Netherlands BV",
+   "fields": {
+      "amount": {
+         "parser": "regex",
+         "regex": "(?i)Totaal\\s+EUR\\s+(\\d*[.,]?\\d+[,.]\\d+)",
+         "type": "float"
+      },
+      "amount_tax": {
+         "parser": "regex",
+         "regex": "BTW\\s+(\\d*[.,]?\\d+[,.]\\d+)",
+         "group": "sum",
+         "type": "float"
+      },
+      "date": "(?i)FactuurDatum[:]\\s+(\\d{1,2}[-/]\\d{2}[-/]\\d{4})",
+      "invoice_number": {
+         "parser": "regex",
+         "regex": "Factuurnummer[:]\\s+(\\w+)\\s+"
+      },
+      "static_vat": "NL857768578B01",
+      "partner_name": "(?i)(FedEx Express Netherlands BV)",
+      "country_code": {
+         "parser": "regex",
+         "regex": "(?i)nl",
+         "group": "first"
+      },
+      "partner_website": {
+         "parser": "regex",
+         "regex": "fedex.\\w+",
+         "group": "first"
+      },
+      "partner_coc": {
+         "parser": "regex",
+         "regex": "K[.]v[.]K[.] Nr\\s(\\d{8})"
+      },
+      "iban": {
+         "parser": "regex",
+         "regex": "[A-Z]{2}\\d{2}?\\w{4}?\\d{4}?\\d{4}?\\d{0,2}"
+      },
+      "bic": {
+         "parser": "regex",
+         "regex": "BIC[:]\\s+(\\w{8,11})"
+      }
+   },
+   "keywords": [
+      "(?i)fedex",
+      "(?i)NL857768578B01",
+      "(?i)nl",
+      "(?i)factuur"
+   ],
+   "options": {
+      "currency": "EUR",
+      "languages": [
+         "nl"
+      ],
+      "decimal_separator": ","
+   }
+}

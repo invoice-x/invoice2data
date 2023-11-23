@@ -1,0 +1,153 @@
+{
+    "issuer": "MEGEKKO B.V.",
+    "fields": {
+        "invoice_number": {
+            "parser": "regex",
+            "regex": "Factuurnummer[:]\\s+(\\w+)",
+            "group": "first"
+        },
+        "purchase_order_id": {
+            "parser": "regex",
+            "regex": "\\s+(ME\\d{12})\\n",
+            "group": "first"
+        },
+        "partner_website": {
+            "parser": "regex",
+            "regex": "\\swww[.](.+[.]nl)\\s[-]"
+        },
+        "partner_email": {
+            "parser": "regex",
+            "regex": "\\S\\s(\\w+[@]\\w+[.]nl)\\s"
+        },
+        "partner_name": {
+            "parser": "regex",
+            "regex": "(MEGEKKO \\S+)\\s"
+        },
+        "partner_street": {
+            "parser": "regex",
+            "regex": "Spinveld 8"
+        },
+        "partner_city": {
+            "parser": "regex",
+            "regex": "\\d{4}\\s[A-Z]{2}\\s(Breda)",
+            "group": "last"
+        },
+        "state_code": {
+            "parser": "static",
+            "value": "NB"
+        },
+        "country_code": {
+            "parser": "static",
+            "value": "NL"
+        },
+        "partner_zip": {
+            "parser": "regex",
+            "regex": "\\s(\\d{4}\\s[A-Z]{2})\\s",
+            "group": "last"
+        },
+        "partner_ref": {
+            "parser": "regex",
+            "regex": "Klantnummer\\s[:]\\s+(\\S+)"
+        },
+        "iban": {
+            "parser": "regex",
+            "regex": "Rekeningnr[:]\\s+(NL.*)\\s[-]"
+        },
+        "bic": {
+            "parser": "regex",
+            "regex": "BIC\\s+(\\w+)\\s"
+        },
+        "date": {
+            "parser": "regex",
+            "regex": [
+                "Datum[:]\\s+(\\d{2}[-]\\d{2}[-]\\d{4})"
+            ],
+            "group": "min",
+            "type": "date"
+        },
+        "date_due": {
+            "parser": "regex",
+            "regex": [
+                "Datum[:]\\s+(\\d{2}[-]\\d{2}[-]\\d{4})"
+            ],
+            "group": "max",
+            "type": "date"
+        },
+        "partner_coc": {
+            "parser": "regex",
+            "regex": "KVK\\sBreda\\s+(\\d+)"
+        },
+        "lines": {
+            "parser": "lines",
+            "start": "ARTIKEL",
+            "end": "FACTUURCODE",
+            "line": [
+                "(?P<code>\\d+)\\s{6,7}(?P<name>.+)\\s{5,22}(?P<mnd>\\d+\\s\\w+[.])?\\s{10,40}(?P<qty>\\d+)\\s*(?P<price_unit>\\d*[.,]?\\d+[,.]\\d{2})?\\s+(?P<price_subtotal>\\d*[.,]?\\d+[,.]\\d{2})?",
+                "(?P<code>\\d+)\\s{6,7}(?P<name>.+)\\s{5,22}(?P<mnd>\\d+\\s\\w+[.])?\\s{10,40}(?P<qty>\\d+)$",
+                "(?P<amount_untaxed>\\d*[.,]?\\d+[,.]\\d{2})\\s+(?P<line_tax_percent>\\d+[.]\\d)\\s+(?P<line_tax_amount>\\d*[.,]?\\d+[,.]\\d{2})\\s+\\d+",
+                "^\\s+(?P<line_note>.{2} Webshoporder[:]\\s\\w+)"
+            ],
+            "types": {
+                "qty": "float",
+                "price_subtotal": "float",
+                "price_unit": "float"
+            }
+        },
+        "tax_lines": {
+            "parser": "lines",
+            "area": {
+                "f": 1,
+                "l": 1,
+                "x": 276,
+                "y": 1020,
+                "r": 100,
+                "W": 355,
+                "H": 87
+            },
+            "start": "EXCL. BTW",
+            "end": "\\Z",
+            "line": [
+                "(?P<price_subtotal>[\\d+.]+)\\s+(?P<line_tax_percent>[\\d+.]+)\\s+(?P<line_tax_amount>[\\d+.]+)"
+            ],
+            "types": {
+                "line_tax_percent": "float",
+                "price_subtotal": "float",
+                "line_tax_amount": "float"
+            }
+        },
+        "vat": {
+            "parser": "regex",
+            "regex": "BTW\\s+(NL\\d{9}B\\d{2})"
+        }
+    },
+    "tables": [
+        {
+            "start": "BTW-BEDRAG\\s+TOTAAL",
+            "end": "MEGEKKO B[.]",
+            "body": "\\d+\\s+(?P<amount_untaxed>\\d*[.,]?\\d+[,.]\\d{2})\\s+(?P<tax_percent_not_used>\\d+[.]\\d)\\s+(?P<amount_tax>\\d*[.,]?\\d+[,.]\\d{2})\\s+\\d+"
+        },
+        {
+            "start": "BTW-BEDRAG\\s+TOTAAL",
+            "end": "MEGEKKO B[.]",
+            "body": "Euro\\s+(?P<amount>\\d*[.,]?\\d+[,.]\\d{2})",
+            "types": {
+                "amount": "float",
+                "amount_tax": "float",
+                "amount_untaxed": "float",
+                "tax_percent_not_used": "float"
+            }
+        }
+    ],
+    "keywords": [
+        "MEGEKKO",
+        "NL808060016B01",
+        "FACTUUR"
+    ],
+    "options": {
+        "languages": [
+            "nl"
+        ],
+        "decimal_separator": ".",
+        "currency": "EUR"
+    }
+}
