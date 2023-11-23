@@ -1,0 +1,179 @@
+{
+   "issuer": "Rhine Opco Hotel",
+   "fields": {
+      "amount": {
+         "parser": "regex",
+         "regex": [
+            "\\s{37}(?:\\s+\\w+){0,4}\\s\\d*[%]?\\s+\\d*[.,]?\\d+[,.]\\d+\\s{11,13}\\d*[.,]?\\d+[,.]\\d+?\\s{2,30}([.,]?\\d+[,.]\\d+)"
+         ],
+         "type": "float",
+         "group": "sum"
+      },
+      "amount_tax": {
+         "parser": "regex",
+         "regex": [
+            "\\s{37}BTW verrekenbaar(?:\\s+\\w+){0,4}\\s\\d*[%]?\\s+\\d*[.,]?\\d+[,.]\\d+\\s{11,13}(\\d*[.,]?\\d*[,.]?\\d*)\\s{2,30}[.,]?\\d+[,.]\\d+"
+         ],
+         "type": "float",
+         "group": "sum"
+      },
+      "amount_untaxed": {
+         "parser": "regex",
+         "regex": [
+            "\\s{37}(?:\\s+\\w+){0,4}\\s\\d*[%]?\\s+(\\d*[.,]?\\d+[,.]\\d+)\\s{11,13}\\d*[.,]?\\d+[,.]\\d+?\\s{2,30}[.,]?\\d+[,.]\\d+"
+         ],
+         "type": "float",
+         "group": "sum"
+      },
+      "date": {
+         "parser": "regex",
+         "regex": ",\\s(\\d{1,2}[-]\\S{1,4}[-]\\d{2}\\s\\d{2}[:]\\d{2})\\n",
+         "type": "date",
+         "group": "first"
+      },
+      "invoice_number": {
+         "parser": "regex",
+         "regex": "REKENING\\s+[:]\\s+(.*)"
+      },
+      "iban": {
+         "parser": "regex",
+         "regex": "[A-Z]{2}\\d{2}?\\s?\\w{4}?\\d?\\s?\\d{3,4}\\s?\\d{4}?\\s\\d{0,2}"
+      },
+      "bic": {
+         "parser": "regex",
+         "regex": "(?i)BIC[:]\\s+(\\w{8,11})",
+         "group": "first"
+      },
+      "vat": {
+         "parser": "regex",
+         "regex": "\\s(NL\\d{4}[.]?\\d{2}[.]?\\d{3}[.]?B[.]?\\d{2})\\s"
+      },
+      "partner_website": {
+         "parser": "static",
+         "value": "all.accor.com"
+      },
+      "partner_name": {
+         "parser": "regex",
+         "regex": "(Rhine.+Opco\\sBV)\\s"
+      },
+      "country_code": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 0,
+            "r": 100,
+            "W": 270,
+            "H": 240
+         },
+         "regex": "nl"
+      },
+      "partner_zip": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 0,
+            "r": 100,
+            "W": 270,
+            "H": 240
+         },
+         "regex": "\\s(\\d{4}\\s?[A-Z]{2})\\s"
+      },
+      "partner_city": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 0,
+            "r": 100,
+            "W": 270,
+            "H": 240
+         },
+         "regex": "\\d{4}\\s?[A-Z]{2}\\s(\\w+(?:\\s\\w+)*)\\s"
+      },
+      "partner_street": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 0,
+            "r": 100,
+            "W": 270,
+            "H": 240
+         },
+         "regex": "^(\\w+.*\\s\\d+)\\n"
+      },
+      "telephone": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 0,
+            "r": 100,
+            "W": 270,
+            "H": 240
+         },
+         "regex": "Tel[.][:]\\s+(.+)"
+      },
+      "partner_email": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 0,
+            "r": 100,
+            "W": 270,
+            "H": 240
+         },
+         "regex": "\\s+(\\w+[@]\\w+[.]nl)\\s"
+      },
+      "partner_coc": {
+         "parser": "regex",
+         "regex": "C[.]o[.]C[.]\\snr[.](\\d{8})"
+      },
+      "lines": {
+         "parser": "lines",
+         "start": "Datum\\s+Omschrijving",
+         "end": "\\s+Totaal",
+         "line": "^\\s{37}(?P<date_start>\\d{2}[-]\\d{2}[-]\\d{2})\\s{13}(?P<name>((?:\\w+\\s){0,2}))\\s{80,94}(?P<price_subtotal>-?\\d*[.]?\\d+[.,]\\d{2})",
+         "types": {
+            "price_unit": "float",
+            "price_subtotal": "float"
+         }
+      },
+      "payment_method": [
+         "(?i)(American Express)",
+         "(VISA)",
+         "(MCARD)",
+         "(CONTANT)",
+         "(KAS):\\s.\\s\\d+\\.\\d+"
+      ],
+      "payment_reference": {
+         "parser": "regex",
+         "regex": "Transaction\\sID\\s+(\\d{9})"
+      }
+   },
+   "keywords": [
+      "(?i)Novotel",
+      "REKENING",
+      "Rhine"
+   ],
+   "options": {
+      "currency": "EUR",
+      "date_formats": [
+         "%d/%m/%Y"
+      ],
+      "languages": [
+         "nl"
+      ],
+      "priority": 4,
+      "decimal_separator": "."
+   }
+}

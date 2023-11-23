@@ -1,0 +1,207 @@
+{
+   "issuer": "Valk Exclusief",
+   "fields": {
+      "amount": {
+         "parser": "regex",
+         "regex": [
+            "Totaal\\sfactuur\\s+(\\d?.?\\d{1,4}[.,]\\d{2})"
+         ],
+         "type": "float",
+         "group": "sum"
+      },
+      "amount_tax": {
+         "parser": "regex",
+         "regex": [
+            "BTW\\s{7,9}[1-9,]+\\d{2}\\%\\s\\w+(?:\\s\\S+){0,4}\\s+\\d?.?\\d{1,4}[.,]\\d{2}\\s+(\\d?.?\\d{1,4}[.,]\\d{2})\\s+\\d?.?\\d{1,4}[.,]\\d{2}"
+         ],
+         "type": "float",
+         "group": "sum"
+      },
+      "amount_untaxed": {
+         "parser": "regex",
+         "regex": [
+            "BTW\\s{7,9}[0-9,]+\\d{2}\\%\\s\\w+(?:\\s\\S+){0,4}\\s+\\d?.?\\d{1,4}[.,]\\d{2}\\s+\\d?.?\\d{1,4}[.,]\\d{2}\\s+(\\d?.?\\d{1,4}[.,]\\d{2})"
+         ],
+         "type": "float",
+         "group": "sum"
+      },
+      "date": {
+         "parser": "regex",
+         "regex": "datum\\s+(\\d{1,2}[-]\\d{1,4}[-]\\d{4}\\s?\\d{0,2}.?\\d{0,2})",
+         "type": "date",
+         "group": "first"
+      },
+      "invoice_number": {
+         "parser": "regex",
+         "regex": "nummer\\s+(\\d*)"
+      },
+      "customer_order_free_ref": {
+         "parser": "regex",
+         "regex": "Referentie\\s+(\\S+)"
+      },
+      "customer_order_number": {
+         "parser": "regex",
+         "regex": "Folio\\s+(\\S+(?:\\s\\S+){0,2})"
+      },
+      "iban": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 930,
+            "r": 100,
+            "W": 827,
+            "H": 320
+         },
+         "regex": "(?:[A-Z]{2}[\\-]?[0-9]{2})(?:[\\-]?[A-Z0-9]{3,5}){2,7}"
+      },
+      "bic": {
+         "parser": "regex",
+         "regex": "(?i)BIC[:]\\s+(\\w{8,11})",
+         "group": "first"
+      },
+      "vat": {
+         "parser": "regex",
+         "regex": "\\s(NL\\d{4}[.]?\\d{2}[.]?\\d{3}[.]?B[.]?\\d{2})\\s"
+      },
+      "partner_website": {
+         "parser": "regex",
+         "regex": "\\swww[.](.+[.]nl)\\s"
+      },
+      "partner_name": {
+         "parser": "regex",
+         "regex": "(Van der Valk Hotel \\w+)\\s\\W\\s\\w+"
+      },
+      "country_code": {
+         "parser": "regex",
+         "regex": "\\.(nl)"
+      },
+      "partner_zip": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 930,
+            "r": 100,
+            "W": 827,
+            "H": 320
+         },
+         "regex": "\\s(\\d{4}\\s?[A-Z]{2})\\s"
+      },
+      "partner_city": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 930,
+            "r": 100,
+            "W": 827,
+            "H": 320
+         },
+         "regex": "\\d{4}\\s?[A-Z]{2}\\s(\\w+(?:\\s\\w+)*)"
+      },
+      "partner_street": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 930,
+            "r": 100,
+            "W": 827,
+            "H": 320
+         },
+         "regex": "\\s([A-Z][a-z]+\\s?\\d{1,4})\\s\\W"
+      },
+      "telephone": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 930,
+            "r": 100,
+            "W": 827,
+            "H": 320
+         },
+         "regex": "t[:]\\s+(.?\\d*[(]?[0-9]?[)]?[0-9-]{7,10})"
+      },
+      "partner_email": {
+         "parser": "regex",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 930,
+            "r": 100,
+            "W": 827,
+            "H": 320
+         },
+         "regex": "(\\w+[@]\\w+[.]\\w+[.]nl)"
+      },
+      "partner_coc": {
+         "parser": "regex",
+         "regex": "Handelsregister[:]\\s(\\d{8})"
+      },
+      "lines": {
+         "parser": "lines",
+         "start": "Vertrek",
+         "end": "Totaal factuur",
+         "first_line": "^\\s{11}(?P<name>([a-zA-Z]+(?:\\s\\D+){0,8}))",
+         "line": "(?P<date_start>\\d{2}[-]\\d{1,2}[-]\\d{4}\\s\\d{2}.\\d{2}.\\d{2})\\s+(?P<qty>\\d+)\\s+(?P<unit_price>-?\\d*[.]?\\d+[.,]\\d{2})\\s+(?P<price_subtotal>-?\\d*[.]?\\d+[.,]\\d{2})",
+         "types": {
+            "price_unit": "float",
+            "price_subtotal": "float",
+            "qty": "int"
+         }
+      },
+      "tax_lines": {
+         "parser": "lines",
+         "start": "Incl. BTW",
+         "end": "\\Z",
+         "line": [
+            "(?P<line_tax_percent>[\\d+,]+)[%]\\s[\\S ]+\\s+(?P<line_tax_amount>[\\d+,.]+)\\s+(?P<price_subtotal>[\\d+,.]+)"
+         ],
+         "types": {
+            "line_tax_percent": "float",
+            "price_subtotal": "float",
+            "line_tax_amount": "float"
+         }
+      },
+      "payment_method": [
+         "(?i)(American Express)",
+         "(?i)(Amex)",
+         "(VISA)",
+         "(MCARD)",
+         "(CONTANT)",
+         "(KAS)"
+      ],
+      "payment_reference": {
+         "parser": "regex",
+         "regex": "CRS\\s.\\s\\d+"
+      }
+   },
+   "keywords": [
+      "(?i)van\\sder\\svalk\\shotel\\s",
+      "Factuur",
+      "Logies"
+   ],
+   "options": {
+      "currency": "EUR",
+      "languages": [
+         "nl",
+         "en"
+      ],
+      "priority": 4,
+      "decimal_separator": ",",
+      "replace": [
+         [
+            "(\\S+\\s+[0-9]+)[.]([0-9]{2}\\s+[0-9]+)[.]([0-9]{2}\\s+[0-9]+)[.]",
+            "\\1,\\2,\\3,"
+         ]
+      ]
+   }
+}

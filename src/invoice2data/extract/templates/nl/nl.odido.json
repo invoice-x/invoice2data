@@ -1,0 +1,125 @@
+{
+   "issuer": "Odido Netherlands bv",
+   "fields": {
+      "amount": {
+         "parser": "regex",
+         "regex": "Totaal\\s+[$€]\\s-?(\\d*[.,]?\\d+[,.]\\d{2})",
+         "type": "float"
+      },
+      "amount_tax": {
+         "parser": "regex",
+         "regex": "BTW \\d+. over [$€]\\s+\\S+\\s+[$€]\\s+(\\d*[.,]?\\d+[,.]\\d{2})",
+         "group": "sum",
+         "type": "float"
+      },
+      "amount_untaxed": {
+         "parser": "regex",
+         "regex": "Subtotaal excl. BTW\\s+[$€]\\s(\\d*[.,]?\\d+[,.]\\d{2})",
+         "type": "float"
+      },
+      "invoice_number": {
+         "parser": "regex",
+         "regex": "Factuurnummer\\S\\s+(\\d+)"
+      },
+      "partner_website": {
+         "parser": "regex",
+         "regex": "\\s+\\s{20}(.+[.]nl)"
+      },
+      "partner_name": {
+         "parser": "regex",
+         "regex": "(Odido Netherlands bv)\\s"
+      },
+      "partner_street": {
+         "parser": "regex",
+         "regex": "Waldorpstraat 60"
+      },
+      "partner_city": {
+         "parser": "regex",
+         "regex": "Den Haag"
+      },
+      "state_code": {
+         "parser": "static",
+         "value": "ZH"
+      },
+      "country_code": {
+         "parser": "static",
+         "value": "NL"
+      },
+      "partner_zip": {
+         "parser": "regex",
+         "regex": "\\s(\\d{4}\\s[A-Z]{2})\\s",
+         "group": "last",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 930,
+            "r": 100,
+            "W": 827,
+            "H": 320
+         }
+      },
+      "partner_ref": {
+         "parser": "regex",
+         "regex": "Klantnummer[:]\\s+(\\S+)"
+      },
+      "currency_symbol": {
+         "parser": "regex",
+         "regex": "[$€]",
+         "group": "first"
+      },
+      "telephone": {
+         "parser": "regex",
+         "regex": "0800-7112"
+      },
+      "iban": {
+         "parser": "regex",
+         "regex": "Bank\\S\\s+(NL\\d{2}.+)\\s.\\sB"
+      },
+      "date": {
+         "parser": "regex",
+         "regex": [
+            "\\sDatum\\S\\s+(\\d{2}\\s\\w+\\s\\d{4})"
+         ],
+         "group": "min",
+         "type": "date"
+      },
+      "date_due": {
+         "parser": "regex",
+         "regex": [
+            "\\somstreeks\\s(\\d{2}\\s\\w+\\s\\d{4})"
+         ],
+         "group": "max",
+         "type": "date"
+      },
+      "partner_coc": {
+         "parser": "regex",
+         "regex": "KvK\\S?\\s+(\\d+)"
+      },
+      "date_start": {
+         "parser": "regex",
+         "regex": "\\s+(\\d{2}[.]\\d{2}[.]\\d{2})\\st.m\\s\\d{2}[.]\\d{2}[.]\\d{2}",
+         "type": "date"
+      },
+      "date_end": {
+         "parser": "regex",
+         "regex": "\\s+\\d{2}[.]\\d{2}[.]\\d{2}\\st.m\\s(\\d{2}[.]\\d{2}[.]\\d{2})",
+         "type": "date"
+      },
+      "vat": {
+         "parser": "regex",
+         "regex": "BTW\\S?-id\\s+(NL\\d{9}B\\d{2})"
+      }
+   },
+   "keywords": [
+      "factuur",
+      "NL007053022B01"
+   ],
+   "options": {
+      "languages": [
+         "nl"
+      ],
+      "decimal_separator": ",",
+      "currency": "EUR"
+   }
+}

@@ -1,0 +1,114 @@
+{
+   "issuer": "Marktplaats bv",
+   "fields": {
+      "amount": {
+         "parser": "regex",
+         "regex": "Totaal [(]incl. BTW[)]\\s+€\\s-?(\\d*[.,]?\\d+[,.]\\d{2})",
+         "type": "float"
+      },
+      "amount_tax": {
+         "parser": "regex",
+         "regex": "BTW\\s+\\d+[%]\\s+[$€]\\s+(\\d*[.,]?\\d+[,.]\\d{2})",
+         "group": "sum",
+         "type": "float"
+      },
+      "amount_untaxed": {
+         "parser": "regex",
+         "regex": "Totaal excl. BTW\\s+[$€]\\s(\\d*[.,]?\\d+[,.]\\d{2})",
+         "type": "float"
+      },
+      "invoice_number": {
+         "parser": "regex",
+         "regex": "Factuurnummer\\s+\\S\\s+(\\w+)"
+      },
+      "partner_website": {
+         "parser": "regex",
+         "regex": "\\s+(\\w+[.]nl)"
+      },
+      "partner_name": {
+         "parser": "regex",
+         "regex": "( Marktplaats B[.]V[.])"
+      },
+      "partner_street": {
+         "parser": "regex",
+         "regex": "Wibautstraat 224"
+      },
+      "partner_city": {
+         "parser": "regex",
+         "regex": "\\d{4}\\s[A-Z]{2}\\s(\\w+)"
+      },
+      "state_code": {
+         "parser": "static",
+         "value": "NH"
+      },
+      "country_code": {
+         "parser": "static",
+         "value": "NL"
+      },
+      "partner_zip": {
+         "parser": "regex",
+         "regex": "(\\d{4}\\s[A-Z]{2})\\s\\w+",
+         "group": "last",
+         "area": {
+            "f": 1,
+            "l": 1,
+            "x": 0,
+            "y": 930,
+            "r": 100,
+            "W": 827,
+            "H": 320
+         }
+      },
+      "partner_ref": {
+         "parser": "regex",
+         "regex": "Klantnummer\\s+[:]\\s+(\\S+)"
+      },
+      "currency_symbol": {
+         "parser": "regex",
+         "regex": "[$€]",
+         "group": "first"
+      },
+      "date": {
+         "parser": "regex",
+         "regex": [
+            "datum\\s+\\S\\s+(\\d{2}-\\d{2}-\\d{4})"
+         ],
+         "group": "min",
+         "type": "date"
+      },
+      "partner_coc": {
+         "parser": "regex",
+         "regex": "KvK-nummer\\S?\\s+(\\d+)"
+      },
+      "date_start": {
+         "parser": "regex",
+         "regex": "\\s+(\\d{2}-\\d{2}-\\d{4})\\s-\\s\\d{2}-\\d{2}-\\d{4}",
+         "type": "date"
+      },
+      "date_end": {
+         "parser": "regex",
+         "regex": "\\d{2}-\\d{2}-\\d{4}\\s-\\s(\\d{2}-\\d{2}-\\d{4})",
+         "type": "date"
+      },
+      "vat": {
+         "parser": "regex",
+         "regex": "BTW-nummer\\S?\\s+(\\d{3}[.]\\d{3}[.]\\d{3}[.]B[.]\\d{2})"
+      },
+      "company_vat": {
+         "parser": "regex",
+         "regex": "BTW-nummer\\s+\\S?\\s+(\\w{2}\\d{9}B\\d{2})"
+      }
+   },
+   "keywords": [
+      "Factuur",
+      "Marktplaats",
+      "28058712"
+   ],
+   "options": {
+      "languages": [
+         "nl"
+      ],
+      "decimal_separator": ",",
+      "currency": "EUR"
+   }
+}
