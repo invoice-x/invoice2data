@@ -246,10 +246,10 @@ class InvoiceTemplate(OrderedDict):
                 else:
                     result = parsers.regex.parse(self, k, {"regex": v}, optimized_str, True)
 
-                if not result:
-                    logger.warning("regexp for field %s didn't match", k)
-                else:
+                if result or result == 0.0:
                     output[k] = result
+                else:
+                    logger.warning("regexp for field %s didn't match", k)
 
         output["currency"] = self.options["currency"]
 
