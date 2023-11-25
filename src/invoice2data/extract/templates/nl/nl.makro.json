@@ -12,7 +12,7 @@
       "amount_untaxed": {
          "parser": "regex",
          "regex": [
-            "Netto totaal[:]\\s+(\\d+[,]\\d{2})"
+            "Netto totaal[:]\\s+(\\d+[.,]\\d{2})"
          ],
          "type": "float"
       },
@@ -106,11 +106,11 @@
                ]
             },
             {
-               "start": ",\\d{3}\\n-{134}",
+               "start": "[.,]\\d{3}\\n-{134}",
                "end": "\\Z",
                "line": [
-                  "(?P<name>((?:\\S+\\s)?\\w+(?:\\s\\S+)*))\\s+(?P<bedragbtw>\\d+[,.]\\d{2}[-])\\s+(?P<line_tax_percent>\\d)\\s+(?P<code_korting>(\\d+))?"
-               ]
+                  "(?P<name>((?:\\S+\\s)?\\w+(?:\\s\\S+)*))\\s+(?P<price_unit>[-]?\\d+.\\d{2}[-]?)\\s+(?P<line_tax_percent>\\d)\\s+(?P<code_korting>(\\d+))?"
+              ]
             }
          ],
          "types": {
@@ -149,7 +149,47 @@
          [
             "\\s(?P<price_unit>(\\d+.\\d+))(?P<separator1>(\\s+))(?P<stukspereenheid>(\\d+(.\\d{3})?))\\s(?P<uom>\\w+)\\s+(?P<collo>\\d+.\\d{2})\\s+(?P<qty>\\d)\\s+(?P<price_subtotal>\\d+.\\d{2})\\s+(?P<code_btw>5)\\s",
             " \\g<price_unit>\\g<separator1>\\g<stukspereenheid> \\g<uom>       \\g<collo>      \\g<qty>      \\g<price_subtotal>   9 "
-         ]
+         ],
+         [
+            "(?P<separator0>(\\s{18}))(?P<name>((?:\\S+\\s)?\\w+(?:\\s\\S+)*))(?P<separator1>(\\s+))(?P<bedragbtw>\\d+.\\d{2})(?P<bedragbtw_neg>[-]?)\\s+(?P<code_btw>5)\\s+(?P<code_korting>(\\d+))?",
+            "\\g<separator0>\\g<name>\\g<separator1>\\g<bedragbtw_neg>\\g<bedragbtw> 9 \\g<code_korting>"
+        ],
+        [
+            "(?P<separator0>(\\s{18}))(?P<name>((?:\\S+\\s)?\\w+(?:\\s\\S+)*))(?P<separator1>(\\s+))(?P<bedragbtw>\\d+.\\d{2})(?P<bedragbtw_neg>[-]?)\\s+(?P<code_btw>1)\\s+(?P<code_korting>(\\d+))?",
+            "\\g<separator0>\\g<name>\\g<separator1>\\g<bedragbtw_neg>\\g<bedragbtw> 21 \\g<code_korting>"
+        ],
+        [
+            " ST ",
+            " Units "
+        ],
+        [
+            " BX ",
+            " Units "
+        ],
+        [
+            " BL ",
+            " Units "
+        ],
+        [
+            " ZK ",
+            " Units "
+        ],
+        [
+            " FL ",
+            " Units "
+        ],
+        [
+            " PK ",
+            " Units "
+        ],
+        [
+            " BS ",
+            " Units "
+        ],
+        [
+            " DS ",
+            " Units "
+        ]
       ]
    }
 }
