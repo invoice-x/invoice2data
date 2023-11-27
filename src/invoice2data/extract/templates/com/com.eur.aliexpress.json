@@ -1,0 +1,60 @@
+{
+   "issuer": "Alibaba",
+   "fields": {
+      "amount": "Amount paid\\s+\\d{1,4}.\\d{2}\\s+(\\d{1,4}.\\d{2})",
+      "amount_untaxed": "\\s{4}Total\\s+(\\d+.\\d{2})",
+      "date": {
+         "parser": "regex",
+         "regex": "Invoice Date . (\\d{4}-\\d.-\\d.)",
+         "type": "date"
+      },
+      "invoice_number": "Invoice No.? . ([A-Z]{2}\\d+)",
+      "static_vat": "IM5280002556"
+   },
+   "lines": {
+      "start": "Amount.In.+[)]",
+      "end": "Grant Total",
+      "first_line": [
+         "(?P<name>(\\w+(?:\\S|[ ]\\w\\w+|\\n)*))\\s+(?P<qty>\\S)\\s+(?P<price_unit>\\d+.\\d{2})\\s+(?P<discount>\\d+.\\d{2})\\s+(?P<line_tax_percent>\\d{2}).\\s+(?P<line_tax_amount>\\d+.\\d{2})\\s+\\s+(?P<amounttxcurrency>\\d+.\\d{2})\\s+(?P<amountcurrency>\\d+.\\d{2})",
+         "(?P<sectionheader>Order Number.\\s+(\\d+))"
+      ],
+      "line": "^(?P<name>\\w+(?:\\S|[ ]\\w\\w+|\\n)*)$",
+      "types": {
+         "qty": "float",
+         "price_unit": "float",
+         "discount": "float",
+         "line_tax_percent": "float",
+         "line_tax_amount": "float",
+         "amounttxcurrency": "float",
+         "amountcurrency": "float"
+      }
+   },
+   "keywords": [
+      "Alibaba.com Singapore E-Commerce Private Limited"
+   ],
+   "options": {
+      "currency": "EUR",
+      "languages": [
+         "en"
+      ],
+      "decimal_separator": ".",
+      "replace": [
+         [
+            "\\s-\\s",
+            "1"
+         ],
+         [
+            "/",
+            "_"
+         ],
+         [
+            "\\n\\n",
+            "\\n"
+         ],
+         [
+            "\\n\\s\\s\\s",
+            ""
+         ]
+      ]
+   }
+}

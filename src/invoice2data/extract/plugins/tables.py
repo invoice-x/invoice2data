@@ -88,7 +88,7 @@ def extract(self, content, output):
                     elif field.startswith("amount"):
                         output[field] = self.parse_number(value)
                     elif field in types:
-                        output[field] = self.template.coerce_type(output[field], types[value])
+                        output[field] = self.coerce_type(value, types[field])
                     else:
                         output[field] = value
             else:

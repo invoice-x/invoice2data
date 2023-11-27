@@ -1,0 +1,92 @@
+{
+   "issuer": "Kuwait Petroleum Ned. B.V.",
+   "fields": {
+      "amount": "TOTAAL FACTUUR\\s+[:]\\s+\\d{1,4}[.]\\d{2}\\s+\\d{1,4}[.]\\d{2}\\s+(\\d{1,4}[.]\\d{2})",
+      "amount_tax": "TOTAAL FACTUUR\\s+[:]\\s+\\d{1,4}[.]\\d{2}\\s+(\\d{1,4}[.]\\d{2})",
+      "amount_untaxed": "TOTAAL FACTUUR\\s+[:]\\s+(\\d{1,4}[.]\\d{2})",
+      "date": "\\SDATUM\\s+[:]\\s+(\\d{2}[\\/]\\d{2}[\\/]\\d{4})",
+      "date_due": "VERVALDATUM\\s+[:]\\s+(\\d{2}[\\/]\\d{2}[\\/]\\d{4})",
+      "invoice_number": "FACTUUR\\sNR\\s+[:]\\s+(\\w+)",
+      "static_vat": "NL001250590B01",
+      "bic": {
+         "parser": "regex",
+         "regex": "(?i)BIC.(\\w{8,11})"
+      },
+      "iban": {
+         "parser": "regex",
+         "regex": "[A-Z]{2}\\d{2}?\\w{4}?\\d{4}?\\d{4}?\\d{0,2}"
+      },
+      "payment_reference": {
+         "parser": "regex",
+         "regex": "NLN\\d{7}"
+      },     
+      "telephone": {
+         "parser": "static",
+         "value": "+31703152650"
+      },
+      "partner_website": {
+         "parser": "static",
+         "value": "q8libertyweb.com"
+      },
+      "partner_name": {
+         "parser": "static",
+         "value": "KUWAIT PETROLEUM (NEDERLAND) B.V."
+      },
+      "country_code": {
+         "parser": "static",
+         "value": "nl"
+      },
+      "partner_zip": {
+         "parser": "regex",
+         "regex": "2595.?AR"
+      },
+      "partner_city": {
+         "parser": "static",
+         "value": "Den Haag"
+      },
+      "partner_street": {
+         "parser": "static",
+         "value": "Schenkkade 50"
+      },
+      "partner_coc": {
+         "parser": "static",
+         "value": "24025263"
+      }
+   },
+   "lines": {
+      "start": "KLANT",
+      "end": "\\Z",
+      "line": "\\s+(?P<name>(\\w+(?:\\s\\S+){0,2}))\\s+(?P<base_price>\\d+[.]\\d{3,4})\\s+(?P<discount_price>\\d+[.]\\d{3,4})\\s+(?P<qty>\\d+[.]\\d{2})\\s+(?P<price_unit>\\d[.]\\d{3,4})\\s+(?P<line_tax_percent>\\d{2}[.]\\d{2})\\s+(?P<price_subtotal>\\d+[.]\\d{2})",
+      "types": {
+         "qty": "float",
+         "line_tax_percent": "float",
+         "price_unit": "float",
+         "base_price": "float",
+         "price_subtotal": "float"
+      }
+   },
+   "keywords": [
+      "(?i)Kuwait",
+      "FACTUUR NR",
+      "LIBERTY",
+      "(NEDERLAND)",
+      "NL001250590B01"
+   ],
+   "options": {
+      "currency": "EUR",
+      "languages": [
+         "nl"
+      ],
+      "decimal_separator": ".",
+      "replace": [
+         [
+            "Euro 95",
+            "E10 (Euro 95)"
+         ],
+         [
+            "GASOIL - DIESEL",
+            "Diesel"
+         ]
+      ]
+   }
+}

@@ -1,0 +1,195 @@
+{
+   "issuer": "Makro",
+   "fields": {
+      "amount": {
+         "parser": "regex",
+         "regex": [
+            "Te betalen\\s+(\\d+.\\d{2})",
+            "Totaal[:]\\s+(\\d+.\\d{2})\\sEUR"
+         ],
+         "type": "float"
+      },
+      "amount_untaxed": {
+         "parser": "regex",
+         "regex": [
+            "Netto totaal[:]\\s+(\\d+[.,]\\d{2})"
+         ],
+         "type": "float"
+      },
+      "date": {
+         "parser": "regex",
+         "regex": [
+            "Factuurdatum\\s.?\\s+(\\d{2}-\\d{2}-\\d{4}\\s+\\d{2}[:]\\d{2})"
+         ],
+         "type": "date"
+      },
+      "invoice_number": {
+         "parser": "regex",
+         "regex": [
+            "Factuurnummer[:]\\s+(\\S+)"
+         ]
+      },
+      "vat": {
+         "parser": "regex",
+         "regex": [
+            "OB\\s+nr[:]\\s+((?:BE|NL)\\w+)"
+         ]
+      },
+      "partner_coc": {
+         "parser": "regex",
+         "regex": [
+            "K[.]v[.]K[:]\\s+(\\d{8})"
+         ]
+      },
+      "partner_website": {
+         "parser": "regex",
+         "regex": [
+            "www[.](\\w+[.]\\w{2})"
+         ],
+         "group": "first"
+      },
+      "telephone": {
+         "parser": "regex",
+         "regex": [
+            "Telefoon[:]\\s+(\\d+[-]\\d{4,9})"
+         ],
+         "group": "first"
+      },
+      "partner_name": {
+         "parser": "regex",
+         "regex": [
+            "(Metro\\sCash\\s[&]\\sCarry\\sNederland\\sB[.]V[.])"
+         ]
+      },
+      "partner_city": {
+         "parser": "regex",
+         "regex": "Wateringen"
+      },
+      "partner_zip": {
+         "parser": "regex",
+         "regex": "2290 AD"
+      },
+      "country_code": {
+         "parser": "regex",
+         "regex": "[.](nl|be)"
+      },
+      "bic": {
+         "parser": "regex",
+         "regex": [
+            "BIC\\s.\\s(\\w{8,11})"
+         ]
+      },
+      "iban": {
+         "parser": "regex",
+         "regex": [
+            "IBAN.\\s([A-Z]{2}\\d{2} ?\\w{4} ?\\d{4} ?\\d{4} ?\\d{0,2})"
+         ]
+      },
+      "payment_method": [
+         "(?i)(AMEX)",
+         "(?i)(American express)",
+         "(?i)(VISA)",
+         "(?i)(Vpay)",
+         "(?i)(Mastercard)",
+         "(?i)(CONTANT)",
+         "(?i)(KAS):\\s.\\s\\d+\\.\\d+"
+      ],
+      "lines": {
+         "parser": "lines",
+         "rules": [
+            {
+               "start": "na korting",
+               "end": "-{134}\\n\\s{18}",
+               "line": [
+                  "(?P<barcode>\\d{13})\\s+(?P<name>(\\w+(?:\\s\\S+)*))\\s+(?P<price_unit>\\d+[,.]\\d+)\\s+(?P<stukspereenheid>(\\d+([,.]\\d{3})?))\\s(?P<uom>\\w+)\\s+(?P<collo>\\d+[,.]\\d{2})\\s+(?P<qty>\\d)\\s+(?P<price_subtotal>\\d+[,.]\\d{2})\\s+(?P<line_tax_percent>\\d{1,2})\\s+(?P<code_korting>\\d+)?\\s+(?P<prijs_stuk_nakorting>\\d+[,.]\\d{3})",
+                  "---(?P<line_note>(\\w+(?:\\s\\S+)*))---"
+               ]
+            },
+            {
+               "start": "[.,]\\d{3}\\n-{134}",
+               "end": "\\Z",
+               "line": [
+                  "(?P<name>((?:\\S+\\s)?\\w+(?:\\s\\S+)*))\\s+(?P<price_unit>[-]?\\d+.\\d{2}[-]?)\\s+(?P<line_tax_percent>\\d)\\s+(?P<code_korting>(\\d+))?"
+              ]
+            }
+         ],
+         "types": {
+            "qty": "float",
+            "price_unit": "float",
+            "line_tax_percent": "float",
+            "price_subtotal": "float",
+            "collo": "float",
+            "stukspereenheid": "float",
+            "prijs_stuk_nakorting": "float"
+         }
+      }
+   },
+   "keywords": [
+      "Makro",
+      "NL001799435B01"
+   ],
+   "options": {
+      "date_formats": [
+         "%d %m %Y"
+      ],
+      "currency": "EUR",
+      "languages": [
+         "nl"
+      ],
+      "decimal_separator": ".",
+      "replace": [
+         [
+            ",",
+            "."
+         ],
+         [
+            "\\s(?P<price_unit>(\\d+.\\d+))(?P<separator1>(\\s+))(?P<stukspereenheid>(\\d+(.\\d{3})?))\\s(?P<uom>\\w+)\\s+(?P<collo>\\d+.\\d{2})\\s+(?P<qty>\\d)\\s+(?P<price_subtotal>\\d+.\\d{2})\\s+(?P<code_btw>1)\\s",
+            " \\g<price_unit>\\g<separator1>\\g<stukspereenheid> \\g<uom>       \\g<collo>      \\g<qty>      \\g<price_subtotal>  21 "
+         ],
+         [
+            "\\s(?P<price_unit>(\\d+.\\d+))(?P<separator1>(\\s+))(?P<stukspereenheid>(\\d+(.\\d{3})?))\\s(?P<uom>\\w+)\\s+(?P<collo>\\d+.\\d{2})\\s+(?P<qty>\\d)\\s+(?P<price_subtotal>\\d+.\\d{2})\\s+(?P<code_btw>5)\\s",
+            " \\g<price_unit>\\g<separator1>\\g<stukspereenheid> \\g<uom>       \\g<collo>      \\g<qty>      \\g<price_subtotal>   9 "
+         ],
+         [
+            "(?P<separator0>(\\s{18}))(?P<name>((?:\\S+\\s)?\\w+(?:\\s\\S+)*))(?P<separator1>(\\s+))(?P<bedragbtw>\\d+.\\d{2})(?P<bedragbtw_neg>[-]?)\\s+(?P<code_btw>5)\\s+(?P<code_korting>(\\d+))?",
+            "\\g<separator0>\\g<name>\\g<separator1>\\g<bedragbtw_neg>\\g<bedragbtw> 9 \\g<code_korting>"
+        ],
+        [
+            "(?P<separator0>(\\s{18}))(?P<name>((?:\\S+\\s)?\\w+(?:\\s\\S+)*))(?P<separator1>(\\s+))(?P<bedragbtw>\\d+.\\d{2})(?P<bedragbtw_neg>[-]?)\\s+(?P<code_btw>1)\\s+(?P<code_korting>(\\d+))?",
+            "\\g<separator0>\\g<name>\\g<separator1>\\g<bedragbtw_neg>\\g<bedragbtw> 21 \\g<code_korting>"
+        ],
+        [
+            " ST ",
+            " Units "
+        ],
+        [
+            " BX ",
+            " Units "
+        ],
+        [
+            " BL ",
+            " Units "
+        ],
+        [
+            " ZK ",
+            " Units "
+        ],
+        [
+            " FL ",
+            " Units "
+        ],
+        [
+            " PK ",
+            " Units "
+        ],
+        [
+            " BS ",
+            " Units "
+        ],
+        [
+            " DS ",
+            " Units "
+        ]
+      ]
+   }
+}

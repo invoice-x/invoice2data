@@ -6,16 +6,37 @@ Templates are initially read from .yml or .json files and then kept as class.
 
 import os
 import json
+
 try:
     from yaml import load, YAMLError, CSafeLoader as SafeLoader
 except ImportError:  # pragma: no cover
     from yaml import load, SafeLoader, YAMLError
 import pkg_resources
+
 from logging import getLogger
 from .invoice_template import InvoiceTemplate
 import codecs
 
 logger = getLogger(__name__)
+
+
+def ordered_load(stream, Loader=json.loads):
+    """loads a stream of json data"""
+
+    output = []
+
+    try:
+        tpl_stream = json.loads(stream)
+    except ValueError as error:
+        logger.warning("json Loader Failed to load template stream\n%s", error)
+        return
+    # always pre-process template to remain backwards compatability
+    for tpl in tpl_stream:
+        tpl = prepare_template(tpl)
+        if tpl:
+            output.append(InvoiceTemplate(tpl))
+
+    return output
 
 
 def read_templates(folder=None):
@@ -66,45 +87,53 @@ def read_templates(folder=None):
             with codecs.open(
                 os.path.join(path, name), encoding="utf-8"
             ) as template_file:
-                if name.endswith(".yml"):
+                if name.endswith((".yaml", ".yml")):
                     try:
                         tpl = load(template_file.read(), Loader=SafeLoader)
                     except YAMLError as error:
                         logger.warning("Failed to load %s template:\n%s", name, error)
                         continue
-                else:
+                elif name.endswith(".json"):
                     try:
                         tpl = json.loads(template_file.read())
                     except ValueError as error:
-                        logger.warning("json Loader Failed to load %s template:\n%s", name, error)
+                        logger.warning(
+                            "json Loader Failed to load %s template:\n%s", name, error
+                        )
                         continue
+                else:
+                    continue
             tpl["template_name"] = name
+            tpl = prepare_template(tpl)
 
-            # Test if all required fields are in template
-            if "keywords" not in tpl.keys():
-                logger.warning(
-                    "Failed to load template %s Missing mandatory 'keywords' field.",
-                    name,
-                )
-                continue
-
-            # Convert keywords to list, if only one
-            if not isinstance(tpl["keywords"], list):
-                tpl["keywords"] = [tpl["keywords"]]
-
-            # Set excluded_keywords as empty list, if not provided
-            if "exclude_keywords" not in tpl.keys():
-                tpl["exclude_keywords"] = []
-
-            # Convert excluded_keywords to list, if only one
-            if not isinstance(tpl["exclude_keywords"], list):
-                tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
-
-            if "priority" not in tpl.keys():
-                tpl["priority"] = 5
-
-            output.append(InvoiceTemplate(tpl))
+            if tpl:
+                output.append(InvoiceTemplate(tpl))
 
     logger.info("Loaded %d templates from %s", len(output), folder)
-
     return output
+
+
+def prepare_template(tpl):
+    # Test if all required fields are in template
+    if "keywords" not in tpl.keys():
+        logger.warning(
+            "Failed to load template %s Missing mandatory 'keywords' field.",
+            tpl["template_name"],
+        )
+        return None
+
+    # Convert keywords to list, if only one
+    if not isinstance(tpl["keywords"], list):
+        tpl["keywords"] = [tpl["keywords"]]
+
+    # Set excluded_keywords as empty list, if not provided
+    if "exclude_keywords" not in tpl.keys():
+        tpl["exclude_keywords"] = []
+
+    # Convert excluded_keywords to list, if only one
+    if not isinstance(tpl["exclude_keywords"], list):
+        tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
+
+    if "priority" not in tpl.keys():
+        tpl["priority"] = 5
+    return tpl
