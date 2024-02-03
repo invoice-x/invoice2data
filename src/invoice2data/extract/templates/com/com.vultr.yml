@@ -1,0 +1,82 @@
+issuer: Vultr The Constant Company, LLC.
+fields:
+  amount:
+    parser: regex # done
+    regex: \s+Total\s[(]\w+ \w+[)][:]\s+.(d*[.,]?\d+[,.]\d+)
+    type: float
+  amount_tax: # done
+    parser: regex
+    regex: \d+[,.]\d+[%):]+\s+.(\d*[.,]?\d+[,.]\d+)
+    type: float
+  amount_untaxed: # done
+    parser: regex
+    regex: \s+Sub Total[:]\s+.(d*[.,]?\d+[,.]\d+)
+    type: float
+  invoice_number: # done
+    parser: regex
+    regex: Invoice Number[:] (\d+)
+  partner_website: # done
+    parser: static
+    value: vultr.com
+  partner_name: # done
+    parser: regex
+    regex: Vultr
+  partner_city: # done
+    parser: regex
+    regex: West Palm Beach
+  state_code: # done
+    parser: regex
+    regex: FL
+  country_code: # done
+    parser: static
+    value: US
+  partner_zip: # done
+    parser: regex
+    regex: '([A-Z]{2}\s\d{5})'
+  partner_street: # done
+    parser: regex
+    regex: '\d{3} \w+ Street'
+  currency_symbol:
+    parser: regex
+    regex: '[$€]'
+  date: # done
+    parser: regex
+    regex: Invoice Date[:] (\d+-\d{2}-\d{2})
+    type: date
+  date_due: # done
+    parser: regex
+    regex: 'Please Pay By[:] (\w+\s\d{2},\s\d{4})'
+    type: date
+  vat: # done
+    parser: regex # done
+    regex: 'VAT ID (\w+)'
+  lines: # done
+    parser: lines
+    start: 'Start'
+    end: 'Total'
+    line:
+      - '(?P<date_start>\d{2}-\d{2}\s\d{2}[:]\d{2})\s+(?P<date_end>\d{2}-\d{2}\s\d{2}[:]\d{2})\s+(?P<name>[\S ]+)\s+(?P<qty>\d+)\s+.(?P<price_subtotal>\d+[,.]\d{2})'
+    types:
+      qty: float
+      price_subtotal: float
+      date_start: date
+      date_end: date
+  tax_lines:
+    parser: lines
+    start: 'Start'
+    end: '(?i)Please'
+    line:
+      - '(?P<line_tax_percent>\d+[,.]\d+)[%):]+\s+.(?P<line_tax_amount>(\d*[.,]?\d+[,.]\d+))'
+    types:
+      line_tax_percent: float
+      line_tax_amount: float
+keywords:
+  - 'vultr'
+  - 'Invoice'
+required_fields:
+  - lines
+options:
+  languages:
+    - en
+  currency: USD
+
