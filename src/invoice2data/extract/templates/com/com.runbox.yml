@@ -1,0 +1,66 @@
+issuer: Runbox Solutions AS
+fields:
+  amount:
+    parser: regex
+    regex: \s+Total\s+EUR\s(d*[.,]?\d+[,.]\d+)
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex: \s+Total\s+EUR\s(d*[.,]?\d+[,.]\d+)
+    type: float
+  invoice_number:
+    parser: regex
+    regex: Invoice no[.:]+\s+(\d+)
+  partner_website:
+    parser: static
+    value: runbox.com
+  partner_name:
+    parser: regex
+    regex: Runbox Solutions AS
+  partner_city:
+    parser: regex
+    regex: Oslo
+  country_code:
+    parser: static
+    value: 'NO'
+  partner_zip:
+    parser: regex
+    regex: '([,]\s\d{4})\s\w+'
+  partner_email:
+    parser: regex
+    regex: '\w+[@]\w+[.]com'
+  date:
+    parser: regex
+    regex: Invoice date[:]\s+(\d+-\d{2}-\d{2})
+    type: date
+  date_due:
+    parser: regex
+    regex: 'Due date[:]\s+(\d{4}[-]\d{2}[-]\d{2})'
+    type: date
+  iban:
+    parser: regex
+    regex: (?:[A-Z]{2}[ \-]?[0-9]{2})(?:[ \-]?[A-Z0-9]{3,5}){2,7}
+  bic:
+    parser: regex
+    regex: SWIFT code[:]\s+(\w{8,11})
+  lines:
+    parser: lines
+    start: 'Description'
+    end: 'Total'
+    line:
+      - '(?P<name>[\S ]+)\s+(?P<qty>\d+)\s+(?P<unit_price>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d+[,.]\d{2})\s+(?P<price_total>\d+[,.]\d{2})'
+    types:
+      qty: float
+      price_subtotal: float
+      line_amount_tax: float
+      unit_price: float
+keywords:
+  - 'Runbox'
+  - 'Invoice'
+required_fields:
+  - lines
+options:
+  languages:
+    - en
+  currency: EUR
+

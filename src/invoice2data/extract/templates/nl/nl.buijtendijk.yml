@@ -1,0 +1,104 @@
+issuer: Buijtendijk B.V.
+fields:
+  amount:
+    parser: regex
+    regex: \s+Totaalbedrag Incl[].]\s+(\d*[.,]?\d+[,.]\d+)
+    type: float
+  amount_tax:
+    parser: regex
+    regex: \s+BTW\s\d{2}[%]\s+(\d*[.,]?\d+[,.]\d+)
+    group: sum
+    type: float
+  amount_untaxed:
+    parser: regex
+    regex: Totaalbedrag Excl[.]\s+(\d*[.,]?\d+[,.]\d+)
+    type: float
+  purchase_order_id: # todo
+    parser: regex
+    regex: \s+Uw ordernr.(\s+)
+    group: first
+  partner_website:
+    parser: regex
+    regex: \swww[.](.+[.]nl)\s
+  partner_email:
+    parser: regex
+    regex: \s+(\w+[@]\w+[.]nl)\s
+  telephone:
+    parser: regex
+    regex: 'Telefoon[:]\s+(.+)'
+  partner_name:
+    parser: static
+    value: Buijtendijk
+  partner_street:
+    parser: regex
+    area: {f: 1, l: 1, x: 550, y: 14, r: 100, W: 252, H: 240}
+    regex: ^(\w+ \d+ \w+)\s*
+  partner_zip:
+    parser: regex
+    area: {f: 1, l: 1, x: 550, y: 14, r: 100, W: 252, H: 240}
+    regex: '\s(\d{4}\s?[A-Z]{2})\s'
+    group: last
+  partner_city:
+    parser: regex
+    area: {f: 1, l: 1, x: 550, y: 14, r: 100, W: 252, H: 240}
+    regex: '\d{4}\s?[A-Z]{2}\s(\w+(?:\s\w+)*)\s'
+    group: last
+  state_code:
+    parser: static
+    value:  NH
+  country_code:
+    parser: static
+    value: NL
+  iban:
+    parser: regex
+    regex: Bank[:]\s+(NL.*)\s+[(]
+  bic:
+    parser: regex
+    regex: BIC[:]\s+(\w+)[)]
+  partner_coc:
+    parser: regex
+    regex: KvK.*(\d{8})
+  lines:
+    parser: lines
+    start: 'Uw ordernr'
+    end: 'Totaalbedrag' # lines need work
+    first_line:
+      - '(?P<line_number>\d+)\s{8}(?P<code>\d+)\s{12}(?P<name>(\S+(?:\s\S+)*))\s{3,41}(?P<qty>\d+)\s+(?P<price_unit>\d*[.,]?\d+[,.]\d{2})\s+(?P<uom>\w+)\s+\d+\s+netto\s+(?P<price_subtotal>\d*[.,]?\d+[,.]\d{2})?'
+    line:
+      - '^\s{32}(?P<name>(\S+(?:\s\S+)*))'
+    types:
+      qty: float
+      price_subtotal: float
+      price_unit: float
+  tax_lines:
+    parser: lines
+    start: 'netto'
+    end: '\Z'
+    line:
+      - 'Excl[.]\s+(?P<price_subtotal>[\d+,.]+)\s+BTW (?P<line_tax_percent>[\d+.]+)%\s+(?P<line_tax_amount>[\d+.,]+)'
+    types:
+      line_tax_percent: float
+      price_subtotal: float
+      line_tax_amount: float
+  vat:
+    parser: regex
+    regex: BTW.?\s+(NL\d{9}B\d{2})
+  company_vat:
+    parser: regex
+    area: {f: 1, l: 1, x: 0, y: 14, r: 100, W: 550, H: 310}
+    regex: (NL\d{9}B\d{2})
+tables:
+  - start: Debiteur\s+Factuurnr
+    end: Betalingsconditie
+    body: \s+(?P<partner_ref>\d*)\s+(?P<invoice_number>\d+)\s+(?P<date>\d+[-]\d+[-]\d{4})\s
+    types:
+      date: date
+keywords:
+  - buijtendijk
+  - NL006934109B01
+  - FACTUUR
+options:
+  languages:
+    - nl
+  decimal_separator: ','
+  currency: EUR

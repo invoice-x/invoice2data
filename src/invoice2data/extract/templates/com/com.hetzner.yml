@@ -1,0 +1,91 @@
+issuer: Hetzner Online GmbH
+fields:
+  amount:
+    parser: regex 
+    regex: \s+Amount due[:]\s+[€]\s(\d+[.]\d+)
+    type: float
+  amount_tax: 
+    parser: regex
+    regex: Total\s+[€]\s\d+[.]\d+\s+[€]\s(\d+[.]\d+)
+    type: float
+  amount_untaxed: 
+    parser: regex
+    regex: \s+Subtotal [(]excl. VAT[)]\s+[$€]\s(d*[.,]?\d+[,.]\d+)
+    type: float
+  invoice_number: 
+    parser: regex
+    regex: Invoice no\.[:] (\w+)
+  partner_website: 
+    parser: static
+    value: hetzner.com
+  partner_email: 
+    parser: static
+    value: info@hetzner.com
+  partner_name: 
+    parser: regex
+    regex: Hetzner Online GmbH
+  partner_city: 
+    parser: regex
+    regex: Gunzenhausen
+  country_code: 
+    parser: static
+    value: DE
+  partner_zip: 
+    parser: regex
+    regex: '(\d{5}) Gunzenhausen'
+  partner_street: 
+    parser: regex
+    regex: 'Industriestr. \d+'
+  currency_symbol:
+    parser: regex
+    regex: '[$€]'
+  date: 
+    parser: regex
+    regex: Invoice date[:] (\d+.\d{2}.\d{4})
+    type: date
+  vat: 
+    parser: regex
+    regex: 'VAT Reg\. No\.[:] (DE8\w+)'
+  bic:
+    parser: regex
+    regex: 'BIC.\s+(\w{8,11})'
+  iban:
+    parser: regex
+    regex: '[A-Z]{2}\d{2}?\s?\w{4}?\s?\d{4}?\s?\d{4}?\s?\d{4}?\s?\d{0,2}' # mod version do not copy
+  lines: 
+    parser: lines
+    start: 'Pos\s+'
+    end: 'Subtotal'
+    first_line:
+      - '(?P<sectionheader>\w+(?:\s\S+)+\s+[(]\d{2}.\d{2}.\d{4}\s-\s\d{2}.\d{2}.\d{4}[)])\s[*]'
+      - '\d+\s+(?P<name>\w+(?:\s\w+)+)\s+(?P<qty>\d+)\s+[$€]\s(?P<unit_price>\d+.\d+)\s+[$€]\s(?P<price_subtotal>\d+.\d+)'
+    line:
+      - (?P<date_start>\d{2}.\d{2}.\d{4})\s-\s(?P<date_end>\d{2}.\d{2}.\d{4})
+      - Quantity type[:]\s(?P<uom>\w+)
+    types:
+      qty: float
+      unit_price: float
+      price_subtotal: float
+      date_start: date
+      date_end: date
+  tax_lines:
+    parser: lines
+    start: 'Tax code'
+    end: '(?i)Amount due'
+    line:
+      - '(?P<line_tax_code>\d+)\s+(?P<line_tax_percent>\d+[,.]?\d*)[%]\s+[$€]\s(?P<price_subtotal>(\d*[.,]?\d+[,.]\d+))\s+[$€]\s(?P<line_tax_amount>(\d*[.,]?\d+[,.]\d+))'
+    types:
+      line_tax_percent: float
+      price_subtotal: float
+      line_tax_amount: float
+keywords:
+  - 'Hetzner Online'
+  - 'DE812871812'
+  - 'Invoice'
+required_fields:
+  - lines
+options:
+  languages:
+    - en
+  currency: EUR
+
