@@ -94,6 +94,19 @@ if not logger.handlers:
     logger.addHandler(stream_handler)
 
 
+class Invoice2Data:
+    def __init__(self, load_built_in_templates=True):
+        self.templates = []
+        if load_built_in_templates:
+            self.templates += read_templates()
+
+    def read_templates(self, path):
+        self.templates += read_templates(os.path.abspath(path))
+
+    def extract_data(self, path, input_module=None):
+        return extract_data(path, self.templates, input_module)
+
+
 def extract_data(invoicefile, templates=None, input_module=None):
     """Extracts structured data from PDF/image invoices.
 
