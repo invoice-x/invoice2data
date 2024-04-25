@@ -1,0 +1,19 @@
+issuer: MOB Caterina (Coworking)
+fields:
+  amount: IMPORTE\sTOTAL\s+(\d+,\d{2})
+  amount_untaxed: IMPORTE\sNETO\s+(\d+,\d{2})
+  date: Factura\s+MC\.(\d{4}\.\d{1,2}.\d{2})
+  invoice_number: Factura\s+(MC\.\d{4}\.\d{1,2}.\d{2})
+  static_vat: B67334847
+  vat_rate: IVA\s+\((\d+\.\d+)%\)
+  address: B67334847\s+(.+España)
+  static_partner_name: MOB Caterina S.L.
+keywords:
+  - B67334847
+  - MOB Caterina
+  - Factura
+options:
+  currency: EUR
+  date_formats:
+    - '%Y.%m.%d'
+  decimal_separator: ','
