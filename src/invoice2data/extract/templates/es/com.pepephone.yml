@@ -5,6 +5,9 @@ fields:
   date: Fecha\sde\semisión:\s+(\d{2}/\d{2}/\d{4})
   invoice_number: Número\sde\sfactura:\s+(\d+)
   static_vat: ESB85033470
+  vat_rate: Impuesto\s+\(IVA\s+(.+)%\)
+  address: CIF:\s+[A-Z0-9]+\s+(.+España)
+  static_partner_name: PEPEMOBILE S.L.
 keywords:
   - ESB85033470
   - €
