@@ -1,0 +1,19 @@
+issuer: DIGI (Mobile & Internet)
+fields:
+  amount: TOTAL\s+FACTURA\s+\(imp\.\s+incl\.\)\s+(\d+,\d{2})
+  amount_untaxed: IMPORTE\s+\(base\s+imponible\)\s+(\d+,\d{2})
+  date: Fecha\s+de\s+emisión\s+(\d{2}/\d{2}/\d{4})
+  invoice_number: FACTURA\s+Número:\s+([A-Z0-9]+)
+  static_vat: ESB84919760
+  vat_rate: IMPUESTOS\s+\((\d+\.\d{2})%\s+IVA\)
+  address: Domicilio\s+Social\s+en\s+(.+\(Madrid\))
+  static_partner_name: DIGI Spain Telecom, S.L.U.
+keywords:
+  - B-84919760
+  - €
+  - factura
+options:
+  currency: EUR
+  date_formats:
+    - '%d/%m/%Y'
+  decimal_separator: ','
