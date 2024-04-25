@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import platform
 import shutil
 import tempfile
 import mimetypes
@@ -32,17 +32,21 @@ def to_text(path: str, area_details: dict = None):
     """
 
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
+    current_platform = platform.platform()
+    if current_platform.startswith("win32"):
+        convert_command_prefix = "magick"
+    else:
+        convert_command_prefix = "convert"
     if not shutil.which("tesseract"):
         raise EnvironmentError("tesseract not installed.")
-    if not shutil.which("convert"):
+    if not shutil.which(convert_command_prefix):
         raise EnvironmentError("imagemagick not installed.")
 
     language = get_languages()
     logger.debug("tesseract language arg is, %s", language)
     timeout = 180
-
     # convert the (multi-page) pdf file to a 300dpi png
-    convert = [
+    convert = [convert_command_prefix] + [
         "convert",
         "-units",
         "PixelsPerInch",
