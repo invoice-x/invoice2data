@@ -1,0 +1,34 @@
+issuer: amazon.es
+fields:
+  amount: Total\s+(\d+,\d{2})\s€\s+IVA
+  amount_untaxed: \(IVA\s+excluido\)\s+\d+%\s+(\d+,\d{2})\s€
+  date: entrega\s+(\d+\s+[A-z]+\s+\d+)\s+
+  invoice_number: Número\s+de\s+la\s+factura\s+([A-Z0-9]+)
+  vat:
+    parser: regex
+    regex:
+      - (W0184081H)
+      - (LU20260743)
+    group: first
+  vat_rate: \(IVA\s+excluido\)\s+(\d+)%
+  address:
+    parser: regex
+    regex:
+      - (Calle de Ramírez de Prado 5, 28045 Madrid, España)
+      - (38 avenue John F. Kennedy, L-1855 Luxemburgo)
+    group: first
+  partner_name:
+    parser: regex
+    regex:
+      - (Amazon EU S.à r.l., Sucursal en España)
+      - (Amazon EU S.à r.l.)
+    group: first
+keywords:
+  - LU20260743
+  - €
+  - factura
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: ','
