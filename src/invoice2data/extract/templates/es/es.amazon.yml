@@ -1,0 +1,18 @@
+issuer: amazon.es
+fields:
+  amount: Total\s+(\d+,\d{2})\s€\s+IVA
+  amount_untaxed: \(IVA\s+excluido\)\s+\d+%\s+(\d+,\d{2})\s€
+  date: Fecha\s+de\s+la\s+entrega\s+(\d+\s+[A-z]+\s+\d+)\s+
+  invoice_number: Número\s+de\s+la\s+factura\s+([A-Z0-9\-]+)
+  vat: Vendido\s+por\s+.+\s+IVA\s+([A-Z0-9]+)
+  vat_rate: \(IVA\s+excluido\)\s+(\d+)%
+  partner_name: Vendido\s+por\s+(.+)\s+IVA\s+[A-Z0-9]+
+keywords:
+  - LU20260743
+  - €
+  - factura
+options:
+  currency: EUR
+  date_formats:
+    - '%d %B %Y'
+  decimal_separator: ','
