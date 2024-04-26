@@ -2,7 +2,7 @@ issuer: amazon.es
 fields:
   amount: Total\s+(\d+,\d{2})\s€\s+IVA
   amount_untaxed: \(IVA\s+excluido\)\s+\d+%\s+(\d+,\d{2})\s€
-  date: entrega\s+(\d+\s+[A-z]+\s+\d+)\s+
+  date: Fecha\s+de\s+la\s+entrega\s+(\d+\s+[A-z]+\s+\d+)\s+
   invoice_number: Número\s+de\s+la\s+factura\s+([A-Z0-9\-]+)
   vat: Vendido\s+por\s+.+\s+IVA\s+([A-Z0-9]+)
   vat_rate: \(IVA\s+excluido\)\s+(\d+)%
