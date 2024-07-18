@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9, 3.10.x, 3.11]
+        python-version: [3.8, 3.9, 3.10.x, 3.11, 3.12]
         os: [ubuntu-latest, windows-latest]
 
     steps:
@@ -40,7 +40,7 @@ jobs:
     - name: Install testing dependencies
       run: |
         pip install -U wheel pip
-        pip install -U ".[test]"
+        pip install --editable ".[test]"
 
     - name: Lint with flake8
       run: flake8

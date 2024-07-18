@@ -1,0 +1,105 @@
+[build-system]
+requires = ["setuptools >= 61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "invoice2data"
+authors = [
+    {name = "Manuel Riel"},
+]
+description = "Python parser to extract data from pdf invoice"
+version = "0.4.6"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["python", "data-mining", "accounting", "invoice", "pdf", "parcing"]
+license = {text = "MIT"}
+classifiers = [
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Environment :: Console",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Developers",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "poppler-utils",
+    "pyyaml",
+    "dateparser",
+]
+# dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/invoice-x/invoice2data"
+"Bug Tracker" = "https://github.com/invoice-x/invoice2data/issues"
+
+
+[project.optional-dependencies]
+ocr = ["imagemagick", "ghostscript", "tesseract-ocr"]
+pdfplumber = ["pdfplumber"]
+pdfminer = ["pdfminer.six"]
+ocrmypdf = ["ocrmypdf"]
+test = ["pytest", "pytest-cov", "flake8", "pdfminer.six", "pdfplumber", "tox", "setuptools"]
+
+[options.extras_require]
+test = ["pytest", "pytest-cov", "flake8", "pdfminer.six", "pdfplumber", "tox"]
+
+# pyproject.toml
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-vs --cov invoice2data"
+testpaths = [
+    "tests"
+]
+
+[tool.flake8]
+ignore = ["E231", "E241", "E203"]
+per-file-ignores = [
+    "__init__.py:F401",
+]
+exclude = [
+    "build", "dist", ".git", ".idea", ".cache", ".tox", ".eggs"
+    ]
+max-line-length = 120
+count = true
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py38,py39,py310,py312,flake8
+skip_missing_interpreters = True
+
+[testenv]
+deps = pytest >= 3.0.0, <4
+commands = pytest
+extras = test
+
+[testenv:flake8]
+commands=flake8 src tests
+extras = test
+"""
+
+[project.entry-points."invoice2data"]
+console_scripts = "invoice2data.main:main"
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"]}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["invoice2data.extract.templates*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+mypkg = ["*.json", "*.yaml", "*.yml"]
+
