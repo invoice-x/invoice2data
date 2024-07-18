@@ -249,8 +249,9 @@ If you are interested in improving this project, have a look at our
 
 - integrate with online OCR?
 - try to 'guess' parameters for new invoice formats.
-- can apply machine learning to guess new parameters?
-- advanced table parsing with [camelot](https://github.com/camelot-dev/camelot)
+- apply machine learning to guess new parameters / template creation
+- Data cleanup per field
+- advanced table parsing with [pypdf_table_extraction](https://github.com/py-pdf/pypdf_table_extraction)
 
 ## Maintainers
 
