@@ -6,6 +6,8 @@ jobs:
   test:
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
+    env:
+      PYTHONIOENCODING: "utf8"
     strategy:
       matrix:
         python-version: [3.8, 3.9, 3.10.x, 3.11, 3.12]
