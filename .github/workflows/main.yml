@@ -23,7 +23,7 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt update
-        sudo apt install tesseract-ocr poppler-utils imagemagick ghostscript
+        sudo apt install tesseract-ocr poppler-utils imagemagick ghostscript -y
         pip install -U ocrmypdf
 
     - name: Install system dependencies (Windows)
