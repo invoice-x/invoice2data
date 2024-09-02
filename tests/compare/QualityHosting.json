@@ -41,13 +41,13 @@
             {
                 "pos": "6",
                 "qty": 1.0,
-                "desc": "Small Business QualityExchange 2010\nGrundgebühr pro Einheit\nDienst: OUDJQ_jauernik\n01.05.14-31.05.14\nQualityHosting AG - Uferweg 40-42 - D-63571 Gelnhausen\niViveLabs Ltd.\n93B Sai Yu Chung\nYuen Long, N.T.\nHong Kong\nPos.            Menge      Beschreibung                                                            Rabatt %     VK-Preis     Zeilenbetrag\nOhne      Ohne MwSt.\nMwSt.",
+                "desc": "Small Business QualityExchange 2010\nGrundgebühr pro Einheit\nDienst: OUDJQ_jauernik\n01.05.14-31.05.14",
                 "price": 5.39
             },
             {
                 "pos": "7",
                 "qty": 1.0,
-                "desc": "Small Business StandardExchange 2010\nGrundgebühr pro Einheit\nDienst: OUDJQ_office\n01.05.14-31.05.14\n",
+                "desc": "Small Business StandardExchange 2010\nGrundgebühr pro Einheit\nDienst: OUDJQ_office\n01.05.14-31.05.14",
                 "price": 3.89
             }
         ],
