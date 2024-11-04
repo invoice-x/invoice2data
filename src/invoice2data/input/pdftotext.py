@@ -24,7 +24,7 @@ def to_text(path: str, area_details: dict = None):
     import shutil
 
     if shutil.which('pdftotext'):
-        cmd = ["pdftotext", "-layout", "-enc", "UTF-8"]
+        cmd = ["pdftotext", "-layout", "-q", "-enc", "UTF-8"]
         if area_details is not None:
             # An area was specified
             # Validate the required keys were provided
