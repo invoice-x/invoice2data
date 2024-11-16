@@ -6,8 +6,8 @@ fields:
   invoice_number:
     - OrderNumber:(\d+)
 keywords:
-- Namecheap
-- support@namecheap.com
+  - Namecheap
+  - support@namecheap.com
 options:
   remove_whitespace: true
   currency: USD

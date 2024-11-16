@@ -53,15 +53,15 @@ fields:
     - (CONTANT)
     - (?i)(Paypal)
 lines:
-   start: 'ARTIKELNR'
-   end: 'Totaal EUR excl'
-   line: (?P<code>(\w+(?:\S|[.]\w\w+|\n)*))\s+(?P<qty>\d+)\s+(?P<product>\w+.*)\s+(?P<price_unit>(\d+[,]\d{2}))\s+(?P<tax_percent>\d+?[,]?\d{0,2})\s+(?P<price_subtotal>(\d+[,]\d{2}))\s+(?P<line_subtotal>\d+[,]\d{2})
-   # line: (?P<product>\w+.*) # needs check
-   types:
-     qty: float
-     price_unit: float
-     price_subtotal: float
-     line_subtotal: float
+  start: "ARTIKELNR"
+  end: "Totaal EUR excl"
+  line: (?P<code>(\w+(?:\S|[.]\w\w+|\n)*))\s+(?P<qty>\d+)\s+(?P<product>\w+.*)\s+(?P<price_unit>(\d+[,]\d{2}))\s+(?P<tax_percent>\d+?[,]?\d{0,2})\s+(?P<price_subtotal>(\d+[,]\d{2}))\s+(?P<line_subtotal>\d+[,]\d{2})
+  # line: (?P<product>\w+.*) # needs check
+  types:
+    qty: float
+    price_unit: float
+    price_subtotal: float
+    line_subtotal: float
 keywords:
   - Tuynder
   - NL820781812B01
@@ -70,7 +70,6 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['é' ,'€']
-
+    - ["é", "€"]

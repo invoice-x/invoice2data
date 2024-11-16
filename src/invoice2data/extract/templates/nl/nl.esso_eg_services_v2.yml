@@ -1,4 +1,4 @@
-# evolved variant of the other esso template. 
+# evolved variant of the other esso template.
 # needs proper pdf file for testing
 #
 # SPDX-License-Identifier: MIT
@@ -43,9 +43,9 @@ fields:
           line_tax_percent: float
           line_tax_amount: float
           price_subtotal: float
-      # 
+      #
       - start: '(i)Artikel\s+(i)Aantal' # this invoice has different layout?
-        end: 'Exclusief BTW'
+        end: "Exclusief BTW"
         first_line: '(?P<product>\w+).?\s+.\s+[E|€]\s*\d+.\d{0,2}'
         line:
           - (?P<name>POMP.*) (?P<qty>\d+.\d{2})\s. .\s+€ (?P<price_unit>\d.\d{3})
@@ -59,24 +59,23 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   date_formats:
-    - '%m-%d-%Y hh:mm'
-# Using replace to correct tesseract ocr
-# in Odoo use the following product names 'LPG','E10 (Euro 95)'
+    - "%m-%d-%Y hh:mm"
+  # Using replace to correct tesseract ocr
+  # in Odoo use the following product names 'LPG','E10 (Euro 95)'
   replace:
-    - ['L.p.9.' ,'LPG']
-    - ['L.P.G.' ,'LPG']
-    - ['L.P.9.' ,'LPG']
-    - ['L.P.\s' ,'LPG']
-    - ['Euro 95 E10' ,'E10 (Euro 95)']
-    - ['Diese.\s+', 'B7 (Diesel) ']
-    - ['LPLG' ,'LPG']
-    - ['Contant' ,'CONTANT']
-    - ['\s[l|&|@]' ,' ℓ']
-    - ['B.W', 'BTW']
-    - [', ', ',']
-    - ['°', ' ']
-    - ['©', ' ']
+    - ["L.p.9.", "LPG"]
+    - ["L.P.G.", "LPG"]
+    - ["L.P.9.", "LPG"]
+    - ['L.P.\s', "LPG"]
+    - ["Euro 95 E10", "E10 (Euro 95)"]
+    - ['Diese.\s+', "B7 (Diesel) "]
+    - ["LPLG", "LPG"]
+    - ["Contant", "CONTANT"]
+    - ['\s[l|&|@]', " ℓ"]
+    - ["B.W", "BTW"]
+    - [", ", ","]
+    - ["°", " "]
+    - ["©", " "]
 # inconsistancy on comma and dot detection
-

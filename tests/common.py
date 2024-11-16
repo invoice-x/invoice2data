@@ -1,14 +1,18 @@
-import os
-import pkg_resources
 import logging
+import os
+
+import pkg_resources
+
 
 # Reduce log level of various modules
-logging.getLogger('pdfminer').setLevel(logging.WARNING)
+logging.getLogger("pdfminer").setLevel(logging.WARNING)
 
 
 def get_sample_files(extension, exclude_input_specific=True):
     compare_files = []
-    for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'compare')):
+    for path, subdirs, files in os.walk(
+        pkg_resources.resource_filename(__name__, "compare")
+    ):
         for file in files:
             # exclude files which need an specific input module
             if exclude_input_specific and inputparser_specific(file):

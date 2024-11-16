@@ -1,4 +1,4 @@
-issuer: Fletcher Hotel Exploitaties B.V. 
+issuer: Fletcher Hotel Exploitaties B.V.
 fields:
   amount:
     parser: regex
@@ -16,10 +16,10 @@ fields:
     value: fletcher.nl
   partner_coc:
     parser: static
-    value: '30144691'
+    value: "30144691"
   partner_name:
     parser: static
-    value: Fletcher Hotel Exploitaties B.V. 
+    value: Fletcher Hotel Exploitaties B.V.
   partner_street:
     parser: static
     value: Buizerdlaan 2
@@ -28,10 +28,10 @@ fields:
     value: Nieuwegein
   country_code:
     parser: static
-    value: 'NL'
+    value: "NL"
   partner_zip:
     parser: static
-    value: '3435 SB'
+    value: "3435 SB"
   vat:
     parser: regex
     regex: BTW[:] (\S+)
@@ -50,13 +50,13 @@ fields:
     parser: regex
     regex: BIC[:]\s(\w{8,11})
   payment_method:
-    - '(?i)(AMERICAN EXPRESS)'
+    - "(?i)(AMERICAN EXPRESS)"
     - (Eurocard/Mastercard)
   lines:
     parser: lines
     rules:
       - start: 'Datum\s+Omschrijving'
-        end: 'Totaal factuur'
+        end: "Totaal factuur"
         line:
           - '(?P<date_start>\d+-\d{2}-\d{4})\s{11}(?P<name>.+)\s{10,40}(?P<qty>\d*)\s+(?P<unit_price>\d+[,.]\d{2})'
         types:
@@ -65,15 +65,15 @@ fields:
           line_amount_tax: float
           unit_price: float
           date_start: date
-      - start: 'Totaal factuur'
-        end: 'Totaal betaald'
+      - start: "Totaal factuur"
+        end: "Totaal betaald"
         line:
           - (?P<sectionheader>Betalingen)
           - '^(?P<line_note>\d+[-]\d{2}[-]\d{4}.+)'
   tax_lines:
     parser: lines
     rules:
-      - start: 'Incl. BTW'
+      - start: "Incl. BTW"
         end: '(i)Totaal\s+'
         line: 'BTW\s+(?P<line_tax_percent>\d+[,.]\d+)[%]+\s+.(?P<price_total>\d*[.,]?\d+[,.]\d+)\s+(?P<line_tax_amount>(\d*[.,]?\d+[,.]\d+))\s+(?P<price_subtotal>(\d*[.,]?\d+[,.]\d+))'
         types:
@@ -81,7 +81,7 @@ fields:
           line_tax_amount: float
           price_subtotal: float
           price_total: float
-      - start: 'Incl. BTW'
+      - start: "Incl. BTW"
         end: '(?i)Totaal\s+'
         line: 'BTW\s+(?P<line_tax_percent>\d+[,.]\d+)[%]+\s+Verrekenbaar\s+(?P<price_total>\d*[.,]?\d+[,.]\d+)\s+(?P<line_tax_amount>\d*[.,]?\d+[,.]\d+)\s+(?P<price_subtotal>\d*[.,]?\d+[,.]\d+)'
         types:
@@ -90,8 +90,8 @@ fields:
           price_subtotal: float
           price_total: float
 keywords:
-  - '30144691'
-  - 'Factuur'
+  - "30144691"
+  - "Factuur"
 required_fields:
   - amount_tax
 options:
@@ -101,4 +101,3 @@ options:
   replace:
     - ['\s(\d+)[.](\d{2})', ' \1,\2']
   currency: EUR
-

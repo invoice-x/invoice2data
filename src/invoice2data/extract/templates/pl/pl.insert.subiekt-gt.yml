@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: MIT
 keywords:
-  - 'Miejsce wystawienia:'
-  - 'Data wystawienia:'
-  - 'Sprzedawca:'
-  - 'Nabywca:'
-  - 'według stawki VAT'
-  - 'Razem do zapłaty:'
+  - "Miejsce wystawienia:"
+  - "Data wystawienia:"
+  - "Sprzedawca:"
+  - "Nabywca:"
+  - "według stawki VAT"
+  - "Razem do zapłaty:"
   - 'Wystawił\(a\)'
   - 'Odebrał\(a\)'
-  - 'Podpis osoby upoważnionej'
+  - "Podpis osoby upoważnionej"
 fields:
   issuer:
     parser: regex
@@ -37,7 +37,7 @@ fields:
 options:
   currency: PLN
   date_formats:
-    - '%d.%m.%Y'
-    - '%Y-%m-%d'
-  decimal_separator: ','
+    - "%d.%m.%Y"
+    - "%Y-%m-%d"
+  decimal_separator: ","
 priority: 3

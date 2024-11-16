@@ -30,7 +30,7 @@ fields:
       date_end: date
 tables:
   - start: Date\s+
-    end: 'Qty'
+    end: "Qty"
     body: '(?P<date>\w{3}\s\d{2},\s\d{4})'
   - start: Status\s+
     end: '\Z'
@@ -42,8 +42,8 @@ keywords:
 options:
   currency: USD
   date_formats:
-    - '%Y-%m-%d'
+    - "%Y-%m-%d"
   languages:
     - en
-  decimal_separator: '.'
+  decimal_separator: "."
 priority: 6

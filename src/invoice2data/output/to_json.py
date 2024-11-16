@@ -1,6 +1,6 @@
-import json
-import datetime
 import codecs
+import datetime
+import json
 
 
 def format_item(item, date_format):
@@ -31,11 +31,11 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
     date_format : str
         Date format used in generated file
 
-    Notes
+    Notes:
     ----
     Do give file name to the function parameter path.
 
-    Examples
+    Examples:
     --------
         >>> from invoice2data.output import to_json
         >>> to_json.write_to_file(data, "/exported_json/invoice.json")

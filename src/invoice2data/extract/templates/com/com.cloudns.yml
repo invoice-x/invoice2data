@@ -4,9 +4,9 @@ fields:
   date: Date:(\d{1,2}\.\d{1,2}\.\d{4})
   invoice_number: Number#(\d+)
 keywords:
-- BG202743734
+  - BG202743734
 options:
   remove_whitespace: true
   currency: USD
   date_formats:
-    - '%d.%m.%Y'
+    - "%d.%m.%Y"

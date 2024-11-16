@@ -15,7 +15,7 @@ fields:
     type: date
   invoice_number:
     parser: regex
-    regex: 
+    regex:
       - Rekeningnummer.\s+(\d+)
       - (\d{2}-\d{2}-\d{4})\s+\d{2}.\d{2}.\d{2}
   vat:
@@ -47,7 +47,7 @@ lines:
     types:
       qty: float
       line_tax_percent: float
-      amount_untaxed: float 
+      amount_untaxed: float
       line_tax_amount: float
       price_unit: float
 keywords:

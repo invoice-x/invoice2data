@@ -7,18 +7,18 @@ fields:
   date_invoice_end: 'Abonnements\s\(\d{2}\/\d{2}\/\d{2}-(\d{2}\/\d{2}\/\d{2})\)'
   invoice_number: 'Numero\sde\sdocument\s+(\d{2}R-\d{7})'
 keywords:
-- Scarlet
-- Decompte
-- BE0447.976.484
-- BE43 0013 6602 2001
+  - Scarlet
+  - Decompte
+  - BE0447.976.484
+  - BE43 0013 6602 2001
 options:
   currency: EUR
   remove_whitespace: false
   remove_accents: true
   lowercase: false
-  decimal_separator: ','
+  decimal_separator: ","
   date_formats:
-    - '%d/%m/%Y'
-    - '%d/%m/%y'
+    - "%d/%m/%Y"
+    - "%d/%m/%y"
   languages:
     - fr

@@ -1,5 +1,5 @@
-import xml.etree.ElementTree as ET
 import datetime
+import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
 
@@ -39,18 +39,17 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
     date_format : str
         Date format used in generated file
 
-    Notes
+    Notes:
     ----
     Do give file name to the function parameter path.
 
-    Examples
+    Examples:
     --------
         >>> from invoice2data.output import to_xml
         >>> to_xml.write_to_file(data, "/exported_xml/invoice.xml")
         >>> to_xml.write_to_file(data, "invoice.xml")
 
     """
-
     if path.endswith(".xml"):
         filename = path
     else:

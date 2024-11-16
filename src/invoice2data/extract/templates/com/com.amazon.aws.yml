@@ -11,15 +11,15 @@ keywords:
   - $
   - Invoice
 lines:
-    start: Detail
-    end: \* May include estimated US sales tax
-    first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
-    line: (.*)\$(\d+\.\d+)
-    last_line: VAT \*\*
+  start: Detail
+  end: \* May include estimated US sales tax
+  first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
+  line: (.*)\$(\d+\.\d+)
+  last_line: VAT \*\*
 options:
   currency: USD
   date_formats:
-    - '%B %d, %Y'
+    - "%B %d, %Y"
   languages:
     - en
-  decimal_separator: '.'
+  decimal_separator: "."

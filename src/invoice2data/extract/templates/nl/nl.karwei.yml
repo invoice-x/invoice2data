@@ -29,27 +29,27 @@ fields:
     - (CHIP)
     - (KAS):\s.\s\d+\.\d+
 lines:
-    start: AANT
-    end: Totaal
-    line: '(?P<qty>\d+.\d{1,2})\s+(?P<product>\w+).?\s+.?(?P<price_unit>\d{1,4}[,|.]\d{2})'
-    types:
-      qty: float
-      price_unit: float
+  start: AANT
+  end: Totaal
+  line: '(?P<qty>\d+.\d{1,2})\s+(?P<product>\w+).?\s+.?(?P<price_unit>\d{1,4}[,|.]\d{2})'
+  types:
+    qty: float
+    price_unit: float
 keywords:
   - karwei
   - EUR
 options:
   currency: EUR
   date_formats:
-    - '%d-%m-%Y'
+    - "%d-%m-%Y"
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['é' ,'€']
-    - ['Contant' ,'CONTANT']
-    - ['\s[l|&|@]' ,' ℓ']
-    - ['B.W', 'BTW']
-    - [', ', ',']
-    - ['°', ' ']
-    - ['©', ' ']
+    - ["é", "€"]
+    - ["Contant", "CONTANT"]
+    - ['\s[l|&|@]', " ℓ"]
+    - ["B.W", "BTW"]
+    - [", ", ","]
+    - ["°", " "]
+    - ["©", " "]

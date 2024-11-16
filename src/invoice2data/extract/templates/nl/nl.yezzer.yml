@@ -11,19 +11,18 @@ fields:
     parser: static
     value: nl
 lines:
-    start: (\d{2}-\d{2}-\d{4}) tot (\d{2}-\d{2}-\d{4})
-    end: Totaal
-    line: \s+(?P<description>\w+)\s+(?P<price_unit>\d+.\d{2})
-    types:
-      price_unit: float
+  start: (\d{2}-\d{2}-\d{4}) tot (\d{2}-\d{2}-\d{4})
+  end: Totaal
+  line: \s+(?P<description>\w+)\s+(?P<price_unit>\d+.\d{2})
+  types:
+    price_unit: float
 keywords:
   - Yezzer
   - Surebusiness
 options:
   date_formats:
-    - '%d %m %Y'
+    - "%d %m %Y"
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
-
+  decimal_separator: ","

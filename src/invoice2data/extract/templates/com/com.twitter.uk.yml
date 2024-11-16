@@ -8,8 +8,8 @@ fields:
     - Invoicenumber(\d+)
     - InvoiceId(\d+)
 keywords:
-- 9803175Q
-- £
+  - 9803175Q
+  - £
 options:
   remove_whitespace: true
   currency: GBP

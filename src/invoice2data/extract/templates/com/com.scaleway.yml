@@ -4,10 +4,10 @@ fields:
   date: Issued:(\w{3,}\d{1,2},\d{4})
   invoice_number: Invoice#(\d+)
 keywords:
-- FR35433115904
-- Invoice
+  - FR35433115904
+  - Invoice
 options:
   remove_whitespace: true
   currency: EUR
   date_formats:
-    - '%B%d,%Y'
+    - "%B%d,%Y"

@@ -29,12 +29,12 @@ fields:
     - (MCARD)
     - (CONTANT)
 lines:
-    start: Bedrag
-    end: Factuurbedrag\s
-    line: (?P<code>\w+.*)\s+(?P<date_start>(\d{2}-\d{2}-\d{2})) \S+\s(?P<date_end>(\d{2}-\d{2}-\d{2}))\s+(?P<price_unit>\d+,\d{2})
-    types:
-      qty: float
-      price_unit: float
+  start: Bedrag
+  end: Factuurbedrag\s
+  line: (?P<code>\w+.*)\s+(?P<date_start>(\d{2}-\d{2}-\d{2})) \S+\s(?P<date_end>(\d{2}-\d{2}-\d{2}))\s+(?P<price_unit>\d+,\d{2})
+  types:
+    qty: float
+    price_unit: float
 keywords:
   - ANWB
   - NL0056.37.727B01
@@ -43,6 +43,6 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['é' ,'€']
+    - ["é", "€"]

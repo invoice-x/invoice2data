@@ -7,10 +7,10 @@ fields:
   static_IBAN:
   static_BIC:
 keywords:
- - DE203066334
- - Rechnung
+  - DE203066334
+  - Rechnung
 options:
   remove_whitespace: true
   date_formats:
-    - '%d.%m.%Y'
-  decimal_separator: ','
+    - "%d.%m.%Y"
+  decimal_separator: ","

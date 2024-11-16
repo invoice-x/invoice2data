@@ -13,5 +13,5 @@ keywords:
 options:
   currency: USD
   date_formats:
-    - '%m/%d/%Y'
-  decimal_separator: '.'
+    - "%m/%d/%Y"
+  decimal_separator: "."

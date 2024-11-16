@@ -12,7 +12,7 @@ keywords:
 options:
   currency: USD
   date_formats:
-    - '%Y-%m-%d'
+    - "%Y-%m-%d"
   languages:
     - en
-  decimal_separator: '.'
+  decimal_separator: "."

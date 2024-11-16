@@ -2,7 +2,7 @@
 issuer: BMW Financial Services Polska spółka z ograniczoną odpowiedzialnością
 keywords:
   - BMW Financial Services Polska Sp. z o. o.
-  - '7010308447'
+  - "7010308447"
 fields:
   date: Data wystawienia:\s+(\d{4}-\d{2}-\d{2})
   sale_date: Data wystawienia:\s+(\d{4}-\d{2}-\d{2})
@@ -24,5 +24,5 @@ fields:
 options:
   currency: PLN
   date_formats:
-    - '%Y-%m-%d'
-  decimal_separator: ','
+    - "%Y-%m-%d"
+  decimal_separator: ","

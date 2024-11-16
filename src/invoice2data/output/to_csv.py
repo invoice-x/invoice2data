@@ -17,11 +17,11 @@ def write_to_file(data: list, path: str, date_format="%Y-%m-%d") -> None:
     date_format : str
         Date format used in generated file
 
-    Notes
+    Notes:
     ----
     Do give file name to the function parameter path.
 
-    Examples
+    Examples:
     --------
         >>> from invoice2data.output import to_csv
         >>> to_csv.write_to_file(data, "/exported_csv/invoice.csv")

@@ -1,9 +1,7 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: MIT
 
-"""
-Parser extracting data using regexes.
+"""Parser extracting data using regexes.
 
 One or more regexes can be specified using the "regex" setting.
 By default it ignores duplicates and returns:
@@ -13,16 +11,17 @@ By default it ignores duplicates and returns:
 For more detailed parsing "type" and "group" settings can be specified.
 """
 
-import re
 import logging
+import re
 from collections import OrderedDict
+
 
 logger = logging.getLogger(__name__)
 
 
 def parse(template, field, settings, content, legacy=False):
     if "regex" not in settings:
-        logger.warning("Field \"%s\" doesn't have regex specified", field)
+        logger.warning('Field "%s" doesn\'t have regex specified', field)
         return None
 
     if isinstance(settings["regex"], list):
@@ -33,16 +32,22 @@ def parse(template, field, settings, content, legacy=False):
     result = []
     for regex in regexes:
         if not isinstance(regex, str):
-            logger.warning("Field \"%s\" regex is not a string (%s)", field, str(regex))
+            logger.warning('Field "%s" regex is not a string (%s)', field, str(regex))
 
             continue
         matches = re.findall(regex, content)
-        logger.debug("field=\033[1m\033[93m%s\033[0m | regex=\033[36m%s\033[0m | matches=\033[1m\033[92m%s\033[0m"
-                     , field, settings["regex"], matches)
+        logger.debug(
+            "field=\033[1m\033[93m%s\033[0m | regex=\033[36m%s\033[0m | matches=\033[1m\033[92m%s\033[0m",
+            field,
+            settings["regex"],
+            matches,
+        )
         if matches:
             for match in matches:
                 if isinstance(match, tuple):
-                    logger.warning("Regex can't contain multiple capturing groups %s", regex)
+                    logger.warning(
+                        "Regex can't contain multiple capturing groups %s", regex
+                    )
                     return None
             result += matches
 
@@ -69,7 +74,6 @@ def parse(template, field, settings, content, legacy=False):
                 logger.warning("Unsupported grouping method: %s", settings["group"])
                 return None
     else:
-
         # Remove duplicates maintaining the order by default (it's more
         # natural). Don't do that for legacy parsing to keep backward
         # compatibility.

@@ -4,17 +4,17 @@ fields:
   date: 'Factuurdatum+\s+(\d{2}\/\d{2}\/\d{4})'
   invoice_number: 'Factuurnummer+\s+(E\d{2}\/\d+)'
 keywords:
-- Lampiris
-- Factuur
-- Klantnummer
-- BE38 0015 0942 4272
+  - Lampiris
+  - Factuur
+  - Klantnummer
+  - BE38 0015 0942 4272
 options:
   currency: EUR
   remove_whitespace: false
   remove_accents: true
   lowercase: false
-  decimal_separator: ','
+  decimal_separator: ","
   date_formats:
-    - '%d/%m/%Y'
+    - "%d/%m/%Y"
   languages:
     - nl

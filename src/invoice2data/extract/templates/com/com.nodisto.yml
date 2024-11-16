@@ -4,7 +4,7 @@ fields:
   date: InvoiceDate:(\d+/\d+/\d+)
   invoice_number: 'Invoice#(\d+)'
 keywords:
-- Nodisto
+  - Nodisto
 options:
   remove_whitespace: true
   currency: USD

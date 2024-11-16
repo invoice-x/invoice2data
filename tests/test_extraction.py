@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Run: python -m unittest tests.test_extraction
 
 # Or: python -m unittest discover
@@ -12,12 +11,13 @@
 
 import datetime
 import json
-import unittest
-import pkg_resources
 import os
+import unittest
 
-from invoice2data.main import extract_data
+import pkg_resources
+
 from invoice2data.extract.loader import read_templates
+from invoice2data.main import extract_data
 
 
 class TestExtraction(unittest.TestCase):
@@ -31,33 +31,37 @@ class TestExtraction(unittest.TestCase):
                 print(file, res)
 
     def test_external_pdfs(self):
-        folder = os.getenv('EXTERNAL_PDFS', None)
+        folder = os.getenv("EXTERNAL_PDFS", None)
         if folder:
             self._run_test_on_folder(folder)
 
     def test_internal_pdfs(self):
-        folder = pkg_resources.resource_filename(__name__, 'pdfs')
+        folder = pkg_resources.resource_filename(__name__, "pdfs")
         self._run_test_on_folder(folder)
 
     def test_custom_invoices(self):
         directory = os.path.dirname("tests/custom/templates/")
         templates = read_templates(directory)
 
-        for path, subdirs, files in os.walk(pkg_resources.resource_filename(__name__, 'custom')):
+        for path, subdirs, files in os.walk(
+            pkg_resources.resource_filename(__name__, "custom")
+        ):
             for file in files:
-                if file.endswith(('.pdf', '.txt')):
+                if file.endswith((".pdf", ".txt")):
                     ifile = os.path.join(path, file)
-                    jfile = os.path.join(path, file[:-4] + '.json')
+                    jfile = os.path.join(path, file[:-4] + ".json")
 
                     res = extract_data(ifile, templates)
                     for key, value in res.items():
                         if type(value) is datetime.datetime:
-                            res[key] = value.strftime('%Y-%m-%d')
+                            res[key] = value.strftime("%Y-%m-%d")
                     res = [res]
                     with open(jfile) as json_file:
                         ref_json = json.load(json_file)
-                        self.assertTrue(res == ref_json, 'Unexpected data extracted from ' + ifile)
+                        self.assertTrue(
+                            res == ref_json, "Unexpected data extracted from " + ifile
+                        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

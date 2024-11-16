@@ -55,13 +55,13 @@ fields:
     - (CONTANT)
     - (?i)(Paypal)
 lines:
-   start: 'Artikelnr'
-   end: 'Betaling'
-   line: (?P<barcode>(\w+(?:\S|[.]\w\w+|\n)*))\s+(?P<grp>\d{3})\s+(?P<product>\w+.*)\s+(?P<qty>\d+[.|,]?\d+?)\s+\w{3}\s+(?P<price_unit>(\d+[,]\d{2}))s+(?P<discount>\d+[.|,]?\d+?[%]?)\s+\w{3}\s+(?P<price_subtotal>\d+?[,]?\d{0,2})
-   types:
-     qty: float
-     price_unit: float
-     price_subtotal: float
+  start: "Artikelnr"
+  end: "Betaling"
+  line: (?P<barcode>(\w+(?:\S|[.]\w\w+|\n)*))\s+(?P<grp>\d{3})\s+(?P<product>\w+.*)\s+(?P<qty>\d+[.|,]?\d+?)\s+\w{3}\s+(?P<price_unit>(\d+[,]\d{2}))s+(?P<discount>\d+[.|,]?\d+?[%]?)\s+\w{3}\s+(?P<price_subtotal>\d+?[,]?\d{0,2})
+  types:
+    qty: float
+    price_unit: float
+    price_subtotal: float
 keywords:
   - NL818356157B01
   - FACTUUR
@@ -69,5 +69,4 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
-
+  decimal_separator: ","

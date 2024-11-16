@@ -6,7 +6,7 @@ fields:
   static_vat: FR18539565218
 tables:
   - start: VAT Basis\s+VAT Amount\s+VAT Rate
-    end: 'Pour plus'
+    end: "Pour plus"
     body: '\s+(?P<amount_untaxed>\d*,\d*)\s+(?P<amount_tax>\d*,\d*)\s+(?P<vat_rate>\d*,\d*)\s+%'
 keywords:
   - FR18539565218
@@ -15,5 +15,5 @@ keywords:
 options:
   currency: EUR
   date_formats:
-    - '%d.%m.%Y'
-  decimal_separator: ','
+    - "%d.%m.%Y"
+  decimal_separator: ","

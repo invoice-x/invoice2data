@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-
 from logging import getLogger
+
 
 logger = getLogger(__name__)
 
@@ -11,7 +10,8 @@ def to_text(path):
     ----------
     path : str
         path of electronic invoice in PDF
-    Returns
+
+    Returns:
     -------
     str : str
         returns extracted text from pdf
@@ -22,13 +22,17 @@ def to_text(path):
         logger.debug("Cannot import pdfplumber")
 
     raw_text = ""
-    raw_text = raw_text.encode(encoding='UTF-8')
+    raw_text = raw_text.encode(encoding="UTF-8")
     with pdfplumber.open(path, laparams={"detect_vertical": True}) as pdf:
         pages = []
         for pdf_page in pdf.pages:
             pages.append(
                 pdf_page.extract_text(
-                    layout=True, use_text_flow=True, x_tolerance=6, y_tolerance=4, keep_blank_chars=True
+                    layout=True,
+                    use_text_flow=True,
+                    x_tolerance=6,
+                    y_tolerance=4,
+                    keep_blank_chars=True,
                 )  # y_tolerance=6, dirty Fix for html table problem
             )
         res = {
@@ -44,5 +48,5 @@ def to_text(path):
 def res_to_raw_text(res):
     # we need to convert result to raw text:
     raw_text_dict = res
-    raw_text = (raw_text_dict["first"] or raw_text_dict["all"])
+    raw_text = raw_text_dict["first"] or raw_text_dict["all"]
     return raw_text

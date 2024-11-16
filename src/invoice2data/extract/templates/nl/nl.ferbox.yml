@@ -25,13 +25,13 @@ fields:
     - (CONTANT)
     - (?i)(Paypal)
 lines:
-    start: Product
-    end: Subtotaal
-    first_line: (?P<product>\w+.*)\s+(?P<qty>\d+)\s+(?P<price_unit>[€]\s+(\d+[.]\d{2}))
-    line: (?P<product>\w+.*)
-    types:
-      qty: float
-      price_unit: float
+  start: Product
+  end: Subtotaal
+  first_line: (?P<product>\w+.*)\s+(?P<qty>\d+)\s+(?P<price_unit>[€]\s+(\d+[.]\d{2}))
+  line: (?P<product>\w+.*)
+  types:
+    qty: float
+    price_unit: float
 keywords:
   - FERBOX
   - NL861141350B01
@@ -40,7 +40,6 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: '.'
+  decimal_separator: "."
   replace:
-    - ['é' ,'€']
-
+    - ["é", "€"]

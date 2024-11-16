@@ -9,11 +9,11 @@ fields:
   static_recipient: BillPay
   reference: Verwendungszweck:(\w{9,12}/\w{4})
 keywords:
- - DE175671991
- - BillPay
- - Rechnung
+  - DE175671991
+  - BillPay
+  - Rechnung
 options:
   remove_whitespace: true
   date_formats:
-    - '%d.%m.%Y'
-  decimal_separator: '.'
+    - "%d.%m.%Y"
+  decimal_separator: "."
