@@ -19,7 +19,7 @@ def test_template_with_exclude_keyword_is_not_matched():
 
 
 def test_skip_template_with_too_long_lang_code():
-    OPTIONS_TEST = {
+    options_test = {
         "currency": "EUR",
         "date_formats": [],
         "languages": ["aaa"],
@@ -30,7 +30,7 @@ def test_skip_template_with_too_long_lang_code():
     tpl = {}
     tpl["keywords"] = ["Basic Test"]
     tpl["exclude_keywords"] = []
-    tpl["options"] = OPTIONS_TEST
+    tpl["options"] = options_test
     tpl["template_name"] = "3_char_langcode.yml"
     try:
         invoicetempl = InvoiceTemplate(tpl)
@@ -47,7 +47,7 @@ def test_skip_template_with_too_long_lang_code():
 
 class TestInvoiceTemplateMethods(unittest.TestCase):
     def test_replace_a_with_b(self):
-        OPTIONS_TEST = {
+        options_test = {
             "currency": "EUR",
             "date_formats": [],
             "languages": ["aa"],
@@ -58,7 +58,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         tpl = {}
         tpl["keywords"] = ["Basic Test"]
         tpl["exclude_keywords"] = []
-        tpl["options"] = OPTIONS_TEST
+        tpl["options"] = options_test
         tpl["template_name"] = "replace_a_with_b"
         invoicetempl = InvoiceTemplate(tpl)
         extracted_str = "a"
@@ -70,7 +70,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         self.assertEqual(optimized_str, "b")
 
     def test_remove_accents(self):
-        OPTIONS_TEST = {
+        options_test = {
             "currency": "EUR",
             "date_formats": [],
             "languages": ["aa"],
@@ -81,7 +81,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         tpl = {}
         tpl["keywords"] = ["Basic Test"]
         tpl["exclude_keywords"] = []
-        tpl["options"] = OPTIONS_TEST
+        tpl["options"] = options_test
         tpl["template_name"] = "test_remove_accents"
         invoicetempl = InvoiceTemplate(tpl)
         extracted_str = "é€$%^&*@!.a Málaga François Phút Hơn 中文"
@@ -97,7 +97,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         )
 
     def test_remove_whitespace(self):
-        OPTIONS_TEST = {
+        options_test = {
             "currency": "EUR",
             "date_formats": [],
             "languages": ["aa"],
@@ -108,7 +108,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         tpl = {}
         tpl["keywords"] = ["Basic Test"]
         tpl["exclude_keywords"] = []
-        tpl["options"] = OPTIONS_TEST
+        tpl["options"] = options_test
         tpl["template_name"] = "test_remove_whitespace"
         invoicetempl = InvoiceTemplate(tpl)
         extracted_str = "a     b"
@@ -120,7 +120,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         self.assertEqual(optimized_str, "ab", "remove whitespace test failed")
 
     def test_lowercase(self):
-        OPTIONS_TEST = {
+        options_test = {
             "currency": "EUR",
             "date_formats": [],
             "languages": ["aa"],
@@ -131,7 +131,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         tpl = {}
         tpl["keywords"] = ["Basic Test"]
         tpl["exclude_keywords"] = []
-        tpl["options"] = OPTIONS_TEST
+        tpl["options"] = options_test
         tpl["template_name"] = "test_lowercase"
         invoicetempl = InvoiceTemplate(tpl)
         extracted_str = "ABCD"
