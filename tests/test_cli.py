@@ -208,7 +208,7 @@ class TestCLI(unittest.TestCase):
     #     self.assertTrue(args.template_folder)
 
     def test_exclude_template(self):
-        for path, subdirs, files in os.walk(
+        for path, _subdirs, files in os.walk(
             pkg_resources.resource_filename(__name__, "compare")
         ):
             for file in files:
