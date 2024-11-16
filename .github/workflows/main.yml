@@ -30,6 +30,7 @@ jobs:
       if: runner.os == 'Windows'
       run: |
         choco install --yes --no-progress --pre tesseract
+        call RefreshEnv.cmd
         choco install --yes --no-progress --ignore-checksums ghostscript poppler imagemagick
         pip install -U ocrmypdf
 
