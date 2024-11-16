@@ -5,12 +5,10 @@ authors = [
 ]
 description = "Python parser to extract data from pdf invoice"
 version = "0.4.5"
-requires-python = ">=3.8"
 keywords = ["python", "data-mining", "accounting", "invoice", "pdf", "parcing"]
-license = {text = "MIT"}
+license = "MIT"
 readme = "README.md"
-Homepage = "https://github.com/invoice-x/invoice2data"
-"Bug Tracker" = "https://github.com/invoice-x/invoice2data/issues"
+homepage = "https://github.com/invoice-x/invoice2data"
 repository = "https://github.com/invoice-x/invoice2data"
 documentation = "https://invoice2data.readthedocs.io"
 classifiers = [
