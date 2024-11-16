@@ -207,7 +207,7 @@ def extract_data_fallback_ocrmypdf(invoicefile, templates):
 
 
 def create_parser():
-    """Returns argument parser"""
+    """Returns argument parser."""
     parser = argparse.ArgumentParser(
         description="Extract structured data from PDF files and save to CSV or JSON."
     )
