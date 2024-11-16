@@ -72,8 +72,8 @@ def to_text(path: str, area_details: dict = None):
     inputfile = Path(path)
     filename = inputfile.stem
 
-    TMP_FOLDER = str(tempfile.gettempdir()) + "/"
-    logger.debug("temp dir is, *%s*", TMP_FOLDER)
+    tmp_folder = str(tempfile.gettempdir()) + "/"
+    logger.debug("temp dir is, *%s*", tmp_folder)
 
     tess_cmd = [
         "tesseract",
@@ -88,7 +88,7 @@ def to_text(path: str, area_details: dict = None):
         "-c",
         "textonly_pdf=1",
         tess_input,
-        TMP_FOLDER + filename,
+        tmp_folder + filename,
         "pdf",
         "txt",
     ]
@@ -138,7 +138,7 @@ def to_text(path: str, area_details: dict = None):
             "-H",
             area_details["H"],
         ]
-    pdftotext_cmd += [TMP_FOLDER + filename + ".pdf", "-"]
+    pdftotext_cmd += [tmp_folder + filename + ".pdf", "-"]
 
     logger.debug("Calling pdfttext with, %s", pdftotext_cmd)
     p3 = Popen(pdftotext_cmd, stdin=p2.stdout, stdout=PIPE)

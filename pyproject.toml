@@ -189,6 +189,10 @@ extend-ignore = [
     "Q002",
     "Q003",
     "W191",
+    "RUF013", # activate after implement typing
+    "D103", # fix docstrings in public functions later
+    "S101", # use of assert Activate later
+    "S603",
 ]
 
 [tool.ruff.lint.per-file-ignores]
