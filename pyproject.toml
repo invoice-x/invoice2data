@@ -63,6 +63,13 @@ optional = true
 [tool.poetry.group.ocr.dependencies]
 ghostscript = "^0.7"
 
+[tool.poetry.group.googlevision]
+optional = true
+
+[tool.poetry.group.googlevision.dependencies]
+google-cloud-storage = "^2.18.2"
+google-cloud-vision = "^3.8.1"
+
 [tool.poetry.group.ocrmypdf]
 optional = true
 
