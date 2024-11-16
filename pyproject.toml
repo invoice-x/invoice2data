@@ -195,10 +195,13 @@ extend-ignore = [
     "S603",
     "UP031", # Use fstring instead of % identifier
     "E501", # fix this when updating docstrings
+    # "DOC106",
+    # "DOC107",
+    # "DOC111",
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"*/test_*.py" = ["S101"]
+"*/test_*.py" = ["S101","D100","D101","D102"]
 "noxfile.py" = ["S101"]
 "**/conftest.py" = ["S101"]
 
