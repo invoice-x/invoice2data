@@ -18,7 +18,7 @@ def format_item(item, date_format):
 
 
 def write_to_file(data, path, date_format="%Y-%m-%d"):
-    """Export extracted fields to json
+    """Export extracted fields to json.
 
     Appends .json to path if missing and generates json file in specified directory, if not then in root
 
