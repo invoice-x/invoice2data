@@ -29,7 +29,7 @@ jobs:
     - name: Install system dependencies (Windows)
       if: runner.os == 'Windows'
       run: |
-        choco install tesseract poppler imagemagick ghostscript -y
+        choco install --yes --no-progress --ignore-checksums ghostscript tesseract poppler imagemagick
         pip install -U ocrmypdf
 
     - name: Install testing dependencies
