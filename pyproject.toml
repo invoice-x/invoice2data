@@ -37,6 +37,7 @@ Changelog = "https://github.com/m3nu/invoice2data/releases"
 python = "^3.8"
 click = ">=8.0.1"
 dateparser ="^1.2.0"
+PyYAML = {version = "^6.0", extras = ["libyaml"], python = ">=3.11"}
 
 [tool.poetry.dev-dependencies]
 Pygments = ">=2.10.0"
@@ -98,12 +99,6 @@ optional = true
 [tool.poetry.group.pdfplumber.dependencies]
 pdfplumber = "^0.11.3"
 
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-vs --cov invoice2data"
-testpaths = [
-    "tests"
-]
 
 [tool.flake8]
 ignore = ["E231", "E241", "E203"]
