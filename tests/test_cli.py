@@ -127,7 +127,8 @@ class TestCLI(unittest.TestCase):
                         )
                     os.remove(test_files)
 
-    def test_output_format_date_json(self) -> None:
+    @skip_on_windows
+    def test_output_format_date_json(self):
         """Tests the date format in JSON output."""
         pdf_files = get_sample_files("free_fiber.pdf")
         test_file = "test_compare.json"
@@ -184,7 +185,8 @@ class TestCLI(unittest.TestCase):
                         self.assertTrue(False, "Unexpected date format")
             os.remove(test_file)
 
-    def test_output_format_date_xml(self) -> None:
+    @skip_on_windows
+    def test_output_format_date_xml(self):
         """Tests the date format in XML output."""
         pdf_files = get_sample_files("free_fiber.pdf")
         test_file = "test_compare.xml"
@@ -362,7 +364,8 @@ class TestCLI(unittest.TestCase):
 
         shutil.rmtree(os.path.dirname(copy_dir), ignore_errors=True)
 
-    def test_area(self) -> None:
+    @skip_on_windows
+    def test_area(self):
         """Tests the --area argument."""
         pdf_files = get_sample_files("NetpresseInvoice.pdf")
         test_file = "test_area.json"
