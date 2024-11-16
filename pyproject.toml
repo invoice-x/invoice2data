@@ -193,6 +193,8 @@ extend-ignore = [
     "D103", # fix docstrings in public functions later
     "S101", # use of assert Activate later
     "S603",
+    "UP031", # Use fstring instead of % identifier
+    "E501", # fix this when updating docstrings
 ]
 
 [tool.ruff.lint.per-file-ignores]

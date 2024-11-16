@@ -1,3 +1,5 @@
+"""OCRmyPDF input module for invoice2data."""
+
 import logging
 import tempfile
 from pathlib import Path
