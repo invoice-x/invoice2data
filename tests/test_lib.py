@@ -9,7 +9,6 @@
 
 # https://docs.python.org/3.10/library/unittest.html#test-cases
 
-
 import os
 import sys
 import pytest
@@ -43,7 +42,7 @@ def have_pdfplumber() -> bool:
 
 
 needs_pdfplumber = unittest.skipIf(not have_pdfplumber(), reason="requires pdfplumber\n")
-skip_on_windows = unittest.skipIf(
+skip_on_windows = pytest.mark.skipif(
     sys.platform.startswith("win"),
     reason="Tesseract executable cannot be found in Windows test environment. FIXME",
 )
