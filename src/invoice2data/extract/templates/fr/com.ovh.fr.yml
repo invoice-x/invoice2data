@@ -12,7 +12,7 @@ keywords:
 options:
   currency: EUR
   date_formats:
-    - '%d %B %Y'
+    - "%d %B %Y"
   languages:
     - fr
-  decimal_separator: ','
+  decimal_separator: ","

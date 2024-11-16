@@ -39,12 +39,12 @@ fields:
     value: Industrieweg 19
   bic:
     parser: static
-    value: INGBNL2A 
-  date: 
+    value: INGBNL2A
+  date:
     parser: regex
     regex:
       - Betaald[:]\s+(\d{1,2}[-]\d{1,2}[-]\d{4})
-    type: date    
+    type: date
   invoice_number: Kwitantienummer[:]\s+(\d{3,10})
   vat:
     parser: static
@@ -58,9 +58,9 @@ fields:
     - (CONTANT)
     - (?i)(Paypal)
 lines:
-   start: 'Parkeren'
-   end: 'Terminal'
-   line: (?P<line_note>Parkeerduur[:]\s+\S+)
+  start: "Parkeren"
+  end: "Terminal"
+  line: (?P<line_note>Parkeerduur[:]\s+\S+)
 keywords:
   - Parkeren
   - Paleiskwartier
@@ -69,8 +69,7 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['é' ,'€']
-    - ['~' ,'-']
-
+    - ["é", "€"]
+    - ["~", "-"]

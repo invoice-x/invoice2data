@@ -55,7 +55,7 @@ fields:
           price_unit: float
       - start: BEDRAG
         end: TOTAAL\s
-        line: \s+(?P<code>(\w+(?:\s+\S+)*))\s+(?P<line_tax_percent>\d{1,2}([,.].\d{0,2})?)\s+[€]\s(?P<price_unit>\d{2}[,.]\d{2}) 
+        line: \s+(?P<code>(\w+(?:\s+\S+)*))\s+(?P<line_tax_percent>\d{1,2}([,.].\d{0,2})?)\s+[€]\s(?P<price_unit>\d{2}[,.]\d{2})
         types:
           qty: float
           price_unit: float
@@ -68,18 +68,18 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['é' ,'€']
-    - ['L.p.9.' ,'LPG']
-    - ['L.P.G.' ,'LPG']
-    - ['L.P.9.' ,'LPG']
-    - ['L.P.\s' ,'LPG']
-    - ['LPLG' ,'LPG']
-    - ['Contant' ,'CONTANT']
-    - ['\s[l|&|@]' ,' ℓ']
-    - ['B.W', 'BTW']
-    - [', ', ',']
-    - ['°', ' ']
-    - ['©', ' ']
+    - ["é", "€"]
+    - ["L.p.9.", "LPG"]
+    - ["L.P.G.", "LPG"]
+    - ["L.P.9.", "LPG"]
+    - ['L.P.\s', "LPG"]
+    - ["LPLG", "LPG"]
+    - ["Contant", "CONTANT"]
+    - ['\s[l|&|@]', " ℓ"]
+    - ["B.W", "BTW"]
+    - [", ", ","]
+    - ["°", " "]
+    - ["©", " "]
     - ['(\s)([0-9]+)\.([0-9]{2})(\s)', '\1\2,\3\4'] # workaround for ocr inconsistancy on comma and dot detection

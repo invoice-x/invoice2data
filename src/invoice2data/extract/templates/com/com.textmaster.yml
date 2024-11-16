@@ -6,8 +6,8 @@ fields:
   invoice_number:
     - InvoiceNumber:([\w\-]+)
 keywords:
-- BE0837387439
-- TextMaster
+  - BE0837387439
+  - TextMaster
 options:
   remove_whitespace: true
   currency: USD

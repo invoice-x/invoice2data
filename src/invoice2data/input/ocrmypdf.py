@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-
 import logging
 import tempfile
-
 from pathlib import Path
 
 from . import pdftotext
+
 
 logger = logging.getLogger(__name__)
 
@@ -29,9 +27,7 @@ OPTIONS_DEFAULT = {
 
 
 def to_text(path, area_details: dict = None, input_reader_config: dict = {}):
-
-    """
-    Pre-process PDF files with ocrmypdf.
+    """Pre-process PDF files with ocrmypdf.
     Before sending them to the pdftotext parser.
 
     Before usage make sure you have the dependencies installed.
@@ -41,18 +37,19 @@ def to_text(path, area_details: dict = None, input_reader_config: dict = {}):
     path : str
         path of electronic invoice in PDF format
 
-    Returns
+    Returns:
     -------
     extracted_str : str
         returns extracted text from pdf
 
     """
-
     if not have_ocrmypdf():
         logger.warning("Cannot import ocrmypdf")
         return ""
 
-    logger.debug("input_reader_config received from main are, *%s*", input_reader_config)
+    logger.debug(
+        "input_reader_config received from main are, *%s*", input_reader_config
+    )
 
     pre_proc_output = pre_process_pdf(path, pre_conf=input_reader_config)
 
@@ -65,9 +62,7 @@ def to_text(path, area_details: dict = None, input_reader_config: dict = {}):
 
 
 def pre_process_pdf(path, pre_conf: dict = None):
-
-    """
-    Pre-process PDF files with ocrmypdf.
+    """Pre-process PDF files with ocrmypdf.
     Before sending them to the pdftotext parser.
 
     Before usage make sure you have the dependencies installed.
@@ -77,12 +72,12 @@ def pre_process_pdf(path, pre_conf: dict = None):
     path : str
         path of electronic invoice in PDF format
 
-    Returns
+    Returns:
     -------
     extracted_str : str
         returns extracted text from pdf
 
-    Notes
+    Notes:
     -------
     *output_file* can be same as input same to overwrite it.
 
@@ -103,7 +98,6 @@ def pre_process_pdf(path, pre_conf: dict = None):
     }
 
     """
-
     try:
         import ocrmypdf
     except ImportError:
@@ -122,7 +116,10 @@ def pre_process_pdf(path, pre_conf: dict = None):
 
         TMP_FOLDER = str(tempfile.gettempdir()) + "/"
         ocrmypdf_conf["output_file"] = TMP_FOLDER + filename
-        logger.debug("no output_file specified, using temp file *%s*", ocrmypdf_conf["output_file"])
+        logger.debug(
+            "no output_file specified, using temp file *%s*",
+            ocrmypdf_conf["output_file"],
+        )
 
     logger.debug("OPTIONS !!!!, *%s*", ocrmypdf_conf)
 

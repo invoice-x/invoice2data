@@ -1,11 +1,11 @@
-"""
-Parser to extract individual lines from an invoice.
+"""Parser to extract individual lines from an invoice.
 
 Initial work and maintenance by Holger Brunn @hbrunn
 """
 
 import re
 from logging import getLogger
+
 
 logger = getLogger(__name__)
 
@@ -27,9 +27,7 @@ def parse_block(template, field, settings, content):
         "Error in Template %s Line regex missing" % template["template_name"]
     )
 
-    logger.debug(
-        "START lines block content ========================\n%s", content
-    )
+    logger.debug("START lines block content ========================\n%s", content)
     logger.debug("END lines block content ==========================")
     lines = []
     current_row = {}
@@ -64,7 +62,10 @@ def parse_block(template, field, settings, content):
                 # then assign a new current_row
                 if current_row:
                     lines.append(current_row)
-                current_row = {field: value.strip() if value else "" for field, value in match.groupdict().items()}
+                current_row = {
+                    field: value.strip() if value else ""
+                    for field, value in match.groupdict().items()
+                }
                 # Flip first_line_found boolean as first_line has been found
                 # This will allow last_line and line to be matched on below
                 first_line_found = True
@@ -91,7 +92,9 @@ def parse_block(template, field, settings, content):
                 # If skip_line was provided, check for a match now
                 if isinstance(settings["skip_line"], list):
                     # Accepts a list
-                    skip_line_results = [re.search(x, line) for x in settings["skip_line"]]
+                    skip_line_results = [
+                        re.search(x, line) for x in settings["skip_line"]
+                    ]
                 else:
                     # Or a simple string
                     skip_line_results = [re.search(settings["skip_line"], line)]
@@ -143,7 +146,7 @@ def parse_by_rule(template, field, rule, content):
         if not start:
             logger.debug("Failed to find lines block start")
             break
-        content = content[start.end():]
+        content = content[start.end() :]
 
         end = re.search(settings["end"], content)
         if not end:
@@ -151,14 +154,16 @@ def parse_by_rule(template, field, rule, content):
             break
 
         blocks_count += 1
-        lines += parse_block(template, field, settings, content[0:end.start()])
+        lines += parse_block(template, field, settings, content[0 : end.start()])
 
-        content = content[end.end():]
+        content = content[end.end() :]
 
     if blocks_count == 0:
-        logger.warning("Failed to find any matching block (part) of invoice for \"%s\"", field)
+        logger.warning(
+            'Failed to find any matching block (part) of invoice for "%s"', field
+        )
     elif not lines:
-        logger.warning("Failed to find any lines for \"%s\"", field)
+        logger.warning('Failed to find any lines for "%s"', field)
 
     return lines
 
@@ -166,10 +171,10 @@ def parse_by_rule(template, field, rule, content):
 def parse(template, field, settings, content):
     if "rules" in settings:
         # One field can have multiple sets of line-parsing rules
-        rules = settings['rules']
+        rules = settings["rules"]
     else:
         # Original syntax stored line-parsing rules in top field YAML object
-        keys = ('start', 'end', 'line', 'first_line', 'last_line', 'skip_line', 'types')
+        keys = ("start", "end", "line", "first_line", "last_line", "skip_line", "types")
         rules = [{k: v for k, v in settings.items() if k in keys}]
 
     lines = []

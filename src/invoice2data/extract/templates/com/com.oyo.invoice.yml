@@ -19,4 +19,4 @@ tables:
     body: (?P<gstin>\w+)\s+(?P<cin>\w+)
 options:
   currency: INR
-  decimal_separator: '.'
+  decimal_separator: "."

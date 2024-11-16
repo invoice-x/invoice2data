@@ -16,7 +16,7 @@ keywords:
 options:
   currency: USD
   date_formats:
-    - '%B %d, %Y'
+    - "%B %d, %Y"
   languages:
     - en
-  decimal_separator: '.'
+  decimal_separator: "."

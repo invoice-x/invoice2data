@@ -7,10 +7,10 @@ fields:
   BIC: BIC\(SWIFT\):(\w{8,11})
   static_payment: transfer
 keywords:
- - DE225792426
- - Rechnung
+  - DE225792426
+  - Rechnung
 options:
   remove_whitespace: true
   date_formats:
-    - '%d.%m.%Y'
-  decimal_separator: ','
+    - "%d.%m.%Y"
+  decimal_separator: ","

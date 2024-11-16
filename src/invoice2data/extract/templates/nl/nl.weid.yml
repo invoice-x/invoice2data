@@ -51,14 +51,14 @@ fields:
     - (CONTANT)
     - (?i)(Paypal)
 lines:
-   start: 'Aantal'
-   end: 'Totaalbedrag'
-   line: (?P<qty>\d+[,|.]\d{2})\s+(?P<product>\w+.*)\s+(?P<price_unit>(\d+[,]\d{2}))\s+(?P<tax_percent>\d+?[,]?\d{0,2})\s+(?P<price_subtotal>(\d+[,]\d{2}))
-   types:
-     qty: float
-     price_unit: float
-     price_subtotal: float
-     tax_percent: float
+  start: "Aantal"
+  end: "Totaalbedrag"
+  line: (?P<qty>\d+[,|.]\d{2})\s+(?P<product>\w+.*)\s+(?P<price_unit>(\d+[,]\d{2}))\s+(?P<tax_percent>\d+?[,]?\d{0,2})\s+(?P<price_subtotal>(\d+[,]\d{2}))
+  types:
+    qty: float
+    price_unit: float
+    price_subtotal: float
+    tax_percent: float
 keywords:
   - we-id
   - We-ID
@@ -67,7 +67,6 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['é' ,'€']
-
+    - ["é", "€"]

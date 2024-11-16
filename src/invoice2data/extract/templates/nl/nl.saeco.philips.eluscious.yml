@@ -7,7 +7,7 @@ fields:
     parser: regex
     regex: 'Factuur\s+totaal\s+EUR\s+(\d{1,4}[,]\d{2})'
     type: float
-  amount_tax: 
+  amount_tax:
     parser: regex
     regex: '\d{1,2}\s%\s+\d{1,4},\d{2}\s+(\d{1,4},\d{2})'
     group: sum
@@ -29,9 +29,9 @@ fields:
     regex: VF\d{10}
   payment_method:
     parser: regex
-    regex: 
-    - (?i)(iDeal)
-    - (Credit Card)
+    regex:
+      - (?i)(iDeal)
+      - (Credit Card)
   static_vat:
     parser: static
     value: NL815254295B01
@@ -52,7 +52,7 @@ fields:
     value: verkoop-nl@saeco.com
   partner_name:
     parser: static
-    value:  e-Luscious Nederland B.V.
+    value: e-Luscious Nederland B.V.
   country_code:
     parser: static
     value: nl
@@ -72,21 +72,21 @@ fields:
     parser: regex
     regex: (SCONL\S+)
 lines:
-    start: Product|Artikel
-    end: (?i)Totaal
-    line: (?P<code>\w\d{5,7})\s+(?P<name>(\w+(?:\s+\S+){1,8}))\s+(?P<price_unit>\d+[,]?\d{2})\s+(?P<taxpercent>\d+)\s?[%]\s+(?P<qty>\d+)\s+(?P<uom>\w{3})\s+(?P<price_subtotal>\d+[,]\d{2})
-    types:
-      qty: float
-      price_unit: float
-      price_subtotal: float
-      taxpercent: float
+  start: Product|Artikel
+  end: (?i)Totaal
+  line: (?P<code>\w\d{5,7})\s+(?P<name>(\w+(?:\s+\S+){1,8}))\s+(?P<price_unit>\d+[,]?\d{2})\s+(?P<taxpercent>\d+)\s?[%]\s+(?P<qty>\d+)\s+(?P<uom>\w{3})\s+(?P<price_subtotal>\d+[,]\d{2})
+  types:
+    qty: float
+    price_unit: float
+    price_subtotal: float
+    taxpercent: float
 keywords:
   - saeco
-  - 'Factuur'
+  - "Factuur"
   - NL8152[.]54[.]295[.]B01
   - 04080176
 options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","

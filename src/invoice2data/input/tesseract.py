@@ -1,14 +1,15 @@
-# -*- coding: utf-8 -*-
-
+import mimetypes
 import shutil
 import tempfile
-import mimetypes
-
-from subprocess import Popen, PIPE, STDOUT, CalledProcessError, TimeoutExpired
-from subprocess import run
-from pathlib import Path
-
 from logging import getLogger
+from pathlib import Path
+from subprocess import PIPE
+from subprocess import STDOUT
+from subprocess import CalledProcessError
+from subprocess import Popen
+from subprocess import TimeoutExpired
+from subprocess import run
+
 
 logger = getLogger(__name__)
 
@@ -24,18 +25,17 @@ def to_text(path: str, area_details: dict = None):
         of the format {x: int, y: int, r: int, W: int, H: int}
         used when extracting an area of the pdf rather than the whole document
 
-    Returns
+    Returns:
     -------
     extracted_str : str
         returns extracted text from image
 
     """
-
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not shutil.which("tesseract"):
-        raise EnvironmentError("tesseract not installed.")
+        raise OSError("tesseract not installed.")
     if not shutil.which("convert"):
-        raise EnvironmentError("imagemagick not installed.")
+        raise OSError("imagemagick not installed.")
 
     language = get_languages()
     logger.debug("tesseract language arg is, %s", language)
@@ -90,7 +90,7 @@ def to_text(path: str, area_details: dict = None):
         tess_input,
         TMP_FOLDER + filename,
         "pdf",
-        "txt"
+        "txt",
     ]
 
     logger.debug("Calling tesseract with args, %s", tess_cmd)
@@ -112,24 +112,31 @@ def to_text(path: str, area_details: dict = None):
     if area_details is not None:
         # An area was specified
         # Validate the required keys were provided
-        assert 'f' in area_details, 'Area r details missing'
-        assert 'l' in area_details, 'Area r details missing'
-        assert 'r' in area_details, 'Area r details missing'
-        assert 'x' in area_details, 'Area x details missing'
-        assert 'y' in area_details, 'Area y details missing'
-        assert 'W' in area_details, 'Area W details missing'
-        assert 'H' in area_details, 'Area H details missing'
+        assert "f" in area_details, "Area r details missing"
+        assert "l" in area_details, "Area r details missing"
+        assert "r" in area_details, "Area r details missing"
+        assert "x" in area_details, "Area x details missing"
+        assert "y" in area_details, "Area y details missing"
+        assert "W" in area_details, "Area W details missing"
+        assert "H" in area_details, "Area H details missing"
         # Convert all of the values to strings
         for key in area_details.keys():
             area_details[key] = str(area_details[key])
         pdftotext_cmd += [
-            '-f', area_details['f'],
-            '-l', area_details['l'],
-            '-r', area_details['r'],
-            '-x', area_details['x'],
-            '-y', area_details['y'],
-            '-W', area_details['W'],
-            '-H', area_details['H'],
+            "-f",
+            area_details["f"],
+            "-l",
+            area_details["l"],
+            "-r",
+            area_details["r"],
+            "-x",
+            area_details["x"],
+            "-y",
+            area_details["y"],
+            "-W",
+            area_details["W"],
+            "-H",
+            area_details["H"],
         ]
     pdftotext_cmd += [TMP_FOLDER + filename + ".pdf", "-"]
 
@@ -142,11 +149,10 @@ def to_text(path: str, area_details: dict = None):
     except TimeoutExpired:
         p3.kill()
         logger.warning("pdftotext took too long - skipping")
-    return extracted_str.decode('utf-8')
+    return extracted_str.decode("utf-8")
 
 
 def get_languages():
-
     def lang_error(output):
         logger.warning = (
             "Tesseract failed to report available languages.\n"
@@ -154,8 +160,9 @@ def get_languages():
             "-----------\n"
         )
         return
+
     logger.debug("get lang called")
-    args_tess = ['tesseract', '--list-langs']
+    args_tess = ["tesseract", "--list-langs"]
     try:
         proc = run(
             args_tess,
@@ -166,11 +173,11 @@ def get_languages():
         )
         output = proc.stdout
     except CalledProcessError as e:
-        raise EnvironmentError(lang_error(e.output)) from e
+        raise OSError(lang_error(e.output)) from e
 
     for line in output.splitlines():
-        if line.startswith('Error'):
-            raise EnvironmentError(lang_error(output))
+        if line.startswith("Error"):
+            raise OSError(lang_error(output))
     _header, *rest = output.splitlines()
     langlist = {lang.strip() for lang in rest}
-    return '+'.join(map(str, langlist))
+    return "+".join(map(str, langlist))

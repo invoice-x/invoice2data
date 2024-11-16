@@ -46,7 +46,7 @@ fields:
     value: US
   partner_zip:
     parser: regex
-    regex: '94538'
+    regex: "94538"
   partner_street2:
     parser: static
     value: Building AA
@@ -58,7 +58,7 @@ fields:
     value: Azure_Int
   currency_symbol:
     parser: regex
-    regex: '[$€]'
+    regex: "[$€]"
     group: first
   telephone:
     parser: regex
@@ -95,22 +95,22 @@ fields:
   # static value assigned because unused in the invoicefile
   mandate_id:
     parser: static
-    value: '111'
+    value: "111"
   payment_unece_code:
     parser: static
-    value: '30'
+    value: "30"
   customer_order_number:
     parser: static
-    value: '333'
+    value: "333"
   purchase_order_id:
     parser: static
-    value: '444'
+    value: "444"
   mobile:
     parser: static
-    value: '555'
+    value: "555"
   partner_coc:
     parser: static
-    value: '666'
+    value: "666"
   date_start:
     parser: static
     value: 2023-03-01
@@ -132,7 +132,7 @@ fields:
 
   lines:
     parser: lines
-    start: 'Amount'
+    start: "Amount"
     end: 'Subtotal\s{10,40}[$€]'
     first_line:
       - '(?P<sectionheader>--- \w+((?:\s\S+)*) ---)'

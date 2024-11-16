@@ -20,10 +20,13 @@ tables:
 options:
   currency: EUR
   date_formats:
-      - '%d %B %Y'
+    - "%d %B %Y"
   languages:
     - fr
-  decimal_separator: '.'
+  decimal_separator: "."
   replace:
     # We have to rewrite the start and end date for datepasrser to handle it.
-    - ['\sdu\s(?P<from>\d{1,2}\w*)(?P<separator>\sau\s\d{2})(?P<month_year>\s\w+\s\d{4})\s+', ' du \g<from>\g<month_year>\g<separator>\g<month_year> ']
+    - [
+        '\sdu\s(?P<from>\d{1,2}\w*)(?P<separator>\sau\s\d{2})(?P<month_year>\s\w+\s\d{4})\s+',
+        ' du \g<from>\g<month_year>\g<separator>\g<month_year> ',
+      ]

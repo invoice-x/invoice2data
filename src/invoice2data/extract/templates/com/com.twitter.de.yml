@@ -5,8 +5,8 @@ fields:
   date: Ausstellungsdatum(\d{1,2}\.\w+\d{4})
   invoice_number: Rechnungs-ID(\d+)
 keywords:
-- IE9803175Q
-- USt-Betrag
+  - IE9803175Q
+  - USt-Betrag
 options:
   remove_whitespace: true
   currency: EUR

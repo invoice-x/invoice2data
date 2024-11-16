@@ -10,4 +10,4 @@ options:
   remove_whitespace: true
   currency: USD
   date_formats:
-    - '%MMMM%d,%YYYY'
+    - "%MMMM%d,%YYYY"

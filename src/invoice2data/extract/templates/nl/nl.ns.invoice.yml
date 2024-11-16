@@ -30,10 +30,10 @@ fields:
   Incassant-ID: is (NL\d{2}\s+ZZZ\s+\d{4}\s+\d{4}\s+\d{4}).
   payment_unece_code:
     parser: static
-    value:  49
+    value: 49
   partner_name:
     parser: static
-    value:  NS Reizigers B.V.
+    value: NS Reizigers B.V.
   partner_street:
     parser: static
     value: Laan van Puntenburg 100
@@ -59,22 +59,21 @@ fields:
     parser: static
     value: ns.nl
 lines:
-    start: Omschrijving
-    end: Subtotaal
-    line: '^\s+(?P<name>\w+(?:\S|[ ]\w\w+){1}).+(?P<line_tax_percent>\d{1,2})[%]\s[€]\s+(?P<price_unit>\d{1,}.\d{2})'
-    types:
-      line_tax_percent: float
-      price_unit: float
+  start: Omschrijving
+  end: Subtotaal
+  line: '^\s+(?P<name>\w+(?:\S|[ ]\w\w+){1}).+(?P<line_tax_percent>\d{1,2})[%]\s[€]\s+(?P<price_unit>\d{1,}.\d{2})'
+  types:
+    line_tax_percent: float
+    price_unit: float
 keywords:
   - NS Reizigers
   - NL803882804B01
 options:
   date_formats:
-    - '%Y %B %d'
+    - "%Y %B %d"
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['\n\s+0000', ' 0000']
-
+    - ['\n\s+0000', " 0000"]

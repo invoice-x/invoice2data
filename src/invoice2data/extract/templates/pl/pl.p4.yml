@@ -2,7 +2,7 @@
 issuer: P4 spółka z ograniczoną odpowiedzialnością
 keywords:
   - P4 Sp. z o.o.
-  - 'NIP: 951-21-20-077'
+  - "NIP: 951-21-20-077"
 fields:
   vatin:
     parser: static
@@ -27,5 +27,5 @@ fields:
 options:
   currency: PLN
   date_formats:
-    - '%d.%m.%Y'
-  decimal_separator: ','
+    - "%d.%m.%Y"
+  decimal_separator: ","

@@ -53,17 +53,17 @@ fields:
     - (CONTANT)
     - (?i)(Paypal)
 lines:
- - start: Artikel
-   end:  Totaal [(]incl. BTW[)]\s+[€]
-   first_line: (?P<barcode>\w+.*)\s+(?P<product>\w+.*)\s+(?P<qty>\d+)\s+(?P<price_unit>[€]\s+(\d+.\d{2}))\s+(?P<price_subtotal>[€]\s+(\d+.\d{2}))
-   line: (?P<product>\w+.*) # needs check
-   types:
-     qty: float
-     price_unit: float
-     price_subtotal: float
- - start: Subtotaal
-   end:  Totaal [(]incl. BTW[)]\s+[€]
-   line: (?P<name>(\w+(?:\s\S+)*))\s+(?P<price_unit>(\d+.\d+))?
+  - start: Artikel
+    end: Totaal [(]incl. BTW[)]\s+[€]
+    first_line: (?P<barcode>\w+.*)\s+(?P<product>\w+.*)\s+(?P<qty>\d+)\s+(?P<price_unit>[€]\s+(\d+.\d{2}))\s+(?P<price_subtotal>[€]\s+(\d+.\d{2}))
+    line: (?P<product>\w+.*) # needs check
+    types:
+      qty: float
+      price_unit: float
+      price_subtotal: float
+  - start: Subtotaal
+    end: Totaal [(]incl. BTW[)]\s+[€]
+    line: (?P<name>(\w+(?:\s\S+)*))\s+(?P<price_unit>(\d+.\d+))?
 keywords:
   - blokker
   - NL854525154B01
@@ -72,7 +72,6 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: '.'
+  decimal_separator: "."
   replace:
-    - ['é' ,'€']
-
+    - ["é", "€"]

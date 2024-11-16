@@ -7,10 +7,10 @@ fields:
   BIC: BIC:(\w{8,11})
   static_payment: transfer
 keywords:
- - NL818362509B01
- - Invoice
+  - NL818362509B01
+  - Invoice
 options:
   remove_whitespace: true
   date_formats:
-    - '%d/%b/%Y'
-  decimal_separator: ','
+    - "%d/%b/%Y"
+  decimal_separator: ","

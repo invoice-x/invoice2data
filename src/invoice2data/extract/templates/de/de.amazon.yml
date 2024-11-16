@@ -5,5 +5,5 @@ fields:
   date: Lieferdatum/Rechnungsdatum.*(\d{1,2}\. \w+ \d{4})
   invoice_number: Rechnungsnr\. ([A-Z0-9\-]+)
 keywords:
-- Amazon EU
-- Rechnungsnr
+  - Amazon EU
+  - Rechnungsnr

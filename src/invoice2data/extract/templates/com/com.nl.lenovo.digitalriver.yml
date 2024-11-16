@@ -27,7 +27,7 @@ fields:
     value: lenovo.com
   partner_name:
     parser: static
-    value:  Digital River Ireland, Ltd.
+    value: Digital River Ireland, Ltd.
   country_code:
     parser: static
     value: ie
@@ -41,20 +41,20 @@ fields:
     parser: regex
     regex: Volgnummer factuur:\s+\S+
 lines:
-    start: Productbeschrijving
-    end: (?i)Producttotaal
-    line: (?P<name>(\w+(?:\s+\S+){1,8}))\s+(?P<qty>\d)\s+(?P<price_subtotal>\d?[.]?\d+[,]\d{2})
-    types:
-      qty: float
-      price_unit: float
-      price_subtotal: float
-      taxpercent: float
+  start: Productbeschrijving
+  end: (?i)Producttotaal
+  line: (?P<name>(\w+(?:\s+\S+){1,8}))\s+(?P<qty>\d)\s+(?P<price_subtotal>\d?[.]?\d+[,]\d{2})
+  types:
+    qty: float
+    price_unit: float
+    price_subtotal: float
+    taxpercent: float
 keywords:
   - (?i)Digital\sRiver
-  - 'NL815471166B01'
-  - 'Factuur'
+  - "NL815471166B01"
+  - "Factuur"
 options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","

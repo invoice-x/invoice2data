@@ -14,7 +14,7 @@ fields:
     type: float
   date:
     parser: regex
-    regex: 
+    regex:
       - (\d{2}-\d{2}-\d{4}\s+\d{2}[:]\d{2}[:]\d{2})
       - (\d{2}-\d{2}-\d{4})\s+\d{2}.\d{2}.\d{2}
     type: date
@@ -56,7 +56,7 @@ fields:
   # then the tax code??
   # if not
   # how can we map the tax type in the line to the type from the tax table.
-  
+
   lines:
     parser: lines
     rules:
@@ -67,12 +67,12 @@ fields:
       - start: BEDRAG
         end: TOTAAL\s
         first_line: '(\s|[*])(?P<code>(\w+\s(?:\s?\S+){2}))\s+.\s+.?\s*\d+.\d{0,2}'
-        line: 
+        line:
           - '(?P<name>POMP.*).?\s(?P<qty>\d+.\d{2})\s+.?.?\s+€?\s*(?P<unit_price>\d.\d{3}).(?P<uom>.)[)]'
         types:
           qty: float
           line_tax_percent: float
-          amount_untaxed: float 
+          amount_untaxed: float
           unit_price: float
           price_unit: float
         line_tax_amount: float
@@ -88,28 +88,32 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   remove_accents:
     - True
   replace:
-    - ['0x2B' ,'']
-    - ['\u002B ' ,'-']
-    - ['é' ,'€']
-    - ['L.p.9.' ,'LPG']
-    - ['L.P.G.' ,'LPG']
-    - ['L.P.9.' ,'LPG']
-    - ['LPLG' ,'LPG']
-    - ['95\s+\w+' ,'E10 (Euro 95)']
-    - ['Contant' ,'CONTANT']
-    - ['(?i)Gu.f' ,'Gulf']
-    - ['(?P<price_ltr>\d)\.(?P<price_ltr_dec>\d{3})(?P<leftover>..[)])', '\g<price_ltr>,\g<price_ltr_dec>\g<leftover>']
+    - ["0x2B", ""]
+    - ['\u002B ', "-"]
+    - ["é", "€"]
+    - ["L.p.9.", "LPG"]
+    - ["L.P.G.", "LPG"]
+    - ["L.P.9.", "LPG"]
+    - ["LPLG", "LPG"]
+    - ['95\s+\w+', "E10 (Euro 95)"]
+    - ["Contant", "CONTANT"]
+    - ["(?i)Gu.f", "Gulf"]
+    - [
+        '(?P<price_ltr>\d)\.(?P<price_ltr_dec>\d{3})(?P<leftover>..[)])',
+        '\g<price_ltr>,\g<price_ltr_dec>\g<leftover>',
+      ]
     - ['(?P<price_ltr>\d{3}.).[)]', '\g<price_ltr>L)']
-    - [',[.]' ,',']
+    - [",[.]", ","]
     - ['(\s)([0-9]+)\.([0-9]{2})(\s)', '\1\2,\3\4'] # workaround for ocr inconsistancy on comma and dot detection
+
 
   # landelijke verkoop maatschappij kvk 24112907
   # brabant franchisenemer kvk 17208286 # NL818159509B01
-  
+
   # product moet vervangen worden door code
 # voor bv lpg 'E10 (Euro 95)'
 # vat percentage hardcode naar 9 of 21 %

@@ -35,7 +35,7 @@ fields:
     value: all.accor.com
   partner_name:
     parser: static
-    value:  Accor Invest Belgium nv SA
+    value: Accor Invest Belgium nv SA
   country_code:
     parser: static
     value: be
@@ -52,22 +52,22 @@ fields:
     parser: regex
     regex: Ibis\s+\S+
 lines:
-    start: Datum\s\S\s+Omschrijving
-    end: (?i)Totaal\ste
-    line: (?P<name>(\d+[-]\d+[-]\w+(?:\s+\S+){1,8}))\s+(?P<qty>\d+)\s+(?P<price_subtotal>\d+[,]\d{2})
-    types:
-      qty: float
-      price_unit: float
-      price_subtotal: float
-      taxpercent: float
+  start: Datum\s\S\s+Omschrijving
+  end: (?i)Totaal\ste
+  line: (?P<name>(\d+[-]\d+[-]\w+(?:\s+\S+){1,8}))\s+(?P<qty>\d+)\s+(?P<price_subtotal>\d+[,]\d{2})
+  types:
+    qty: float
+    price_unit: float
+    price_subtotal: float
+    taxpercent: float
 keywords:
   - (?i)Accor
   - 'BE\s0673\s923'
-  - 'Factuur'
+  - "Factuur"
 options:
   currency: EUR
   languages:
     - nl
     - be
     - en
-  decimal_separator: ','      
+  decimal_separator: ","

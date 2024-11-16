@@ -7,10 +7,10 @@ fields:
   BIC: Bankverbindung:[\w\s,:\.\-]+BIC:(\w{8,11})
   static_payment: directdebit
 keywords:
- - DE289115734
- - Rechnung
+  - DE289115734
+  - Rechnung
 options:
   remove_whitespace: true
   date_formats:
-    - '%d.%m.%Y'
-  decimal_separator: ','
+    - "%d.%m.%Y"
+  decimal_separator: ","

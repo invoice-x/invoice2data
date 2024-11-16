@@ -1,28 +1,33 @@
-"""
-This module abstracts templates for invoice providers.
+"""This module abstracts templates for invoice providers.
 
 Templates are initially read from .yml or .json files and then kept as class.
 """
 
-import os
 import json
+import os
+
 
 try:
-    from yaml import load, YAMLError, CSafeLoader as SafeLoader
+    from yaml import CSafeLoader as SafeLoader
+    from yaml import YAMLError
+    from yaml import load
 except ImportError:  # pragma: no cover
-    from yaml import load, SafeLoader, YAMLError
+    from yaml import SafeLoader
+    from yaml import YAMLError
+    from yaml import load
+import codecs
+from logging import getLogger
+
 import pkg_resources
 
-from logging import getLogger
 from .invoice_template import InvoiceTemplate
-import codecs
+
 
 logger = getLogger(__name__)
 
 
 def ordered_load(stream, Loader=json.loads):
-    """loads a stream of json data"""
-
+    """Loads a stream of json data"""
     output = []
 
     try:
@@ -40,8 +45,7 @@ def ordered_load(stream, Loader=json.loads):
 
 
 def read_templates(folder=None):
-    """
-    Load yaml templates from template folder. Return list of dicts.
+    """Load yaml templates from template folder. Return list of dicts.
 
     Use built-in templates if no folder is set.
 
@@ -50,14 +54,13 @@ def read_templates(folder=None):
     folder : str
         user defined folder where they stores their files, if None uses built-in templates
 
-    Returns
+    Returns:
     -------
     output : Instance of `InvoiceTemplate`
         template which match based on keywords
 
-    Examples
+    Examples:
     --------
-
     >>> read_template("home/duskybomb/invoice-templates/")
     InvoiceTemplate([('issuer', 'OYO'), ('fields', {'amount': 'Grand Total\\s+Rs (\\d+)',
     'date': 'Date:\\s(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})', 'invoice_number': '([A-Z0-9]+)\\s+Cash at Hotel'}),
@@ -76,7 +79,6 @@ def read_templates(folder=None):
     'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
 
     """
-
     output = []
 
     if folder is None:

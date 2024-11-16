@@ -1,12 +1,10 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
-"""
-Plugin to extract tables from an invoice.
-"""
+"""Plugin to extract tables from an invoice."""
 
 import re
 from logging import getLogger
+
 
 logger = getLogger(__name__)
 
@@ -15,7 +13,6 @@ DEFAULT_OPTIONS = {"field_separator": r"\s+", "line_separator": r"\n"}
 
 def extract(self, content, output):
     """Try to extract tables from an invoice"""
-
     for i, table in enumerate(self["tables"]):
         # First apply default options.
 
@@ -92,8 +89,9 @@ def extract(self, content, output):
                     else:
                         output[field] = value
             else:
-                logger.debug("The following line doesn't match anything:\n*%s*"
-                             , line)
+                logger.debug("The following line doesn't match anything:\n*%s*", line)
         if no_match_found:
-            logger.debug("\033[1;43mWarning\033[0m regex=\033[91m*%s*\033[0m doesn't match anything!"
-                         , table["body"])
+            logger.debug(
+                "\033[1;43mWarning\033[0m regex=\033[91m*%s*\033[0m doesn't match anything!",
+                table["body"],
+            )

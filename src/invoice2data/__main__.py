@@ -1,26 +1,25 @@
 #!/usr/bin/python
 """Command-line interface."""
 
-import click
-
 import argparse
 import copy
 import datetime
-import shutil
-import os
-from os.path import join
 import logging
+import os
+import shutil
+from os.path import join
 
-from .input import pdftotext
-from .input import pdfminer_wrapper
-from .input import pdfplumber
-from .input import tesseract
-from .input import gvision
-from .input import text
-from .input import ocrmypdf
+import click
 
 from invoice2data.extract.loader import read_templates
 
+from .input import gvision
+from .input import ocrmypdf
+from .input import pdfminer_wrapper
+from .input import pdfplumber
+from .input import pdftotext
+from .input import tesseract
+from .input import text
 from .output import to_csv
 from .output import to_json
 from .output import to_xml
@@ -45,6 +44,7 @@ output_mapping = {
     "none": None,
 }
 
+
 @click.command()
 @click.version_option()
 def main() -> None:
@@ -54,8 +54,8 @@ def main() -> None:
 if __name__ == "__main__":
     main(prog_name="invoice2data")  # pragma: no cover
 
-class Color:
 
+class Color:
     """A class for terminal color codes."""
 
     BOLD = "\033[1m"
@@ -69,11 +69,11 @@ class Color:
 
 
 class ColorLogFormatter(logging.Formatter):
-
     """A class for formatting colored logs."""
 
-    FORMAT = \
+    FORMAT = (
         "%(prefix)s%(levelname)s:%(suffix)s%(name)s:%(prefix)s %(message)s%(suffix)s"
+    )
 
     LOG_LEVEL_COLOR = {
         "DEBUG": {"prefix": "", "suffix": Color.END},
@@ -85,13 +85,17 @@ class ColorLogFormatter(logging.Formatter):
 
     def format(self, record):
         """Format log records with a default prefix and suffix
-           to terminal color codes that corresponds to the log level name."""
-
+        to terminal color codes that corresponds to the log level name.
+        """
         if not hasattr(record, "prefix"):
-            record.prefix = self.LOG_LEVEL_COLOR.get(record.levelname.upper()).get("prefix")
+            record.prefix = self.LOG_LEVEL_COLOR.get(record.levelname.upper()).get(
+                "prefix"
+            )
 
         if not hasattr(record, "suffix"):
-            record.suffix = self.LOG_LEVEL_COLOR.get(record.levelname.upper()).get("suffix")
+            record.suffix = self.LOG_LEVEL_COLOR.get(record.levelname.upper()).get(
+                "suffix"
+            )
 
         formatter = logging.Formatter(self.FORMAT)
         return formatter.format(record)
@@ -123,21 +127,21 @@ def extract_data(invoicefile, templates=None, input_module=None):
     input_module : {'pdftotext', 'pdfminer', 'tesseract', 'text'}, optional
         library to be used to extract text from given `invoicefile`,
 
-    Returns
+    Returns:
     -------
     dict or False
         extracted and matched fields or False if no template matches
 
-    Notes
+    Notes:
     -----
     Import required `input_module` when using invoice2data as a library
 
-    See Also
+    See Also:
     --------
     read_template : Function where templates are loaded
     InvoiceTemplate : Class representing single template files that live as .yml files on the disk
 
-    Examples
+    Examples:
     --------
     When using `invoice2data` as an library
 
@@ -147,30 +151,38 @@ def extract_data(invoicefile, templates=None, input_module=None):
      'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
 
     """
-
     if input_module is None:
-        if invoicefile.lower().endswith('.txt'):
+        if invoicefile.lower().endswith(".txt"):
             input_module = text
         else:
             input_module = pdftotext
 
     extracted_str = input_module.to_text(invoicefile)
     if not isinstance(extracted_str, str) or not extracted_str.strip():
-        logger.error("Failed to extract text from %s using %s", invoicefile, input_module.__name__)
+        logger.error(
+            "Failed to extract text from %s using %s",
+            invoicefile,
+            input_module.__name__,
+        )
         return False
 
-    logger.debug("START pdftotext result ===========================\n%s"
-                 , extracted_str)
+    logger.debug(
+        "START pdftotext result ===========================\n%s", extracted_str
+    )
     logger.debug("END pdftotext result =============================")
 
     if templates is None:
         templates = read_templates()
     templates_matched = filter(lambda t: t.matches_input(extracted_str), templates)
-    templates_matched = sorted(templates_matched, key=lambda k: k['priority'], reverse=True)
+    templates_matched = sorted(
+        templates_matched, key=lambda k: k["priority"], reverse=True
+    )
     if not templates_matched:
         if ocrmypdf.have_ocrmypdf() and input_module is not ocrmypdf:
             logger.debug("Text extraction failed, falling back to ocrmypdf")
-            extracted_str, invoicefile, templates_matched = extract_data_fallback_ocrmypdf(invoicefile, templates)
+            extracted_str, invoicefile, templates_matched = (
+                extract_data_fallback_ocrmypdf(invoicefile, templates)
+            )
             if not templates_matched:
                 logger.error("No template for %s", invoicefile)
                 return False
@@ -188,13 +200,14 @@ def extract_data_fallback_ocrmypdf(invoicefile, templates):
     logger.debug("Text extraction failed, falling back to ocrmypdf")
     extracted_str = ocrmypdf.to_text(invoicefile)
     templates_matched = filter(lambda t: t.matches_input(extracted_str), templates)
-    templates_matched = sorted(templates_matched, key=lambda k: k['priority'], reverse=True)
+    templates_matched = sorted(
+        templates_matched, key=lambda k: k["priority"], reverse=True
+    )
     return extracted_str, invoicefile, templates_matched
 
 
 def create_parser():
-    """Returns argument parser """
-
+    """Returns argument parser"""
     parser = argparse.ArgumentParser(
         description="Extract structured data from PDF files and save to CSV or JSON."
     )
@@ -280,7 +293,6 @@ def create_parser():
 
 def main(args=None):
     """Take folder or single file and analyze each."""
-
     if args is None:
         parser = create_parser()
         args = parser.parse_args()
@@ -290,7 +302,9 @@ def main(args=None):
     else:
         logger.setLevel(level=logging.INFO)
 
-    input_module = input_mapping[args.input_reader] if args.input_reader is not None else None
+    input_module = (
+        input_mapping[args.input_reader] if args.input_reader is not None else None
+    )
     output_module = output_mapping[args.output_format]
 
     templates = []
@@ -318,7 +332,7 @@ def main(args=None):
                         kwargs[key] = value[0]
                 for key, value in kwargs.items():
                     if type(value) is datetime.datetime:
-                        kwargs[key] = value.strftime('%Y-%m-%d')
+                        kwargs[key] = value.strftime("%Y-%m-%d")
                 if args.copy:
                     filename = args.filename.format(**kwargs)
                     shutil.copyfile(f.name, join(args.copy, filename))
@@ -327,7 +341,9 @@ def main(args=None):
                     shutil.move(f.name, join(args.move, filename))
             f.close()
         except Exception as e:
-            logger.critical("Invoice2data failed to process %s. \nError message: %s", f.name, e)
+            logger.critical(
+                "Invoice2data failed to process %s. \nError message: %s", f.name, e
+            )
             continue
 
     if output_module is not None:

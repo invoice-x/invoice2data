@@ -1,5 +1,4 @@
-"""
-Interface for fields parsers.
+"""Interface for fields parsers.
 
 Parsers are basic modules used for extracting data. They are responsible
 for parsing invoice text using specified settings. Depending on a parser

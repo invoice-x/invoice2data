@@ -4,10 +4,10 @@ fields:
   date: InvoiceDate:(\d{1,2}\/\d{1,2}\/\d{4})
   invoice_number: InvoiceNumber:(\w+)
 keywords:
-- Microsoft
-- M90002526N
+  - Microsoft
+  - M90002526N
 options:
   remove_whitespace: true
   currency: HKD
   date_formats:
-    - '%d/%m/%Y'
+    - "%d/%m/%Y"

@@ -2,10 +2,10 @@ issuer: ACTN
 fields:
   date: Date\s+facture\s+:\s+(\d+/\d+/+\d{4})
   invoice_number: FACTURE\s+n°\s+(\w+)
-  static_vat: 'FR54344350111'
+  static_vat: "FR54344350111"
 tables:
   - start: Total H.T.\s+Frais de port\s+Taux T.V.A.\s+Total T.V.A.\s+Total T.T.C.
-    end: 'AGENCE COMMERCIALE TECHNOLOGIES NOUVELLES'
+    end: "AGENCE COMMERCIALE TECHNOLOGIES NOUVELLES"
     body: '(?P<amount_untaxed>\d*,\d*)\s+€\s+20,00\s+(?P<amount_tax>\d*,\d*)\s+€\s+(?P<amount>\d*,\d*)\s€'
 keywords:
   - FR54344350111
@@ -15,5 +15,5 @@ keywords:
 options:
   currency: EUR
   date_formats:
-    - '%d %b %Y'
-  decimal_separator: ','
+    - "%d %b %Y"
+  decimal_separator: ","

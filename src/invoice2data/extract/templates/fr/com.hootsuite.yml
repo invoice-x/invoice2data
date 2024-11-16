@@ -12,5 +12,5 @@ keywords:
 options:
   currency: EUR
   date_formats:
-    - '%m/%d/%Y'
-  decimal_separator: ','
+    - "%m/%d/%Y"
+  decimal_separator: ","

@@ -5,10 +5,10 @@ fields:
   invoice_number: Rechnung(AR-\d{1,12})
   static_payment: directdebit
 keywords:
- - HostEuropeGmbH
- - Rechnung
+  - HostEuropeGmbH
+  - Rechnung
 options:
   remove_whitespace: true
   date_formats:
-    - '%d.%m.%Y'
-  decimal_separator: ','
+    - "%d.%m.%Y"
+  decimal_separator: ","
