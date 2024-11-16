@@ -40,7 +40,8 @@ dateparser ="^1.2.0"
 
 [tool.poetry.dev-dependencies]
 Pygments = ">=2.10.0"
-coverage = { extras = ["toml"], version = ">=6.2" }
+coverage = { extras = ["toml"], version = ">=7.6" }
+cffi = ">=1.17.0"
 furo = ">=2021.11.12"
 mypy = ">=0.930"
 myst-parser = { version = ">=2.0.0" }
