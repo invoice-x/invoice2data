@@ -10,7 +10,7 @@ logging.getLogger("pdfminer").setLevel(logging.WARNING)
 
 def get_sample_files(extension, exclude_input_specific=True):
     compare_files = []
-    for path, subdirs, files in os.walk(
+    for path, _subdirs, files in os.walk(
         pkg_resources.resource_filename(__name__, "compare")
     ):
         for file in files:
