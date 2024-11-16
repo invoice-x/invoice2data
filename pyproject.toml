@@ -88,7 +88,7 @@ pdfminer.six = "20240706"
 optional = true
 
 [tool.poetry.group.pdfplumber.dependencies]
-pdfminer.six >= "^0.11.4"
+pdfminer.six = "^0.11.4"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
