@@ -84,7 +84,7 @@ def read_templates(folder=None):
     if folder is None:
         folder = pkg_resources.resource_filename(__name__, "templates")
 
-    for path, subdirs, files in os.walk(folder):
+    for path, _subdirs, files in os.walk(folder):
         for name in sorted(files):
             with codecs.open(
                 os.path.join(path, name), encoding="utf-8"
