@@ -1,0 +1,16 @@
+{
+  "_checkout": null,
+  "_output_dir": "/home/data/git/invoice2data-new",
+  "_repo_dir": "/home/bosd/.cookiecutters/cookiecutter-hypermodern-python",
+  "_template": "gh:bruno-fs/cookiecutter-hypermodern-python",
+  "author": "Manuel Riel",
+  "copyright_year": "2024",
+  "development_status": "Development Status :: 5 - Production/Stable",
+  "email": "",
+  "friendly_name": "Invoice2Data",
+  "github_user": "m3nu",
+  "license": "MIT",
+  "package_name": "invoice2data",
+  "project_name": "invoice2data",
+  "version": "0.4.5"
+}

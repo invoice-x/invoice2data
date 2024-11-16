@@ -1,8 +1,22 @@
 # Data extractor for PDF invoices - invoice2data
 
+[![Read the documentation at https://invoice2data.readthedocs.io/](https://img.shields.io/readthedocs/invoice2data/latest.svg?label=Read%20the%20Docs)][read the docs]
 [![invoice2data build status on GitHub Actions](https://github.com/invoice-x/invoice2data/workflows/Test/badge.svg)](https://github.com/invoice-x/invoice2data/actions)
 [![Version](https://img.shields.io/pypi/v/invoice2data.svg)](https://pypi.python.org/pypi/invoice2data)
 [![Support Python versions](https://img.shields.io/pypi/pyversions/invoice2data.svg)](https://pypi.python.org/pypi/invoice2data)
+[![License](https://img.shields.io/pypi/l/invoice2data)][license]
+[![Tests](https://github.com/m3nu/invoice2data/workflows/Tests/badge.svg)][tests]
+[![Codecov](https://codecov.io/gh/m3nu/invoice2data/branch/main/graph/badge.svg)][codecov]
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+[pypi status]: https://pypi.org/project/invoice2data/
+[read the docs]: https://invoice2data.readthedocs.io/
+[tests]: https://github.com/m3nu/invoice2data/actions?workflow=Tests
+[codecov]: https://app.codecov.io/gh/m3nu/invoice2data
+[pre-commit]: https://github.com/pre-commit/pre-commit
+[ruff badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+[ruff project]: https://github.com/charliermarsh/ruff
 
 A command line tool and Python library to support your accounting
 process.
@@ -54,13 +68,13 @@ flowchart LR
 
         regex ~~~ static[fa:fa-check static]
 
- 
+
 
     end
 
     Plugins&Parsers --> |output| result[result\nfa:fa-file-csv,\njson,\nXML]
 
- 
+
 
  click Invoice-Templates https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md
 
@@ -89,9 +103,11 @@ If possible get the latest
 included with macOS Homebrew, Debian and Ubuntu. Without it, `pdftotext`
 won't parse tables in PDF correctly.
 
-2.  Install `invoice2data` using pip
+2.  You can install _Invoice2Data_ via [pip] from [PyPI]:
 
-    pip install invoice2data
+```console
+$ pip install invoice2data
+```
 
 ### Installation of input modules
 
@@ -117,6 +133,7 @@ pacman -S tesseract-data-eng tesseract-data-deu # Example: Install the English a
 ## Usage
 
 Basic usage. Process PDF files and write result to CSV.
+Please see the [Command-line Reference] for details.
 
 - `invoice2data invoice.pdf`
 - `invoice2data invoice.txt`
@@ -259,12 +276,19 @@ If you are interested in improving this project, have a look at our
 - [Alexis de Lattre](https://github.com/alexis-via)
 - [bosd](https://github.com/bosd)
 
-## Contributors
+## Contributors and Credits
 
 -   [Harshit Joshi](https://github.com/duskybomb): As Google Summer of
     Code student.
 -   [Holger Brunn](https://github.com/hbrunn): Add support for parsing
     invoice items.
+
+[pypi]: https://pypi.org/
+[file an issue]: https://github.com/m3nu/invoice2data/issues
+[pip]: https://pip.pypa.io/
+
+Contributions are very welcome.
+To learn more, see the [Contributor Guide].
 
 ## Used By
 - Odoo, OCA module [account_invoice_import_invoice2data](https://github.com/OCA/edi)
@@ -279,3 +303,9 @@ If you are interested in improving this project, have a look at our
   (Commercial)
 - [CVision](http://www.cvisiontech.com/library/document-automation/forms-processing/extract-data-from-invoice.html)
   (Commercial)
+
+<!-- github-only -->
+
+[license]: https://github.com/m3nu/invoice2data/blob/main/LICENSE
+[contributor guide]: https://github.com/m3nu/invoice2data/blob/main/CONTRIBUTING.md
+[command-line reference]: https://invoice2data.readthedocs.io/en/latest/usage.html
