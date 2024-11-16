@@ -43,7 +43,7 @@ class TestExtraction(unittest.TestCase):
         directory = os.path.dirname("tests/custom/templates/")
         templates = read_templates(directory)
 
-        for path, subdirs, files in os.walk(
+        for path, _subdirs, files in os.walk(
             pkg_resources.resource_filename(__name__, "custom")
         ):
             for file in files:
