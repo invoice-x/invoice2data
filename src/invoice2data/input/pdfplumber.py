@@ -6,6 +6,7 @@ logger = getLogger(__name__)
 
 def to_text(path):
     """Wrapper around `pdfplumber`.
+
     Parameters
     ----------
     path : str
