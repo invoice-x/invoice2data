@@ -1,60 +1,47 @@
 import csv
-import sys
 
 
 def write_to_file(data: list, path: str, date_format="%Y-%m-%d") -> None:
-    """Export extracted fields to csv.
+    """Export extracted fields to CSV.
 
-    Appends .csv to path if missing and generates csv file in specified directory, if not then in root
+    Appends .csv to path if missing and generates a CSV file in the specified
+    directory, otherwise in the current directory.
 
-    Parameters
-    ----------
-    data : list
-        A list of dictionaries of extracted fields.
-        If only a single file was processed, it must be passed as a single-element list.
-    path : str
-        csv file to save output csv to
-    date_format : str
-        Date format used in generated file
+    Args:
+        data (list): A list of dictionaries of extracted fields. If only a
+                     single file was processed, it must be passed as a
+                     single-element list.
+        path (str): CSV file to save output to.
+        date_format (str, optional): Date format used in the generated file.
+                                     Defaults to "%Y-%m-%d".
 
     Notes:
-    ----
-    Do give file name to the function parameter path.
+        Provide a filename to the `path` parameter.
 
     Examples:
-    --------
         >>> from invoice2data.output import to_csv
         >>> to_csv.write_to_file(data, "/exported_csv/invoice.csv")
         >>> to_csv.write_to_file(data, "invoice.csv")
-
     """
-    if path.endswith(".csv"):
-        filename = path
-    else:
+    if not path.endswith(".csv"):
         filename = path + ".csv"
-
-    if sys.version_info[0] < 3:
-        openfile = open(filename, "wb")
     else:
-        openfile = open(filename, "w", newline="")
+        filename = path
 
-    with openfile as csv_file:
+    with open(filename, "w", newline="", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file, delimiter=",")
 
         last_header = None
         for line in data:
-            first_row = []
-            for k, _v in line.items():
-                first_row.append(k)
+            header = list(line.keys())
 
-            if first_row != last_header:
-                writer.writerow(first_row)
-            last_header = first_row
+            if header != last_header:
+                writer.writerow(header)
+                last_header = header
 
             csv_items = []
             for k, v in line.items():
-                # first_row.append(k)
                 if k.startswith("date") or k.endswith("date"):
-                    v = v.strftime(date_format)
+                    v = v.strftime(date_format)  # Assuming v is a date object
                 csv_items.append(v)
             writer.writerow(csv_items)
