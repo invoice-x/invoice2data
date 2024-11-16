@@ -5,7 +5,7 @@ from invoice2data.extract.invoice_template import InvoiceTemplate
 
 def test_template_with_exclude_keyword_is_not_matched():
     optimized_str = "Basic Test Which should not pass because of the word Exclude_this"
-    InvoiceTempl = InvoiceTemplate(
+    invoicetempl = InvoiceTemplate(
         [
             ("keywords", ["Basic Test"]),
             ("exclude_keywords", ["Exclude_this"]),
@@ -14,7 +14,7 @@ def test_template_with_exclude_keyword_is_not_matched():
             ("issuer", "Basic Test"),
         ]
     )
-    template_matched = InvoiceTemplate.matches_input(InvoiceTempl, optimized_str)
+    template_matched = InvoiceTemplate.matches_input(invoicetempl, optimized_str)
     assert template_matched is False, "A template with exclude keywords is not matched"
 
 
@@ -33,14 +33,14 @@ def test_skip_template_with_too_long_lang_code():
     tpl["options"] = OPTIONS_TEST
     tpl["template_name"] = "3_char_langcode.yml"
     try:
-        InvoiceTempl = InvoiceTemplate(tpl)
+        invoicetempl = InvoiceTemplate(tpl)
     except Exception:
         assert (
             True
         ), "Template with language code length != 2 characters is not initiated"
     else:
-        print("InvoiceTempl is\n%s" % InvoiceTempl)
-        debug = InvoiceTempl["options"]
+        print("InvoiceTempl is\n%s" % invoicetempl)
+        debug = invoicetempl["options"]
         print("debug is\n%s" % debug)
         assert False, "Template class initiated with language code length other then 2"
 
@@ -60,11 +60,11 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         tpl["exclude_keywords"] = []
         tpl["options"] = OPTIONS_TEST
         tpl["template_name"] = "replace_a_with_b"
-        InvoiceTempl = InvoiceTemplate(tpl)
+        invoicetempl = InvoiceTemplate(tpl)
         extracted_str = "a"
-        print("InvoiceTempl: \n%s" % InvoiceTempl)
+        print("InvoiceTempl: \n%s" % invoicetempl)
 
-        optimized_str = InvoiceTempl.prepare_input(extracted_str)
+        optimized_str = invoicetempl.prepare_input(extracted_str)
         print("extracted_str: \n%s" % extracted_str)
         print("optimized_str: \n%s" % optimized_str)
         self.assertEqual(optimized_str, "b")
@@ -83,11 +83,11 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         tpl["exclude_keywords"] = []
         tpl["options"] = OPTIONS_TEST
         tpl["template_name"] = "test_remove_accents"
-        InvoiceTempl = InvoiceTemplate(tpl)
+        invoicetempl = InvoiceTemplate(tpl)
         extracted_str = "é€$%^&*@!.a Málaga François Phút Hơn 中文"
-        print("InvoiceTempl: \n%s" % InvoiceTempl)
+        print("InvoiceTempl: \n%s" % invoicetempl)
 
-        optimized_str = InvoiceTempl.prepare_input(extracted_str)
+        optimized_str = invoicetempl.prepare_input(extracted_str)
         print("extracted_str: \n%s" % extracted_str)
         print("optimized_str: \n%s\n" % optimized_str)
         self.assertEqual(
@@ -110,11 +110,11 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         tpl["exclude_keywords"] = []
         tpl["options"] = OPTIONS_TEST
         tpl["template_name"] = "test_remove_whitespace"
-        InvoiceTempl = InvoiceTemplate(tpl)
+        invoicetempl = InvoiceTemplate(tpl)
         extracted_str = "a     b"
-        print("InvoiceTempl: \n%s" % InvoiceTempl)
+        print("InvoiceTempl: \n%s" % invoicetempl)
 
-        optimized_str = InvoiceTempl.prepare_input(extracted_str)
+        optimized_str = invoicetempl.prepare_input(extracted_str)
         print("extracted_str: \n%s" % extracted_str)
         print("optimized_str: \n%s\n" % optimized_str)
         self.assertEqual(optimized_str, "ab", "remove whitespace test failed")
@@ -133,11 +133,11 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         tpl["exclude_keywords"] = []
         tpl["options"] = OPTIONS_TEST
         tpl["template_name"] = "test_lowercase"
-        InvoiceTempl = InvoiceTemplate(tpl)
+        invoicetempl = InvoiceTemplate(tpl)
         extracted_str = "ABCD"
-        print("InvoiceTempl: \n%s" % InvoiceTempl)
+        print("InvoiceTempl: \n%s" % invoicetempl)
 
-        optimized_str = InvoiceTempl.prepare_input(extracted_str)
+        optimized_str = invoicetempl.prepare_input(extracted_str)
         print("extracted_str: \n%s" % extracted_str)
         print("optimized_str: \n%s\n" % optimized_str)
         self.assertEqual(optimized_str, "abcd", "Lowercase test failed")
