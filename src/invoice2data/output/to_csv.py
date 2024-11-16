@@ -3,7 +3,7 @@ import sys
 
 
 def write_to_file(data: list, path: str, date_format="%Y-%m-%d") -> None:
-    """Export extracted fields to csv
+    """Export extracted fields to csv.
 
     Appends .csv to path if missing and generates csv file in specified directory, if not then in root
 
@@ -44,7 +44,7 @@ def write_to_file(data: list, path: str, date_format="%Y-%m-%d") -> None:
         last_header = None
         for line in data:
             first_row = []
-            for k, v in line.items():
+            for k, _v in line.items():
                 first_row.append(k)
 
             if first_row != last_header:
