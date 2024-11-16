@@ -28,7 +28,8 @@ def dict_to_tags(parent, data, date_format):
 def write_to_file(data, path, date_format="%Y-%m-%d"):
     """Export extracted fields to xml
 
-    Appends .xml to path if missing and generates xml file in specified directory, if not then in root
+    Appends .xml to path if missing and generates xml file in specified directory,
+    if not then in root
 
     Parameters
     ----------
