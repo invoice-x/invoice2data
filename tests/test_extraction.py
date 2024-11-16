@@ -13,8 +13,7 @@ import datetime
 import json
 import os
 import unittest
-
-import pkg_resources
+from importlib.resources import files
 
 from invoice2data.extract.loader import read_templates
 from invoice2data.main import extract_data
@@ -36,16 +35,14 @@ class TestExtraction(unittest.TestCase):
             self._run_test_on_folder(folder)
 
     def test_internal_pdfs(self):
-        folder = pkg_resources.resource_filename(__name__, "pdfs")
+        folder = files(__package__).joinpath("pdfs")  # Use importlib.resources
         self._run_test_on_folder(folder)
 
     def test_custom_invoices(self):
         directory = os.path.dirname("tests/custom/templates/")
         templates = read_templates(directory)
 
-        for path, _subdirs, files in os.walk(
-            pkg_resources.resource_filename(__name__, "custom")
-        ):
+        for path, _subdirs, files in os.walk(files(__package__).joinpath("custom")):
             for file in files:
                 if file.endswith((".pdf", ".txt")):
                     ifile = os.path.join(path, file)
