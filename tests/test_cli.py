@@ -1,19 +1,31 @@
+# -*- coding: utf-8 -*-
+# Run: python -m unittest tests.test_cli
+
+# Or: python -m unittest discover
+
+# 1. You define your own class derived from unittest.TestCase.
+# 2. Then you fill it with functions that start with 'test_'
+# 3. You run the tests by placing unittest.main() in your file,
+#    usually at the bottom.
+
+# https://docs.python.org/3.10/library/unittest.html#test-cases
+
 import csv
 import datetime
 import json
 import os
 import shutil
+import sys
 import unittest
 from typing import Any
 from typing import Dict
 from xml.dom import minidom
 
-from invoice2data.__main__ import main  # Import main only
+import pytest
+from invoice2data.__main__ import main
 from invoice2data.extract.loader import read_templates
 
-from .common import exclude_template
-from .common import get_sample_files
-from .common import inputparser_specific
+from .common import exclude_template, get_sample_files, inputparser_specific
 
 
 def ocrmypdf_available() -> bool:
@@ -25,6 +37,10 @@ def ocrmypdf_available() -> bool:
 
 
 needs_ocrmypdf = unittest.skipIf(not ocrmypdf_available(), reason="requires ocrmypdf")
+skip_on_windows = pytest.mark.skipif(
+    sys.platform.startswith("win"),
+    reason="Tesseract executable cannot be found in Windows test environment. FIXME",
+)
 
 
 class TestCLI(unittest.TestCase):
@@ -80,10 +96,10 @@ class TestCLI(unittest.TestCase):
     # TODO: move result comparison to own test module.
     # TODO: parse output files instead of comparing them byte-by-byte.
 
-    def test_content_json(self) -> None:
+    @skip_on_windows
+    def test_content_json(self):
         """Tests the JSON output content."""
-        input_files = get_sample_files(".pdf")
-        input_files += get_sample_files(".txt")
+        input_files = get_sample_files((".pdf", ".txt"))
         tests_templ_folder = "./tests/custom/templates"
         json_files = get_sample_files(".json")
         test_files = "test_compare.json"
@@ -195,7 +211,8 @@ class TestCLI(unittest.TestCase):
                 self.assertTrue(False, "Unexpected date format")
             os.remove(test_file)
 
-    def test_copy(self) -> None:
+    @skip_on_windows
+    def test_copy(self):
         """Tests the --copy argument."""
         directory = os.path.dirname("tests/copy_test/pdf/")
         # make sure directory is deleted
@@ -279,7 +296,8 @@ class TestCLI(unittest.TestCase):
                         )
         return data
 
-    def test_copy_with_default_filename_format(self) -> None:
+    @skip_on_windows
+    def test_copy_with_default_filename_format(self):
         """Tests the --copy argument with the default filename format."""
         copy_dir = os.path.join("tests", "copy_test", "pdf")
         # make sure directory is deleted
@@ -311,7 +329,8 @@ class TestCLI(unittest.TestCase):
 
         shutil.rmtree(os.path.dirname(copy_dir), ignore_errors=True)
 
-    def test_copy_with_custom_filename_format(self) -> None:
+    @skip_on_windows
+    def test_copy_with_custom_filename_format(self):
         """Tests the --copy argument with a custom filename format."""
         copy_dir = os.path.join("tests", "copy_test", "pdf")
         filename_format = "Custom Prefix {date} {invoice_number}.pdf"
@@ -372,6 +391,7 @@ class TestCLI(unittest.TestCase):
     # Where the pdf has to be ocr'd first
     # before any keywords can be matched
 
+    @skip_on_windows
     @needs_ocrmypdf
     def test_ocrmypdf(self) -> None:
         """Tests the ocrmypdf input reader."""
@@ -403,6 +423,7 @@ class TestCLI(unittest.TestCase):
     # Test the fallback from pdf to text to ocrmypdf.
     # with ocrmypdf installed
 
+    @skip_on_windows
     @needs_ocrmypdf
     def test_fallback_with_ocrmypdf(self) -> None:
         """Tests the fallback from pdftotext to ocrmypdf."""
