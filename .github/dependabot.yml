@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      github-actions-updates:
+        applies-to: version-updates
+        dependency-type: development
+      github-actions-security-updates:
+        applies-to: security-updates
+        dependency-type: development
+  - package-ecosystem: pip
+    directory: "/.github/workflows"
+    schedule:
+      interval: weekly
+    groups:
+      workflow-updates:
+        applies-to: version-updates
+        dependency-type: development
+      workflow-security-updates:
+        applies-to: security-updates
+        dependency-type: development
+  - package-ecosystem: pip
+    directory: "/docs"
+    schedule:
+      interval: weekly
+    groups:
+      doc-updates:
+        applies-to: version-updates
+        dependency-type: development
+      doc-security-updates:
+        applies-to: security-updates
+        dependency-type: production
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+    versioning-strategy: lockfile-only
+    allow:
+      - dependency-type: "all"
+    groups:
+      pip-version-updates:
+        applies-to: version-updates
+        dependency-type: development
+      pip-security-updates:
+        applies-to: security-updates
+        dependency-type: production

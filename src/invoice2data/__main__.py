@@ -1,5 +1,7 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+"""Command-line interface."""
+
+import click
 
 import argparse
 import copy
@@ -23,6 +25,7 @@ from .output import to_csv
 from .output import to_json
 from .output import to_xml
 
+
 logger = logging.getLogger()
 
 input_mapping = {
@@ -42,6 +45,14 @@ output_mapping = {
     "none": None,
 }
 
+@click.command()
+@click.version_option()
+def main() -> None:
+    """Invoice2Data."""
+
+
+if __name__ == "__main__":
+    main(prog_name="invoice2data")  # pragma: no cover
 
 class Color:
 

@@ -24,7 +24,7 @@ except ImportError:
 import unittest
 
 import pkg_resources
-from invoice2data.main import create_parser, main
+from invoice2data.__main__ import create_parser, main
 from invoice2data.extract.loader import read_templates
 
 from .common import get_sample_files, exclude_template, inputparser_specific
