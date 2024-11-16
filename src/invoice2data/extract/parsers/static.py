@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-"""Pseudo-parser returning a static (predefined) value"""
+"""Pseudo-parser returning a static (predefined) value."""
 
 from logging import getLogger
 
