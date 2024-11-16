@@ -74,17 +74,17 @@ optional = true
 [tool.poetry.group.ocrmypdf.dependencies]
 ocrmypdf = "^16.6.1"
 
-[tool.poetry.group.pdfminer.six]
+[tool.poetry.group.pdfminer-six]
 optional = true
 
-[tool.poetry.group.pdfminer.six.dependencies]
-pdfminer.six = "20240706"
+[tool.poetry.group.pdfminer-six.dependencies]
+"pdfminer.six" = "20240706"
 
 [tool.poetry.group.pdfplumber]
 optional = true
 
 [tool.poetry.group.pdfplumber.dependencies]
-pdfminer.six = "^0.11.4"
+pdfplumber = "^0.11.4"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
