@@ -197,7 +197,6 @@ Using in-house templates
     templates = read_templates('/path/to/your/templates/')
     result = extract_data(filename, templates=templates)
 
-
 ## Template system
 
 See `invoice2data/extract/templates` for existing templates. Just extend
@@ -242,6 +241,7 @@ Example:
         last_line: VAT \*\*
 
 The lines package has multiple settings:
+
 - start > The pattern where the lines begin. This is typically the header row of the table. This row is not included in the line matching.
 - end > The pattern denoting where the lines end. Typically some text at the very end or immediately below the table. Also not included in the line matching.
 - first_line > Optional. This is the primary line item for each entry.
@@ -255,7 +255,6 @@ As an alternative json templates can be used. Which are natively better supporte
 The performance with yaml templates can be greatly increased **10x** by using [libyaml](https://github.com/yaml/libyaml)
 It can be installed on most distributions by:
 `sudo apt-get libyaml-dev`
-
 
 ## Development
 
@@ -278,10 +277,10 @@ If you are interested in improving this project, have a look at our
 
 ## Contributors and Credits
 
--   [Harshit Joshi](https://github.com/duskybomb): As Google Summer of
-    Code student.
--   [Holger Brunn](https://github.com/hbrunn): Add support for parsing
-    invoice items.
+- [Harshit Joshi](https://github.com/duskybomb): As Google Summer of
+  Code student.
+- [Holger Brunn](https://github.com/hbrunn): Add support for parsing
+  invoice items.
 
 [pypi]: https://pypi.org/
 [file an issue]: https://github.com/m3nu/invoice2data/issues
@@ -291,6 +290,7 @@ Contributions are very welcome.
 To learn more, see the [Contributor Guide].
 
 ## Used By
+
 - Odoo, OCA module [account_invoice_import_invoice2data](https://github.com/OCA/edi)
 
 ## Related Projects
