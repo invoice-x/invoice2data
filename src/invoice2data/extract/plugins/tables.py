@@ -12,7 +12,7 @@ DEFAULT_OPTIONS = {"field_separator": r"\s+", "line_separator": r"\n"}
 
 
 def extract(self, content, output):
-    """Try to extract tables from an invoice"""
+    """Try to extract tables from an invoice."""
     for i, table in enumerate(self["tables"]):
         # First apply default options.
 
