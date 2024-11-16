@@ -31,12 +31,12 @@ fields:
     - (CHIP)
     - (KAS):\s.\s\d+\.\d+
 lines:
-    start: antal
-    end: Subtotaal
-    line: '(?P<qty>\d+)(?P<product>\w+)\s+(?P<price_unit>\d{1,4}[,|.]\d{2})'
-    types:
-      qty: float
-      price_unit: float
+  start: antal
+  end: Subtotaal
+  line: '(?P<qty>\d+)(?P<product>\w+)\s+(?P<price_unit>\d{1,4}[,|.]\d{2})'
+  types:
+    qty: float
+    price_unit: float
 keywords:
   - Albron
   - EUR
@@ -44,16 +44,16 @@ keywords:
 options:
   currency: EUR
   date_formats:
-    - '%d-%m-%Y'
+    - "%d-%m-%Y"
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['é' ,'€']
-    - ['Contant' ,'CONTANT']
-    - ['\s[l|&|@]' ,' ℓ']
-    - ['B.W', 'BTW']
-    - [', ', ',']
-    - ['°', ' ']
-    - ['©', ' ']
-    - ['(\s)([0-9]+)\.([0-9]{2})(\s)', '\1\2,\3\4'] # workaround for ocr 
+    - ["é", "€"]
+    - ["Contant", "CONTANT"]
+    - ['\s[l|&|@]', " ℓ"]
+    - ["B.W", "BTW"]
+    - [", ", ","]
+    - ["°", " "]
+    - ["©", " "]
+    - ['(\s)([0-9]+)\.([0-9]{2})(\s)', '\1\2,\3\4'] # workaround for ocr

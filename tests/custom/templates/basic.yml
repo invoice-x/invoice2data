@@ -20,5 +20,5 @@ fields:
 options:
   currency: EUR
   date_formats:
-    - '%Y-%m-%d'
-  decimal_separator: '.'
+    - "%Y-%m-%d"
+  decimal_separator: "."

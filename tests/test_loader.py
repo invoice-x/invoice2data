@@ -1,12 +1,13 @@
+import os
 import shutil
+import unittest
 from pathlib import Path
 
-import os
 import pytest
-import unittest
 
 from invoice2data.extract.invoice_template import InvoiceTemplate
-from invoice2data.extract.loader import read_templates, ordered_load
+from invoice2data.extract.loader import ordered_load
+from invoice2data.extract.loader import read_templates
 
 
 @pytest.fixture

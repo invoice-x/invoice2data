@@ -1,6 +1,6 @@
 issuer: Sammy Maystone - For Lines testing
 keywords:
-  - 'Sammy Maystone'
+  - "Sammy Maystone"
 required_fields:
   - invoice_number
   - date
@@ -12,13 +12,13 @@ fields:
     parser: lines
     start: 'Item\s+Quantity\s+Rate\s+Amount'
     first_line: 'Service (?P<item>\w)'
-    line: '(?P<desc>.*)'
-    skip_line: ['Description:', "Notes:"]
-    last_line: '(?P<desc>Parts:.*)'
-    end: 'Subtotal'
+    line: "(?P<desc>.*)"
+    skip_line: ["Description:", "Notes:"]
+    last_line: "(?P<desc>Parts:.*)"
+    end: "Subtotal"
 options:
   remove_whitespace: false
   currency: USD
   languages:
     - en
-  decimal_separator: '.'
+  decimal_separator: "."

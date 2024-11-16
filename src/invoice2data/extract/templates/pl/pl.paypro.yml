@@ -2,7 +2,7 @@
 issuer: PayPro spółka akcyjna
 keywords:
   - PayPro Spółka Akcyjna
-  - 'NIP: PL779-236-98-87'
+  - "NIP: PL779-236-98-87"
 fields:
   vatin:
     parser: static
@@ -26,7 +26,7 @@ fields:
   vat_lines:
     parser: lines
     start: Wg stawek VAT\s+Kwota VAT\s+Wartość brutto\n.*
-    end: 'Razem:'
+    end: "Razem:"
     line: ^\s+(?P<vat_rate>.+)\s+(?P<net>\d+\.\d\d)\s+(?P<vat>\d+\.\d\d)\s+(?P<gross>\d+\.\d\d)$
     types:
       net: float
@@ -35,5 +35,5 @@ fields:
 options:
   currency: PLN
   date_formats:
-    - '%Y-%m-%d'
-  decimal_separator: '.'
+    - "%Y-%m-%d"
+  decimal_separator: "."

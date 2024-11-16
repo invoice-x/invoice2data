@@ -6,8 +6,8 @@ fields:
   date: Datum:(\d{2}-\d{2}-\d{4})
   invoice_number: QuittierteRechnung:(\w+)
 keywords:
-- DE245768940
+  - DE245768940
 options:
   remove_whitespace: true
   date_formats:
-    - '%d-%m-%Y'
+    - "%d-%m-%Y"

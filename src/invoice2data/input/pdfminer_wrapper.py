@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 def to_text(path):
     """Wrapper around `pdfminer.six`.
 
@@ -7,26 +6,27 @@ def to_text(path):
     path : str
         path of electronic invoice in PDF
 
-    Returns
+    Returns:
     -------
     str : str
         returns extracted text from pdf
 
     """
-
     try:
         # python 2
-        from StringIO import StringIO
         import sys
+
+        from StringIO import StringIO
 
         reload(sys)  # noqa: F821
         sys.setdefaultencoding("utf8")
     except ImportError:
         from io import StringIO
 
-    from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
     from pdfminer.converter import TextConverter
     from pdfminer.layout import LAParams
+    from pdfminer.pdfinterp import PDFPageInterpreter
+    from pdfminer.pdfinterp import PDFResourceManager
     from pdfminer.pdfpage import PDFPage
 
     rsrcmgr = PDFResourceManager()

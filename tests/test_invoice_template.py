@@ -1,4 +1,5 @@
 import unittest
+
 from invoice2data.extract.invoice_template import InvoiceTemplate
 
 

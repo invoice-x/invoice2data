@@ -22,7 +22,7 @@ fields:
     regex: Oslo
   country_code:
     parser: static
-    value: 'NO'
+    value: "NO"
   partner_zip:
     parser: regex
     regex: '([,]\s\d{4})\s\w+'
@@ -45,8 +45,8 @@ fields:
     regex: SWIFT code[:]\s+(\w{8,11})
   lines:
     parser: lines
-    start: 'Description'
-    end: 'Total'
+    start: "Description"
+    end: "Total"
     line:
       - '(?P<name>[\S ]+)\s+(?P<qty>\d+)\s+(?P<unit_price>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d+[,.]\d{2})\s+(?P<price_total>\d+[,.]\d{2})'
     types:
@@ -55,12 +55,11 @@ fields:
       line_amount_tax: float
       unit_price: float
 keywords:
-  - 'Runbox'
-  - 'Invoice'
+  - "Runbox"
+  - "Invoice"
 required_fields:
   - lines
 options:
   languages:
     - en
   currency: EUR
-

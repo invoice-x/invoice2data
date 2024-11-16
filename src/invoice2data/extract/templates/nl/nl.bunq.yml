@@ -6,21 +6,21 @@ fields:
   invoice_number: Nummer.\s+(\d{7})
   static_vat: NL851519945B01
 lines:
-    start: Bedrag
-    end: Totaal
-    last_line: '(?P<description>(\w+(?:\S|[ ]\w\w+)*))\s+(?P<qty>\d+)\s+(?P<price_unit>€\s\d+.\d{2})\s+(?P<amountcurrency>€\s\d+.\d{2})'
-    line: '^(?P<description2>\w+(?:\S|[ ]\w\w+){1})$' # te veel hits
-    first_line: '^(?P<title>(Subscription))$'
-    types:
-      qty: float
-      price_unit: float
+  start: Bedrag
+  end: Totaal
+  last_line: '(?P<description>(\w+(?:\S|[ ]\w\w+)*))\s+(?P<qty>\d+)\s+(?P<price_unit>€\s\d+.\d{2})\s+(?P<amountcurrency>€\s\d+.\d{2})'
+  line: '^(?P<description2>\w+(?:\S|[ ]\w\w+){1})$' # te veel hits
+  first_line: "^(?P<title>(Subscription))$"
+  types:
+    qty: float
+    price_unit: float
 keywords:
   - bunq
   - NL851519945B01
 options:
   date_formats:
-    - '%Y-%m-%d'
+    - "%Y-%m-%d"
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","

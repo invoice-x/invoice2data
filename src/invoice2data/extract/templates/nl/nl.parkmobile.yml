@@ -19,7 +19,7 @@ fields:
     regex: DATUM\s+(\d{1,2}-\d{2}-\d{4})
     type: date
     group: first
-  date_start: 
+  date_start:
     parser: regex
     regex: PERIODE \s+(\w+\s\d{4})
     type: date
@@ -45,4 +45,3 @@ options:
   languages:
     - nl
   decimal_separator: ','
-

@@ -1,7 +1,7 @@
 issuer: Gaz de Paris
 keywords:
-- Butagaz
-- 22 510 764 335
+  - Butagaz
+  - 22 510 764 335
 fields:
   amount_electricity: Electricité \(abonnement et consommation\)\s*(\d+,\d{2})
   amount_local_taxes: Taxes locales et contributions\s*(\d+,\d{2})
@@ -12,7 +12,7 @@ fields:
   invoice_number: <CODE_REGROUPEMENT>(\d{12})</CODE_REGROUPEMENT>
 
 options:
-  currency: 'EUR'
+  currency: "EUR"
   languages:
     - fr
-  decimal_separator: ','
+  decimal_separator: ","

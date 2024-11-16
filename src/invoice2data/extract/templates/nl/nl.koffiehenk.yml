@@ -14,7 +14,7 @@ fields:
     group: sum
   bic: BIC.(\w{8,11})
   iban: IBAN.(\w{10,30})
-  date: 
+  date:
     parser: regex
     regex: Factuurdatum[:]\s+(\d{1,2} .+[.] \d{4})
     type: date
@@ -31,12 +31,12 @@ fields:
     - (CONTANT)
     - (?i)(Paypal)
 lines:
-    start: Art.nr.
-    end: Subtotaal [(]excl. BTW[)]
-    line: (?P<barcode>\d+)\s+(?P<product>\w+.*)\s+[€]\s+(?P<price_unit>(\d+.\d{2}))\s+(?P<qty>\d+)
-    types:
-      qty: float
-      price_unit: float
+  start: Art.nr.
+  end: Subtotaal [(]excl. BTW[)]
+  line: (?P<barcode>\d+)\s+(?P<product>\w+.*)\s+[€]\s+(?P<price_unit>(\d+.\d{2}))\s+(?P<qty>\d+)
+  types:
+    qty: float
+    price_unit: float
 keywords:
   - Koffie Henk
   - NL001409338B42
@@ -45,6 +45,6 @@ options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","
   replace:
-    - ['é' ,'€']
+    - ["é", "€"]

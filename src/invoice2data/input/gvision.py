@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 def to_text(path, bucket_name="cloud-vision-84893", language="en"):
     """Sends PDF files to Google Cloud Vision for OCR.
 
@@ -12,17 +11,17 @@ def to_text(path, bucket_name="cloud-vision-84893", language="en"):
     bucket_name : str
         name of bucket to use for file storage and results cache.
 
-    Returns
+    Returns:
     -------
     extracted_str : str
         returns extracted text from image in JPG or PNG format
 
     """
-
     """OCR with PDF/TIFF as source files on GCS"""
     import os
-    from google.cloud import vision
+
     from google.cloud import storage
+    from google.cloud import vision
     from google.protobuf import json_format
 
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
@@ -31,8 +30,8 @@ def to_text(path, bucket_name="cloud-vision-84893", language="en"):
     path_dir, filename = os.path.split(path)
     result_blob_basename = filename.replace(".pdf", "").replace(".PDF", "")
     result_blob_name = result_blob_basename + "/output-1-to-1.json"
-    result_blob_uri = "gs://{}/{}/".format(bucket_name, result_blob_basename)
-    input_blob_uri = "gs://{}/{}".format(bucket_name, filename)
+    result_blob_uri = f"gs://{bucket_name}/{result_blob_basename}/"
+    input_blob_uri = f"gs://{bucket_name}/{filename}"
 
     # Upload file to gcloud if it doesn't exist yet
     storage_client = storage.Client()
@@ -45,7 +44,6 @@ def to_text(path, bucket_name="cloud-vision-84893", language="en"):
     # TODO: upload as hash, not filename
     result_blob = bucket.get_blob(result_blob_name)
     if result_blob is None:
-
         # How many pages should be grouped into each json output file.
         batch_size = 10
 

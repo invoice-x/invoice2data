@@ -1,20 +1,26 @@
-"""
-This module abstracts templates for invoice providers.
+"""This module abstracts templates for invoice providers.
 
 Templates are initially read from .yml files and then kept as class.
 """
 
 import re
-import dateparser
 import unicodedata
+from collections import OrderedDict
 from logging import getLogger
 from pprint import pformat
-from collections import OrderedDict
-from . import parsers
-from .plugins import lines, tables
-# Area extraction is currently added for pdftotext, ocrmypdf and tesseract (which uses pdftotext)
-from ..input import pdftotext, ocrmypdf, tesseract
 from typing import Optional
+
+import dateparser
+
+from ..input import ocrmypdf
+
+# Area extraction is currently added for pdftotext, ocrmypdf and tesseract (which uses pdftotext)
+from ..input import pdftotext
+from ..input import tesseract
+from . import parsers
+from .plugins import lines
+from .plugins import tables
+
 
 logger = getLogger(__name__)
 
@@ -29,16 +35,19 @@ OPTIONS_DEFAULT = {
     "replace": [],  # example: see templates/fr/fr.free.mobile.yml
 }
 
-PARSERS_MAPPING = {"lines": parsers.lines, "regex": parsers.regex, "static": parsers.static}
+PARSERS_MAPPING = {
+    "lines": parsers.lines,
+    "regex": parsers.regex,
+    "static": parsers.static,
+}
 
 PLUGIN_MAPPING = {"lines": lines, "tables": tables}
 
 
 class InvoiceTemplate(OrderedDict):
-    """
-    Represents single template files that live as .yml files on the disk.
+    """Represents single template files that live as .yml files on the disk.
 
-    Methods
+    Methods:
     -------
     prepare_input(extracted_str)
         Input raw string and do transformations, as set in template file.
@@ -74,10 +83,7 @@ class InvoiceTemplate(OrderedDict):
             self["issuer"] = self["keywords"][0]
 
     def prepare_input(self, extracted_str: str) -> str:
-        """
-        Input raw string and do transformations, as set in template file.
-        """
-
+        """Input raw string and do transformations, as set in template file."""
         # Remove whitespace
         if self.options["remove_whitespace"]:
             optimized_str = re.sub(" +", "", extracted_str)
@@ -86,7 +92,9 @@ class InvoiceTemplate(OrderedDict):
 
         # Remove accents
         if self.options["remove_accents"]:
-            optimized_str = re.sub('[\u0300-\u0362]', '', unicodedata.normalize('NFKD', optimized_str))
+            optimized_str = re.sub(
+                "[\u0300-\u0362]", "", unicodedata.normalize("NFKD", optimized_str)
+            )
 
         # Convert to lower case
         if self.options["lowercase"]:
@@ -111,20 +119,33 @@ class InvoiceTemplate(OrderedDict):
         Return:
         Boolean
             - True if all keywords are found and none of the exclude_keywords are found.
-            - False if either not all keywords are found or at least one exclude_keyword is found."""
-
+            - False if either not all keywords are found or at least one exclude_keyword is found.
+        """
         if all([re.search(keyword, extracted_str) for keyword in self["keywords"]]):
             # All keyword patterns matched
             if self["exclude_keywords"]:
-                if any([re.search(exclude_keyword, extracted_str) for exclude_keyword in self["exclude_keywords"]]):
+                if any(
+                    [
+                        re.search(exclude_keyword, extracted_str)
+                        for exclude_keyword in self["exclude_keywords"]
+                    ]
+                ):
                     # At least one exclude_keyword matches
-                    logger.debug("Template: %s | Keywords matched. Exclude keyword found!", self["template_name"])
+                    logger.debug(
+                        "Template: %s | Keywords matched. Exclude keyword found!",
+                        self["template_name"],
+                    )
                     return False
             # No exclude_keywords or none match, template is good
-            logger.debug("Template: %s | Keywords matched. No exclude keywords found.", self["template_name"])
+            logger.debug(
+                "Template: %s | Keywords matched. No exclude keywords found.",
+                self["template_name"],
+            )
             return True
         else:
-            logger.debug("Template: %s | Failed to match all keywords.", self["template_name"])
+            logger.debug(
+                "Template: %s | Failed to match all keywords.", self["template_name"]
+            )
             return False
 
     def parse_number(self, value):
@@ -162,9 +183,10 @@ class InvoiceTemplate(OrderedDict):
             return self.parse_date(value)
         assert False, "Unknown type"
 
-    def extract(self, optimized_str: str, invoice_file: str, input_module: str) -> Optional[dict]:
-        """
-        Given a template file and a string, extract matching data fields.
+    def extract(
+        self, optimized_str: str, invoice_file: str, input_module: str
+    ) -> Optional[dict]:
+        """Given a template file and a string, extract matching data fields.
 
         Args:
         optimized_str: String of the full text from pdf with template options applied.
@@ -207,10 +229,15 @@ class InvoiceTemplate(OrderedDict):
                     logger.debug(f"Area was specified with parameters {v['area']}")
                     # Extract the text for the specified area
                     # Do NOT overwrite optimized_str. We're inside a loop and it will affect all other fields!
-                    optimized_str_area = input_module.to_text(invoice_file, v['area'])
+                    optimized_str_area = input_module.to_text(invoice_file, v["area"])
                     # Log the text
-                    logger.debug("START pdftotext area result ===========================\n%s", optimized_str_area)
-                    logger.debug("END pdftotext area result =============================")
+                    logger.debug(
+                        "START pdftotext area result ===========================\n%s",
+                        optimized_str_area,
+                    )
+                    logger.debug(
+                        "END pdftotext area result ============================="
+                    )
                     optimized_str_for_parser = optimized_str_area
                 else:
                     # No area specified
@@ -224,9 +251,15 @@ class InvoiceTemplate(OrderedDict):
                         if value or value == 0.0:
                             output[k] = value
                         else:
-                            logger.warning("Failed to parse field %s with parser %s", k, v["parser"])
+                            logger.warning(
+                                "Failed to parse field %s with parser %s",
+                                k,
+                                v["parser"],
+                            )
                     else:
-                        logger.error("Field %s has unknown parser %s set", k, v["parser"])
+                        logger.error(
+                            "Field %s has unknown parser %s set", k, v["parser"]
+                        )
                 else:
                     logger.error("Field %s doesn't have parser specified", k)
             elif k.startswith("static_"):
@@ -237,14 +270,25 @@ class InvoiceTemplate(OrderedDict):
                 result = None
                 if k.startswith("sum_amount") and type(v) is list:
                     k = k[4:]
-                    result = parsers.regex.parse(self, k, {"regex": v, "type": "float", "group": "sum"}, optimized_str,
-                                                 True)
+                    result = parsers.regex.parse(
+                        self,
+                        k,
+                        {"regex": v, "type": "float", "group": "sum"},
+                        optimized_str,
+                        True,
+                    )
                 elif k.startswith("date") or k.endswith("date"):
-                    result = parsers.regex.parse(self, k, {"regex": v, "type": "date"}, optimized_str, True)
+                    result = parsers.regex.parse(
+                        self, k, {"regex": v, "type": "date"}, optimized_str, True
+                    )
                 elif k.startswith("amount"):
-                    result = parsers.regex.parse(self, k, {"regex": v, "type": "float"}, optimized_str, True)
+                    result = parsers.regex.parse(
+                        self, k, {"regex": v, "type": "float"}, optimized_str, True
+                    )
                 else:
-                    result = parsers.regex.parse(self, k, {"regex": v}, optimized_str, True)
+                    result = parsers.regex.parse(
+                        self, k, {"regex": v}, optimized_str, True
+                    )
 
                 if result or result == 0.0:
                     output[k] = result
@@ -275,11 +319,9 @@ class InvoiceTemplate(OrderedDict):
             fields = list(set(output.keys()))
             logger.error(
                 "Unable to match all required fields. "
-                "The required fields are: {0}. "
-                "Output contains the following fields: {1}.".format(
-                    required_fields, fields
-                )
+                f"The required fields are: {required_fields}. "
+                f"Output contains the following fields: {fields}."
             )
             missing = set(required_fields) - set(fields)
-            raise ValueError("Unable to parse required field(s): {0}".format(missing))
+            raise ValueError(f"Unable to parse required field(s): {missing}")
             return None

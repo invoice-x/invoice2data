@@ -4,7 +4,7 @@ fields:
   amount_untaxed: Total\s+HT\s+([\d ]+,\d{2})
   date: Date\s+:\s+(\d+\s+.+\s+\d{4})
   invoice_number: FACTURE\s+N°\s+(\w+)
-  static_vat: 'FR69803518919'
+  static_vat: "FR69803518919"
 keywords:
   - FR69803518919
   - PRESTACLIC
@@ -13,5 +13,5 @@ keywords:
 options:
   currency: EUR
   date_formats:
-    - '%d %b %Y'
-  decimal_separator: ','
+    - "%d %b %Y"
+  decimal_separator: ","

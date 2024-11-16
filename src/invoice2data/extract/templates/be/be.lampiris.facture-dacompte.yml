@@ -8,18 +8,18 @@ fields:
   invoice_number: 'Reference\s+facture\s+:\s+(E\d{2}\/\d+)'
   ean: 'Code\sEAN\selectricite\s+Gestionnaire\sreseau\selectricite\s+(\d{8,})\s'
 keywords:
-- Lampiris
-- Facture
-- acompte
-- BE 0859 655 570
-- BE38 0015 0942 4272
+  - Lampiris
+  - Facture
+  - acompte
+  - BE 0859 655 570
+  - BE38 0015 0942 4272
 options:
   currency: EUR
   remove_whitespace: false
   remove_accents: true
   lowercase: false
-  decimal_separator: ','
+  decimal_separator: ","
   date_formats:
-    - '%d/%m/%Y'
+    - "%d/%m/%Y"
   languages:
     - fr

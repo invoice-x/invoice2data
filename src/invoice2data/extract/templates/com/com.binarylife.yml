@@ -14,9 +14,9 @@ keywords:
 options:
   currency: USD
   date_formats:
-    - '%d %B %Y'
+    - "%d %B %Y"
   languages:
     - en
   replace:
-    - ['t h', 'th']
-  decimal_separator: '.'
+    - ["t h", "th"]
+  decimal_separator: "."

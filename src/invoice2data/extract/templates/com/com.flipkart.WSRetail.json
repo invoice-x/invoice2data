@@ -6,11 +6,7 @@
     "invoice_number": "InvoiceNo:(\\S+)",
     "order_id": "OrderID:(\\w{2}\\d{16,18})"
   },
-  "keywords": [
-    "flipkart",
-    "WS\\s?Retail",
-    "OD"
-  ],
+  "keywords": ["flipkart", "WS\\s?Retail", "OD"],
   "options": {
     "currency": "INR",
     "remove_whitespace": true

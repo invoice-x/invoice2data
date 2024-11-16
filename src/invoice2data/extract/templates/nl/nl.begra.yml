@@ -40,20 +40,20 @@ fields:
     parser: regex
     regex: Ordernr[.]\s+(\w+)
 lines:
-    start: Product
-    end: Totaal[:]
-    first_line: (?P<code>\S{8,12})\s+(?P<name>(\w+(?:\s\S+){1,2}))\s+(?P<qty>\d+)Stuks\s+(?P<price_unit>\d+[,]\d{2})\s+(?P<price_subtotal>\d+[,]\d{2})
-    line: '(?P<name>(\w+(?:\s\S+){1,2}))'
-    types:
-      qty: float
-      price_unit: float
-      price_subtotal: float
+  start: Product
+  end: Totaal[:]
+  first_line: (?P<code>\S{8,12})\s+(?P<name>(\w+(?:\s\S+){1,2}))\s+(?P<qty>\d+)Stuks\s+(?P<price_unit>\d+[,]\d{2})\s+(?P<price_subtotal>\d+[,]\d{2})
+  line: '(?P<name>(\w+(?:\s\S+){1,2}))'
+  types:
+    qty: float
+    price_unit: float
+    price_subtotal: float
 keywords:
   - Begra
-  - 'Factuur'
+  - "Factuur"
   - NL818038524B01
 options:
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
+  decimal_separator: ","

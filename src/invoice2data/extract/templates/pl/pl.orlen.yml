@@ -2,7 +2,7 @@
 issuer: Polski Koncern Naftowy ORLEN spółka akcyjna
 keywords:
   - Polski Koncern Naftowy ORLEN S.A.
-  - '774-00-01-454'
+  - "774-00-01-454"
 fields:
   date: Data wystawienia:\s+(\d{4}-\d{2}-\d{2})
   invoice_number: Faktura nr:\s+([\dA-Z/]+)
@@ -23,5 +23,5 @@ fields:
 options:
   currency: PLN
   date_formats:
-    - '%Y-%m-%d'
-  decimal_separator: ','
+    - "%Y-%m-%d"
+  decimal_separator: ","

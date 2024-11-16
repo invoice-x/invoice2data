@@ -8,9 +8,9 @@ fields:
     - Invoicenumber(\d+)
     - InvoiceId(\d+)
 keywords:
-- 9803175Q
-- Twitter
-- USD
+  - 9803175Q
+  - Twitter
+  - USD
 options:
   remove_whitespace: true
   currency: USD

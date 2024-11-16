@@ -7,9 +7,9 @@ fields:
   amount_tax: 'Total\sTVA.*%\s+(.*,\d+)'
   supplier_numtva: '.*APE.*.\sTVA:\s(\w+\d+)\s+'
 tables:
-#  - start: Hotel Details\s+Check In\s+Check Out\s+Rooms
-#    end: Booking ID
-#    body: (?P<hotel_details>[\S ]+),\s+(?P<date_check_in>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<date_check_out>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<amount_rooms>\d+)
+  #  - start: Hotel Details\s+Check In\s+Check Out\s+Rooms
+  #    end: Booking ID
+  #    body: (?P<hotel_details>[\S ]+),\s+(?P<date_check_in>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<date_check_out>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<amount_rooms>\d+)
   # example line:
   #                                   Émetteur:                                                                                  Adressé à:
   #
@@ -23,22 +23,22 @@ tables:
   #                                   Web: cap-rel.fr
   # note:
   - start: '\s+Emetteur:\s+Adresse\s+a:\s+'
-    end: 'Tel'
+    end: "Tel"
     body: '(?P<supplier_name>[\S ]+?)\s{4,}(?P<customer_name>[\S ]+)'
 #    body: '(?P<supplier_addr>[\w ]+)\s{4,}(?P<customer_addr>[\w ]+)'
 #  line: '(?P<supplier_postalcode>\d+)\s+(?P<supplier_city>\w+)\s{4,}(?P<customer_postalcode>\d+)\s+(?P<customer_city>\w+)'
 #  line: '.*Désignation.*'
 keywords:
   - Powered by TCPDF
-  - '520339938'
+  - "520339938"
 options:
   remove_accents: true
   currency: EUR
   date_formats:
-    - '%d/%m/%Y'
+    - "%d/%m/%Y"
   languages:
     - fr
-  decimal_separator: ','
+  decimal_separator: ","
 required_fields:
   - date
   - amount

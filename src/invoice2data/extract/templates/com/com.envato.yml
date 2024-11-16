@@ -6,4 +6,4 @@ fields:
   invoice_number: Invoice No. (\d+)
   partner_name: (Envato)
 keywords:
-- Envato
+  - Envato

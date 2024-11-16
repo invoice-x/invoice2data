@@ -1,5 +1,4 @@
-"""
-Interface for extraction plugins.
+"""Interface for extraction plugins.
 
 Plugins are used for extracting more complex data and should be used
 only if they can't fit parsers design. They can't be used in the

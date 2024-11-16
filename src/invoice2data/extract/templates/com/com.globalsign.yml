@@ -4,9 +4,9 @@ fields:
   date: InvoiceDate:(\d{1,2}/\d{1,2}/\d{4})
   invoice_number: InvoiceNo:(\w{2}\d+)
 keywords:
-- accounting-apac@globalsign.com
+  - accounting-apac@globalsign.com
 options:
   remove_whitespace: true
   currency: HKD
   date_formats:
-    - '%d/%m/%Y'
+    - "%d/%m/%Y"

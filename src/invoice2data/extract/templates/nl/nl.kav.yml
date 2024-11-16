@@ -6,22 +6,21 @@ fields:
   invoice_number: Factuur[:]\s+(\d+)
   static_vat: NL008074720B01
 lines:
-    start: Totaal[(]
-    end: Subtotaal
-    line: (?P<product>(\w+(?:\s\S+)*))\s+(?P<qty>(\d{0,4}))\w?\s+[€]\s+(?P<price_unit>\d+.\d{2})\s+[€]\s+(?P<unittotal>\d+.\d{2})?\s+[€]\s+(?P<line_total>(\d+.\d{2}))
-    types:
-      qty: float
-      price_unit: float
-      unittotal: float
-      line_total: float
+  start: Totaal[(]
+  end: Subtotaal
+  line: (?P<product>(\w+(?:\s\S+)*))\s+(?P<qty>(\d{0,4}))\w?\s+[€]\s+(?P<price_unit>\d+.\d{2})\s+[€]\s+(?P<unittotal>\d+.\d{2})?\s+[€]\s+(?P<line_total>(\d+.\d{2}))
+  types:
+    qty: float
+    price_unit: float
+    unittotal: float
+    line_total: float
 keywords:
   - KAV Den Bosch
   - vestiging
 options:
   date_formats:
-    - '%d %m %Y'
+    - "%d %m %Y"
   currency: EUR
   languages:
     - nl
-  decimal_separator: ','
-
+  decimal_separator: ","
