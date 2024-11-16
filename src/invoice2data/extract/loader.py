@@ -26,8 +26,8 @@ from .invoice_template import InvoiceTemplate
 logger = getLogger(__name__)
 
 
-def ordered_load(stream, Loader=json.loads):
-    """Loads a stream of json data"""
+def ordered_load(stream, loader=json.loads):
+    """Loads a stream of json data."""
     output = []
 
     try:
