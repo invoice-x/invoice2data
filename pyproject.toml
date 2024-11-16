@@ -78,7 +78,7 @@ ocrmypdf = "^16.6.1"
 optional = true
 
 [tool.poetry.group.pdfminer.dependencies]
-pdfminer-six = "20240706"
+pdfminer-six = "^20240706"
 
 [tool.poetry.group.pdfplumber]
 optional = true
