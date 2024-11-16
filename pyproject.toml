@@ -1,8 +1,6 @@
 [tool.poetry]
 name = "invoice2data"
-authors = [
-    {name = "Manuel Riel"},
-]
+authors = ["Manuel Riel"]
 description = "Python parser to extract data from pdf invoice"
 version = "0.4.5"
 keywords = ["python", "data-mining", "accounting", "invoice", "pdf", "parcing"]
