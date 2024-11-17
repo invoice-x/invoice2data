@@ -2,7 +2,9 @@
 
 import datetime
 import xml.etree.ElementTree as ET
+import logging
 
+logger = logging.getLogger(__name__)
 
 def defusedxml():
     try:
