@@ -1,7 +1,19 @@
+"""Google Cloud Vision input module for invoice2data."""
+
+import logging
 import os
 
-from google.cloud import storage
-from google.cloud import vision
+
+logger = logging.getLogger(__name__)
+
+
+def have_google_cloud():
+    try:
+        from google.cloud import storage  # noqa: F401
+        from google.cloud import vision  # noqa: F401
+    except ImportError:
+        return False
+    return True
 
 
 def to_text(
@@ -21,6 +33,12 @@ def to_text(
     Returns:
         str: Extracted text from the image in JPG or PNG format.
     """
+    if not have_google_cloud():
+        logger.warning(
+            "Google Cloud Vision API not available. "
+            "Install with 'pip install google-cloud-vision' to enable."
+        )
+        return ""
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
     mime_type = "application/pdf"
 
