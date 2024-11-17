@@ -3,7 +3,13 @@
 import datetime
 import xml.etree.ElementTree as ET
 
-from defusedxml import minidom
+
+def defusedxml():
+    try:
+        from defusedxml import minidom
+    except ImportError:
+        return False
+    return True
 
 
 def prettify(elem):
@@ -15,6 +21,12 @@ def prettify(elem):
     Returns:
         str: A pretty-printed XML string.
     """
+    if not defusedxml():
+        logger.warning(
+            "defusedxml library is not available. "
+            "Install with 'pip install defusedxml' to enable."
+        )
+        return ""
     rough_string = ET.tostring(elem, "utf-8")
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")

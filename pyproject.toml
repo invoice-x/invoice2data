@@ -99,6 +99,11 @@ optional = true
 [tool.poetry.group.pdfplumber.dependencies]
 pdfplumber = "^0.11.3"
 
+[tool.poetry.group.defusedxml]
+optional = true
+
+[tool.poetry.group.defusedxml.dependencies]
+defusedxml = "^0.7.1"
 
 [tool.flake8]
 ignore = ["E231", "E241", "E203"]
