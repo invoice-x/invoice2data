@@ -125,11 +125,16 @@ def prepare_template(tpl):
     tpl["keywords"] = (
         [tpl["keywords"]] if not isinstance(tpl["keywords"], list) else tpl["keywords"]
     )
-    tpl["exclude_keywords"] = (
-        [tpl["exclude_keywords"]]
-        if not isinstance(tpl["exclude_keywords"], list)
-        else tpl["exclude_keywords"]
-    )
+
+    # Safely handle missing 'exclude_keywords'
+    if "exclude_keywords" in tpl:
+        tpl["exclude_keywords"] = (
+            [tpl["exclude_keywords"]]
+            if not isinstance(tpl["exclude_keywords"], list)
+            else tpl["exclude_keywords"]
+        )
+    else:
+        tpl["exclude_keywords"] = []  # Set to empty list if not present
 
     # Set priority if not provided
     tpl.setdefault("priority", 5)
