@@ -1,49 +1,57 @@
 """XML output module for invoice2data."""
 
 import datetime
-import xml.etree.ElementTree as ET
-import logging
-
-logger = logging.getLogger(__name__)
-
-def defusedxml():
-    try:
-        from defusedxml import minidom
-    except ImportError:
-        return False
-    return True
+import importlib.util
+from typing import Any
+from typing import Dict
+from typing import List
+from xml.etree import ElementTree
 
 
-def prettify(elem):
+def defusedxml_available() -> bool:
+    """Checks if the defusedxml module is available.
+
+    Returns:
+        bool: True if defusedxml is available, False otherwise.
+    """
+    return importlib.util.find_spec("defusedxml") is not None
+
+
+def prettify(elem: ElementTree.Element) -> str:
     """Return a pretty-printed XML string for the Element.
 
     Args:
-        elem: The Element to be pretty-printed.
+        elem (ElementTree.Element): The Element to be pretty-printed.
 
     Returns:
         str: A pretty-printed XML string.
     """
-    if not defusedxml():
-        logger.warning(
-            "defusedxml library is not available. "
-            "Install with 'pip install defusedxml' to enable."
-        )
-        return ""
-    rough_string = ET.tostring(elem, "utf-8")
-    reparsed = minidom.parseString(rough_string)
+    if defusedxml_available():
+        from defusedxml import minidom
+    else:
+        from xml.dom import minidom
+
+    rough_string = ElementTree.tostring(elem, "utf-8")
+    reparsed = minidom.parseString(rough_string)  # noqa S318
     return reparsed.toprettyxml(indent="  ")
 
 
-def dict_to_tags(parent, data, date_format):
+def dict_to_tags(
+    parent: ElementTree.Element, data: Dict[str, Any], date_format: str
+) -> None:
     """Convert a dictionary to XML tags.
 
+    This function iterates through the dictionary and creates XML tags
+    for each key-value pair. It handles different data types and formats
+    dates according to the specified format.
+
     Args:
-        parent: The parent element.
-        data: The dictionary to be converted.
-        date_format: The date format to use.
+        parent (ElementTree.Element): The parent element.
+        data (Dict[str, Any]): The dictionary to be converted.
+        date_format (str): The date format to use.
     """
     for k, v in data.items():
-        tag = ET.SubElement(parent, k)
+        tag = ElementTree.SubElement(parent, k)
         if isinstance(v, str):
             tag.text = v
         elif isinstance(v, (int, float)):
@@ -52,24 +60,24 @@ def dict_to_tags(parent, data, date_format):
             tag.text = v.strftime(date_format)
         elif isinstance(v, list):
             for e in v:
-                item = ET.SubElement(tag, "item")
+                item = ElementTree.SubElement(tag, "item")
                 dict_to_tags(item, e, date_format)
 
 
-def write_to_file(data, path, date_format="%Y-%m-%d"):
+def write_to_file(data: List[Dict], path: str, date_format: str = "%Y-%m-%d") -> None:
     """Export extracted fields to xml.
 
     Appends .xml to path if missing and generates xml file in specified directory,
     if not then in root.
 
     Args:
-        data (dict): Dictionary of extracted fields.
-        path (str): Directory to save generated xml file.
+        data (List[Dict]): List of dictionaries containing extracted fields.
+        path (str): Path to save the generated XML file.
         date_format (str, optional): Date format used in generated file.
             Defaults to "%Y-%m-%d".
 
     Notes:
-        Do give file name to the function parameter path.
+        Provide a filename to the `path` parameter.
 
     Examples:
         >>> from invoice2data.output import to_xml
@@ -81,10 +89,10 @@ def write_to_file(data, path, date_format="%Y-%m-%d"):
     else:
         filename = path
 
-    tag_data = ET.Element("data")
+    tag_data = ElementTree.Element("data")
     with open(filename, "w") as xml_file:
         for i, line in enumerate(data):
-            tag_item = ET.SubElement(tag_data, "item")
+            tag_item = ElementTree.SubElement(tag_data, "item")
             tag_item.set("id", str(i + 1))
             dict_to_tags(tag_item, line, date_format)
 
