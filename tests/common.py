@@ -2,7 +2,6 @@
 
 import logging
 import os
-from importlib.resources import files
 
 
 # Reduce log level of various modules
@@ -21,11 +20,13 @@ def get_sample_files(extension: str, exclude_input_specific: bool = True) -> lis
         list: A list of file paths matching the specified criteria.
     """
     compare_files = []
-    for file in os.listdir(files(__package__).joinpath("compare")):
-        if exclude_input_specific and inputparser_specific(file):
-            continue
-        if file.endswith(extension):
-            compare_files.append(str(files(__package__).joinpath("compare", file)))
+    compare_folder = os.path.dirname("./tests/compare")
+    for path, _subdirs, files in os.walk(compare_folder):
+        for file in files:
+            if exclude_input_specific and inputparser_specific(file):
+                continue
+            if file.endswith(extension):
+                compare_files.append(os.path.join(path, file))
     return compare_files
 
 
