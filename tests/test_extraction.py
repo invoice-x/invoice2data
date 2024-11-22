@@ -15,8 +15,8 @@ import os
 import unittest
 from importlib.resources import files
 
+from invoice2data.__main__ import extract_data
 from invoice2data.extract.loader import read_templates
-from invoice2data.main import extract_data
 
 
 class TestExtraction(unittest.TestCase):
@@ -24,10 +24,10 @@ class TestExtraction(unittest.TestCase):
         self.templates = read_templates()
 
     def _run_test_on_folder(self, folder):
-        for path, subdirs, files in os.walk(folder):
-            for file in files:
-                res = extract_data(os.path.join(path, file), self.templates)
-                print(file, res)
+        for path, _subdirs, file in os.walk(folder):
+            for f in file:
+                res = extract_data(os.path.join(path, f), self.templates)
+                print(f, res)
 
     def test_external_pdfs(self):
         folder = os.getenv("EXTERNAL_PDFS", None)
@@ -42,11 +42,12 @@ class TestExtraction(unittest.TestCase):
         directory = os.path.dirname("tests/custom/templates/")
         templates = read_templates(directory)
 
-        for path, _subdirs, files in os.walk(files(__package__).joinpath("custom")):
-            for file in files:
-                if file.endswith((".pdf", ".txt")):
-                    ifile = os.path.join(path, file)
-                    jfile = os.path.join(path, file[:-4] + ".json")
+        custom_folder = os.path.dirname("tests/custom/")
+        for path, _subdirs, file in os.walk(custom_folder):
+            for f in file:
+                if f.endswith((".pdf", ".txt")):
+                    ifile = os.path.join(path, f)
+                    jfile = os.path.join(path, f[:-4] + ".json")
 
                     res = extract_data(ifile, templates)
                     for key, value in res.items():
