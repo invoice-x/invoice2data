@@ -39,7 +39,7 @@ click = ">=8.0.1"
 dateparser ="^1.2.0"
 PyYAML = {version = "^6.0", extras = ["libyaml"], python = ">=3.11"}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 Pygments = ">=2.10.0"
 coverage = { extras = ["toml"], version = ">=7.6" }
 cffi = ">=1.17.0"
@@ -103,7 +103,7 @@ pdfplumber = "^0.11.3"
 optional = true
 
 [tool.poetry.group.defusedxml.dependencies]
-defusedxml = "^0.7.1"
+defusedxml = "^0.7.0"
 
 [tool.flake8]
 ignore = ["E231", "E241", "E203"]
@@ -217,8 +217,8 @@ convention = "google"
 
 [tool.pydoclint]
 style = 'google'
-exclude = '\.git|\.nox'
-arg-type-hints-in-docstring = false
+exclude = '\.git|\.nox|tests*|noxfile.py'
+arg-type-hints-in-docstring = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
