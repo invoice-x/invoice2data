@@ -154,7 +154,20 @@ def mypy(session: Session) -> None:
 def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
-    session.install("coverage[toml]", "pytest", "pygments")
+    session.install(
+        "coverage[toml]",
+        "pytest",
+        "pygments",
+        "dateparser",
+        "pyyaml",
+        "pdfminer.six",
+        "pdfplumber",
+        "defusedxml",
+        "ghostscript",
+        "google-cloud-storage",
+        "google-cloud-vision",
+        # "ocrmypdf",
+    )
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
