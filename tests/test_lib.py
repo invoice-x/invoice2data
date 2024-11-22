@@ -129,15 +129,15 @@ class TestLIB(unittest.TestCase):
             else:
                 self.assertTrue(True)
 
-    def test_have_ocrmypdf_unavailable(self):
+    def test_ocrmypdf_available_unavailable(self):
         with mock.patch.dict("sys.modules", {"ocrmypdf": None}):
-            have = ocrmypdf.have_ocrmypdf()
+            have = ocrmypdf.ocrmypdf_available()
             print("ocrmypdf should not be available have is %s" % have)
             self.assertFalse(have, "ocrmypdf is NOT installed")
 
     def test_haveocrmypdf_available(self):
         with mock.patch.dict("sys.modules", {"ocrmypdf": True}):
-            have = ocrmypdf.have_ocrmypdf()
+            have = ocrmypdf.ocrmypdf_available()
             print("ocrmypdf should be available have is %s" % have)
             self.assertTrue(have, "ocrmypdf is installed")
 
