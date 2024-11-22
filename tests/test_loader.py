@@ -61,7 +61,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(
             cm.output,
             [
-                "WARNING:invoice2data.extract.loader:json Loader Failed to load template stream\nExpecting value: line"
+                "WARNING:invoice2data.extract.loader:JSON Loader Failed to load template stream\nExpecting value: line"
                 " 1 column 1 (char 0)"
             ],
         )
