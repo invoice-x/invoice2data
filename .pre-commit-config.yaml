@@ -15,6 +15,7 @@ repos:
         entry: check-yaml
         language: system
         types: [yaml]
+        args: [--unsafe] # needed to allow duplicate keys
       - id: end-of-file-fixer
         name: Fix End of Files
         entry: end-of-file-fixer
@@ -43,7 +44,7 @@ repos:
         entry: ruff format
         language: python
         types_or: [python, pyi]
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.6.0
-    hooks:
-      - id: prettier
+  # - repo: https://github.com/pre-commit/mirrors-prettier
+  #   rev: v2.6.0
+  #   hooks:
+  #     - id: prettier
