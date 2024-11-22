@@ -8,7 +8,7 @@ import unicodedata
 from collections import OrderedDict
 from logging import getLogger
 from pprint import pformat
-from typing import Optional
+from typing import Any
 
 import dateparser
 
@@ -48,23 +48,23 @@ class InvoiceTemplate(OrderedDict):
     """Represents single template files that live as .yml files on the disk.
 
     Methods:
-    -------
-    prepare_input(extracted_str)
-        Input raw string and do transformations, as set in template file.
-    matches_input(extracted_str)
-        See if string matches keywords set in template file
-    parse_number(value)
-        Parse number, remove decimal separator and add other options
-    parse_date(value)
-        Parses date and returns date after parsing
-    coerce_type(value, target_type)
-        change type of values
-    extract(optimized_str)
-        Given a template file and a string, extract matching data fields.
+      prepare_input(extracted_str)
+          Input raw string
+          and perform transformations, as set in the template file.
+      matches_input(extracted_str)
+          Check if the string matches keywords set in the template file.
+      parse_number(value)
+          Parse number, remove decimal separator and add other options.
+      parse_date(value)
+          Parse date and return the date after parsing.
+      coerce_type(value, target_type)
+          Change the type of values.
+      extract(optimized_str)
+          Given a template file and a string, extract matching data fields.
     """
 
     def __init__(self, *args, **kwargs):
-        super(InvoiceTemplate, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  # Use super() without arguments
 
         # Merge template-specific options with defaults
         self.options = OPTIONS_DEFAULT.copy()
@@ -73,10 +73,11 @@ class InvoiceTemplate(OrderedDict):
             self.options.update(self["options"])
 
         for lang in self.options["languages"]:
-            assert len(lang) == 2, (
-                "Error in Template %s lang code must have 2 letters"
-                % self["template_name"]
-            )
+            if len(lang) != 2:
+                raise AssertionError(  # Raise AssertionError directly
+                    "Error in Template %s lang code must have 2 letters"
+                    % self["template_name"]
+                )
 
         # Set issuer, if it doesn't exist.
         if "issuer" not in self.keys():
@@ -111,15 +112,14 @@ class InvoiceTemplate(OrderedDict):
         return optimized_str
 
     def matches_input(self, extracted_str: str) -> bool:
-        """See if string matches all keyword patterns and no exclude_keyword patterns set in template file.
+        """Check if the extracted string matches the template keywords.
 
         Args:
-        extracted_str: String of the text from OCR of the pdf before applying options defined in the template.
+            extracted_str (str): The extracted text from the invoice.
 
-        Return:
-        Boolean
-            - True if all keywords are found and none of the exclude_keywords are found.
-            - False if either not all keywords are found or at least one exclude_keyword is found.
+        Returns:
+            bool: True if the extracted string matches the template keywords,
+                  False otherwise.
         """
         if all([re.search(keyword, extracted_str) for keyword in self["keywords"]]):
             # All keyword patterns matched
@@ -148,20 +148,42 @@ class InvoiceTemplate(OrderedDict):
             )
             return False
 
-    def parse_number(self, value):
+    def parse_number(self, value: str) -> float:
+        """Parses a number from a string.
+
+        This function parses a numerical value from a string, handling
+        different decimal separators and thousands separators based on locale.
+
+        Args:
+            value (str): The string containing the number to be parsed.
+
+        Returns:
+            float: The parsed numerical value.
+        """
+        # Early exit if no thousands separator or custom decimal separator is present
+        if not any(char in value for char in r",.'\s"):
+            return float(value)
+
         assert value.count(self.options["decimal_separator"]) < 2, (
-            "Error in Template %s Decimal separator cannot be present several times"
-            % self["template_name"]
+            f"Error in Template {self['template_name']}: "
+            "Decimal separator cannot be present several times"
         )
-        # replace decimal separator by a |
-        amount_pipe = value.replace(self.options["decimal_separator"], "|")
-        # remove all possible thousands separators
-        amount_pipe_no_thousand_sep = re.sub(r"[.,'\s]", "", amount_pipe)
-        # put dot as decimal sep
-        return float(amount_pipe_no_thousand_sep.replace("|", "."))
+
+        # Determine the thousands separator based on the decimal separator
+        thousands_separator = "," if self.options["decimal_separator"] == "." else "."
+
+        # Remove all possible thousands separators
+        amount_no_thousand_sep = re.sub(
+            r"[\s']", "", value.replace(thousands_separator, "")
+        )
+
+        # Replace the decimal separator with a dot
+        return float(
+            amount_no_thousand_sep.replace(self.options["decimal_separator"], ".")
+        )
 
     def parse_date(self, value):
-        """Parses date and returns date after parsing"""
+        """Parses date and returns date after parsing."""
         res = dateparser.parse(
             value,
             date_formats=self.options["date_formats"],
@@ -170,7 +192,20 @@ class InvoiceTemplate(OrderedDict):
         logger.debug("result of date parsing=%s", res)
         return res
 
-    def coerce_type(self, value, target_type):
+    def coerce_type(self, value: str, target_type: str) -> Any:
+        """Coerces a value to the specified target type.
+
+        Args:
+            value (str): The value to be coerced.
+            target_type (str): The target type to which the value should be coerced.
+                                Valid values: 'int', 'float', 'date'.
+
+        Returns:
+            Any: The coerced value.
+
+        Raises:
+            AssertionError: If the target_type is unknown.
+        """
         if target_type == "int":
             if not value.strip():
                 return 0
@@ -181,23 +216,21 @@ class InvoiceTemplate(OrderedDict):
             return float(self.parse_number(value))
         elif target_type == "date":
             return self.parse_date(value)
-        assert False, "Unknown type"
+        raise AssertionError("Unknown type")
 
-    def extract(
-        self, optimized_str: str, invoice_file: str, input_module: str
-    ) -> Optional[dict]:
-        """Given a template file and a string, extract matching data fields.
+    def extract(self, optimized_str: str, invoice_file: str, input_module: str) -> dict:
+        """Extracts data from the optimized string using the template.
 
         Args:
-        optimized_str: String of the full text from pdf with template options applied.
-        invoice_file: String of the path to the file being processed.
-            - This is used when processing areas
-        input_module: String of the input module to be used for pdf conversion
-            - This is used when processing areas
+            optimized_str (str): The optimized string.
+            invoice_file (str): The path to the invoice file.
+            input_module (str): The input module used.
 
         Returns:
-        Dictionary of results if all required fields were found.
-        None if required fields are missing.
+            dict: The extracted data.
+
+        Raises:
+            RuntimeError: If no fields are found in the template.
         """
         logger.debug("START optimized_str ========================\n" + optimized_str)
         logger.debug("END optimized_str ==========================")
