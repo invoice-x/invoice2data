@@ -1,4 +1,7 @@
+"""Tesseract OCR input module for invoice2data."""
+
 import mimetypes
+import os
 import shutil
 import tempfile
 from logging import getLogger
@@ -14,23 +17,24 @@ from subprocess import run
 logger = getLogger(__name__)
 
 
-def to_text(path: str, area_details: dict = None):
-    """Wraps Tesseract OCR with auto language model.
+def to_text(path: str, area_details: dict = None) -> str:
+    """Extract text from image using tesseract OCR.
 
-    Parameters
-    ----------
-    path : str
-        path of electronic invoice in PDF, JPG or PNG format
-    area_details : dictionary
-        of the format {x: int, y: int, r: int, W: int, H: int}
-        used when extracting an area of the pdf rather than the whole document
+    Args:
+        path (str): Path to the image file.
+        area_details (dict, optional):
+            Specific area in the image to extract text from.
+            Defaults to None (extract from the entire image).
 
     Returns:
-    -------
-    extracted_str : str
-        returns extracted text from image
+        str: The extracted text.
 
+    Raises:
+        FileNotFoundError: If the specified image file is not found.
+        RuntimeError: If Tesseract OCR fails to extract text.
     """
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found: {path}")
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not shutil.which("tesseract"):
         raise OSError("tesseract not installed.")
