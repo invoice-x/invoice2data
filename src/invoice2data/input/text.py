@@ -1,3 +1,4 @@
+"""text input module for invoice2data."""
 # SPDX-License-Identifier: MIT
 
 
