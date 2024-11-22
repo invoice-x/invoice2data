@@ -1,24 +1,26 @@
-def to_text(path: str, area_details: dict = None):
-    """Wrapper around Poppler pdftotext.
+"""Poppler pdftotext input module for invoice2data."""
 
-    Parameters
-    ----------
-    path : str
-        path of electronic invoice in PDF
-    area_details : dictionary
-        of the format {x: int, y: int, r: int, W: int, H: int}
-        used when extracting an area of the pdf rather than the whole document
+import os
+
+
+def to_text(path: str, area_details: dict = None) -> str:
+    """Extract text from a PDF file using pdftotext.
+
+    Args:
+        path (str): Path to the PDF file.
+        area_details (dict, optional):
+            Specific area in the PDF to extract text from.
+            Defaults to None (extract from the entire page).
 
     Returns:
-    -------
-    out : str
-        returns extracted text from pdf
+        str: The extracted text.
 
     Raises:
-    ------
-    EnvironmentError:
-        If pdftotext library is not found
+        FileNotFoundError: If the specified PDF file is not found.
+        RuntimeError: If pdftotext fails to extract text.
     """
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found: {path}")
     import shutil
     import subprocess
 
