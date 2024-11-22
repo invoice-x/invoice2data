@@ -1,5 +1,7 @@
 import unittest
 
+import pytest
+
 from invoice2data.extract.invoice_template import InvoiceTemplate
 
 
@@ -42,7 +44,8 @@ def test_skip_template_with_too_long_lang_code():
         print("InvoiceTempl is\n%s" % invoicetempl)
         debug = invoicetempl["options"]
         print("debug is\n%s" % debug)
-        assert False, "Template class initiated with language code length other then 2"
+        with pytest.raises(AssertionError):
+            InvoiceTemplate(invoicetempl)
 
 
 class TestInvoiceTemplateMethods(unittest.TestCase):
