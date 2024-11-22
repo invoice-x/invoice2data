@@ -1,19 +1,23 @@
+"""CSV output module for invoice2data."""
+
 import csv
+from typing import Dict
+from typing import List
 
 
-def write_to_file(data: list, path: str, date_format="%Y-%m-%d") -> None:
+def write_to_file(data: List[Dict], path: str, date_format: str = "%Y-%m-%d") -> None:
     """Export extracted fields to CSV.
 
     Appends .csv to path if missing and generates a CSV file in the specified
     directory, otherwise in the current directory.
 
     Args:
-        data (list): A list of dictionaries of extracted fields. If only a
-                     single file was processed, it must be passed as a
-                     single-element list.
+        data (List[Dict]): A list of dictionaries of extracted fields. If only a
+                            single file was processed, it must be passed as a
+                            single-element list.
         path (str): CSV file to save output to.
-        date_format (str, optional): Date format used in the generated file.
-                                     Defaults to "%Y-%m-%d".
+        date_format (str): Date format used in the generated file.
+                            Defaults to "%Y-%m-%d".
 
     Notes:
         Provide a filename to the `path` parameter.
