@@ -39,6 +39,9 @@ def to_text(
             "Install with 'pip install google-cloud-vision' to enable."
         )
         return ""
+    else:
+        from google.cloud import storage
+        from google.cloud import vision
     # Supported mime_types are: 'application/pdf' and 'image/tiff'
     mime_type = "application/pdf"
 
