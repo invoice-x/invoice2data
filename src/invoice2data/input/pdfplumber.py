@@ -1,21 +1,22 @@
+"""pdfplumber input module for invoice2data."""
+
 from logging import getLogger
+from typing import Any
+from typing import Dict
 
 
 logger = getLogger(__name__)
 
 
-def to_text(path):
-    """Wrapper around `pdfplumber`.
+def to_text(path: str, **kwargs: Dict[str, Any]) -> str:
+    """Wrapper around `pdfplumber` to extract text from PDF.
 
-    Parameters
-    ----------
-    path : str
-        path of electronic invoice in PDF
+    Args:
+        path (str): path of the pdf
+        **kwargs (Dict[str, Any]): Keyword arguments to be passed to `pdfminer`.
 
     Returns:
-    -------
-    str : str
-        returns extracted text from pdf
+        str: extracted text from pdf
     """
     try:
         import pdfplumber
