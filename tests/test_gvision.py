@@ -6,27 +6,31 @@ from invoice2data.input import gvision
 
 
 class TestGvisionToText(unittest.TestCase):
-    @patch("google.cloud.storage.Client")
     @patch("google.cloud.vision.ImageAnnotatorClient")
-    def test_to_text(self, mock_vision_client, mock_storage_client):
+    @patch("google.cloud.storage.Client")
+    def test_to_text(self, mock_storage_client, mock_vision_client):
         # Set up mock objects
         mock_bucket = MagicMock()
         mock_storage_client.return_value.get_bucket.return_value = mock_bucket
         mock_blob = MagicMock()
         mock_bucket.blob.return_value = mock_blob
-        mock_bucket.exists.return_value = False  # Simulate file not existing
-
-        mock_result_blob = MagicMock()
-        mock_result_blob.download_as_string.return_value = (
-            b'{"responses": [{"full_text_annotation": {"text": "test text"}}]}'
+        mock_bucket.exists.return_value = (
+            False  # Simulate file not existing in the bucket
         )
-        mock_bucket.get_blob.return_value = mock_result_blob
 
+        # Mock the async_batch_annotate_files call and its result
         mock_async_response = MagicMock()
         mock_vision_client.return_value.async_batch_annotate_files.return_value = (
             mock_async_response
         )
         mock_async_response.result.return_value = None
+
+        # Mock the get_blob call to return a result blob after the OCR operation
+        mock_result_blob = MagicMock()
+        mock_result_blob.download_as_string.return_value = (
+            b'{"responses": [{"full_text_annotation": {"text": "test text"}}]}'
+        )
+        mock_bucket.get_blob.side_effect = [None, mock_result_blob]
 
         # Call the function
         path = "test.pdf"
@@ -48,11 +52,16 @@ class TestGvisionToText(unittest.TestCase):
         # Set up mock objects
         mock_bucket = MagicMock()
         mock_storage_client.return_value.get_bucket.return_value = mock_bucket
+
         mock_result_blob = MagicMock()
         mock_result_blob.download_as_string.return_value = (
             b'{"responses": [{"full_text_annotation": {"text": "cached text"}}]}'
         )
-        mock_bucket.get_blob.return_value = mock_result_blob
+
+        # Mock bucket.get_blob to return the result blob when called with the result blob name
+        mock_bucket.get_blob.side_effect = (
+            lambda x: mock_result_blob if "output-1-to-1.json" in x else None
+        )
 
         # Call the function
         path = "test.pdf"
@@ -62,7 +71,9 @@ class TestGvisionToText(unittest.TestCase):
         mock_storage_client.return_value.get_bucket.assert_called_once_with(
             "cloud-vision-84893"
         )
-        mock_bucket.get_blob.assert_called_once()
+
+        # Check if get_blob was called with the expected arguments
+        mock_bucket.get_blob.assert_any_call("test/output-1-to-1.json")
         self.assertEqual(extracted_text, "cached text")
 
 
