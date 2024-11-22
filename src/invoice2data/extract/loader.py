@@ -6,8 +6,11 @@ Templates are initially read from .yml or .json files and then kept as class.
 import codecs
 import json
 import os
-from importlib.resources import files
 from logging import getLogger
+from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import List
 
 
 try:
@@ -25,15 +28,15 @@ from .invoice_template import InvoiceTemplate
 logger = getLogger(__name__)
 
 
-def ordered_load(stream, loader=json.loads):
+def ordered_load(stream: str, loader: Callable = json.loads) -> List[InvoiceTemplate]:
     """Loads a stream of JSON data.
 
     Args:
         stream (str): JSON data string.
-        loader (callable, optional): JSON loader function. Defaults to json.loads.
+        loader (Callable, optional): JSON loader function. Defaults to json.loads.
 
     Returns:
-        list: List of InvoiceTemplate objects.
+        List[InvoiceTemplate]: List of InvoiceTemplate objects.
     """
     output = []
 
@@ -52,7 +55,7 @@ def ordered_load(stream, loader=json.loads):
     return output
 
 
-def read_templates(folder=None):
+def read_templates(folder: str = None) -> List[InvoiceTemplate]:
     """Load YAML templates from template folder. Return list of dicts.
 
     Use built-in templates if no folder is set.
@@ -62,7 +65,7 @@ def read_templates(folder=None):
                                 If None, uses built-in templates.
 
     Returns:
-        list: List of InvoiceTemplate objects.
+        List[InvoiceTemplate]: List of InvoiceTemplate objects.
 
     Examples:
         >>> read_template("home/duskybomb/invoice-templates/")
@@ -73,45 +76,50 @@ def read_templates(folder=None):
         {...}
     """
     output = []
-
     if folder is None:
-        folder = files(__package__).joinpath("templates")  # Use importlib.resources
+        folder = "./src/invoice2data/extract/templates"
     else:
         folder = os.path.abspath(folder)
 
-    for filename in os.listdir(folder):
-        if not filename.endswith((".yaml", ".yml", ".json")):
-            continue
+    for path, _subdirs, files in os.walk(folder):
+        for name in sorted(files):
+            with codecs.open(
+                os.path.join(path, name), encoding="utf-8"
+            ) as template_file:
+                if name.endswith((".yaml", ".yml")):
+                    try:
+                        tpl = load(template_file.read(), Loader=SafeLoader)
+                    except YAMLError as error:
+                        logger.warning("Failed to load %s template:\n%s", name, error)
+                        continue
+                elif name.endswith(".json"):
+                    try:
+                        tpl = json.loads(template_file.read())
+                    except ValueError as error:
+                        logger.warning(
+                            "json Loader Failed to load %s template:\n%s", name, error
+                        )
+                        continue
+                else:
+                    continue
+            tpl["template_name"] = name
+            tpl = prepare_template(tpl)
 
-        filepath = os.path.join(folder, filename)
-        with codecs.open(filepath, encoding="utf-8") as template_file:
-            try:
-                if filename.endswith((".yaml", ".yml")):
-                    tpl = load(template_file.read(), Loader=SafeLoader)
-                elif filename.endswith(".json"):
-                    tpl = json.loads(template_file.read())
-            except (YAMLError, ValueError) as error:
-                logger.warning("Failed to load %s template:\n%s", filename, error)
-                continue
-
-        tpl["template_name"] = filename
-        tpl = prepare_template(tpl)
-
-        if tpl:
-            output.append(InvoiceTemplate(tpl))
+            if tpl:
+                output.append(InvoiceTemplate(tpl))
 
     logger.info("Loaded %d templates from %s", len(output), folder)
     return output
 
 
-def prepare_template(tpl):
+def prepare_template(tpl: Dict[str, Any]) -> Dict[str, Any]:
     """Prepare a template for use.
 
     Args:
-        tpl (dict): Template dictionary.
+        tpl (Dict[str, Any]): Template dictionary.
 
     Returns:
-        dict: Processed template dictionary.
+        Dict[str, Any]: Processed template dictionary.
     """
     # Test if all required fields are in template
     if "keywords" not in tpl:
