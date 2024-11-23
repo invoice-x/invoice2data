@@ -173,7 +173,7 @@ def extract_data(
         templates_matched, key=lambda k: k["priority"], reverse=True
     )
     if not templates_matched:
-        if ocrmypdf.have_ocrmypdf() and input_module is not ocrmypdf:
+        if ocrmypdf.ocrmypdf_available() and input_module is not ocrmypdf:
             logger.debug("Text extraction failed, falling back to ocrmypdf")
             extracted_str, invoicefile, templates_matched = (
                 extract_data_fallback_ocrmypdf(invoicefile, templates, input_module)
@@ -202,9 +202,7 @@ def extract_data(
         return result  # Return the original result without deepcopy
 
 
-def extract_data_fallback_ocrmypdf(
-    invoicefile, templates, input_module
-):  # Add input_module parameter
+def extract_data_fallback_ocrmypdf(invoicefile, templates, input_module):
     logger.debug("Trying OCR extraction with ocrmypdf")
     extracted_str = ocrmypdf.to_text(invoicefile)
     templates_matched = filter(lambda t: t.matches_input(extracted_str), templates)
@@ -212,17 +210,16 @@ def extract_data_fallback_ocrmypdf(
         templates_matched, key=lambda k: k["priority"], reverse=True
     )
 
-    if templates_matched and isinstance(
-        templates_matched[0].extract(extracted_str, invoicefile, ocrmypdf), dict
-    ):
-        result = templates_matched[0].extract(extracted_str, invoicefile, ocrmypdf)
+    if templates_matched:
+        result = templates_matched[0].extract(extracted_str, invoicefile, input_module)
         if not isinstance(result, dict):
             logger.warning(
                 "OCR result is not a dictionary for %s. Skipping deepcopy.",
                 invoicefile,
             )
-            return extracted_str, invoicefile, templates_matched
-        return extracted_str, invoicefile, [deepcopy(templates_matched[0])]
+            return extracted_str, invoicefile, [deepcopy(templates_matched[0])]
+
+        return extracted_str, invoicefile, templates_matched
 
 
 @click.command()
