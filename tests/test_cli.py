@@ -31,7 +31,7 @@ from .common import get_sample_files
 from .common import inputparser_specific
 
 
-def have_ocrmypdf():
+def ocrmypdf_available():
     try:
         import ocrmypdf  # noqa: F401
     except ImportError:
@@ -39,7 +39,7 @@ def have_ocrmypdf():
     return True
 
 
-needs_ocrmypdf = unittest.skipIf(not have_ocrmypdf(), reason="requires ocrmypdf")
+needs_ocrmypdf = unittest.skipIf(not ocrmypdf_available(), reason="requires ocrmypdf")
 
 
 class TestCLI(unittest.TestCase):
@@ -434,19 +434,24 @@ class TestCLI(unittest.TestCase):
                         "json",
                         "--output-date-format",
                         "%Y-%m-%d",
+                        "--debug",
                         pfile,
                     ]
                 )
             self.assertEqual(cm.exception.code, 0)
             with open(test_file) as json_test_file:
                 jdatatest = json.load(json_test_file)
-            compare_verified = jdatatest[0]["date"] == "2022-09-08"
-            if not compare_verified:
-                self.assertTrue(
-                    False,
-                    "Failure in fallback to ocrmypdf test with ocrmypdf installed",
-                )
-            os.remove(test_file)
+                print(jdatatest)
+            if jdatatest:
+                compare_verified = jdatatest[0]["date"] == "2022-09-08"
+                if not compare_verified:
+                    self.assertTrue(
+                        False,
+                        "Failure in fallback to ocrmypdf test with ocrmypdf installed",
+                    )
+                os.remove(test_file)
+            else:
+                self.fail("No data extracted from the file")
 
 
 if __name__ == "__main__":
