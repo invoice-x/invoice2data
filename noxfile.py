@@ -166,7 +166,7 @@ def tests(session: Session) -> None:
         "ghostscript",
         "google-cloud-storage",
         "google-cloud-vision",
-        # "ocrmypdf",
+        "ocrmypdf",
     )
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
