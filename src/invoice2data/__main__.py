@@ -299,34 +299,20 @@ def main(
     input_module = input_reader
     output_module = output_mapping[output_format]
 
-    templates = []
-    if template_folder:
-        templates.extend(read_templates(os.path.abspath(template_folder)))
-    if not exclude_built_in_templates:
-        templates.extend(read_templates())
+    templates = _load_templates(template_folder, exclude_built_in_templates)
 
     output = []
     for f in input_files:
-        try:  # Check if res is not None
+        try:
             res = extract_data(f.name, templates=templates, input_module=input_module)
             if res:
                 logger.info(res)
                 output.append(res)
 
-                if copy or move:  # Only perform copy/move operations if needed
-                    kwargs = deepcopy(res)
-                for key, value in kwargs.items():
-                    if isinstance(value, list) and len(value) >= 1:
-                        kwargs[key] = value[0]
-                for key, value in kwargs.items():
-                    if isinstance(value, datetime.datetime):
-                        kwargs[key] = value.strftime("%Y-%m-%d")
-                if copy:
-                    filename = filename_format.format(**kwargs)
-                    shutil.copyfile(f.name, join(copy, filename))
-                if move:
-                    filename = filename_format.format(**kwargs)
-                    shutil.move(f.name, join(move, filename))
+                if copy or move:
+                    _process_and_move_copy(
+                        f.name, res, copy, move, filename_format
+                    )  # Extract file processing and copy/move
         except Exception as e:
             logger.critical(
                 "Invoice2data failed to process %s. \nError message: %s", f.name, e
@@ -336,6 +322,41 @@ def main(
 
     if output_module is not None:
         output_module.write_to_file(output, output_name, output_date_format)
+
+
+def _load_templates(
+    template_folder: Optional[str], exclude_built_in_templates: bool
+) -> List[Any]:
+    """Load templates from the specified folder."""
+    templates = []
+    if template_folder:
+        templates.extend(read_templates(os.path.abspath(template_folder)))
+    if not exclude_built_in_templates:
+        templates.extend(read_templates())
+    return templates
+
+
+def _process_and_move_copy(
+    filename: str,
+    res: Dict[str, Any],
+    copy: Optional[str],
+    move: Optional[str],
+    filename_format: str,
+) -> None:
+    """Process the extracted data and copy/move the file."""
+    kwargs = deepcopy(res)
+    for key, value in kwargs.items():
+        if isinstance(value, list) and len(value) >= 1:
+            kwargs[key] = value[0]
+    for key, value in kwargs.items():
+        if isinstance(value, datetime.datetime):
+            kwargs[key] = value.strftime("%Y-%m-%d")
+    if copy:
+        new_filename = filename_format.format(**kwargs)
+        shutil.copyfile(filename, join(copy, new_filename))
+    if move:
+        new_filename = filename_format.format(**kwargs)
+        shutil.move(filename, join(move, new_filename))
 
 
 if __name__ == "__main__":
