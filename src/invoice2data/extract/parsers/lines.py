@@ -5,14 +5,35 @@ Initial work and maintenance by Holger Brunn @hbrunn
 
 import re
 from logging import getLogger
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Match
+from typing import Optional
+from typing import Union
 
+
+# from ..invoice_template import InvoiceTemplate  # type: ignore[unused-ignore]
 
 logger = getLogger(__name__)
 
 DEFAULT_OPTIONS = {"line_separator": r"\n"}
 
 
-def parse_line(patterns, line):
+def parse_line(patterns: Union[str, List[str]], line: str) -> Optional[Match[str]]:
+    """Parse a line using a given pattern or list of patterns.
+
+    This function searches for a match in the given line using the provided
+    pattern or list of patterns. If a match is found, it returns the match
+    object; otherwise, it returns None.
+
+    Args:
+        patterns (Union[str, List[str]]): The pattern(s) to search for.
+        line (str): The line to parse.
+
+    Returns:
+        Optional[Match[str]]: A match object if a match is found, otherwise None.
+    """
     patterns = patterns if isinstance(patterns, list) else [patterns]
     for pattern in patterns:
         match = re.search(pattern, line)
@@ -21,7 +42,29 @@ def parse_line(patterns, line):
     return None
 
 
-def parse_block(template, field, settings, content):
+def parse_block(  # noqa: RUF100 C901
+    template: Dict[str, Any],
+    field: str,
+    settings: Dict[str, Any],
+    content: str,
+) -> List[Dict[str, Any]]:
+    """Parse a block of lines to extract data.
+
+    This function parses a block of lines from an invoice to extract data
+    based on the provided template and settings. It handles different line
+    types (first line, last line, regular lines) and can skip specific lines
+    based on the configuration.
+
+    Args:
+        template (Dict[str, Any]): The template containing extraction rules.
+        field (str): The name of the field to extract.
+        settings (Dict[str, Any]): The settings for the extraction rule.
+        content (str): The text content to parse.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries, where each dictionary
+                                represents an extracted row with field-value pairs.
+    """
     # Validate settings
     assert "line" in settings, (
         "Error in Template %s Line regex missing" % template["template_name"]
@@ -29,8 +72,8 @@ def parse_block(template, field, settings, content):
 
     logger.debug("START lines block content ========================\n%s", content)
     logger.debug("END lines block content ==========================")
-    lines = []
-    current_row = {}
+    lines: List[Dict[str, Any]] = []
+    current_row: Dict[str, Any] = {}
 
     # We assume that structured line fields may either be individual lines or
     # they may be main line items with descriptions or details following beneath.
@@ -119,12 +162,27 @@ def parse_block(template, field, settings, content):
     for row in lines:
         for name in row.keys():
             if name in types:
-                row[name] = template.coerce_type(row[name], types[name])
-
+                row[name] = template.coerce_type(row[name], types[name])  # type: ignore[attr-defined]
     return lines
 
 
-def parse_by_rule(template, field, rule, content):
+def parse_by_rule(
+    template: Dict[str, Any],
+    field: str,
+    rule: Dict[str, Any],
+    content: str,
+) -> List[Dict[str, Any]]:
+    """Parse lines from a block of text based on a rule.
+
+    Args:
+        template (Dict[str, Any]): The template dictionary.
+        field (str): The field name.
+        rule (Dict[str, Any]): The rule dictionary.
+        content (str): The text content to parse.
+
+    Returns:
+        List[Dict[str, Any]]: The parsed lines.
+    """
     # First apply default options.
     settings = DEFAULT_OPTIONS.copy()
     settings.update(rule)
@@ -168,7 +226,23 @@ def parse_by_rule(template, field, rule, content):
     return lines
 
 
-def parse(template, field, settings, content):
+def parse(
+    template: Dict[str, Any],
+    field: str,
+    settings: Dict[str, Any],
+    content: str,
+) -> List[Dict[str, Any]]:
+    """Parse lines from the content based on the given settings.
+
+    Args:
+        template (Dict[str, Any]): The template dictionary.
+        field (str): The field name.
+        settings (Dict[str, Any]): The settings dictionary.
+        content (str): The text content to parse.
+
+    Returns:
+        List[Dict[str, Any]]: The parsed lines.
+    """
     if "rules" in settings:
         # One field can have multiple sets of line-parsing rules
         rules = settings["rules"]
@@ -187,12 +261,23 @@ def parse(template, field, settings, content):
     return lines
 
 
-def parse_current_row(match, current_row):
-    # Parse the current row data
-    for field, value in match.groupdict().items():
-        current_row[field] = "%s%s%s" % (
-            current_row.get(field, ""),
-            current_row.get(field, "") and "\n" or "",
-            value.strip() if value else "",
-        )
+def parse_current_row(
+    match: Optional[Match[str]], current_row: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Parse the current row data.
+
+    Args:
+        match (Optional[Match[str]]): The match object.
+        current_row (Dict[str, Any]): The current row dictionary.
+
+    Returns:
+        Dict[str, Any]: The updated current row dictionary.
+    """
+    if match:
+        for field, value in match.groupdict().items():
+            current_row[field] = "%s%s%s" % (
+                current_row.get(field, ""),
+                (current_row.get(field, "") and "\n") or "",
+                value.strip() if value else "",
+            )
     return current_row

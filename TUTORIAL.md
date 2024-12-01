@@ -41,16 +41,16 @@ Let's look at each field:
 
 - `issuer`: The name of the invoice issuer. Can have the company name and country.
 - `keywords`: Also a required field. These are used to pick the
-   correct template. Be as specific as possible. As we add more
-   templates, we need to avoid duplicate matches. Using the VAT number,
-   email, website, phone, etc are generally good choices. ALL keywords
-   need to match to use the template.
-   These keywords are regex patterns, so 'Company US' and 'Company\s+US' both work.
-   This also allows some flexibility as 'Company\s+(US|UK)' will match on both
-   Company US and Company UK.
+  correct template. Be as specific as possible. As we add more
+  templates, we need to avoid duplicate matches. Using the VAT number,
+  email, website, phone, etc are generally good choices. ALL keywords
+  need to match to use the template.
+  These keywords are regex patterns, so 'Company US' and 'Company\s+US' both work.
+  This also allows some flexibility as 'Company\s+(US|UK)' will match on both
+  Company US and Company UK.
 - `exclude_keywords`: Optional field. These are used to exclude invoices.
-   These are regex patterns which, if any match, will exclude a template from
-   being used.
+  These are regex patterns which, if any match, will exclude a template from
+  being used.
 
 ### Fields
 
@@ -59,12 +59,12 @@ invoice and how.
 
 Each field can be defined as:
 
-- an **associative array** with 
-`parser` (required) specifying parsing method and 
-`area` (optional) specifying the region of the pdf to search. 
-This takes the following arguments: `f` (first page), `l` (last page), `x` (top-left x-coord), `y` (top-left y-coord), 
-`r` (resolution), `W` (width in pixels) and `H` (height in pixels). When setting your region, ensure the resolution in your 
-image editor matches the resolution specified for `r` in this option. If not, it will not line up properly.
+- an **associative array** with
+  `parser` (required) specifying parsing method and
+  `area` (optional) specifying the region of the pdf to search.
+  This takes the following arguments: `f` (first page), `l` (last page), `x` (top-left x-coord), `y` (top-left y-coord),
+  `r` (resolution), `W` (width in pixels) and `H` (height in pixels). When setting your region, ensure the resolution in your
+  image editor matches the resolution specified for `r` in this option. If not, it will not line up properly.
 - a single regex with one capturing group
 - an array of regexes
 
@@ -194,7 +194,7 @@ There are also special prefixes that you can add to your field name:
 Note that these special prefix for field names are removed when
 returning the result.
 
-Example with the *sum\_* prefix:
+Example with the \_sum\_\_ prefix:
 
     fields:
       sum_amount_tax:
@@ -202,9 +202,8 @@ Example with the *sum\_* prefix:
         - VAT\s+20%\s+(\d+,\d{2})
 
 If the first regexp for VAT 10% catches 1.5 and the second regexp for
-VAT 20% catches 4.0, the result will be {'amount\_tax': 5.50, 'date':
-...} (the *sum\_* prefix is removed).
-
+VAT 20% catches 4.0, the result will be {'amount_tax': 5.50, 'date':
+...} (the \_sum\_\_ prefix is removed).
 
 ### Lines
 
@@ -325,7 +324,7 @@ options and their defaults are:
   The first is the regex pattern to be replaced, the second the string
   to replace any matches with. Replacing is not typically needed.
 - `required_fields`: By default the template should have regex for
-  date, amount, invoice\_number and issuer. If you wish to extract
+  date, amount, invoice_number and issuer. If you wish to extract
   different fields, you can supply a list here. The extraction will
   fail if not all fields are matched.
 
@@ -345,16 +344,19 @@ Suggested values:
 - 6-10: company department/unit specific template
 
 ### tax_lines
+
 Invoices / receipts often have a table near the bottom with a summary of the appied VAT taxes.
 To correctly process the invoice in accounting programs we need separatly parse the amount per tax type.
 
 Example invoice:
+
 ```
                                                 EXCL. VAT             VAT-PERCENTAGE              VAT-AMOUNT
                                                       0.00                    0.0                     0.0
                                                       0.00                    9.0                     0.0
                                                      42.73                   21.0                     8.97
 ```
+
 Tax line Fields
 | fieldname | type | Description |
 | -------------- | :---------: | :-------------------------------------- |
@@ -362,8 +364,8 @@ Tax line Fields
 | line_tax_percent | float | The percentage of tax |
 | line_tax_amount | float | The amount of tax for the tax line |
 
-
 Example template:
+
 ```
   tax_lines:
     parser: lines
@@ -376,7 +378,6 @@ Example template:
       line_tax_percent: float
       line_tax_amount: float
 ```
-
 
 ### Example of template using most options
 
@@ -404,7 +405,6 @@ Example template:
         - ['e´ ', 'é']
         - ['\s{5,}', ' ']
 
-
 ## Steps to add new template
 
 To add a new template, we recommend this workflow:
@@ -424,10 +424,10 @@ Just used in the output. Best to use the company name.
 ### 3. Set keyword
 
 Look at the invoice and find the best identifying string. Tax number +
-company name are good options. Remember, *all* keywords need to be found
+company name are good options. Remember, _all_ keywords need to be found
 for the template to be used.
 
-Keywords are compared *before* processing the extracted text.
+Keywords are compared _before_ processing the extracted text.
 
 ### 4. First test run
 
@@ -450,12 +450,12 @@ directly from the debug output and then replace the dynamic parts with
 regex. Keep in mind that some characters need escaping. To test, re-run
 the above command.
 
--   `date` field: First capture the date. Then see if `dateparser`
-    handles it correctly. If not, add your format or language under
-    options.
--   `amount`: Capture the number *without* currency code. If you expect
-    high amounts, replace the thousand separator. Currently we don't
-    parse numbers via locals (TODO)
+- `date` field: First capture the date. Then see if `dateparser`
+  handles it correctly. If not, add your format or language under
+  options.
+- `amount`: Capture the number _without_ currency code. If you expect
+  high amounts, replace the thousand separator. Currently we don't
+  parse numbers via locals (TODO)
 
 ### 6. Done
 

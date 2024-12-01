@@ -1,6 +1,11 @@
+"""OCRmyPDF input module for invoice2data."""
+
 import logging
 import tempfile
 from pathlib import Path
+from typing import Any
+from typing import Dict
+from typing import Optional
 
 from . import pdftotext
 
@@ -8,16 +13,20 @@ from . import pdftotext
 logger = logging.getLogger(__name__)
 
 
-def have_ocrmypdf():
+def ocrmypdf_available() -> bool:
+    """Checks if the ocrmypdf module is available.
+
+    Returns:
+        bool: True if ocrmypdf is available, False otherwise.
+    """
     try:
-        import ocrmypdf  # noqa: F401
+        import ocrmypdf  # type: ignore[import-not-found]  # noqa: F401
     except ImportError:
         return False
     return True
 
 
-# Default options redo-ocr
-# to act as a fallback when pdftotext fails
+# Default options for redo-ocr to act as a fallback when pdftotext fails
 OPTIONS_DEFAULT = {
     "redo_ocr": True,
     "optimize": 0,
@@ -26,104 +35,79 @@ OPTIONS_DEFAULT = {
 }
 
 
-def to_text(path, area_details: dict = None, input_reader_config: dict = {}):
-    """Pre-process PDF files with ocrmypdf.
-    Before sending them to the pdftotext parser.
+def to_text(
+    path: str,
+    area_details: Optional[Dict[str, Any]] = None,
+    input_reader_config: Optional[Dict[str, Any]] = None,
+) -> str:
+    """Pre-processes PDF files with ocrmypdf before PDFtotext parsing.
 
-    Before usage make sure you have the dependencies installed.
+    Ensures OCRmyPDF is installed before attempting to use it.
+    If OCRmyPDF is not available, logs a warning and returns an empty string.
 
-    Parameters
-    ----------
-    path : str
-        path of electronic invoice in PDF format
+    Args:
+        path (str): Path to the PDF invoice file.
+        area_details (Optional[Dict[str, Any]], optional): Details about the area to extract. Defaults to None.
+        input_reader_config (Optional[Dict[str, Any]], optional): Configuration settings for the input reader. Defaults to None.
 
     Returns:
-    -------
-    extracted_str : str
-        returns extracted text from pdf
-
+        str: Extracted text from the PDF, or an empty string if OCRmyPDF is not available or processing fails.
     """
-    if not have_ocrmypdf():
-        logger.warning("Cannot import ocrmypdf")
+    if input_reader_config is None:
+        input_reader_config = {}
+
+    if not ocrmypdf_available():
+        logger.warning("ocrmypdf is not available. Install with 'pip install ocrmypdf'")
         return ""
 
-    logger.debug(
-        "input_reader_config received from main are, *%s*", input_reader_config
-    )
+    logger.debug("Input reader config received: %s", input_reader_config)
 
     pre_proc_output = pre_process_pdf(path, pre_conf=input_reader_config)
 
     if pre_proc_output:
         extracted_str = pdftotext.to_text(pre_proc_output, area_details)
+        return extracted_str
     else:
         return ""
 
-    return extracted_str
 
+def pre_process_pdf(
+    path: str, pre_conf: Optional[Dict[str, Any]] = None
+) -> Optional[str]:
+    """Pre-processes PDF files with ocrmypdf before PDFtotext parsing.
 
-def pre_process_pdf(path, pre_conf: dict = None):
-    """Pre-process PDF files with ocrmypdf.
-    Before sending them to the pdftotext parser.
+    Uses a temporary file for the output by default.
+    Logs a warning if ocrmypdf is not available.
 
-    Before usage make sure you have the dependencies installed.
-
-    Parameters
-    ----------
-    path : str
-        path of electronic invoice in PDF format
+    Args:
+        path (str): Path to the PDF invoice file.
+        pre_conf (Optional[Dict[str, Any]], optional): Configuration settings for ocrmypdf. Defaults to None.
 
     Returns:
-    -------
-    extracted_str : str
-        returns extracted text from pdf
-
-    Notes:
-    -------
-    *output_file* can be same as input same to overwrite it.
-
-    For all the available options of ocrmypdf refer to:
-    https://ocrmypdf.readthedocs.io/en/latest/api.html#reference
-
-    Advanced example using custom settings for ocrmypdf and unpaper submodule
-    control of unpaper settings only works with clean-final or clean
-
-    unpaper_args =  "--pre-rotate -90,"
-
-    pre_conf = {
-    "output_file": "test_unpaper_rotate.pdf"
-    "clean-final": True,
-    "redo_ocr": False,
-    "force-ocr": True,
-    "unpaper_args": unpaper_args,
-    }
-
+        Optional[str]: Path to the processed PDF file, or None if processing fails.
     """
-    try:
-        import ocrmypdf
-    except ImportError:
-        logger.warning("Cannot import ocrmypdf")
+    if not ocrmypdf_available():
+        logger.warning("ocrmypdf is not available. Install with 'pip install ocrmypdf'")
+        return None
+
+    import ocrmypdf
 
     ocrmypdf_conf = OPTIONS_DEFAULT.copy()
+    if pre_conf:
+        ocrmypdf_conf.update(pre_conf)
+    logger.debug("ocrmypdf config settings: %s", ocrmypdf_conf)
 
-    # Merge the called arguments with defaults
-    ocrmypdf_conf.update(pre_conf)
-    logger.debug("ocrmypdf config settings are: *%s*", ocrmypdf_conf)
-
-    # Set output_file to temp folder, if it's not specified.
-    if "output_file" not in ocrmypdf_conf.keys():
+    if "output_file" not in ocrmypdf_conf:
         inputfile = Path(path)
         filename = inputfile.name
-
-        TMP_FOLDER = str(tempfile.gettempdir()) + "/"
-        ocrmypdf_conf["output_file"] = TMP_FOLDER + filename
+        tmp_folder = str(tempfile.gettempdir()) + "/"
+        ocrmypdf_conf["output_file"] = tmp_folder + filename
         logger.debug(
-            "no output_file specified, using temp file *%s*",
+            "No output_file specified, using temp file: %s",
             ocrmypdf_conf["output_file"],
         )
 
-    logger.debug("OPTIONS !!!!, *%s*", ocrmypdf_conf)
-
-    # try to silence the large amount of debug loggs
+    # Silence excessive debug logs
     logging.getLogger("ocrmypdf").setLevel(logging.WARNING)
     logging.getLogger("pdfminer").setLevel(logging.WARNING)
     logging.getLogger("ocrmypdf._pipeline").setLevel(logging.WARNING)
@@ -132,12 +116,11 @@ def pre_process_pdf(path, pre_conf: dict = None):
 
     exit_code = ocrmypdf.ocr(path, **ocrmypdf_conf)
     if exit_code == 0:
-        logger.info("Text extraction made with ocrmypdf")
+        logger.info("Text extraction performed with ocrmypdf")
+        pre_proc_output = ocrmypdf_conf["output_file"]
+        logger.debug("ocrmypdf output file: %s", pre_proc_output)
+        assert isinstance(pre_proc_output, str)
+        return pre_proc_output  # Return the output file path
     else:
-        logger.warning("ocrmypdf failed, stop the processing of this file")
+        logger.warning("ocrmypdf failed, stopping processing of this file")
         return None
-
-    pre_proc_output = ocrmypdf_conf["output_file"]
-    logger.debug("ocrmypdf was called with output file!!!!, *%s*", pre_proc_output)
-
-    return pre_proc_output

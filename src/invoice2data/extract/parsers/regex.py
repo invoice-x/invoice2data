@@ -14,12 +14,32 @@ For more detailed parsing "type" and "group" settings can be specified.
 import logging
 import re
 from collections import OrderedDict
+from typing import Any
+from typing import Dict
 
 
 logger = logging.getLogger(__name__)
 
 
-def parse(template, field, settings, content, legacy=False):
+def parse(
+    template: Any,
+    field: str,
+    settings: Dict[str, Any],
+    content: str,
+    legacy: bool = False,
+) -> Any:
+    """Parse a field from the content using regular expressions.
+
+    Args:
+        template (Any): The template object.
+        field (str): The name of the field to extract.
+        settings (Dict[str, Any]): The settings for the field extraction.
+        content (str): The text content to parse.
+        legacy (bool, optional): Whether to use legacy parsing. Defaults to False.
+
+    Returns:
+        Any: The extracted value(s) or None if parsing fails.
+    """
     if "regex" not in settings:
         logger.warning('Field "%s" doesn\'t have regex specified', field)
         return None
@@ -69,7 +89,8 @@ def parse(template, field, settings, content, legacy=False):
             elif settings["group"] == "last":
                 result = result[-1]
             elif settings["group"] == "join":
-                result = " ".join(str(v) for v in result)
+                joined = " ".join(str(v) for v in result) if result else ""
+                result = [joined]
             else:
                 logger.warning("Unsupported grouping method: %s", settings["group"])
                 return None
@@ -77,7 +98,6 @@ def parse(template, field, settings, content, legacy=False):
         # Remove duplicates maintaining the order by default (it's more
         # natural). Don't do that for legacy parsing to keep backward
         # compatibility.
-
         if legacy:
             result = list(set(result))
         else:
