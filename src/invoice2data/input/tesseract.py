@@ -1,4 +1,7 @@
+"""Tesseract OCR input module for invoice2data."""
+
 import mimetypes
+import os
 import shutil
 import tempfile
 from logging import getLogger
@@ -9,28 +12,33 @@ from subprocess import CalledProcessError
 from subprocess import Popen
 from subprocess import TimeoutExpired
 from subprocess import run
+from typing import Any
+from typing import Dict
+from typing import Optional
+from typing import Set
 
 
 logger = getLogger(__name__)
 
 
-def to_text(path: str, area_details: dict = None):
-    """Wraps Tesseract OCR with auto language model.
+def to_text(path: str, area_details: Optional[Dict[str, Any]] = None) -> str:
+    """Extract text from image using tesseract OCR.
 
-    Parameters
-    ----------
-    path : str
-        path of electronic invoice in PDF, JPG or PNG format
-    area_details : dictionary
-        of the format {x: int, y: int, r: int, W: int, H: int}
-        used when extracting an area of the pdf rather than the whole document
+    Args:
+        path (str): Path to the image file.
+        area_details (Optional[Dict[str, Any]], optional):
+            Specific area in the image to extract text from.
+            Defaults to None (extract from the entire image).
 
     Returns:
-    -------
-    extracted_str : str
-        returns extracted text from image
+        str: The extracted text.
 
+    Raises:
+        FileNotFoundError: If the specified image file is not found.
+        OSError: If Tesseract OCR fails to extract text.
     """
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found: {path}")
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not shutil.which("tesseract"):
         raise OSError("tesseract not installed.")
@@ -72,8 +80,8 @@ def to_text(path: str, area_details: dict = None):
     inputfile = Path(path)
     filename = inputfile.stem
 
-    TMP_FOLDER = str(tempfile.gettempdir()) + "/"
-    logger.debug("temp dir is, *%s*", TMP_FOLDER)
+    tmp_folder = str(tempfile.gettempdir()) + "/"
+    logger.debug("temp dir is, *%s*", tmp_folder)
 
     tess_cmd = [
         "tesseract",
@@ -88,7 +96,7 @@ def to_text(path: str, area_details: dict = None):
         "-c",
         "textonly_pdf=1",
         tess_input,
-        TMP_FOLDER + filename,
+        tmp_folder + filename,
         "pdf",
         "txt",
     ]
@@ -138,7 +146,7 @@ def to_text(path: str, area_details: dict = None):
             "-H",
             area_details["H"],
         ]
-    pdftotext_cmd += [TMP_FOLDER + filename + ".pdf", "-"]
+    pdftotext_cmd += [tmp_folder + filename + ".pdf", "-"]
 
     logger.debug("Calling pdfttext with, %s", pdftotext_cmd)
     p3 = Popen(pdftotext_cmd, stdin=p2.stdout, stdout=PIPE)
@@ -152,14 +160,14 @@ def to_text(path: str, area_details: dict = None):
     return extracted_str.decode("utf-8")
 
 
-def get_languages():
-    def lang_error(output):
-        logger.warning = (
+def get_languages() -> str:
+    def lang_error(output: str) -> str:
+        logger.warning(  # Use logger.warning instead of assigning to it
             "Tesseract failed to report available languages.\n"
             "Output from Tesseract:\n"
             "-----------\n"
         )
-        return
+        return output  # Add return statement
 
     logger.debug("get lang called")
     args_tess = ["tesseract", "--list-langs"]
@@ -179,5 +187,5 @@ def get_languages():
         if line.startswith("Error"):
             raise OSError(lang_error(output))
     _header, *rest = output.splitlines()
-    langlist = {lang.strip() for lang in rest}
+    langlist: Set[str] = {lang.strip() for lang in rest}
     return "+".join(map(str, langlist))

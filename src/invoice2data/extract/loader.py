@@ -3,8 +3,16 @@
 Templates are initially read from .yml or .json files and then kept as class.
 """
 
+import codecs
 import json
 import os
+from logging import getLogger
+from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import cast
 
 
 try:
@@ -12,79 +20,71 @@ try:
     from yaml import YAMLError
     from yaml import load
 except ImportError:  # pragma: no cover
-    from yaml import SafeLoader
+    from yaml import SafeLoader  # type: ignore[import-untyped]
     from yaml import YAMLError
     from yaml import load
-import codecs
-from logging import getLogger
 
-import pkg_resources
-
-from .invoice_template import InvoiceTemplate
+from .invoice_template import InvoiceTemplate  # type: ignore[unused-ignore]
 
 
 logger = getLogger(__name__)
 
 
-def ordered_load(stream, Loader=json.loads):
-    """Loads a stream of json data"""
+def ordered_load(
+    stream: str, loader: Callable[[str], Any] = json.loads
+) -> List[InvoiceTemplate]:
+    """Loads a stream of JSON data.
+
+    Args:
+        stream (str): JSON data string.
+        loader (Callable[[str], Any], optional): JSON loader function. Defaults to json.loads.
+
+    Returns:
+        List[InvoiceTemplate]: List of InvoiceTemplate objects.
+    """
     output = []
 
     try:
         tpl_stream = json.loads(stream)
     except ValueError as error:
-        logger.warning("json Loader Failed to load template stream\n%s", error)
-        return
-    # always pre-process template to remain backwards compatability
+        logger.warning("JSON Loader Failed to load template stream\n%s", error)
+        return []
+
+    # Always pre-process template to remain backwards compatible
     for tpl in tpl_stream:
         tpl = prepare_template(tpl)
         if tpl:
-            output.append(InvoiceTemplate(tpl))
+            output.append(InvoiceTemplate(cast(Dict[str, Any], tpl)))
 
     return output
 
 
-def read_templates(folder=None):
-    """Load yaml templates from template folder. Return list of dicts.
+def read_templates(folder: Optional[str] = None) -> List[InvoiceTemplate]:
+    """Load YAML templates from template folder. Return list of dicts.
 
     Use built-in templates if no folder is set.
 
-    Parameters
-    ----------
-    folder : str
-        user defined folder where they stores their files, if None uses built-in templates
+    Args:
+        folder (Optional[str]): User-defined folder where templates are stored.
+                                If None, uses built-in templates.
 
     Returns:
-    -------
-    output : Instance of `InvoiceTemplate`
-        template which match based on keywords
+        List[InvoiceTemplate]: List of InvoiceTemplate objects.
 
     Examples:
-    --------
-    >>> read_template("home/duskybomb/invoice-templates/")
-    InvoiceTemplate([('issuer', 'OYO'), ('fields', {'amount': 'Grand Total\\s+Rs (\\d+)',
-    'date': 'Date:\\s(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})', 'invoice_number': '([A-Z0-9]+)\\s+Cash at Hotel'}),
-    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', {'currency': 'INR', 'decimal_separator': '.'}),
-    ('template_name', 'com.oyo.invoice.yml'), ('exclude_keywords', [])])
-
-    After reading the template you can use the result as an instance of `InvoiceTemplate` to extract fields from
-    `extract_data()`
-
-    >>> my_template = InvoiceTemplate([('issuer', 'OYO'), ('fields', {'amount': 'Grand Total\\s+Rs (\\d+)',
-    'date': 'Date:\\s(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})', 'invoice_number': '([A-Z0-9]+)\\s+Cash at Hotel'}),
-    ('keywords', ['OYO', 'Oravel', 'Stays']), ('options', {'currency': 'INR', 'decimal_separator': '.'}),
-    ('template_name', 'com.oyo.invoice.yml'), ('exclude_keywords', [])])
-    >>> extract_data("invoice2data/test/pdfs/oyo.pdf", my_template, pdftotext)
-    {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087',
-    'currency': 'INR', 'desc': 'Invoice IBZY2087 from OYO'}
-
+        >>> templates = read_templates("./src/invoice2data/extract/templates/au")
+        >>> len(templates)  # Check the number of loaded templates
+        2
+        >>> templates[0]['template_name']  # Check the name of the first template
+                'au.com.opal.yml'
     """
     output = []
-
     if folder is None:
-        folder = pkg_resources.resource_filename(__name__, "templates")
+        folder = "./src/invoice2data/extract/templates"
+    else:
+        folder = os.path.abspath(folder)
 
-    for path, subdirs, files in os.walk(folder):
+    for path, _subdirs, files in os.walk(folder):
         for name in sorted(files):
             with codecs.open(
                 os.path.join(path, name), encoding="utf-8"
@@ -109,33 +109,45 @@ def read_templates(folder=None):
             tpl = prepare_template(tpl)
 
             if tpl:
-                output.append(InvoiceTemplate(tpl))
+                output.append(InvoiceTemplate(cast(Dict[str, Any], tpl)))
 
     logger.info("Loaded %d templates from %s", len(output), folder)
     return output
 
 
-def prepare_template(tpl):
+def prepare_template(tpl: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Prepare a template for use.
+
+    Args:
+        tpl (Dict[str, Any]): Template dictionary.
+
+    Returns:
+        Optional[Dict[str, Any]]: Processed template dictionary.
+    """
     # Test if all required fields are in template
-    if "keywords" not in tpl.keys():
+    if "keywords" not in tpl:
         logger.warning(
-            "Failed to load template %s Missing mandatory 'keywords' field.",
+            "Failed to load template %s. Missing mandatory 'keywords' field.",
             tpl["template_name"],
         )
         return None
 
-    # Convert keywords to list, if only one
-    if not isinstance(tpl["keywords"], list):
-        tpl["keywords"] = [tpl["keywords"]]
+    # Convert keywords and exclude_keywords to lists if they are not already
+    tpl["keywords"] = (
+        [tpl["keywords"]] if not isinstance(tpl["keywords"], list) else tpl["keywords"]
+    )
 
-    # Set excluded_keywords as empty list, if not provided
-    if "exclude_keywords" not in tpl.keys():
-        tpl["exclude_keywords"] = []
+    # Safely handle missing 'exclude_keywords'
+    if "exclude_keywords" in tpl:
+        tpl["exclude_keywords"] = (
+            [tpl["exclude_keywords"]]
+            if not isinstance(tpl["exclude_keywords"], list)
+            else tpl["exclude_keywords"]
+        )
+    else:
+        tpl["exclude_keywords"] = []  # Set to empty list if not present
 
-    # Convert excluded_keywords to list, if only one
-    if not isinstance(tpl["exclude_keywords"], list):
-        tpl["exclude_keywords"] = [tpl["exclude_keywords"]]
+    # Set priority if not provided
+    tpl.setdefault("priority", 5)
 
-    if "priority" not in tpl.keys():
-        tpl["priority"] = 5
     return tpl

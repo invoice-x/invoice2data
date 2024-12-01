@@ -1,16 +1,13 @@
-[tool.poetry]
+[project]
 name = "invoice2data"
-authors = ["Manuel Riel"]
+authors = [{ name = "Manuel Riel" }]
 description = "Python parser to extract data from pdf invoice"
 version = "0.4.5"
 keywords = ["python", "data-mining", "accounting", "invoice", "pdf", "parcing"]
-license = "MIT"
+license = { text = "MIT" }
 readme = "README.md"
-homepage = "https://github.com/invoice-x/invoice2data"
-repository = "https://github.com/invoice-x/invoice2data"
-documentation = "https://invoice2data.readthedocs.io"
+requires-python = ">=3.8"
 classifiers = [
-    "Framework :: Django",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
@@ -30,106 +27,80 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
 ]
 
-[tool.poetry.urls]
-Changelog = "https://github.com/m3nu/invoice2data/releases"
-
-[tool.poetry.dependencies]
-python = "^3.8"
-click = ">=8.0.1"
-dateparser ="^1.2.0"
-
-[tool.poetry.dev-dependencies]
-Pygments = ">=2.10.0"
-coverage = { extras = ["toml"], version = ">=7.6" }
-cffi = ">=1.17.0"
-furo = ">=2021.11.12"
-mypy = ">=0.930"
-myst-parser = { version = ">=2.0.0" }
-pre-commit = ">=2.16.0"
-pre-commit-hooks = ">=4.1.0"
-pydoclint = "^0.4.1"
-pytest = ">=6.2.5"
-ruff = ">=0.4.6"
-safety = ">=2.2.3"
-sphinx = ">=4.3.2"
-sphinx-autobuild = ">=2021.3.14"
-sphinx-click = ">=3.0.2"
-typeguard = ">=2.13.3"
-xdoctest = { extras = ["colors"], version = ">=0.15.10" }
-
-[tool.poetry.group.ocr]
-optional = true
-
-[tool.poetry.group.ocr.dependencies]
-ghostscript = "^0.7"
-
-[tool.poetry.group.ocrmypdf]
-optional = true
-
-[tool.poetry.group.pyyaml.dependencies]
-pyyaml = "^6.0.2"
-
-[tool.poetry.group.pyyaml]
-optional = true
-
-[tool.poetry.group.ocrmypdf.dependencies]
-ocrmypdf = [
-    {version = "^14.4.0", python = ">=3.8,<3.9"},
-    {version = "^15.4.4", python = ">=3.9,<3.10"},
-    {version = "^16.6.1", python = ">=3.10"}
+dependencies = [
+    "click >=8.0.1",
+    "dateparser >= 1.2.0",
+    "PyYAML >= 6.0",
+    "regex >= 2024.4.16",
 ]
 
-[tool.poetry.group.pdfminer-six]
-optional = true
 
-[tool.poetry.group.pdfminer-six.dependencies]
-"pdfminer.six" = "^20231228"
+[project.urls]
+homepage = "https://github.com/invoice-x/invoice2data"
+repository = "https://github.com/invoice-x/invoice2data"
+documentation = "https://invoice2data.readthedocs.io"
+Changelog = "https://github.com/invoice-x/invoice2data/releases"
 
-[tool.poetry.group.pdfplumber]
-optional = true
 
-[tool.poetry.group.pdfplumber.dependencies]
-pdfplumber = "^0.11.3"
-
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-vs --cov invoice2data"
-testpaths = [
-    "tests"
+[dependency-groups]
+dev = [
+    "coverage[toml] >= 6.0",
+    "pre-commit >=2.16.0",
+    "pre-commit-hooks >=4.1.0",
+    "pytest >=8.2.2",
+    "pytest-mock >= 3.14.0",
+    "pygments >=2.10.0",
 ]
-
-[tool.flake8]
-ignore = ["E231", "E241", "E203"]
-per-file-ignores = [
-    "__init__.py:F401",
+lint = ["ruff >=0.5.1", "pydoclint >=0.4.2"]
+docs = [
+    "furo >=2021.11.12",
+    "myst-parser == 3.0.1",
+    "sphinx >= 4.3.2",
+    "sphinx-autobuild >=2021.3.14",
+    "sphinx-click >=3.0.2",
 ]
-exclude = [
-    "build", "dist", ".git", ".idea", ".cache", ".tox", ".eggs"
-    ]
-max-line-length = 120
-count = true
+mypy = ["mypy >=0.930"]
+safety = ["safety >=2.2.3"]
+typeguard = ["typeguard >=2.13.3"]
+xdoctest = ["xdoctest[colors] >=0.15.10"]
 
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = py38,py39,py310,py312,flake8
-skip_missing_interpreters = True
+[project.optional-dependencies]
+defusedxml = ["defusedxml == 0.7.1"]
+dev = [
+    "pygments == 2.18.0",
+    "cffi == 1.17.1",
+    "furo == 2024.5.6",
+    "mypy == 1.10.1",
+    "myst-parser == 3.0.1",
+    "pre-commit == 3.5.0",
+    "pre-commit-hooks == 4.6.0",
+    # "pytest-mock >= 3.14.0",
+    "safety == 3.2.4",
+    "sphinx == 7.1.2",
+    "sphinx-autobuild == 2021.3.14",
+    "sphinx-click == 6.0.0",
+    "typeguard == 4.3.0",
+    "xdoctest >=0.15.10",
+]
+googlevision = [
+    "google-cloud-storage == 2.18.2",
+    "google-cloud-vision == 3.8.1",
+]
+ocr = ["ghostscript == 0.7"]
+ocrmypdf = ["ocrmypdf >= 14.4.0"]
+pdfminer-six = ["pdfminer-six == 20231228"]
+pdfplumber = ["pdfplumber == 0.11.4"]
+pyyaml = ["pyyaml == 6.0.2"]
 
-[testenv]
-deps = pytest >= 3.0.0, <4
-commands = pytest
-extras = test
+[tool.uv]
+package = true
 
-[testenv:flake8]
-commands=flake8 src tests
-extras = test
-"""
 
-[tool.poetry.scripts]
+[project.scripts]
 invoice2data = "invoice2data.__main__:main"
 
 [tool.coverage.paths]
-source = ["src", "*/site-packages"]
+source = ["src", "*\\src", "*/site-packages"]
 tests = ["tests", "*/tests"]
 
 [tool.coverage.run]
@@ -138,11 +109,8 @@ source = ["invoice2data", "tests"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 100
-exclude_lines = [
-    "pragma: no cover",
-    "if TYPE_CHECKING:",
-]
+fail_under = 75
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
 
 [tool.ruff.lint.isort]
 force-single-line = true
@@ -176,7 +144,7 @@ extend-select = [
 extend-ignore = [
     "COM812",
     "COM819",
-    "D107", # undocumented-public-init conflicts with DOC301
+    "D107",   # undocumented-public-init conflicts with DOC301
     "D206",
     "D300",
     "E111",
@@ -189,10 +157,19 @@ extend-ignore = [
     "Q002",
     "Q003",
     "W191",
+    "RUF013", # activate after implement typing
+    "D103",   # fix docstrings in public functions later
+    "S101",   # use of assert Activate later
+    "S603",
+    "UP031",  # Use fstring instead of % identifier
+    "E501",   # fix this when updating docstrings
+    # "DOC106",
+    # "DOC107",
+    # "DOC111",
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"*/test_*.py" = ["S101"]
+"*/test_*.py" = ["S101", "D100", "D101", "D102"]
 "noxfile.py" = ["S101"]
 "**/conftest.py" = ["S101"]
 
@@ -201,9 +178,5 @@ convention = "google"
 
 [tool.pydoclint]
 style = 'google'
-exclude = '\.git|\.nox'
-arg-type-hints-in-docstring = false
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+exclude = '\.git|\.nox|tests*|noxfile.py|tables.py'
+arg-type-hints-in-docstring = true

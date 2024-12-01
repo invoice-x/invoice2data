@@ -42,41 +42,22 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v4.6.1
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
 
-      - name: Upgrade pip
-        run: |
-          pip install --constraint="$(pwd)/.github/workflows/constraints.txt" pip
-          pip --version
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
 
-      - name: Upgrade pip in virtual environments
-        shell: python
-        run: |
-          import os
-          import pip
-
-          with open(os.environ["GITHUB_ENV"], mode="a") as io:
-              print(f"VIRTUALENV_PIP={pip.__version__}", file=io)
-
-      - name: Install Poetry
-        run: |
-          pipx install --pip-args=--constraint="$(pwd)/.github/workflows/constraints.txt" poetry
-          poetry --version
-
-      - name: Install Nox
-        run: |
-          pipx install --pip-args=--constraint="$(pwd)/.github/workflows/constraints.txt" nox
-          pipx inject --pip-args=--constraint="$(pwd)/.github/workflows/constraints.txt" nox nox-poetry
-          nox --version
+      - name: Create uv environment
+        run: uv venv
 
       - name: Install system dependencies (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
           sudo apt install tesseract-ocr poppler-utils imagemagick ghostscript
-          pip install -U ocrmypdf
+          uv pip install -U ocrmypdf
 
       - name: Install system dependencies (macos-latest)
         if: matrix.os == 'macos-latest'
@@ -134,13 +115,13 @@ jobs:
 
       - name: Run Nox
         run: |
-          nox --python=${{ matrix.python }}
+          uvx nox --python=${{ matrix.python }}  #noqa
 
       - name: Upload coverage data
         if: always() && matrix.session == 'tests'
         uses: "actions/upload-artifact@v4"
         with:
-          name: coverage-data-${{ matrix.session }}-${{ matrix.python }}-${{ matrix.os }}
+          name: coverage-data-${{ matrix.session }}-${{ matrix.python }}-${{ matrix.os }} # noqa
           path: ".coverage.*"
           if-no-files-found: ignore
           include-hidden-files: true
@@ -164,21 +145,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Upgrade pip
-        run: |
-          pip install --constraint="$(pwd)/.github/workflows/constraints.txt" pip
-          pip --version
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
 
-      - name: Install Poetry
+      - name: Install dependencies
         run: |
-          pipx install --pip-args=--constraint="$(pwd)/.github/workflows/constraints.txt" poetry
-          poetry --version
-
-      - name: Install Nox
-        run: |
-          pipx install --pip-args=--constraint="$(pwd)/.github/workflows/constraints.txt" nox
-          pipx inject --pip-args=--constraint="$(pwd)/.github/workflows/constraints.txt" nox nox-poetry
-          nox --version
+          uv sync --group dev
 
       - name: Download coverage data
         uses: actions/download-artifact@v4
@@ -188,13 +160,14 @@ jobs:
 
       - name: Combine coverage data and display human readable report
         run: |
-          nox --session=coverage
+          uvx nox --session=coverage
 
       - name: Create coverage report
         run: |
-          nox --session=coverage -- xml
+          uvx nox --session=coverage -- xml -i
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v4.5.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
