@@ -5,11 +5,11 @@ Templates are initially read from .yml files and then kept as class.
 
 import re
 import unicodedata
-from collections import OrderedDict
 from logging import getLogger
 from pprint import pformat
 from typing import Any
 from typing import Dict
+from typing import OrderedDict as OrderedDictType
 
 import dateparser  # type: ignore[import-untyped]
 
@@ -45,7 +45,7 @@ PARSERS_MAPPING = {
 PLUGIN_MAPPING = {"lines": lines, "tables": tables}
 
 
-class InvoiceTemplate(OrderedDict[str, Any]):
+class InvoiceTemplate(OrderedDictType[str, Any]):
     """Represents single template files that live as .yml files on the disk.
 
     Methods:
@@ -245,135 +245,142 @@ class InvoiceTemplate(OrderedDict[str, Any]):
         Returns:
             Dict[str, Any]: The extracted data.
 
-        Raises:
-            ValueError: If a required field could not be parsed
         """
-        logger.debug("START optimized_str ========================\n" + optimized_str)
-        logger.debug("END optimized_str ==========================")
-        logger.debug(
-            "Date parsing: languages=%s date_formats=%s",
-            self.options["languages"],
-            self.options["date_formats"],
-        )
-        logger.debug(
-            "Float parsing: decimal separator=[%s]", self.options["decimal_separator"]
-        )
-        logger.debug("keywords=%s", self["keywords"])
-        logger.debug(self.options)
-
-        # Try to find data for each field.
-        output = {}
-        output["issuer"] = self["issuer"]
+        output = _initialize_output_and_log(self, optimized_str)
 
         for k, v in self["fields"].items():
-            # k is the key of the field
-            # v is the value
             if isinstance(v, dict):
-                # Options were supplied to this field
-                if "area" in v and input_module in (
-                    pdftotext,
-                    ocrmypdf,
-                    tesseract,
-                ):
-                    # Area is currently only supported for pdftotext
-                    # area is optional and re-extracts the text being searched
-                    # This obviously has a performance impact, so use wisely
-                    # Verify that the input_module is set to pdftotext ... this is the only one included right now
-                    logger.debug(f"Area was specified with parameters {v['area']}")
-                    # Extract the text for the specified area
-                    # Do NOT overwrite optimized_str. We're inside a loop and it will affect all other fields!
-                    optimized_str_area = input_module.to_text(invoice_file, v["area"])
-                    # Log the text
-                    logger.debug(
-                        "START pdftotext area result ===========================\n%s",
-                        optimized_str_area,
-                    )
-                    logger.debug(
-                        "END pdftotext area result ============================="
-                    )
-                    optimized_str_for_parser = optimized_str_area
-                else:
-                    # No area specified
-                    optimized_str_for_parser = optimized_str
+                optimized_str_for_parser = _handle_area(
+                    self, v, input_module, invoice_file, optimized_str
+                )
+
                 if "parser" in v:
-                    # parser is required and may require additional options
-                    # e.g. "parser: regex" requires "regex: [pattern]"
-                    if v["parser"] in PARSERS_MAPPING:
-                        parser = PARSERS_MAPPING[v["parser"]]
-                        value = parser.parse(self, k, v, optimized_str_for_parser)
-                        if value or value == 0.0:
-                            output[k] = value
-                        else:
-                            logger.warning(
-                                "Failed to parse field %s with parser %s",
-                                k,
-                                v["parser"],
-                            )
-                    else:
-                        logger.error(
-                            "Field %s has unknown parser %s set", k, v["parser"]
-                        )
-                else:
-                    logger.error("Field %s doesn't have parser specified", k)
+                    _handle_parser(self, k, v, optimized_str_for_parser, output)
+
             elif k.startswith("static_"):
                 logger.debug("field=%s | static value=%s", k, v)
                 output[k.replace("static_", "")] = v
+
             else:
-                # Legacy syntax support (backward compatibility)
-                result = None
-                if k.startswith("sum_amount") and type(v) is list:
-                    k = k[4:]
-                    result = parsers.regex.parse(
-                        self,
-                        k,
-                        {"regex": v, "type": "float", "group": "sum"},
-                        optimized_str,
-                        True,
-                    )
-                elif k.startswith("date") or k.endswith("date"):
-                    result = parsers.regex.parse(
-                        self, k, {"regex": v, "type": "date"}, optimized_str, True
-                    )
-                elif k.startswith("amount"):
-                    result = parsers.regex.parse(
-                        self, k, {"regex": v, "type": "float"}, optimized_str, True
-                    )
-                else:
-                    result = parsers.regex.parse(
-                        self, k, {"regex": v}, optimized_str, True
-                    )
-
-                if result or result == 0.0:
-                    output[k] = result
-                else:
-                    logger.warning("regexp for field %s didn't match", k)
-
+                _handle_legacy_syntax(self, k, v, optimized_str, output)
         output["currency"] = self.options["currency"]
 
         # Run plugins:
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
             if plugin_keyword in self.keys():
                 plugin_func.extract(self, optimized_str, output)
+        return _check_required_fields(self, output)
 
-        # If required fields were found, return output, else log error.
-        if "required_fields" not in self.keys():
-            required_fields = ["date", "amount", "invoice_number", "issuer"]
-        else:
-            required_fields = []
-            for v in self["required_fields"]:
-                required_fields.append(v)
 
-        if set(required_fields).issubset(output.keys()):
-            output["desc"] = "Invoice from %s" % (self["issuer"])
-            logger.debug("\n %s", pformat(output, indent=2))
-            # when python 3.7 support stops add sort_dicts=False,
-            return output
+def _initialize_output_and_log(
+    self: InvoiceTemplate, optimized_str: str
+) -> Dict[str, Any]:
+    """Initialize the output dictionary and log debug information."""
+    logger.debug("START optimized_str ========================\n" + optimized_str)
+    logger.debug("END optimized_str ==========================")
+    logger.debug(
+        "Date parsing: languages=%s date_formats=%s",
+        self.options["languages"],
+        self.options["date_formats"],
+    )
+    logger.debug(
+        "Float parsing: decimal separator=[%s]", self.options["decimal_separator"]
+    )
+    logger.debug("keywords=%s", self["keywords"])
+    logger.debug(self.options)
+
+    output = {}
+    output["issuer"] = self["issuer"]
+    return output
+
+
+def _handle_area(
+    self: InvoiceTemplate,
+    v: Dict[str, Any],
+    input_module: Any,
+    invoice_file: str,
+    optimized_str: str,
+) -> str:
+    """Handle area-specific extraction."""
+    if "area" in v and input_module in (pdftotext, ocrmypdf, tesseract):
+        logger.debug(f"Area was specified with parameters {v['area']}")
+        optimized_str_area: str = input_module.to_text(invoice_file, v["area"])
+        logger.debug(
+            "START pdftotext area result ===========================\n%s",
+            optimized_str_area,
+        )
+        logger.debug("END pdftotext area result =============================")
+        return optimized_str_area
+    return optimized_str
+
+
+def _handle_parser(
+    self: InvoiceTemplate,
+    k: str,
+    v: Dict[str, Any],
+    optimized_str_for_parser: str,
+    output: Dict[str, Any],
+) -> None:
+    """Handle parsing using different parsers."""
+    if v["parser"] in PARSERS_MAPPING:
+        parser = PARSERS_MAPPING[v["parser"]]
+        value = parser.parse(self, k, v, optimized_str_for_parser)
+        if value or value == 0.0:
+            output[k] = value
         else:
-            fields = list(set(output.keys()))
-            logger.error(
-                "Unable to match all required fields. "
-                f"The required fields are: {required_fields}. "
-                f"Output contains the following fields: {fields}."
-            )
-            missing = set(required_fields) - set(fields)
-            raise ValueError(f"Unable to parse required field(s): {missing}")
+            logger.warning("Failed to parse field %s with parser %s", k, v["parser"])
+    else:
+        logger.error("Field %s has unknown parser %s set", k, v["parser"])
+
+
+def _handle_legacy_syntax(
+    self: InvoiceTemplate, k: str, v: Any, optimized_str: str, output: Dict[str, Any]
+) -> None:
+    """Handle legacy syntax for backward compatibility."""
+    result = None
+    if k.startswith("sum_amount") and type(v) is list:
+        k = k[4:]
+        result = parsers.regex.parse(
+            self, k, {"regex": v, "type": "float", "group": "sum"}, optimized_str, True
+        )
+    elif k.startswith("date") or k.endswith("date"):
+        result = parsers.regex.parse(
+            self, k, {"regex": v, "type": "date"}, optimized_str, True
+        )
+    elif k.startswith("amount"):
+        result = parsers.regex.parse(
+            self, k, {"regex": v, "type": "float"}, optimized_str, True
+        )
+    else:
+        result = parsers.regex.parse(self, k, {"regex": v}, optimized_str, True)
+
+    if result or result == 0.0:
+        output[k] = result
+    else:
+        logger.warning("regexp for field %s didn't match", k)
+
+
+def _check_required_fields(
+    self: InvoiceTemplate, output: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Check if all required fields are present in the output."""
+    if "required_fields" not in self.keys():
+        required_fields = ["date", "amount", "invoice_number", "issuer"]
+    else:
+        required_fields = []
+        for v in self["required_fields"]:
+            required_fields.append(v)
+
+    if set(required_fields).issubset(output.keys()):
+        output["desc"] = "Invoice from %s" % (self["issuer"])
+        logger.debug("\n %s", pformat(output, indent=2))
+        return output
+    else:
+        fields = list(set(output.keys()))
+        logger.error(
+            "Unable to match all required fields. "
+            f"The required fields are: {required_fields}. "
+            f"Output contains the following fields: {fields}."
+        )
+        missing = set(required_fields) - set(fields)
+        raise ValueError(f"Unable to parse required field(s): {missing}")
