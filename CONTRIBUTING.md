@@ -12,9 +12,9 @@ Here is a list of important resources for contributors:
 - [Code of Conduct]
 
 [mit license]: https://opensource.org/licenses/MIT
-[source code]: https://github.com/m3nu/invoice2data
+[source code]: https://github.com/invoice-x/invoice2data
 [documentation]: https://invoice2data.readthedocs.io/
-[issue tracker]: https://github.com/m3nu/invoice2data/issues
+[issue tracker]: https://github.com/invoice-x/invoice2data/issues
 
 ## How to report a bug
 
@@ -37,29 +37,27 @@ Request features on the [Issue Tracker].
 
 ## How to set up your development environment
 
-You need Python 3.8+ and the following tools:
+You need Python 3.9+ and the following tools:
 
-- [Poetry]
+- [uv]
 - [Nox]
-- [nox-poetry]
 
 Install the package with development requirements:
 
 ```console
-$ poetry install
+$ uv install
 ```
 
 You can now run an interactive Python session,
 or the command-line interface:
 
 ```console
-$ poetry run python
-$ poetry run invoice2data
+$ uv run python
+$ uv run invoice2data
 ```
 
-[poetry]: https://python-poetry.org/
+[uv]: https://docs.astral.sh/uv/
 [nox]: https://nox.thea.codes/
-[nox-poetry]: https://nox-poetry.readthedocs.io/
 
 ## How to test the project
 
@@ -108,7 +106,47 @@ $ nox --session=pre-commit -- install
 It is recommended to open an issue before starting work on anything.
 This will allow a chance to talk it over with the owners and validate your approach.
 
-[pull request]: https://github.com/m3nu/invoice2data/pulls
+[pull request]: https://github.com/invoice-x/invoice2data/pulls
+
+
+## Writing Documentation
+
+
+Writing documentation, function docstrings, examples and tutorials is a great way to start contributing to open-source software! The documentation is present inside the ``docs/`` directory of the source code repository.
+
+The documentation is written in [markdown], with [Sphinx] used to generate these lovely HTML files that you're currently reading (unless you're reading this on GitHub). You can edit the documentation using any text editor and then generate the HTML output by running `make html` in the ``docs/`` directory.
+
+The function docstrings are written in google style. Make sure you check out how its format guidelines before you start writing one.
+
+[markdown]: https://en.wikipedia.org/wiki/markdown
+[Sphinx]: http://www.sphinx-doc.org/en/master/
+
+
+
+## How to make a release
+
+```{note}
+*You need to be a project maintainer to make a release.*
+```
+Before making a release, go through the following checklist:
+
+- All pull requests for the release have been merged.
+- The default branch passes all checks.
+
+Releases are made by publishing a GitHub Release.
+A draft release is being maintained based on merged pull requests.
+To publish the release, follow these steps:
+
+1. Click **Edit** next to the draft release.
+2. Enter a tag with the new version.
+3. Enter the release title, also the new version.
+4. Edit the release description, if required.
+5. Click **Publish Release**.
+
+After publishing the release, the following automated steps are triggered:
+
+- The Git tag is applied to the repository.
+- `Read the Docs` builds a new stable version of the documentation.
 
 <!-- github-only -->
 

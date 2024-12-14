@@ -58,6 +58,7 @@ docs = [
     "sphinx >= 4.3.2",
     "sphinx-autobuild >=2021.3.14",
     "sphinx-click >=3.0.2",
+    "sphinx-mermaid >=0.0.7",
 ]
 mypy = ["mypy >=0.930"]
 safety = ["safety >=2.2.3"]
