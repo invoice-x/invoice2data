@@ -966,18 +966,12 @@ defusedxml = [
 ]
 dev = [
     { name = "cffi" },
-    { name = "coverage", version = "7.5.4", source = { registry = "https://pypi.org/simple" }, extra = ["toml"], marker = "python_full_version < '3.9'" },
-    { name = "coverage", version = "7.6.1", source = { registry = "https://pypi.org/simple" }, extra = ["toml"], marker = "python_full_version >= '3.9'" },
     { name = "furo" },
     { name = "mypy" },
     { name = "myst-parser" },
     { name = "pre-commit" },
     { name = "pre-commit-hooks" },
-    { name = "pydoclint" },
     { name = "pygments" },
-    { name = "pytest" },
-    { name = "pytest-mock" },
-    { name = "ruff" },
     { name = "safety" },
     { name = "sphinx" },
     { name = "sphinx-autobuild" },
@@ -1021,6 +1015,7 @@ docs = [
     { name = "sphinx" },
     { name = "sphinx-autobuild" },
     { name = "sphinx-click" },
+    { name = "sphinx-mermaid" },
 ]
 lint = [
     { name = "pydoclint" },
@@ -1043,7 +1038,6 @@ xdoctest = [
 requires-dist = [
     { name = "cffi", marker = "extra == 'dev'", specifier = "==1.17.1" },
     { name = "click", specifier = ">=8.0.1" },
-    { name = "coverage", extras = ["toml"], marker = "extra == 'dev'", specifier = ">=6.2" },
     { name = "dateparser", specifier = ">=1.2.0" },
     { name = "defusedxml", marker = "extra == 'defusedxml'", specifier = "==0.7.1" },
     { name = "furo", marker = "extra == 'dev'", specifier = "==2024.5.6" },
@@ -1057,14 +1051,10 @@ requires-dist = [
     { name = "pdfplumber", marker = "extra == 'pdfplumber'", specifier = "==0.11.4" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = "==3.5.0" },
     { name = "pre-commit-hooks", marker = "extra == 'dev'", specifier = "==4.6.0" },
-    { name = "pydoclint", marker = "extra == 'dev'", specifier = "==0.4.2" },
     { name = "pygments", marker = "extra == 'dev'", specifier = "==2.18.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = "==8.2.2" },
-    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.14.0" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "pyyaml", marker = "extra == 'pyyaml'", specifier = "==6.0.2" },
     { name = "regex", specifier = ">=2024.4.16" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = "==0.5.1" },
     { name = "safety", marker = "extra == 'dev'", specifier = "==3.2.4" },
     { name = "sphinx", marker = "extra == 'dev'", specifier = "==7.1.2" },
     { name = "sphinx-autobuild", marker = "extra == 'dev'", specifier = "==2021.3.14" },
@@ -1075,11 +1065,11 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "coverage", extras = ["toml"], specifier = ">=6.2" },
+    { name = "coverage", extras = ["toml"], specifier = ">=6.0" },
     { name = "pre-commit", specifier = ">=2.16.0" },
     { name = "pre-commit-hooks", specifier = ">=4.1.0" },
     { name = "pygments", specifier = ">=2.10.0" },
-    { name = "pytest", specifier = ">=6.2.5" },
+    { name = "pytest", specifier = ">=8.2.2" },
     { name = "pytest-mock", specifier = ">=3.14.0" },
 ]
 docs = [
@@ -1088,10 +1078,11 @@ docs = [
     { name = "sphinx", specifier = ">=4.3.2" },
     { name = "sphinx-autobuild", specifier = ">=2021.3.14" },
     { name = "sphinx-click", specifier = ">=3.0.2" },
+    { name = "sphinx-mermaid", specifier = ">=0.0.7" },
 ]
 lint = [
-    { name = "pydoclint", specifier = ">=0.0.0" },
-    { name = "ruff", specifier = ">=0.0.274" },
+    { name = "pydoclint", specifier = ">=0.4.2" },
+    { name = "ruff", specifier = ">=0.5.1" },
 ]
 mypy = [{ name = "mypy", specifier = ">=0.930" }]
 safety = [{ name = "safety", specifier = ">=2.2.3" }]
@@ -2402,6 +2393,17 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/db/0a/5b1e8d0579dbb4ca8114e456ca4a68020bfe8e15c7001f3856be4929ab83/sphinx_click-6.0.0.tar.gz", hash = "sha256:f5d664321dc0c6622ff019f1e1c84e58ce0cecfddeb510e004cf60c2a3ab465b", size = 29574 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d0/d7/8621c4726ad3f788a1db4c0c409044b16edc563f5c9542807b3724037555/sphinx_click-6.0.0-py3-none-any.whl", hash = "sha256:1e0a3c83bcb7c55497751b19d07ebe56b5d7b85eb76dd399cf9061b497adc317", size = 9922 },
+]
+
+[[package]]
+name = "sphinx-mermaid"
+version = "0.0.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sphinx" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/65/96cb3a4117ea2a4ead808377259659885ea0fe5e539a9f29fc1c8a723ed1/sphinx_mermaid-0.0.8-py2.py3-none-any.whl", hash = "sha256:03cbad30c04130e5644c5112b4b2da7850d142f897876ac5aea83c8b5965bf76", size = 3336 },
 ]
 
 [[package]]
