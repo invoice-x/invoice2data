@@ -13,11 +13,15 @@ end-before: <!-- github-only -->
 hidden:
 maxdepth: 1
 ---
-
+How it works <how-it-works>
+installation <installation>
 usage
 reference
+Template Creation <tutorial>
+Recommeneded Template Fields <recommended-template-fields>
+Frequently asked Questions <faq>
 contributing
 Code of Conduct <codeofconduct>
 License <license>
-Changelog <https://github.com/m3nu/invoice2data/releases>
+Changelog <https://github.com/invoice-x/invoice2data/releases>
 ```

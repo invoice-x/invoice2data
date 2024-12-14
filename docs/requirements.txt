@@ -2,3 +2,4 @@ furo==2022.12.7
 sphinx==5.3.0
 sphinx-click==4.4.0
 myst_parser==0.18.1
+sphinx-mermaid==0.0.8

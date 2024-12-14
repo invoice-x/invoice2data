@@ -5,21 +5,28 @@
 [![Version](https://img.shields.io/pypi/v/invoice2data.svg)](https://pypi.python.org/pypi/invoice2data)
 [![Support Python versions](https://img.shields.io/pypi/pyversions/invoice2data.svg)](https://pypi.python.org/pypi/invoice2data)
 [![License](https://img.shields.io/pypi/l/invoice2data)][license]
-[![Tests](https://github.com/m3nu/invoice2data/workflows/Tests/badge.svg)][tests]
-[![Codecov](https://codecov.io/gh/m3nu/invoice2data/branch/main/graph/badge.svg)][codecov]
+[![Tests](https://github.com/invoice-x/invoice2data/workflows/Tests/badge.svg)][tests]
+[![Codecov](https://codecov.io/gh/invoice-x/invoice2data/branch/main/graph/badge.svg)][codecov]
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 [pypi status]: https://pypi.org/project/invoice2data/
 [read the docs]: https://invoice2data.readthedocs.io/
-[tests]: https://github.com/m3nu/invoice2data/actions?workflow=Tests
-[codecov]: https://app.codecov.io/gh/m3nu/invoice2data
+[tests]: https://github.com/invoice-x/invoice2data/actions?workflow=Tests
+[codecov]: https://app.codecov.io/gh/invoice-x/invoice2data
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [ruff badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
 [ruff project]: https://github.com/charliermarsh/ruff
 
-A command line tool and Python library to support your accounting
-process.
+A command line tool and Python library that automates the extraction of key information from invoices to support your accounting
+process. The library is very flexible and can be used on other types of business documents as well.
+
+In essence, invoice2data simplifies the process of getting data from invoices by:
+
+Automating text extraction: No more manual copying and pasting.
+Using templates for structure: Handles different invoice layouts.
+Providing structured output: Makes the data ready for analysis or further processing.
+This makes it a valuable tool for businesses and developers dealing with a large volume of invoices, saving time and reducing errors associated with manual data entry.
 
 1. extracts text from PDF files using different techniques, like
    `pdftotext`, `text`, `ocrmypdf`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, or
@@ -45,90 +52,6 @@ Go from PDF files to this:
     {'date': (2014, 8, 3), 'invoice_number': '42183017', 'amount': 4.11, 'desc': 'Invoice 42183017 from Amazon Web Services'}
     {'date': (2015, 1, 28), 'invoice_number': '12429647', 'amount': 101.0, 'desc': 'Invoice 12429647 from Envato'}
 
-```mermaid
-flowchart LR
-
-    InvoiceFile[fa:fa-file-invoice Invoicefile\n\npdf\nimage\ntext] --> Input-module(Input Module\n\npdftotext\ntext\npdfminer\npdfplumber\ntesseract\ngvision)
-
-    Input-module --> |Extracted Text| C{keyword\nmatching}
-
-    Invoice-Templates[(fa:fa-file-lines Invoice Templates)] --> C{keyword\nmatching}
-
-    C --> |Extracted Text + fa:fa-file-circle-check Template| E(Template Processing\n apply options from template\nremove accents, replaces etc...)
-
-    E --> |Optimized String|Plugins&Parsers(Call plugins + parsers)
-
-    subgraph Plugins&Parsers
-
-      direction BT
-
-        tables[fa:fa-table tables] ~~~ lines[fa:fa-grip-lines lines]
-
-        lines ~~~ regex[fa:fa-code regex]
-
-        regex ~~~ static[fa:fa-check static]
-
-
-
-    end
-
-    Plugins&Parsers --> |output| result[result\nfa:fa-file-csv,\njson,\nXML]
-
-
-
- click Invoice-Templates https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md
-
- click result https://github.com/invoice-x/invoice2data#usage
-
- click Input-module https://github.com/invoice-x/invoice2data#installation-of-input-modules
-
- click E https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#options
-
- click tables https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#tables
-
- click lines https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#lines
-
- click regex https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#regex
-
- click static https://github.com/invoice-x/invoice2data/blob/master/TUTORIAL.md#parser-static
-
-```
-
-## Installation
-
-1.  Install pdftotext
-
-If possible get the latest
-[xpdf/poppler-utils](https://poppler.freedesktop.org/) version. It's
-included with macOS Homebrew, Debian and Ubuntu. Without it, `pdftotext`
-won't parse tables in PDF correctly.
-
-2.  You can install _Invoice2Data_ via [pip] from [PyPI]:
-
-```console
-$ pip install invoice2data
-```
-
-### Installation of input modules
-
-An [tesseract](https://github.com/tesseract-ocr/tessdoc/blob/main/FAQ.md#how-do-i-get-tesseract) wrapper is included in auto language mode. It will test your input files against the languages installed on your system. To use it tesseract and imagemagick needs to be installed.
-tesseract supports multiple OCR engine modes. By default the available engine installed on the system will be used.
-
-Languages:
-tesseract-ocr recognize more than [100 languages](https://github.com/tesseract-ocr/tessdata)
-For Linux users, you can often find packages that provide language packs:
-
-```
-# Display a list of all Tesseract language packs
-apt-cache search tesseract-ocr
-
-# Debian/Ubuntu users
-apt-get install tesseract-ocr-chi-sim  # Example: Install Chinese Simplified language pack
-
-# Arch Linux users
-pacman -S tesseract-data-eng tesseract-data-deu # Example: Install the English and German language packs
-
-```
 
 ## Usage
 
@@ -202,7 +125,7 @@ Using in-house templates
 See `invoice2data/extract/templates` for existing templates. Just extend
 the list to add your own. If deployed by a bigger organisation, there
 should be an interface to edit templates for new suppliers. 80-20 rule.
-For a short tutorial on how to add new templates, see [TUTORIAL.md](TUTORIAL.md).
+For a short tutorial on how to add new templates, see [tutorial.md](../docs/tutorial.md).
 
 Templates are based on Yaml or JSON. They define one or more keywords to find
 the right template, one or more exclude_keywords to further narrow it down
@@ -216,6 +139,7 @@ processing.
 
 Example:
 
+````yaml
     issuer: Amazon Web Services, Inc.
     keywords:
     - Amazon Web Services
@@ -239,6 +163,7 @@ Example:
         line: (.*)\$(\d+\.\d+)
         skip_line: Note
         last_line: VAT \*\*
+````
 
 The lines package has multiple settings:
 
@@ -259,7 +184,7 @@ It can be installed on most distributions by:
 ## Development
 
 If you are interested in improving this project, have a look at our
-[developer guide](DEVELOP.md) to get you started quickly.
+[developer guide](../docs/contributing.md) to get you started quickly.
 
 ## Roadmap and open tasks
 
@@ -283,7 +208,7 @@ If you are interested in improving this project, have a look at our
   invoice items.
 
 [pypi]: https://pypi.org/
-[file an issue]: https://github.com/m3nu/invoice2data/issues
+[file an issue]: https://github.com/invoice-x/invoice2data/issues
 [pip]: https://pip.pypa.io/
 
 Contributions are very welcome.
@@ -306,6 +231,6 @@ To learn more, see the [Contributor Guide].
 
 <!-- github-only -->
 
-[license]: https://github.com/m3nu/invoice2data/blob/main/LICENSE
-[contributor guide]: https://github.com/m3nu/invoice2data/blob/main/CONTRIBUTING.md
+[license]: https://github.com/invoice-x/invoice2data/blob/main/LICENSE
+[contributor guide]: https://github.com/invoice-x/invoice2data/blob/main/CONTRIBUTING.md
 [command-line reference]: https://invoice2data.readthedocs.io/en/latest/usage.html

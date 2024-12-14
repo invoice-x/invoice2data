@@ -1,46 +1,42 @@
-# Tutorial for template creation
+# Tutorial for Template Creation
 
-A template defines which data attributes you wish to retrieve from an
-invoice. Each template should work on all invoices of a company or
-subsidiary (e.g. Amazon Germany vs Amazon US).
+A template defines the data you want to extract from an invoice. Each template should work for all invoices from the same company or subsidiary (e.g., Amazon Germany vs. Amazon US).
 
-Adding templates is easy and shouldn't take longer than adding 2-3
-invoices by hand. We use a simple YAML or json-format. Many options are optional
-and you just need them to take care of edge cases.
+Creating templates is easy and shouldn't take longer than manually entering 2-3 invoices. We use a simple YAML or JSON format. Many fields are optional and are only needed for edge cases.
 
-Existing templates can be found in the [templates folder](https://github.com/invoice-x/invoice2data/tree/master/src/invoice2data/extract/templates) of the installed
-package under `/invoice2data/extract/templates`. You can use the
-`--template-folder` option to point to your own, new template files. If
-you add or improve templates that could be useful for everyone, we
-encourage you to file a pull request to the main repo, so everyone can
-use it.
+## Finding Existing Templates
 
-## Simple invoice template
+Existing templates are located in the ["templates"](https://github.com/invoice-x/invoice2data/tree/master/src/invoice2data/extract/templates) folder of the installed package. You can use the `--template-folder` option to specify your own template files.
 
-Here is a sample of a minimal invoice template to read invoices issued
-by Microsoft Hong Kong:
+**Contributing:** If you create or improve templates that could benefit others, please submit a pull request to the main repository.
 
-    issuer: Microsoft Regional Sales Corporation
-    keywords:
-    - Microsoft
-    - M9-0002526-N
-    exclude_keywords:
-    - Already\s+paid
-    - Do not pay
-    fields:
-      amount: GrandTotal(\d+\.\d+)HKD
-      date: DocumentDate:(\d{1,2}\/\d{1,2}\/\d{4})
-      invoice_number: InvoiceNo.:(\w+)
-    options:
-      remove_whitespace: true
-      currency: HKD
-      date_formats:
-        - '%d/%m/%Y'
+## Simple Invoice Template
 
-Let's look at each field:
+Here's a minimal template example for Microsoft Hong Kong invoices:
+
+```yaml
+issuer: Microsoft Regional Sales Corporation
+keywords:
+  - Microsoft
+  - M9-0002526-N
+exclude_keywords:
+  - Already\s+paid
+  - Do not pay
+fields:
+  amount: GrandTotal(\d+\.\d+)HKD
+  date: DocumentDate:(\d{1,2}\/\d{1,2}\/\d{4})
+  invoice_number: InvoiceNo.:(\w+)
+options:
+  remove_whitespace: true
+  currency: HKD
+  date_formats:
+    - '%d/%m/%Y'
+```
+
+*Explanation:*
 
 - `issuer`: The name of the invoice issuer. Can have the company name and country.
-- `keywords`: Also a required field. These are used to pick the
+- `keywords`: Required. These are unique words used to pick the
   correct template. Be as specific as possible. As we add more
   templates, we need to avoid duplicate matches. Using the VAT number,
   email, website, phone, etc are generally good choices. ALL keywords
@@ -48,100 +44,111 @@ Let's look at each field:
   These keywords are regex patterns, so 'Company US' and 'Company\s+US' both work.
   This also allows some flexibility as 'Company\s+(US|UK)' will match on both
   Company US and Company UK.
-- `exclude_keywords`: Optional field. These are used to exclude invoices.
-  These are regex patterns which, if any match, will exclude a template from
-  being used.
+- `exclude_keywords`: Optional. Regex patterns that, if matched, prevent the template from being used.
 
-### Fields
+## Fields & Parsers
 
-This section defines what information (fields) should be extracted from
-invoice and how.
+This section defines the data to extract and how.
 
-Each field can be defined as:
+Each field can be:
 
-- an **associative array** with
+- An **associative array** with
   `parser` (required) specifying parsing method and
   `area` (optional) specifying the region of the pdf to search.
   This takes the following arguments: `f` (first page), `l` (last page), `x` (top-left x-coord), `y` (top-left y-coord),
   `r` (resolution), `W` (width in pixels) and `H` (height in pixels). When setting your region, ensure the resolution in your
   image editor matches the resolution specified for `r` in this option. If not, it will not line up properly.
-- a single regex with one capturing group
-- an array of regexes
+- A single regex with one capturing group
+- An array of regexes
 
-The first method is preferred. It was introduced to make templates
-syntax cleaner and more flexible. It aims to replace old methods.
+**Required Fields:** Every template must have at least `amount`, `date`, and `invoice_number`.
 
-Every template must specify at least `amount`, `date` and
-`invoice_number` fields. More fields can be extracted as required.
+**Standard fields:**
 
-Standard fields:
-
-- `date`: the date invoice was issued
-- `invoice_number`: unique number assigned to invoice by an issuer
-- `amount`: total amount (with taxes)
+- `date`: Invoice issue date.
+- `invoice_number`: Unique number assigned to invoice by an issuer.
+- `amount`: Total amount (with taxes).
 - `vat`: [VAT identification number](https://en.wikipedia.org/wiki/VAT_identification_number)
-- `tax_lines`: [structure](#tax_lines) containing detailed tax information
+- `tax_lines`: [structure](#Tax-lines) containing detailed tax information
+
+
+## Template Structure
+````{important}
+While invoice2data doesn't enforce a strict template structure, we strongly recommend using the standard template fields outlined in this documentation. This ensures consistency, minimizes repetitive work, and allows you to take full advantage of the templating system.
+
+Although invoice2data is designed for extracting data from invoices, many users find it helpful for other document types as well. Feel free to adapt the template structure to suit your specific needs.
+
+However, for optimal results and compatibility with future updates, adhering to the [recommended template fields](#recommended-template-fields) is advised.
+````
 
 ### Parser `regex`
 
-It\'s the basic parser that allows parsing content using regexes. The
-only required property is `regex` that has to contain one or multiple
-(specified using array) regexes.
+This is the basic parser for extracting data using regular expressions. The only required property is `regex`, which can contain a single regex pattern or an array of multiple patterns.
 
-It's not required to put add the whole regex to the capturing group.
-Often we use keywords and only capture part of the match (e.g. the
-amount).
+You don't need to include the entire regex in the capturing group. Often, you'll use keywords and only capture the relevant part of the match (e.g., the amount).
 
-You will need to understand regular expressions to find the right
-values. If you didn't need them in your life up until now (lucky you),
-you can learn about them
-[here](http://www.zytrax.com/tech/web/regex.htm) or [test them
-here](http://www.regexr.com/). We use [Python's regex
-engine](https://docs.python.org/2/library/re.html). It won't matter for
-the simple expressions we need, but sometimes there are subtle
-differences when e.g. coming from Perl.
+**Understanding Regular Expressions**
 
-By default `regex` parser removes all duplicated matches. It results a
-single value or an array (depending an amount of unique matches found).
+You'll need to understand regular expressions to effectively use this parser. If you're new to regex, here are some resources:
 
-Optional properties:
+* [Regex Tutorial](http://www.zytrax.com/tech/web/regex.htm)
+* [Regex Tester](http://www.regexr.com/)
 
-- `type` (if present must be one of: `int`, `float`, `date`) -results
-  in parsing every matched value to a specified type
-- `group` (if present must be one of: `sum`, `min`, `max`, `first`,
-  `last`, `join`) - specifies grouping function (defines what value to return in
-  case of multiple matches)
+We use [Python's regex engine](https://docs.python.org/2/library/re.html). While this usually won't matter for simple expressions, be aware of potential subtle differences if you're used to other regex flavors (like Perl).
 
-Example for `regex`:
+**Duplicate Matches**
 
-    fields:
-      amount:
-        parser: regex
-        regex: Total:\s+(\d+\.\d+) EUR
-        type: float
-      date:
-        parser: regex
-        area: {f: 1, l: 1, x: 110, y: 50, r: 300, W: 100, H: 200}
-        regex: Issued on:\s+(\d{4}-\d{2}-\d{2})
-        type: date
-      advance:
-        parser: regex
-        regex:
-          - Advance payment:\s+(\d+\.\d+)
-          - Paid in advance:\s+(\d+\.\d+)
-        type: float
-        group: sum
+By default, the `regex` parser removes duplicate matches. This means you'll get a single value or an array of unique values.
+
+**Optional Properties**
+
+* **`type`**:  Specifies the data type of the extracted value. Can be `int`, `float`, or `date`.
+* **`group`**: Defines how to handle multiple matches. Options include:
+    * `sum`: Sum the values.
+    * `min`: Return the minimum value.
+    * `max`: Return the maximum value.
+    * `first`: Return the first match.
+    * `last`: Return the last match.
+    * `join`: Join the matches into a single string.
+
+**Example**
+
+```yaml
+fields:
+  amount:
+    parser: regex
+    regex: Total:\s+(\d+\.\d+) EUR
+    type: float
+  date:
+    parser: regex
+    area: {f: 1, l: 1, x: 110, y: 50, r: 300, W: 100, H: 200}
+    regex: Issued on:\s+(\d{4}-\d{2}-\d{2})
+    type: date
+  advance:
+    parser: regex
+    regex:
+      - Advance payment:\s+(\d+\.\d+)
+      - Paid in advance:\s+(\d+\.\d+)
+    type: float
+    group: sum
+```
 
 ### Parser `static`
 
-This pseudo-parser sets field with a content of `value` field.
+This parser allows you to set a field to a fixed value. This is useful for fields that always have the same value on a particular type of invoice.
 
-Example:
+**Properties**
 
-    fields:
-      friendly_name:
-        parser: static
-        value: Amazon
+* **`value`:** The fixed value to assign to the field.
+
+**Example**
+
+```yaml
+fields:
+  friendly_name:
+    parser: static
+    value: Amazon
+```
 
 ### Parser `lines`
 
@@ -153,17 +160,27 @@ Some companies may use multiple formats for their line-based data. In
 such cases multiple sets of parsing regexes can be added to the `rules`.
 Results from multiple `rules` get merged into a single array.
 
-It replaces `lines` plugin and should be preferred over it. It allows
-reusing in multiple `fields`.
+**Properties**
+
+* **`start`:** A regex to identify the beginning of the line item section.
+* **`end`:** A regex to identify the end of the line item section.
+* **`line`:** A regex with named capture groups to extract data from each line. The names of the capture groups become the field names in the output.
+* **`rules` (optional):**  Allows you to define multiple sets of `start`, `end`, and `line` regexes. This is helpful when a company uses different formats for their line items. Results from all rules are merged into a single array.
+
+**Replacing the `lines` Plugin**
+
+This parser replaces the older `lines` plugin and is the preferred method for extracting line item data. It's more flexible and can be reused across multiple fields.
+
+**Example**
 
 Example for `fields`:
-
+```yaml
     fields:
       lines:
         parser: lines
         start: Item\s+Discount\s+Price$
         end: \s+Total
-        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price>\d+\d+)
+        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
 
     fields:
       lines:
@@ -171,48 +188,62 @@ Example for `fields`:
         rules:
           - start: Item\s+Discount\s+Price$
             end: \s+Total
-            line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price>\d+\d+)
+            line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
           - start: Item\s+Price$
             end: \s+Total
-            line: (?P<description>.+)\s+(?P<price>\d+\d+)
+            line: (?P<description>.+)\s+(?P<price_total>\d+\d+)
+```
 
-### Legacy regexes
+### Legacy Regexes
 
-For non-text fields, the name of the field is important:
+This section describes older conventions for defining fields using regexes. While these methods still work, using the `regex` parser with explicit `type` and `group` properties is generally preferred for clarity and flexibility.
 
-- the name of the field for date fields should start with **date**
-- the name of the field for float fields should start with **amount**
+**Field Name Conventions**
 
-There are also special prefixes that you can add to your field name:
+* **`date_` prefix:** Fields with names starting with `date_` are automatically treated as date fields.
+* **`amount_` prefix:** Fields with names starting with `amount_` are automatically treated as float fields.
 
-- **static\_**: it will return the defined value (no regular
-  expression is executed)
-- **sum\_**: combined with a list of several regexps, it will return
-  the sum of the amounts caught by each regexp (instead of returning
-  the amount caught by the first regexp that caught something)
+**Special Prefixes**
 
-Note that these special prefix for field names are removed when
-returning the result.
+* **`static_`:**  This prefix defines a static field. The field will be set to the value specified in the regex, and no regular expression matching will be performed.
+* **`sum_`:** This prefix, when used with a list of regexes, will sum the values captured by each regex.
 
-Example with the \_sum\_\_ prefix:
+**Note:** These special prefixes are removed from the field names in the output.
 
-    fields:
-      sum_amount_tax:
-        - VAT\s+10%\s+(\d+,\d{2})
-        - VAT\s+20%\s+(\d+,\d{2})
+**Example with `sum_`**
 
-If the first regexp for VAT 10% catches 1.5 and the second regexp for
-VAT 20% catches 4.0, the result will be {'amount_tax': 5.50, 'date':
-...} (the \_sum\_\_ prefix is removed).
+```yaml
+fields:
+  sum_amount_tax:
+    - VAT\s+10%\s+(\d+,\d{2})
+    - VAT\s+20%\s+(\d+,\d{2})
+```
+If the first regexp for `VAT 10%` catches **1.5** and the second regexp for
+`VAT 20%` catches **4.0**, the output will be
+````
+{'amount_tax': 5.50, 'date':...}
+````
+As you can see, the sum_ prefix is removed from the amount_tax field name.
+
 
 ### Lines
 
-The `lines` key allows you to parse invoice items. Mandatory are regexes
-`start` and `end` to figure out where in the stream the item table is
-located. Then the regex `line` is applied, and supposed to contain named
-capture groups. The names of the capture groups will be the field names
-for the parsed item. If we have an invoice that looks like
+The `lines` key allows you to extract line item data from invoices, such as product descriptions, quantities, and prices.
 
+**Required Properties**
+
+* **`start`**: A regex to identify the beginning of the line item section.
+* **`end`**: A regex to identify the end of the line item section.
+* **`line`**: A regex with named capture groups to extract data from each line. The names of the capture groups will become the field names in the output.
+
+**Optional Properties**
+
+* **`skip_line`**: A regex pattern which indicates sub-lines will be skipped and their data not recorded. This is useful if tables span multiple pages and you need to skip over page numbers or headers that appear mid-table.
+
+**Example Invoice**
+
+If we have an invoice that looks like
+```
     some header text
 
     the address, etc.
@@ -225,42 +256,63 @@ for the parsed item. If we have an invoice that looks like
                           Total   79.80
 
     A footer
+```
 
-your lines definition should look like
-
+**Example Template**
+```yaml
     lines:
         start: Item\s+Discount\s+Price$
         end: \s+Total
-        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price>\d+\d+)
+        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
+```
 
-Then if you want the parser to coerce the fields to numeric types (by
-default, they are strings), you can add a `types` key below `lines`:
+**Data Types**
 
+By default, all extracted fields are treated as strings. You can use the types key to specify the data type for each field:
+
+
+```yaml
     types:
         discount: float
-        price: float
+        price_total: float
+```
 
-The example above is very simplistic, most invoices at least potentially
-can have multiple lines per invoice item. In order to parse this
-correctly, you can also give a `first_line` and/or `last_line` regex.
-For every line, the parser will check if `first_line` matches, if yes,
-it's a new line. If not, it checks if `last_line` matches, if yes, the
-current line is commited, if not, `line` regex is checked, and if this
-one doesn't match either, this line is ignored. This implies that you
-need to take care that the `first_line` regex is the most specific one,
-and `line` the least specific.
+#### Handling Multiple Lines per Item
 
-### Tables
+Some invoices may have multiple lines per item. To handle this, you can use the `first_line` and/or `last_line` regexes:
 
-The `tables` plugin allows you to parse table-oriented fields that have
-a row of column headers followed by a row of values on the next line.
-The plugin requires a `start` and `end` regex to identify where the
-table is located in the invoice. The `body` regex should contain named
-capture groups that will be added to the fields output. The plugin will
-attempt to match the `body` regex to the invoice content found between
-the `start` and `end` regexes.
+* **`first_line`**: A regex to identify the first line of an item.
+* **`last_line`**: A regex to identify the last line of an item.
 
-An example invoice that contains table-oriented data may look like:
+The parser will check each line against these regexes in the following order:
+
+1. `first_line` (if defined)
+2. `last_line` (if defined)
+3. `line`
+
+If a line matches `first_line`, it starts a new item. If it matches `last_line`, it ends the current item. If it matches `line`, it's considered part of the current item. If none of the regexes match, the line is ignored.
+
+````{important}
+When using `first_line` and `last_line`, make sure that `first_line` is the most specific regex and `line` is the least specific.
+````
+
+### Tables Plugin
+
+The `tables` plugin allows you to extract data from tables where the column headers and their corresponding values are on different lines. This is often the case in invoices where data is presented in a more visual, tabular format.
+
+**How it Works**
+
+The plugin uses the following properties:
+
+* **`start`**: A regex to identify the beginning of the table.
+* **`end`**: A regex to identify the end of the table.
+* **`body`**: A regex with named capture groups to extract the data. The names of the capture groups will become the field names in the output.
+
+The plugin will try to match the `body` regex to the text between the `start` and `end` markers.
+
+**Example Invoice**
+
+Here's an example of an invoice with table-like data:
 
     Guest Name: Sanjay                                                                      Date: 31/12/2017
 
@@ -283,7 +335,7 @@ An example invoice that contains table-oriented data may look like:
 The hotel name, check in and check out dates, room count, booking ID,
 and payment mode are all located on different lines from their column
 headings. A template to capture these fields may look like:
-
+```yaml
     tables:
       - start: Hotel Details\s+Check In\s+Check Out\s+Rooms
         end: Booking ID
@@ -291,7 +343,7 @@ headings. A template to capture these fields may look like:
       - start: Booking ID\s+Payment Mode
         end: DESCRIPTION
         body: (?P<booking_id>\w+)\s+(?P<payment_method>(?:\w+ ?)*)
-
+```
 The plugin supports multiple tables per invoice as seen in the example.
 
 By default, all fields are parsed as strings. The `tables` plugin
@@ -343,7 +395,8 @@ Suggested values:
 - 5: company specific template
 - 6-10: company department/unit specific template
 
-### tax_lines
+(Tax-lines)=
+### Tax-lines
 
 Invoices / receipts often have a table near the bottom with a summary of the appied VAT taxes.
 To correctly process the invoice in accounting programs we need separatly parse the amount per tax type.
@@ -357,7 +410,7 @@ Example invoice:
                                                      42.73                   21.0                     8.97
 ```
 
-Tax line Fields
+
 | fieldname | type | Description |
 | -------------- | :---------: | :-------------------------------------- |
 | price_subtotal | float | The total amount of the tax rule excluding taxes. |
@@ -366,7 +419,7 @@ Tax line Fields
 
 Example template:
 
-```
+```yaml
   tax_lines:
     parser: lines
     start: 'EXCL. VAT'
@@ -379,8 +432,8 @@ Example template:
       line_tax_amount: float
 ```
 
-### Example of template using most options
-
+## Example of template using most options
+```yaml
     issuer: Free Mobile
     fields:
       amount: \spayer TTC\*\s+(\d+.\d{2})
@@ -404,6 +457,7 @@ Example template:
       replace:
         - ['e´ ', 'é']
         - ['\s{5,}', ' ']
+```
 
 ## Steps to add new template
 
