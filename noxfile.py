@@ -110,12 +110,15 @@ def precommit(session: nox.Session) -> None:
         "--hook-stage=manual",
         "--show-diff-on-failure",
     ]
-    session.run("uv", "sync", "--group", "dev", "--group", "lint", external=True)
-    session.install(
-        "ruff",
-        "pre-commit",
-        "pre-commit-hooks",
-        "pydoclint",
+    session.run_install(
+        "uv",
+        "sync",
+        "--group",
+        "dev",
+        "--group",
+        "lint",
+        # external=True,
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )
     session.run("pre-commit", *args)
     if args and args[0] == "install":
@@ -170,13 +173,13 @@ def mypy(session: nox.Session) -> None:
 @nox.session(python=python_versions)
 def tests(session: nox.Session) -> None:
     """Run the test suite."""
-    session.run_install(
+    session.run(
         "uv",
         "sync",
         "--group",
         "dev",
-        "--group",
-        "lint",
+        # "--group",
+        # "lint",
         "--extra",
         "googlevision",
         "--extra",
@@ -190,16 +193,14 @@ def tests(session: nox.Session) -> None:
         "--extra",
         "pyyaml",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
-        # external=True
     )
     session.run(
         "python",
         "-c",
         '"import google.cloud.vision; import google.cloud.storage"',
-        external=True,
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )
     session.env["PYTHONPATH"] = "src"
-    session.install("pytest-mock")
 
     try:
         session.run(
@@ -208,7 +209,6 @@ def tests(session: nox.Session) -> None:
             "--parallel",
             "-m",
             "pytest",
-            external=True,
             env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
         )
     finally:
@@ -226,7 +226,7 @@ def coverage(session: nox.Session) -> None:
         "install",
         "coverage[toml]",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
-        external=True,
+        # external=True,
     )
     if not session.posargs and any(Path().glob(".coverage.*")):
         session.run("coverage", "combine")
@@ -247,7 +247,7 @@ def typeguard(session: nox.Session) -> None:
         "--group",
         "typeguard",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
-        external=True,
+        # external=True,
     )
     session.run(
         "pytest",
@@ -276,7 +276,7 @@ def xdoctest(session: nox.Session) -> None:
         "--group",
         "xdoctest",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
-        external=True,
+        # external=True,
     )
     session.run("python", "-m", "xdoctest", *args)
 
@@ -296,7 +296,7 @@ def docs_build(session: nox.Session) -> None:
         "--group",
         "dev",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
-        external=True,
+        # external=True,
     )
 
     build_dir = Path("docs", "_build")
@@ -317,7 +317,7 @@ def docs(session: nox.Session) -> None:
         "dev",
         "--group",
         "docs",
-        external=True,
+        # external=True,
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )
 
