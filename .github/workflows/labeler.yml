@@ -5,6 +5,11 @@ on:
     branches:
       - main
       - master
+    paths:
+      - '.github/labels.yml'
+  pull_request:
+    paths:
+      - '.github/labels.yml'
 
 jobs:
   labeler:
@@ -19,4 +24,10 @@ jobs:
       - name: Run Labeler
         uses: crazy-max/ghaction-github-labeler@v5.1.0
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          yaml-file: .github/labels.yml
+          dry-run: ${{ github.event_name == 'pull_request' }}
+          exclude: |
+            help*
+            *issue
           skip-delete: true
