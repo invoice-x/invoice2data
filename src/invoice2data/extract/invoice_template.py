@@ -128,24 +128,24 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
         Returns:
             bool: True if the extracted string matches the template keywords,
-                  False otherwise.
+                False otherwise.
         """
-        if all([re.search(keyword, extracted_str) for keyword in self["keywords"]]):
-            # All keyword patterns matched
+        if all([keyword in extracted_str for keyword in self["keywords"]]):
+            # All keywords found
             if self["exclude_keywords"]:
                 if any(
                     [
-                        re.search(exclude_keyword, extracted_str)
+                        exclude_keyword in extracted_str
                         for exclude_keyword in self["exclude_keywords"]
                     ]
                 ):
-                    # At least one exclude_keyword matches
+                    # At least one exclude_keyword found
                     logger.debug(
                         "Template: %s | Keywords matched. Exclude keyword found!",
                         self["template_name"],
                     )
                     return False
-            # No exclude_keywords or none match, template is good
+            # No exclude_keywords or none found, template is good
             logger.debug(
                 "Template: %s | Keywords matched. No exclude keywords found.",
                 self["template_name"],
