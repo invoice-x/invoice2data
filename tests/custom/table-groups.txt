@@ -1,0 +1,31 @@
+Issue date: 2024-12-20
+Issuer: Table Group Tests
+Invoice number: 007/10/2024
+Total: 123.40 EUR
+
+Table basic
+
+Simple table start
+Tax precentage     amount   qty
+1%                 3.00     7.00
+2%                  2.00    4.00
+0%                  0.00    0.01
+Simple table end
+
+
+
+Sample data below to test advanced grouping functions of table parser.
+
+Guest Name: Sanjay
+
+Hotel Details                                                   Check In            Check Out       Rooms
+OYO 4189 Resort Nanganallur,                                    01/08/2024          01/01/2018      1
+OYO 4189 Resort Nanganallur Suite A,                            31/12/2017          31/12/2024      1
+25,Vembuliamman Koil Street,, Pazhavanthangal, Chennai
+                                                                    Booking ID              Payment Mode
+                                                                    IBZY2087                Cash at Hotel
+
+
+invoice2data --input-reader=text --debug ./table-groups.txt
+
+invoice2data ./table-groups.txt --debug -t ./templates

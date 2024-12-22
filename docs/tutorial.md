@@ -308,6 +308,17 @@ The plugin uses the following properties:
 * **`end`**: A regex to identify the end of the table.
 * **`body`**: A regex with named capture groups to extract the data. The names of the capture groups will become the field names in the output.
 
+**Optional Properties**
+
+* **`type`**:  Specifies the data type of the extracted value. Can be `int`, `float`, or `date`.
+* **`group`**: Defines how to handle multiple matches. Options include:
+    * `sum`: Sum the values.
+    * `min`: Return the minimum value.
+    * `max`: Return the maximum value.
+    * `first`: Return the first match.
+    * `last`: Return the last match.
+    * `join`: Join the matches into a single string.
+
 The plugin will try to match the `body` regex to the text between the `start` and `end` markers.
 
 **Example Invoice**
@@ -339,7 +350,9 @@ headings. A template to capture these fields may look like:
     tables:
       - start: Hotel Details\s+Check In\s+Check Out\s+Rooms
         end: Booking ID
-        body: (?P<hotel_details>[\S ]+),\s+(?P<date_check_in>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<date_check_out>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<amount_rooms>\d+)
+        body: (?P<hotel_details>[\S ]+),\s+(?P<date_check_in>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<date_check_out>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<qty_rooms>\d+)
+        types:
+          qty_rooms: int
       - start: Booking ID\s+Payment Mode
         end: DESCRIPTION
         body: (?P<booking_id>\w+)\s+(?P<payment_method>(?:\w+ ?)*)
@@ -349,6 +362,19 @@ The plugin supports multiple tables per invoice as seen in the example.
 By default, all fields are parsed as strings. The `tables` plugin
 supports the `amount` and `date` field naming conventions to convert
 data types.
+
+The table plugin supports the grouping options in case there are multiple matches.
+This is usefull when one wants to sum the numbers in a column, Example:
+```yaml
+    tables:
+      - start: Basic example to sum a number
+        end: with the help of the table plugin
+        body: (?P<random_num_to_sum>\d+\.\d+)
+        fields:
+          random_num_to_sum:
+            group: sum
+            type: float
+```
 
 ### Options
 

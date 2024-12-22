@@ -7,6 +7,8 @@ from typing import Any
 from typing import Dict
 from typing import Optional
 
+from ..utils import _apply_grouping
+
 
 logger = getLogger(__name__)
 
@@ -21,11 +23,12 @@ def extract(
     Args:
         self (InvoiceTemplate): The current instance of the class.  # noqa: DOC103
         content (str): The content of the invoice.
-        output (Dict[str, Any]): A dictionary to store the extracted data.
+        output (Dict[str, Any]): The updated output dictionary with extracted
+                                    data or None if parsing fails.
 
     Returns:
-        Optional[Dict[str, Any]]: The updated output dictionary with extracted
-                                   data, or None if date parsing fails.
+        Optional[List[Any]]: The extracted data as a list of dictionaries, or None if table parsing fails.
+                                Each dictionary represents a row in the table.
     """
     for i, table in enumerate(self["tables"]):
         logger.debug("Testing Rules set #%s", i)
@@ -41,8 +44,18 @@ def extract(
             continue
 
         # Process table lines
-        if not _process_table_lines(self, table, table_body, output):
-            return None  # Return None if date parsing fails
+        table_data = _process_table_lines(self, table, table_body)
+        if table_data is None:
+            continue
+
+        # Apply grouping to individual fields within table_data
+        for field, field_settings in table.get("fields", {}).items():
+            if "group" in field_settings:
+                grouped_value = _apply_grouping(field_settings, table_data.get(field))
+                if grouped_value is not None:
+                    table_data[field] = grouped_value
+
+        output.update(table_data)
 
     return output
 
@@ -104,29 +117,28 @@ def _process_table_lines(
     self: "OrderedDict[str, Any]",
     table: Dict[str, Any],
     table_body: str,
-    output: Dict[str, Any],
-) -> bool:
+) -> Optional[Dict[str, Any]]:
     """Process the lines within the table body.
 
     Args:
         self (InvoiceTemplate): The current instance of the class.  # noqa: DOC103
         table (Dict[str, Any]): The validated table settings.
         table_body (str): The extracted table body.
-        output (Dict[str, Any]): A dictionary to store the extracted data.
 
     Returns:
-        bool: True if processing is successful, False if date parsing fails.
+        List[Dict[str, Any]]: A list of dictionaries, where each dictionary
+                              represents a row in the table.
     """
     types = table.get("types", {})
     no_match_found = True
-
+    line_output: Dict[str, Any] = {}
     for line in re.split(table["line_separator"], table_body):
         if not line.strip("").strip("\n") or line.isspace():
             continue
 
         # Correct the function call and return logic
-        if not _process_table_line(self, table, line, types, output):
-            return False  # Return False immediately if date parsing fails
+        if not _process_table_line(self, table, line, types, line_output):
+            return None  # Return None immediately if line parsing fails
         else:
             no_match_found = (
                 False  # Update no_match_found only if line processing is successful
@@ -137,10 +149,11 @@ def _process_table_lines(
             "\033[1;43mWarning\033[0m regex=\033[91m*%s*\033[0m doesn't match anything!",
             table["body"],
         )
-    return True
+
+    return line_output
 
 
-def _process_table_line(
+def _process_table_line(  # noqa: C901
     self: "OrderedDict[str, Any]",
     table: Dict[str, Any],
     line: str,
@@ -162,9 +175,6 @@ def _process_table_line(
     match = re.search(table["body"], line)
     if match:
         for field, value in match.groupdict().items():
-            if field in output:
-                continue
-
             logger.debug(
                 (
                     "field=\033[1m\033[93m%s\033[0m |"
@@ -177,18 +187,32 @@ def _process_table_line(
             )
 
             if field.startswith("date") or field.endswith("date"):
-                output[field] = self.parse_date(value)  # type: ignore[attr-defined]
-                if not output[field]:
+                value = self.parse_date(value)  # type: ignore[attr-defined]
+                if not value:
                     logger.error("Date parsing failed on date *%s*", value)
                     return False
             elif field.startswith("amount"):
-                output[field] = self.parse_number(value)  # type: ignore[attr-defined]
+                value = self.parse_number(value)  # type: ignore[attr-defined]
             elif field in types:
-                # Access types as a dictionary
-                output[field] = self.coerce_type(value, types[field])  # type: ignore[attr-defined]
+                value = self.coerce_type(value, types[field])  # type: ignore[attr-defined]
+            elif table.get("fields"):
+                # Writing templates is hard. So we also support the following format
+                # In case someone mixup syntax
+                # fields:
+                #    example_field:
+                #      type: float
+                #      group: sum
+                field_set = table["fields"].get(field, {})
+                if "type" in field_set:
+                    value = self.coerce_type(value, field_set.get("type"))  # type: ignore[attr-defined]
+
+            if field in output:
+                # Ensure output[field] is a list before appending
+                if not isinstance(output[field], list):
+                    output[field] = [output[field]]
+                output[field].append(value)
             else:
                 output[field] = value
-
         # Return True if a match is found and processed successfully
         return True
     else:
