@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: MIT
+issuer: Table Groups Tests
+keywords:
+  - Table basic
+  - Simple table start
+
+tables:
+  - start: Hotel Details\s+Check In\s+Check Out\s+Rooms
+    end: Booking ID
+    body: (?P<hotel_details>[\S ]+),\s+(?P<date_check_in>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<date_check_out>\d{1,2}\/\d{1,2}\/\d{4})\s+(?P<qty_rooms>\d)
+    types:
+      qty_rooms: int
+    fields:
+      qty_rooms:
+        group: sum
+      date_check_in:
+        group: first
+      date_check_out:
+        group: last
+  - start: Tax precentage     amount   qty
+    end: Simple table end
+    body: (?P<line_tax_percent>\d[%])\s+(?P<lamount_tax>\d\.\d{2})\s+(?P<random_num_to_sum>\d\.\d{2})
+    fields:
+      random_num_to_sum:
+        group: sum
+        # type: float # This is also supported
+    types:
+      random_num_to_sum: float # this is supported
+
+fields:
+  date:
+    parser: regex
+    regex: Issue date:\s*(\d{4}-\d{2}-\d{2})
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Invoice number:\s*([\d/]+)
+  amount:
+    parser: regex
+    regex: Total:\s*(\d+\.\d\d)
+    type: float
+options:
+  currency: EUR
+  date_formats:
+    - "%Y-%m-%d"
+  decimal_separator: "."
