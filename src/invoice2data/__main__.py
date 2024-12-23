@@ -109,7 +109,9 @@ if not logger.handlers:
 
 
 def extract_data(
-    invoicefile: str, templates: Optional[List[Any]] = None, input_module: Any = None
+    invoicefile: str,
+    templates: Optional[List[InvoiceTemplate]] = None,
+    input_module: Any = None,
 ) -> Dict[str, Any]:
     """Extracts structured data from PDF/image invoices.
 
@@ -121,8 +123,8 @@ def extract_data(
 
     Args:
         invoicefile (str): Path of electronic invoice file in PDF, JPEG, PNG
-        templates (Optional[List[Any]]): List of instances of class `InvoiceTemplate`.
-                                        Templates are loaded using `read_template` function in `loader.py`.
+        templates (Optional[List[InvoiceTemplate]]): List of instances of class `InvoiceTemplate`.
+                                            Templates are loaded using `read_template` function in `loader.py`.
         input_module (Any, optional): Library to be used to extract text
                                         from the given `invoicefile`.
                                         Choices: {'pdftotext', 'pdfminer', 'tesseract', 'text'}.
@@ -148,10 +150,7 @@ def extract_data(
     if isinstance(input_module, str):
         input_module = input_mapping[input_module]
     elif input_module is None:
-        if invoicefile.lower().endswith(".txt"):
-            input_module = text
-        else:
-            input_module = pdftotext
+        input_module = text if invoicefile.lower().endswith(".txt") else pdftotext
 
     extracted_str = input_module.to_text(invoicefile)
     if not isinstance(extracted_str, str) or not extracted_str.strip():
@@ -167,39 +166,28 @@ def extract_data(
     )
     logger.debug("END pdftotext result =============================")
 
-    if not templates:
-        templates = read_templates()
+    templates = templates or read_templates()
 
-    # Convert templates to a list to allow indexing
-    templates = list(templates)
-
-    # Initialize result as an empty dictionary
-    result: Dict[str, Any] = {}
     for template in templates:
         if template.matches_input(extracted_str):
             logger.info("Using %s template", template["template_name"])
             optimized_str = template.prepare_input(extracted_str)
-            result = template.extract(optimized_str, invoicefile, input_module)
-            break
+            return template.extract(
+                optimized_str, invoicefile, input_module
+            )  # Return directly if match found
 
-    if not result:
-        if ocrmypdf.ocrmypdf_available() and input_module is not ocrmypdf:
-            logger.debug("Text extraction failed, falling back to ocrmypdf")
-            extracted_str, invoicefile, templates_matched = (
-                extract_data_fallback_ocrmypdf(invoicefile, templates, input_module)
-            )
-            if templates_matched:
-                result = templates_matched[0].extract(
-                    extracted_str, invoicefile, input_module
-                )
-            else:
-                logger.error("No template for %s", invoicefile)
-                return {}
-        else:
-            logger.error("No template for %s", invoicefile)
-            return {}
+    # If no template matches, try OCR fallback
+    if ocrmypdf.ocrmypdf_available() and input_module is not ocrmypdf:
+        logger.debug("Text extraction failed, falling back to ocrmypdf")
+        extracted_str, invoicefile, templates_matched = extract_data_fallback_ocrmypdf(
+            invoicefile, templates, input_module
+        )
+        if templates_matched:
+            template = templates_matched[0]
+            return template.extract(extracted_str, invoicefile, input_module)
 
-    return deepcopy(result)
+    logger.error("No template for %s", invoicefile)
+    return {}
 
 
 def extract_data_fallback_ocrmypdf(
