@@ -1,4 +1,0 @@
-include LICENSE.txt
-include README.md
-# include requirements.txt
-recursive-include src/invoice2data/extract/templates/ *.*
