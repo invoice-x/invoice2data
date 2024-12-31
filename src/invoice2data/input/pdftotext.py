@@ -11,9 +11,17 @@ def to_text(path: str, area_details: Optional[Dict[str, Any]] = None) -> str:
 
     Args:
         path (str): Path to the PDF file.
-        area_details (Optional[Dict[str, Any]], optional):
+        area_details (Optional[Dict[str, Any]], optional): 
             Specific area in the PDF to extract text from.
             Defaults to None (extract from the entire page).
+            If provided, should be a dictionary with the following keys:
+                - "f": First page to extract from
+                - "l": Last page to extract from 
+                - "x":  x-coordinate of the top-left corner of the area to extract (in pixels)
+                - "y":  y-coordinate of the top-left corner of the area to extract (in pixels)
+                - "W": Width of the area to extract (in pixels)
+                - "H": Height of the area to extract (in pixels)
+                - "r": Specifies the resolution, in DPI.
 
     Returns:
         str: The extracted text.
@@ -32,8 +40,8 @@ def to_text(path: str, area_details: Optional[Dict[str, Any]] = None) -> str:
         if area_details is not None:
             # An area was specified
             # Validate the required keys were provided
-            assert "f" in area_details, "Area r details missing"
-            assert "l" in area_details, "Area r details missing"
+            assert "f" in area_details, "Area f details missing"
+            assert "l" in area_details, "Area l details missing"
             assert "r" in area_details, "Area r details missing"
             assert "x" in area_details, "Area x details missing"
             assert "y" in area_details, "Area y details missing"
