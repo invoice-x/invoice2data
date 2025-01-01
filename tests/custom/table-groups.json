@@ -1,0 +1,20 @@
+[
+  {
+    "issuer": "Table Groups Tests",
+    "date": "2024-12-20",
+    "invoice_number": "007/10/2024",
+    "amount": 123.4,
+    "currency": "EUR",
+    "hotel_details": [
+      "OYO 4189 Resort Nanganallur",
+      "OYO 4189 Resort Nanganallur Suite A"
+    ],
+    "date_check_in": "2024-01-08",
+    "date_check_out": "2024-12-31",
+    "qty_rooms": 2,
+    "line_tax_percent": ["1%", "2%", "0%"],
+    "lamount_tax": ["3.00", "2.00", "0.00"],
+    "random_num_to_sum": 11.01,
+    "desc": "Invoice from Table Groups Tests"
+  }
+]
