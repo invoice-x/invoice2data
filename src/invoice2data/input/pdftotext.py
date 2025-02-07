@@ -11,12 +11,12 @@ def to_text(path: str, area_details: Optional[Dict[str, Any]] = None) -> str:
 
     Args:
         path (str): Path to the PDF file.
-        area_details (Optional[Dict[str, Any]], optional): 
+        area_details (Optional[Dict[str, Any]], optional):
             Specific area in the PDF to extract text from.
             Defaults to None (extract from the entire page).
             If provided, should be a dictionary with the following keys:
                 - "f": First page to extract from
-                - "l": Last page to extract from 
+                - "l": Last page to extract from
                 - "x":  x-coordinate of the top-left corner of the area to extract (in pixels)
                 - "y":  y-coordinate of the top-left corner of the area to extract (in pixels)
                 - "W": Width of the area to extract (in pixels)
