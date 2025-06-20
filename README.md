@@ -179,7 +179,7 @@ As an alternative json templates can be used. Which are natively better supporte
 
 The performance with yaml templates can be greatly increased **10x** by using [libyaml](https://github.com/yaml/libyaml)
 It can be installed on most distributions by:
-`sudo apt-get libyaml-dev`
+`sudo apt-get install libyaml-dev`
 
 ## Development
 
