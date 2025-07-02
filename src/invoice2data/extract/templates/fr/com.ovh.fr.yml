@@ -8,7 +8,6 @@ fields:
 keywords:
   - FR22424761419
   - Facture
-  - euros
 options:
   currency: EUR
   date_formats:
