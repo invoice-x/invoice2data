@@ -1,0 +1,19 @@
+issuer: Google Cloud France
+fields:
+  amount: Total en EUR\s+([\d ]+,\d{2})
+  amount_untaxed: Sous-total en EUR\s+([\d ]+,\d{2})
+  date: \s{10}\s+(\d{1,2} [\w\.]+ \d{4})
+  invoice_number: (GCFR\w+)
+  static_vat: IE6388047V
+keywords:
+  - Google Cloud France
+  - Facture
+  - FR78881721583
+  - EUR
+options:
+  currency: EUR
+  date_formats:
+    - "%d %B %Y"
+  languages:
+    - fr
+  decimal_separator: ","
