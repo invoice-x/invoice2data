@@ -53,7 +53,7 @@ jobs:
         run: uv venv
 
       - name: Install system dependencies (Linux)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-latest' && matrix.session is in ("tests", "typeguard", "mypy")
         run: |
           sudo apt update
           sudo apt install tesseract-ocr poppler-utils imagemagick ghostscript
