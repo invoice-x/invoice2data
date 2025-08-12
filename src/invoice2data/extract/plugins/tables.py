@@ -1,13 +1,17 @@
 """Plugin to extract tables from an invoice."""
 
 import re
-from collections import OrderedDict
 from logging import getLogger
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Dict
 from typing import Optional
 
 from ..utils import _apply_grouping
+
+
+if TYPE_CHECKING:
+    from ..invoice_template import InvoiceTemplate
 
 
 logger = getLogger(__name__)
@@ -16,7 +20,7 @@ DEFAULT_OPTIONS = {"field_separator": r"\s+", "line_separator": r"\n"}
 
 
 def extract(
-    self: "OrderedDict[str, Any]", content: str, output: Dict[str, Any]
+    self: "InvoiceTemplate", content: str, output: Dict[str, Any]
 ) -> Optional[Dict[str, Any]]:
     """Try to extract tables from an invoice.
 
@@ -61,7 +65,7 @@ def extract(
 
 
 def _extract_and_validate_settings(
-    self: "OrderedDict[str, Any]",
+    self: "InvoiceTemplate",
     table: Dict[str, Any],
 ) -> Optional[Dict[str, Any]]:
     """Extract and validate table settings.
@@ -114,7 +118,7 @@ def _extract_table_body(content: str, table: Dict[str, Any]) -> Optional[str]:
 
 
 def _process_table_lines(
-    self: "OrderedDict[str, Any]",
+    self: "InvoiceTemplate",
     table: Dict[str, Any],
     table_body: str,
 ) -> Optional[Dict[str, Any]]:
@@ -154,7 +158,7 @@ def _process_table_lines(
 
 
 def _process_table_line(  # noqa: C901
-    self: "OrderedDict[str, Any]",
+    self: "InvoiceTemplate",
     table: Dict[str, Any],
     line: str,
     types: Dict[str, Any],
@@ -173,49 +177,43 @@ def _process_table_line(  # noqa: C901
         bool: True if processing is successful, False if date parsing fails.
     """
     match = re.search(table["body"], line)
-    if match:
-        for field, value in match.groupdict().items():
-            logger.debug(
-                (
-                    "field=\033[1m\033[93m%s\033[0m |"
-                    "regex=\033[36m%s\033[0m | "
-                    "matches=\033[1m\033[92m['%s']\033[0m"
-                ),
-                field,
-                match.re.pattern,
-                value,
-            )
-
-            if field.startswith("date") or field.endswith("date"):
-                value = self.parse_date(value)  # type: ignore[attr-defined]
-                if not value:
-                    logger.error("Date parsing failed on date *%s*", value)
-                    return False
-            elif field.startswith("amount"):
-                value = self.parse_number(value)  # type: ignore[attr-defined]
-            elif field in types:
-                value = self.coerce_type(value, types[field])  # type: ignore[attr-defined]
-            elif table.get("fields"):
-                # Writing templates is hard. So we also support the following format
-                # In case someone mixup syntax
-                # fields:
-                #    example_field:
-                #      type: float
-                #      group: sum
-                field_set = table["fields"].get(field, {})
-                if "type" in field_set:
-                    value = self.coerce_type(value, field_set.get("type"))  # type: ignore[attr-defined]
-
-            if field in output:
-                # Ensure output[field] is a list before appending
-                if not isinstance(output[field], list):
-                    output[field] = [output[field]]
-                output[field].append(value)
-            else:
-                output[field] = value
-        # Return True if a match is found and processed successfully
-        return True
-    else:
+    if not match:
         logger.debug("The following line doesn't match anything:\n*%s*", line)
         # Return True to continue processing even if a line doesn't match
         return True
+
+    for field, value in match.groupdict().items():
+        logger.debug(
+            (
+                "field=\033[1m\033[93m%s\033[0m |"
+                "regex=\033[36m%s\033[0m | "
+                "matches=\033[1m\033[92m['%s']\033[0m"
+            ),
+            field,
+            match.re.pattern,
+            value,
+        )
+
+        if field.startswith("date") or field.endswith("date"):
+            value = self.parse_date(value)
+            if not value:
+                logger.error("Date parsing failed on date *%s*", value)
+                return False
+        elif field.startswith("amount"):
+            value = self.parse_number(value)
+        elif field in types:
+            value = self.coerce_type(value, types[field])
+        elif table.get("fields"):
+            field_set = table["fields"].get(field, {})
+            if "type" in field_set:
+                value = self.coerce_type(value, field_set.get("type"))
+
+        if field in output:
+            # Ensure output[field] is a list before appending
+            if not isinstance(output[field], list):
+                output[field] = [output[field]]
+            output[field].append(value)
+        else:
+            output[field] = value
+    # Return True if a match is found and processed successfully
+    return True
