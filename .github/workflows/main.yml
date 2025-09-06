@@ -1,0 +1,42 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONIOENCODING: "utf8"
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10.x, 3.11, 3.12]
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install system dependencies (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt update
+        sudo apt install tesseract-ocr poppler-utils imagemagick ghostscript
+        pip install -U ocrmypdf
+
+    - name: Install system dependencies (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        choco install --yes --no-progress --pre tesseract
+        refreshenv
+        choco install --yes --no-progress --ignore-checksums ghostscript poppler imagemagick
+        pip install -U ocrmypdf
+
+    - name: Install testing dependencies
+      run: |
+        pip install -U wheel pip
+        pip install --editable ".[test]"
+    - name: Test with pytest
+      run: pytest

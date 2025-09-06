@@ -9,8 +9,9 @@
 
 # https://docs.python.org/3.10/library/unittest.html#test-cases
 
-
 import os
+import sys
+import pytest
 import unittest
 from io import StringIO  # noqa: F401
 from typing import Any
@@ -40,8 +41,10 @@ def have_pdfplumber() -> bool:
     return True
 
 
-needs_pdfplumber = unittest.skipIf(
-    not have_pdfplumber(), reason="requires pdfplumber\n"
+needs_pdfplumber = unittest.skipIf(not have_pdfplumber(), reason="requires pdfplumber\n")
+skip_on_windows = pytest.mark.skipif(
+    sys.platform.startswith("win"),
+    reason="Tesseract executable cannot be found in Windows test environment. FIXME",
 )
 
 
@@ -124,8 +127,9 @@ class TestLIB(unittest.TestCase):
             print("Testing pdfplumber with file", file)
             extract_data(file, [], pdfplumber)
 
-    def test_tesseract_for_return(self) -> None:
-        png_files = get_sample_files(".png")
+    @skip_on_windows
+    def test_tesseract_for_return(self):
+        png_files = get_sample_files('.png')
         for file in png_files:
             if tesseract.to_text(file) is None:
                 self.assertTrue(False, "Tesseract returned None")
