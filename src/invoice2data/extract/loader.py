@@ -6,6 +6,7 @@ Templates are initially read from .yml or .json files and then kept as class.
 import codecs
 import json
 import os
+import importlib.resources
 from logging import getLogger
 from typing import Any
 from typing import Callable
@@ -80,7 +81,7 @@ def read_templates(folder: Optional[str] = None) -> List[InvoiceTemplate]:
     """
     output = []
     if folder is None:
-        folder = "./src/invoice2data/extract/templates"
+        folder = str(importlib.resources.files("invoice2data") / 'extract' / 'templates')
     else:
         folder = os.path.abspath(folder)
 
