@@ -31,7 +31,8 @@ dependencies = [
     "click >=8.0.1",
     "dateparser >= 1.2.0",
     "PyYAML >= 6.0",
-    "regex >= 2024.4.16",
+    "regex >= 2025.2.10; python_version >= '3.12'",
+    "regex >= 2024.4.16; python_version < '3.12'",
 ]
 
 
