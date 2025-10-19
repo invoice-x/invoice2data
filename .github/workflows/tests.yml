@@ -167,7 +167,7 @@ jobs:
           uvx nox --session=coverage -- xml -i
 
       - name: Upload coverage report
-        uses: codecov/codecov-action@v5.5.0
+        uses: codecov/codecov-action@v5.5.1
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
