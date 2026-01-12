@@ -231,6 +231,6 @@ To learn more, see the [Contributor Guide].
 
 <!-- github-only -->
 
-[license]: https://github.com/invoice-x/invoice2data/blob/main/LICENSE
-[contributor guide]: https://github.com/invoice-x/invoice2data/blob/main/CONTRIBUTING.md
-[command-line reference]: https://invoice2data.readthedocs.io/en/latest/usage.html
+[license]: https://invoice2data.readthedocs.io/latest/license.html
+[contributor guide]: https://invoice2data.readthedocs.io/latest/contributing.html
+[command-line reference]: https://invoice2data.readthedocs.io/latest/usage.html
