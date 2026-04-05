@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: MIT
+keywords:
+  - "Krajowy System e-Faktur"
+  - "Sprawdź, czy Twoja faktura znajduje się w KSeF!"
+fields:
+  issuer:
+    parser: regex
+    regex: Sprzedawca.*(?:\n.*){1,3}\nNazwa:\s+(.*?)(?:\s\s|\n)
+  vatin:
+    parser: regex
+    regex: Sprzedawca.*(?:\n.*){0,2}\nNIP:\s+(\d+)
+    type: int
+  date:
+    parser: regex
+    regex: Data wystawienia.*:\s+(\d{2}.\d{2}.\d{4})
+    type: date
+  invoice_number:
+    parser: regex
+    regex: Numer Faktury:\n{1,3}\s+(.*)
+  amount:
+    parser: regex
+    regex: Kwota należności ogółem:\s+(\d+,\d\d)
+    type: float
+options:
+  currency: PLN
+  date_formats:
+    - "%d.%m.%Y"
+  decimal_separator: ","
+priority: 3
