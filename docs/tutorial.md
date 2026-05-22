@@ -296,6 +296,94 @@ If a line matches `first_line`, it starts a new item. If it matches `last_line`,
 When using `first_line` and `last_line`, make sure that `first_line` is the most specific regex and `line` is the least specific.
 ````
 
+#### Recipes & troubleshooting
+
+Most line-parsing problems come down to one of two things: the text
+invoice2data *actually* sees is not what you expect, or the layout is
+multi-line and a single `line` regex can't span it. These recipes cover the
+cases that come up most often.
+
+**Always start with `--debug`**
+
+Your regexes run against the raw text from the input reader, **not** the
+visual PDF. Before tweaking patterns, look at exactly what that text is:
+
+```
+invoice2data --input-reader pdftotext --debug --template-folder tpl invoice.pdf
+```
+
+Find the `START pdftotext result` block in the output — that is the text your
+`start`/`end`/`line` regexes have to match. Whitespace, column order and line
+breaks there are frequently different from the rendered page.
+
+**Recipe: description and amounts on separate lines**
+
+When the description is on one line and the numbers on the next, a single
+`line` regex can never match (a line-by-line regex can't cross the newline).
+Split the item across `first_line` and `line`, and let **indentation** tell
+them apart — a flush-left line starts an item, an indented line continues it:
+
+```
+Double A printpapier - A4
+                    1    € 22,50    € 22,50    21%    € 3,90
+```
+
+```yaml
+lines:
+  start: Omschrijving
+  end: Subtotaal
+  first_line: '^(?P<description>\S.+)$'   # no leading space -> starts an item
+  line: '^\s+(?P<qty>\d+)\s+€\s+(?P<price>[\d,]+)\s+€\s+(?P<total>[\d,]+)\s+(?P<vat_perc>\d+%)\s+€\s+(?P<vat>[\d,]+)'
+```
+
+The `^\S` anchor on `first_line` and `^\s+` on `line` are what stop them from
+matching each other — that is the "`first_line` most specific, `line` least
+specific" rule in practice. If a single field spills onto more than one line,
+repeat its capture-group **name** on `first_line`/`line`: groups with the same
+name are concatenated with a newline automatically.
+
+**Recipe: line items spanning across pages**
+
+A page break drops headers/footers into the middle of the block. The parser
+already ignores any line that matches none of your patterns, so this often
+works out of the box. If it doesn't, check two things:
+
+1. `end` must only match on the **final** page. If a per-page subtotal or
+   separator also matches it, the block stops at the first page boundary and
+   later items are lost.
+2. Page furniture that *accidentally* matches `first_line`/`line` (page
+   numbers, a repeated address) should be dropped with `skip_line`:
+
+```yaml
+lines:
+  start: 'Position\s+Description'
+  end: 'Total net amount'
+  first_line: '...'
+  line: '...'
+  skip_line:
+    - 'Page \d+ of \d+'
+    - 'www\.example\.com'
+```
+
+**Recipe: the wrong value is captured (two-column totals)**
+
+Totals are often a two-column block — labels in one column, amounts in
+another — and `pdftotext` may emit them in an order where a label is *not*
+immediately followed by its own amount. So `Total\s+([\d.,]+)` can grab a
+neighbouring value. To fix it:
+
+* Re-read the `--debug` text to confirm the real order.
+* Try `--input-reader pdfplumber`, which preserves columns and tables better
+  than `pdftotext`.
+* Or set `remove_whitespace: true` in `options` and match without relying on
+  the line structure.
+
+```{tip}
+The `options` keys `remove_whitespace`, `remove_accents`, `lowercase` and
+`replace` run **before** matching and can turn a brittle regex into a simple
+one. `replace` takes a list of `[pattern, replacement]` pairs.
+```
+
 ### Tables Plugin
 
 The `tables` plugin allows you to extract data from tables where the column headers and their corresponding values are on different lines. This is often the case in invoices where data is presented in a more visual, tabular format.
