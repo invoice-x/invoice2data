@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "invoice2data"
 authors = [{ name = "Manuel Riel" }]
@@ -97,6 +101,16 @@ pyyaml = ["pyyaml == 6.0.2"]
 
 [tool.uv]
 package = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+invoice2data = [
+    "py.typed",
+    "extract/templates/**/*.yml",
+    "extract/templates/**/*.json",
+]
 
 
 [project.scripts]

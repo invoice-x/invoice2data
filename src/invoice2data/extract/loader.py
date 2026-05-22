@@ -80,7 +80,7 @@ def read_templates(folder: Optional[str] = None) -> List[InvoiceTemplate]:
     """
     output = []
     if folder is None:
-        folder = "./src/invoice2data/extract/templates"
+        folder = os.path.join(os.path.dirname(__file__), "templates")
     else:
         folder = os.path.abspath(folder)
 
