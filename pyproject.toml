@@ -2,7 +2,7 @@
 name = "invoice2data"
 authors = [{ name = "Manuel Riel" }]
 description = "Python parser to extract data from pdf invoice"
-version = "0.4.5"
+version = "0.4.6"
 keywords = ["python", "data-mining", "accounting", "invoice", "pdf", "parcing"]
 license = { text = "MIT" }
 readme = "README.md"
@@ -16,6 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Office/Business :: Financial",
     "Topic :: Office/Business :: Financial :: Accounting",
     "Environment :: Console",

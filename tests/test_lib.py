@@ -11,6 +11,7 @@
 
 
 import os
+import shutil
 import unittest
 from io import StringIO  # noqa: F401
 from typing import Any
@@ -124,6 +125,7 @@ class TestLIB(unittest.TestCase):
             print("Testing pdfplumber with file", file)
             extract_data(file, [], pdfplumber)
 
+    @unittest.skipUnless(shutil.which("tesseract"), "tesseract not installed")
     def test_tesseract_for_return(self) -> None:
         png_files = get_sample_files(".png")
         for file in png_files:
