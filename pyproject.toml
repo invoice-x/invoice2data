@@ -10,12 +10,11 @@ version = "0.4.6"
 keywords = ["python", "data-mining", "accounting", "invoice", "pdf", "parcing"]
 license = { text = "MIT" }
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -67,28 +66,11 @@ docs = [
     "sphinx-mermaid >=0.0.7",
 ]
 mypy = ["mypy >=0.930"]
-safety = ["safety >=2.2.3"]
 typeguard = ["typeguard >=2.13.3"]
 xdoctest = ["xdoctest[colors] >=0.15.10"]
 
 [project.optional-dependencies]
 defusedxml = ["defusedxml == 0.7.1"]
-dev = [
-    "pygments == 2.18.0",
-    "cffi == 1.17.1",
-    "furo == 2024.5.6",
-    "mypy == 1.10.1",
-    "myst-parser == 3.0.1",
-    "pre-commit == 3.5.0",
-    "pre-commit-hooks == 4.6.0",
-    # "pytest-mock >= 3.14.0",
-    "safety == 3.2.4",
-    "sphinx == 7.1.2",
-    "sphinx-autobuild == 2021.3.14",
-    "sphinx-click == 6.0.0",
-    "typeguard == 4.3.0",
-    "xdoctest >=0.15.10",
-]
 googlevision = [
     "google-cloud-storage == 2.18.2",
     "google-cloud-vision == 3.8.1",
@@ -179,6 +161,8 @@ extend-ignore = [
     "S101",   # use of assert Activate later
     "S603",
     "UP031",  # Use fstring instead of % identifier
+    "UP006",  # PEP 585 (list vs List): defer typing modernization to its own PR
+    "UP035",  # deprecated typing imports: defer typing modernization to its own PR
     "E501",   # fix this when updating docstrings
     # "DOC106",
     # "DOC107",

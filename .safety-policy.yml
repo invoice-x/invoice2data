@@ -1,4 +1,0 @@
-security:
-  ignore-vulnerabilities:
-    "70612":
-      reason: Not a bug. This is the same as marking python as unsafe due to the existence of 'eval'. See https://bugzilla.redhat.com/show_bug.cgi?id=1677653
