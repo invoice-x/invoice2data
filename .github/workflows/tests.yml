@@ -15,7 +15,8 @@ jobs:
       matrix:
         include:
           - { python: "3.13", os: "ubuntu-latest", session: "pre-commit" }
-          - { python: "3.13", os: "ubuntu-latest", session: "safety" }
+          # safety disabled for now: fails across all PRs (safety CLI now requires auth)
+          # - { python: "3.13", os: "ubuntu-latest", session: "safety" }
           # - { python: "3.12", os: "ubuntu-latest", session: "mypy" }
           # - { python: "3.11", os: "ubuntu-latest", session: "mypy" }
           # - { python: "3.10", os: "ubuntu-latest", session: "mypy" }
