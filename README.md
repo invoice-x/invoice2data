@@ -125,7 +125,7 @@ Using in-house templates
 See `invoice2data/extract/templates` for existing templates. Just extend
 the list to add your own. If deployed by a bigger organisation, there
 should be an interface to edit templates for new suppliers. 80-20 rule.
-For a short tutorial on how to add new templates, see [tutorial.md](./docs/tutorial.md).
+For a short tutorial on how to add new templates, see the [template creation tutorial][tutorial].
 
 Templates are based on Yaml or JSON. They define one or more keywords to find
 the right template, one or more exclude_keywords to further narrow it down
@@ -184,7 +184,7 @@ It can be installed on most distributions by:
 ## Development
 
 If you are interested in improving this project, have a look at our
-[developer guide](./CONTRIBUTING.md) to get you started quickly.
+[contributor guide] to get you started quickly.
 
 ## Roadmap and open tasks
 
@@ -234,3 +234,4 @@ To learn more, see the [Contributor Guide].
 [license]: https://invoice2data.readthedocs.io/latest/license.html
 [contributor guide]: https://invoice2data.readthedocs.io/latest/contributing.html
 [command-line reference]: https://invoice2data.readthedocs.io/latest/usage.html
+[tutorial]: https://invoice2data.readthedocs.io/latest/tutorial.html
