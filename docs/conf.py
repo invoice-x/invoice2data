@@ -44,3 +44,27 @@ language = "en"
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 html_favicon = "_static/favicon.ico"
+
+
+def setup(app):
+    """Skip mermaid diagrams in non-HTML builders.
+
+    The sphinxmermaid extension only registers an HTML visitor for its
+    MermaidNode, so builders like LaTeX/PDF crash with "unknown node type:
+    MermaidNode". The diagrams are rendered client-side by mermaid.js and
+    cannot be drawn in those outputs anyway, so render nothing for them.
+    """
+    from docutils import nodes
+    from sphinxmermaid import MermaidNode
+
+    def skip_mermaid(self, node):
+        raise nodes.SkipNode
+
+    app.add_node(
+        MermaidNode,
+        override=True,
+        latex=(skip_mermaid, None),
+        text=(skip_mermaid, None),
+        man=(skip_mermaid, None),
+        texinfo=(skip_mermaid, None),
+    )
