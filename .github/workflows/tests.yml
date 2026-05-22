@@ -154,7 +154,7 @@ jobs:
           uv sync --group dev
 
       - name: Download coverage data
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage-data-*
           merge-multiple: true
