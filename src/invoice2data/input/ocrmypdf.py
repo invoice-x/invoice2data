@@ -4,8 +4,6 @@ import logging
 import tempfile
 from pathlib import Path
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from . import pdftotext
 
@@ -37,8 +35,8 @@ OPTIONS_DEFAULT = {
 
 def to_text(
     path: str,
-    area_details: Optional[Dict[str, Any]] = None,
-    input_reader_config: Optional[Dict[str, Any]] = None,
+    area_details: dict[str, Any] | None = None,
+    input_reader_config: dict[str, Any] | None = None,
 ) -> str:
     """Pre-processes PDF files with ocrmypdf before PDFtotext parsing.
 
@@ -47,8 +45,8 @@ def to_text(
 
     Args:
         path (str): Path to the PDF invoice file.
-        area_details (Optional[Dict[str, Any]], optional): Details about the area to extract. Defaults to None.
-        input_reader_config (Optional[Dict[str, Any]], optional): Configuration settings for the input reader. Defaults to None.
+        area_details (dict[str, Any] | None, optional): Details about the area to extract. Defaults to None.
+        input_reader_config (dict[str, Any] | None, optional): Configuration settings for the input reader. Defaults to None.
 
     Returns:
         str: Extracted text from the PDF, or an empty string if OCRmyPDF is not available or processing fails.
@@ -71,9 +69,7 @@ def to_text(
         return ""
 
 
-def pre_process_pdf(
-    path: str, pre_conf: Optional[Dict[str, Any]] = None
-) -> Optional[str]:
+def pre_process_pdf(path: str, pre_conf: dict[str, Any] | None = None) -> str | None:
     """Pre-processes PDF files with ocrmypdf before PDFtotext parsing.
 
     Uses a temporary file for the output by default.
@@ -81,10 +77,10 @@ def pre_process_pdf(
 
     Args:
         path (str): Path to the PDF invoice file.
-        pre_conf (Optional[Dict[str, Any]], optional): Configuration settings for ocrmypdf. Defaults to None.
+        pre_conf (dict[str, Any] | None, optional): Configuration settings for ocrmypdf. Defaults to None.
 
     Returns:
-        Optional[str]: Path to the processed PDF file, or None if processing fails.
+        str | None: Path to the processed PDF file, or None if processing fails.
     """
     if not ocrmypdf_available():
         logger.warning("ocrmypdf is not available. Install with 'pip install ocrmypdf'")

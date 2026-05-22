@@ -14,7 +14,6 @@ import json
 import os
 import unittest
 from pathlib import Path
-from typing import Union
 
 from invoice2data.__main__ import extract_data
 from invoice2data.extract.loader import read_templates
@@ -25,7 +24,7 @@ class TestExtraction(unittest.TestCase):
         self.templates = read_templates()
 
     def _run_test_on_folder(
-        self, folder: Union[str, Path]
+        self, folder: str | Path
     ) -> None:  # Use Union for Python < 3.10
         for path, _subdirs, files in os.walk(folder):
             for f in files:

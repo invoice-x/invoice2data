@@ -2,19 +2,17 @@
 
 from logging import getLogger
 from typing import Any
-from typing import Dict
-from typing import List
 
 
 logger = getLogger(__name__)
 
 
-def to_text(path: str, **kwargs: Dict[str, Any]) -> str:
+def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     """Extract text from PDF using pdfplumber.
 
     Args:
         path (str): Path to the PDF file.
-        **kwargs (Dict[str, Any]): Keyword arguments to be passed to `pdfplumber`.
+        **kwargs (dict[str, Any]): Keyword arguments to be passed to `pdfplumber`.
 
     Returns:
         str: Extracted text from the PDF.
@@ -50,11 +48,11 @@ def to_text(path: str, **kwargs: Dict[str, Any]) -> str:
     return raw_text
 
 
-def res_to_raw_text(res: List[Dict[str, Any]]) -> str:
+def res_to_raw_text(res: list[dict[str, Any]]) -> str:
     """Extract raw text from pdfplumber result.
 
     Args:
-        res (List[Dict[str, Any]]): Result from pdfplumber.
+        res (list[dict[str, Any]]): Result from pdfplumber.
 
     Returns:
         str: The raw text extracted from the result.

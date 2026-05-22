@@ -4,8 +4,6 @@ import re
 from collections import OrderedDict
 from logging import getLogger
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from ..utils import _apply_grouping
 
@@ -16,18 +14,18 @@ DEFAULT_OPTIONS = {"field_separator": r"\s+", "line_separator": r"\n"}
 
 
 def extract(
-    self: "OrderedDict[str, Any]", content: str, output: Dict[str, Any]
-) -> Optional[Dict[str, Any]]:
+    self: "OrderedDict[str, Any]", content: str, output: dict[str, Any]
+) -> dict[str, Any] | None:
     """Try to extract tables from an invoice.
 
     Args:
         self (InvoiceTemplate): The current instance of the class.  # noqa: DOC103
         content (str): The content of the invoice.
-        output (Dict[str, Any]): The updated output dictionary with extracted
+        output (dict[str, Any]): The updated output dictionary with extracted
                                     data or None if parsing fails.
 
     Returns:
-        Optional[List[Any]]: The extracted data as a list of dictionaries, or None if table parsing fails.
+        list[Any] | None: The extracted data as a list of dictionaries, or None if table parsing fails.
                                 Each dictionary represents a row in the table.
     """
     for i, table in enumerate(self["tables"]):
@@ -62,16 +60,16 @@ def extract(
 
 def _extract_and_validate_settings(
     self: "OrderedDict[str, Any]",
-    table: Dict[str, Any],
-) -> Optional[Dict[str, Any]]:
+    table: dict[str, Any],
+) -> dict[str, Any] | None:
     """Extract and validate table settings.
 
     Args:
         self (InvoiceTemplate): The current instance of the class.  # noqa: DOC103
-        table (Dict[str, Any]): A dictionary containing the table settings.
+        table (dict[str, Any]): A dictionary containing the table settings.
 
     Returns:
-        Optional[Dict[str, Any]]: The validated table settings, or None if
+        dict[str, Any] | None: The validated table settings, or None if
                                    validation fails.
     """
     plugin_settings = DEFAULT_OPTIONS.copy()
@@ -85,15 +83,15 @@ def _extract_and_validate_settings(
     return table
 
 
-def _extract_table_body(content: str, table: Dict[str, Any]) -> Optional[str]:
+def _extract_table_body(content: str, table: dict[str, Any]) -> str | None:
     """Extract the table body from the content.
 
     Args:
         content (str): The content of the invoice.
-        table (Dict[str, Any]): The validated table settings.
+        table (dict[str, Any]): The validated table settings.
 
     Returns:
-        Optional[str]: The extracted table body, or None if start or end
+        str | None: The extracted table body, or None if start or end
                        regexes are not found.
     """
     start = re.search(table["start"], content)
@@ -115,23 +113,23 @@ def _extract_table_body(content: str, table: Dict[str, Any]) -> Optional[str]:
 
 def _process_table_lines(
     self: "OrderedDict[str, Any]",
-    table: Dict[str, Any],
+    table: dict[str, Any],
     table_body: str,
-) -> Optional[Dict[str, Any]]:
+) -> dict[str, Any] | None:
     """Process the lines within the table body.
 
     Args:
         self (InvoiceTemplate): The current instance of the class.  # noqa: DOC103
-        table (Dict[str, Any]): The validated table settings.
+        table (dict[str, Any]): The validated table settings.
         table_body (str): The extracted table body.
 
     Returns:
-        List[Dict[str, Any]]: A list of dictionaries, where each dictionary
+        list[dict[str, Any]]: A list of dictionaries, where each dictionary
                               represents a row in the table.
     """
     types = table.get("types", {})
     no_match_found = True
-    line_output: Dict[str, Any] = {}
+    line_output: dict[str, Any] = {}
     for line in re.split(table["line_separator"], table_body):
         if not line.strip("").strip("\n") or line.isspace():
             continue
@@ -155,19 +153,19 @@ def _process_table_lines(
 
 def _process_table_line(  # noqa: C901
     self: "OrderedDict[str, Any]",
-    table: Dict[str, Any],
+    table: dict[str, Any],
     line: str,
-    types: Dict[str, Any],
-    output: Dict[str, Any],
+    types: dict[str, Any],
+    output: dict[str, Any],
 ) -> bool:
     """Process a single line within the table body.
 
     Args:
         self (InvoiceTemplate): The current instance of the class.
-        table (Dict[str, Any]): The validated table settings.
+        table (dict[str, Any]): The validated table settings.
         line (str): A single line from the table body.
-        types (Dict[str, Any]): A dictionary of type coercion rules.
-        output (Dict[str, Any]): A dictionary to store the extracted data.
+        types (dict[str, Any]): A dictionary of type coercion rules.
+        output (dict[str, Any]): A dictionary to store the extracted data.
 
     Returns:
         bool: True if processing is successful, False if date parsing fails.

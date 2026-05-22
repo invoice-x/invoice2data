@@ -3,8 +3,6 @@
 import datetime
 import json
 from typing import Any
-from typing import Dict
-from typing import List
 
 
 def format_item(item: Any, date_format: str) -> Any:
@@ -19,7 +17,7 @@ def format_item(item: Any, date_format: str) -> Any:
     """
     if isinstance(item, datetime.date):
         return item.strftime(date_format)
-    if isinstance(item, (dict, list)):
+    if isinstance(item, dict | list):
         iter_obj = item.items() if isinstance(item, dict) else enumerate(item)
         for k, v in iter_obj:
             item[k] = format_item(v, date_format)
@@ -27,7 +25,7 @@ def format_item(item: Any, date_format: str) -> Any:
 
 
 def write_to_file(
-    data: List[Dict[str, Any]], path: str, date_format: str = "%Y-%m-%d"
+    data: list[dict[str, Any]], path: str, date_format: str = "%Y-%m-%d"
 ) -> None:
     """Export extracted fields to JSON.
 
@@ -35,7 +33,7 @@ def write_to_file(
     the specified directory, otherwise in the current directory.
 
     Args:
-        data (List[Dict[str, Any]]): Dictionary of extracted fields.
+        data (list[dict[str, Any]]): Dictionary of extracted fields.
         path (str): Directory to save the generated JSON file.
         date_format (str): Date format used in the generated file.
                             Defaults to "%Y-%m-%d".

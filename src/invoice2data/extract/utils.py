@@ -2,14 +2,12 @@
 
 from logging import getLogger
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 
 logger = getLogger(__name__)
 
 
-def _apply_grouping(settings: Dict[str, Any], result: Any) -> Optional[Any]:
+def _apply_grouping(settings: dict[str, Any], result: Any) -> Any | None:
     """Apply grouping to the extracted values."""
     if "group" in settings:
         result = list(filter(None, result))

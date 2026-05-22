@@ -15,9 +15,6 @@ import logging
 import re
 from collections import OrderedDict
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from ..utils import _apply_grouping
 
@@ -28,7 +25,7 @@ logger = logging.getLogger(__name__)
 def parse(
     template: Any,
     field: str,
-    settings: Dict[str, Any],
+    settings: dict[str, Any],
     content: str,
     legacy: bool = False,
 ) -> Any:
@@ -37,7 +34,7 @@ def parse(
     Args:
         template (Any): The template object.
         field (str): The name of the field to extract.
-        settings (Dict[str, Any]): The settings for the field extraction.
+        settings (dict[str, Any]): The settings for the field extraction.
         content (str): The text content to parse.
         legacy (bool, optional): Whether to use legacy parsing. Defaults to False.
 
@@ -64,7 +61,7 @@ def parse(
     return result
 
 
-def _extract_matches(settings: Dict[str, Any], content: str) -> Optional[List[Any]]:
+def _extract_matches(settings: dict[str, Any], content: str) -> list[Any] | None:
     """Extract matches from the content using the given regexes."""
     if isinstance(settings["regex"], list):
         regexes = settings["regex"]
@@ -100,8 +97,8 @@ def _extract_matches(settings: Dict[str, Any], content: str) -> Optional[List[An
 
 
 def _apply_type_coercion(
-    template: Any, settings: Dict[str, Any], result: List[Any]
-) -> List[Any]:
+    template: Any, settings: dict[str, Any], result: list[Any]
+) -> list[Any]:
     """Apply type coercion to the extracted values."""
     if "type" in settings:
         for k, v in enumerate(result):
@@ -109,7 +106,7 @@ def _apply_type_coercion(
     return result
 
 
-def _remove_duplicates(legacy: bool, result: Optional[Any]) -> Optional[Any]:
+def _remove_duplicates(legacy: bool, result: Any | None) -> Any | None:
     """Remove duplicate values from the result."""
     if isinstance(result, list):
         if legacy:

@@ -5,7 +5,6 @@ import os
 import shutil
 import unittest
 from typing import Any
-from typing import Dict
 from xml.dom import minidom
 
 from invoice2data.__main__ import main  # Import main only
@@ -243,7 +242,7 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(cm.exception.code, 0)
         shutil.rmtree(directory, ignore_errors=True)
 
-    def get_filename_format_test_data(self, filename_format: str) -> Dict[str, Any]:
+    def get_filename_format_test_data(self, filename_format: str) -> dict[str, Any]:
         """Generates test input and expected output by walking the compare dir.
 
         Args:
@@ -252,7 +251,7 @@ class TestCLI(unittest.TestCase):
         Returns:
             Dict[str, Any]: A dictionary of test data.
         """
-        data: Dict[str, Any] = {}
+        data: dict[str, Any] = {}
         compare_folder = os.path.dirname("tests/compare/")
         for path, _subdirs, files in os.walk(compare_folder):
             for file in files:
@@ -286,7 +285,7 @@ class TestCLI(unittest.TestCase):
         shutil.rmtree(os.path.dirname(copy_dir), ignore_errors=True)
         filename_format = "{date} {invoice_number} {desc}.pdf"
 
-        data: Dict[str, Any] = self.get_filename_format_test_data(filename_format)
+        data: dict[str, Any] = self.get_filename_format_test_data(filename_format)
 
         os.makedirs(copy_dir)
 
@@ -316,7 +315,7 @@ class TestCLI(unittest.TestCase):
         copy_dir = os.path.join("tests", "copy_test", "pdf")
         filename_format = "Custom Prefix {date} {invoice_number}.pdf"
 
-        data: Dict[str, Any] = self.get_filename_format_test_data(filename_format)
+        data: dict[str, Any] = self.get_filename_format_test_data(filename_format)
 
         os.makedirs(copy_dir)
 

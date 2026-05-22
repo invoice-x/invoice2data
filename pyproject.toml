@@ -160,10 +160,6 @@ extend-ignore = [
     "S101",   # use of assert Activate later
     "S603",
     "UP031",  # Use fstring instead of % identifier
-    "UP006",  # PEP 585 (list vs List): defer typing modernization to its own PR
-    "UP007",  # PEP 604 (X | Y vs Optional/Union): defer typing modernization
-    "UP035",  # deprecated typing imports: defer typing modernization to its own PR
-    "UP038",  # PEP 604 isinstance: defer typing modernization to its own PR
     "E501",   # fix this when updating docstrings
     # "DOC106",
     # "DOC107",

@@ -3,8 +3,6 @@
 import datetime
 import importlib.util
 from typing import Any
-from typing import Dict
-from typing import List
 from xml.etree import ElementTree
 
 
@@ -37,7 +35,7 @@ def prettify(elem: ElementTree.Element) -> Any:
 
 
 def dict_to_tags(
-    parent: ElementTree.Element, data: Dict[str, Any], date_format: str
+    parent: ElementTree.Element, data: dict[str, Any], date_format: str
 ) -> None:
     """Convert a dictionary to XML tags.
 
@@ -47,14 +45,14 @@ def dict_to_tags(
 
     Args:
         parent (ElementTree.Element): The parent element.
-        data (Dict[str, Any]): The dictionary to be converted.
+        data (dict[str, Any]): The dictionary to be converted.
         date_format (str): The date format to use.
     """
     for k, v in data.items():
         tag = ElementTree.SubElement(parent, k)
         if isinstance(v, str):
             tag.text = v
-        elif isinstance(v, (int, float)):
+        elif isinstance(v, int | float):
             tag.text = str(v)
         elif isinstance(v, datetime.date):
             tag.text = v.strftime(date_format)
@@ -65,7 +63,7 @@ def dict_to_tags(
 
 
 def write_to_file(
-    data: List[Dict[str, Any]], path: str, date_format: str = "%Y-%m-%d"
+    data: list[dict[str, Any]], path: str, date_format: str = "%Y-%m-%d"
 ) -> None:
     """Export extracted fields to xml.
 
@@ -73,7 +71,7 @@ def write_to_file(
     if not then in root.
 
     Args:
-        data (List[Dict[str, Any]]): List of dictionaries containing extracted fields.
+        data (list[dict[str, Any]]): List of dictionaries containing extracted fields.
         path (str): Path to save the generated XML file.
         date_format (str, optional): Date format used in generated file.
             Defaults to "%Y-%m-%d".

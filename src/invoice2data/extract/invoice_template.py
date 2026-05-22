@@ -5,11 +5,10 @@ Templates are initially read from .yml files and then kept as class.
 
 import re
 import unicodedata
+from collections import OrderedDict as OrderedDictType
 from logging import getLogger
 from pprint import pformat
 from typing import Any
-from typing import Dict
-from typing import OrderedDict as OrderedDictType
 
 import dateparser  # type: ignore[import-untyped]
 
@@ -68,7 +67,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
         super().__init__(*args, **kwargs)
 
         # Merge template-specific options with defaults
-        self.options: Dict[str, Any] = OPTIONS_DEFAULT.copy()
+        self.options: dict[str, Any] = OPTIONS_DEFAULT.copy()
 
         if "options" in self:
             self.options.update(self["options"])
@@ -234,7 +233,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
     def extract(
         self, optimized_str: str, invoice_file: str, input_module: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Extracts data from the optimized string using the template.
 
         Args:
@@ -243,7 +242,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             input_module (Any): The input module used.
 
         Returns:
-            Dict[str, Any]: The extracted data.
+            dict[str, Any]: The extracted data.
 
         """
         output = _initialize_output_and_log(self, optimized_str)
@@ -274,7 +273,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
 def _initialize_output_and_log(
     self: InvoiceTemplate, optimized_str: str
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Initialize the output dictionary and log debug information."""
     logger.debug("START optimized_str ========================\n" + optimized_str)
     logger.debug("END optimized_str ==========================")
@@ -296,7 +295,7 @@ def _initialize_output_and_log(
 
 def _handle_area(
     self: InvoiceTemplate,
-    v: Dict[str, Any],
+    v: dict[str, Any],
     input_module: Any,
     invoice_file: str,
     optimized_str: str,
@@ -317,9 +316,9 @@ def _handle_area(
 def _handle_parser(
     self: InvoiceTemplate,
     k: str,
-    v: Dict[str, Any],
+    v: dict[str, Any],
     optimized_str_for_parser: str,
-    output: Dict[str, Any],
+    output: dict[str, Any],
 ) -> None:
     """Handle parsing using different parsers."""
     if v["parser"] in PARSERS_MAPPING:
@@ -334,7 +333,7 @@ def _handle_parser(
 
 
 def _handle_legacy_syntax(
-    self: InvoiceTemplate, k: str, v: Any, optimized_str: str, output: Dict[str, Any]
+    self: InvoiceTemplate, k: str, v: Any, optimized_str: str, output: dict[str, Any]
 ) -> None:
     """Handle legacy syntax for backward compatibility."""
     result = None
@@ -361,8 +360,8 @@ def _handle_legacy_syntax(
 
 
 def _check_required_fields(
-    self: InvoiceTemplate, output: Dict[str, Any]
-) -> Dict[str, Any]:
+    self: InvoiceTemplate, output: dict[str, Any]
+) -> dict[str, Any]:
     """Check if all required fields are present in the output."""
     if "required_fields" not in self.keys():
         required_fields = ["date", "amount", "invoice_number", "issuer"]

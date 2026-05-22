@@ -2,16 +2,14 @@
 
 from io import StringIO
 from typing import Any
-from typing import Dict
-from typing import Set
 
 
-def to_text(path: str, **kwargs: Dict[str, Any]) -> str:
+def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     """Wrapper around `pdfminer` to extract text from PDF.
 
     Args:
         path (str): Path to the PDF file.
-        **kwargs (Dict[str, Any]): Keyword arguments to be passed to `pdfminer`.
+        **kwargs (dict[str, Any]): Keyword arguments to be passed to `pdfminer`.
 
     Returns:
         str: Extracted text from the PDF.
@@ -32,7 +30,7 @@ def to_text(path: str, **kwargs: Dict[str, Any]) -> str:
         password = ""
         maxpages = 0
         caching = True
-        pagenos: Set[int] = set()
+        pagenos: set[int] = set()
         pages = PDFPage.get_pages(
             fp,
             pagenos,

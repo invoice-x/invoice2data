@@ -13,20 +13,17 @@ from subprocess import Popen
 from subprocess import TimeoutExpired
 from subprocess import run
 from typing import Any
-from typing import Dict
-from typing import Optional
-from typing import Set
 
 
 logger = getLogger(__name__)
 
 
-def to_text(path: str, area_details: Optional[Dict[str, Any]] = None) -> str:
+def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
     """Extract text from image using tesseract OCR.
 
     Args:
         path (str): Path to the image file.
-        area_details (Optional[Dict[str, Any]], optional):
+        area_details (dict[str, Any] | None, optional):
             Specific area in the image to extract text from.
             Defaults to None (extract from the entire image).
 
@@ -187,5 +184,5 @@ def get_languages() -> str:
         if line.startswith("Error"):
             raise OSError(lang_error(output))
     _header, *rest = output.splitlines()
-    langlist: Set[str] = {lang.strip() for lang in rest}
+    langlist: set[str] = {lang.strip() for lang in rest}
     return "+".join(map(str, langlist))
