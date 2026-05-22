@@ -17,6 +17,7 @@ from io import StringIO  # noqa: F401
 from typing import Any
 from unittest import mock
 
+from invoice2data import Invoice2Data
 from invoice2data.__main__ import extract_data
 from invoice2data.input import ocrmypdf
 from invoice2data.input import pdfminer_wrapper
@@ -130,6 +131,14 @@ class TestLIB(unittest.TestCase):
                 self.assertTrue(False, "Tesseract returned None")
             else:
                 self.assertTrue(True)
+
+    def test_invoice2data_class(self) -> None:
+        i2d = Invoice2Data()
+        self.assertTrue(len(i2d.templates) > 0, "no built-in templates loaded")
+        for file in get_sample_files(".pdf"):
+            if file.endswith("oyo.pdf"):
+                res = i2d.extract_data(file)
+                self.assertEqual(res.get("issuer"), "OYO")
 
     def test_ocrmypdf_available_unavailable(self) -> None:
         with mock.patch.dict("sys.modules", {"ocrmypdf": None}):

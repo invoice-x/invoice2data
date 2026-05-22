@@ -148,7 +148,15 @@ def extract_data(
     elif input_module is None:
         input_module = text if invoicefile.lower().endswith(".txt") else pdftotext
 
-    extracted_str = input_module.to_text(invoicefile)
+    try:
+        extracted_str = input_module.to_text(invoicefile)
+    except Exception:
+        logger.exception(
+            "Failed to extract text from %s using %s",
+            invoicefile,
+            input_module.__name__,
+        )
+        return {}
     if not isinstance(extracted_str, str) or not extracted_str.strip():
         logger.error(
             "Failed to extract text from %s using %s",
@@ -205,6 +213,44 @@ def extract_data_fallback_ocrmypdf(
     else:
         # Return empty list if no template is matched
         return extracted_str, invoicefile, []
+
+
+class Invoice2Data:
+    """Object-oriented interface around :func:`extract_data`.
+
+    Holds a reusable set of templates so several invoices can be processed
+    without reloading templates each time.
+
+    Args:
+        load_built_in_templates (bool): Load the bundled templates on init.
+            Defaults to True.
+    """
+
+    def __init__(self, load_built_in_templates: bool = True) -> None:
+        self.templates: list[InvoiceTemplate] = []
+        if load_built_in_templates:
+            self.templates += read_templates()
+
+    def read_templates(self, path: str) -> None:
+        """Add templates from a user folder to this instance.
+
+        Args:
+            path (str): Folder containing .yml/.json templates to load.
+        """
+        self.templates += read_templates(os.path.abspath(path))
+
+    def extract_data(self, path: str, input_module: Any = None) -> dict[str, Any]:
+        """Extract data from an invoice using this instance's templates.
+
+        Args:
+            path (str): Path to the invoice file.
+            input_module (Any): Text-extraction module to use. Defaults to None
+                (auto-detect between text and pdftotext).
+
+        Returns:
+            dict[str, Any]: Extracted fields, or an empty dict if none matched.
+        """
+        return extract_data(path, self.templates, input_module)
 
 
 @click.command()

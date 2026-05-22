@@ -16,11 +16,15 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
 
     Returns:
         str: Extracted text from the PDF.
+
+    Raises:
+        ImportError: If the optional `pdfplumber` dependency is not installed.
     """
     try:
         import pdfplumber  # type: ignore[import-not-found]
     except ImportError:
-        logger.debug("Cannot import pdfplumber")
+        logger.error("Cannot import pdfplumber")
+        raise
 
     with pdfplumber.open(path, laparams={"detect_vertical": True}) as pdf:
         raw_text = ""
