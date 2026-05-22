@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "invoice2data"
 authors = [{ name = "Manuel Riel" }]
 description = "Python parser to extract data from pdf invoice"
-version = "0.4.6"
+version = "0.4.7"
 keywords = ["python", "data-mining", "accounting", "invoice", "pdf", "parcing"]
 license = { text = "MIT" }
 readme = "README.md"
