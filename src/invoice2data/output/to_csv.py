@@ -3,12 +3,10 @@
 import csv
 import datetime  # noqa
 from typing import Any
-from typing import Dict
-from typing import List
 
 
 def write_to_file(
-    data: List[Dict[str, Any]], path: str, date_format: str = "%Y-%m-%d"
+    data: list[dict[str, Any]], path: str, date_format: str = "%Y-%m-%d"
 ) -> None:
     """Export extracted fields to CSV.
 
@@ -16,7 +14,7 @@ def write_to_file(
     directory, otherwise in the current directory.
 
     Args:
-        data (List[Dict[str, Any]]): A list of dictionaries of extracted fields. If only a
+        data (list[dict[str, Any]]): A list of dictionaries of extracted fields. If only a
                             single file was processed, it must be passed as a
                             single-element list.
         path (str): CSV file to save output to.

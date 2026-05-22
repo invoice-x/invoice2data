@@ -7,13 +7,12 @@ only.
 
 from collections import OrderedDict
 from typing import Any
-from typing import Dict
 
 from .. import parsers
 
 
 def extract(
-    self: "OrderedDict[str, Any]", content: str, output: Dict[str, Any]
+    self: "OrderedDict[str, Any]", content: str, output: dict[str, Any]
 ) -> None:
     """Extract individual lines from an invoice.
 
@@ -24,7 +23,7 @@ def extract(
     Args:
         self (OrderedDict[str, Any]): The current instance of the class.
         content (str): The text content to parse.
-        output (Dict[str, Any]): A dictionary to store the extracted data.
+        output (dict[str, Any]): A dictionary to store the extracted data.
     """
     lines_data = parsers.lines.parse(self, "lines", self["lines"], content)
     if lines_data is not None:

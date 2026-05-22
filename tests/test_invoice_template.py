@@ -1,7 +1,5 @@
 import unittest
 from typing import Any
-from typing import Dict
-from typing import List
 
 from invoice2data.extract.invoice_template import InvoiceTemplate
 
@@ -22,7 +20,7 @@ def test_template_with_exclude_keyword_is_not_matched() -> None:
 
 
 def test_skip_template_with_too_long_lang_code() -> None:
-    options_test: Dict[str, List[str]] = {
+    options_test: dict[str, list[str]] = {
         "currency": ["EUR"],
         "date_formats": [],
         "languages": ["aaa"],
@@ -30,7 +28,7 @@ def test_skip_template_with_too_long_lang_code() -> None:
         "replace": [],
     }
 
-    tpl: Dict[str, Any] = {}
+    tpl: dict[str, Any] = {}
     tpl["keywords"] = ["Basic Test"]
     tpl["exclude_keywords"] = []
     tpl["options"] = options_test
@@ -49,7 +47,7 @@ def test_skip_template_with_too_long_lang_code() -> None:
 
 class TestInvoiceTemplateMethods(unittest.TestCase):
     def test_replace_a_with_b(self) -> None:
-        options_test: Dict[str, Any] = {
+        options_test: dict[str, Any] = {
             "currency": ["EUR"],
             "date_formats": [],
             "languages": ["aa"],
@@ -57,7 +55,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
             "replace": [["a", "b"]],
         }
 
-        tpl: Dict[str, Any] = {}
+        tpl: dict[str, Any] = {}
         tpl["keywords"] = ["Basic Test"]
         tpl["exclude_keywords"] = []
         tpl["options"] = options_test
@@ -72,7 +70,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         self.assertEqual(optimized_str, "b")
 
     def test_remove_accents(self) -> None:
-        options_test: Dict[str, Any] = {
+        options_test: dict[str, Any] = {
             "currency": ["EUR"],
             "date_formats": [],
             "languages": ["aa"],
@@ -80,7 +78,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
             "remove_accents": True,
         }
 
-        tpl: Dict[str, Any] = {}
+        tpl: dict[str, Any] = {}
         tpl["keywords"] = ["Basic Test"]
         tpl["exclude_keywords"] = []
         tpl["options"] = options_test
@@ -99,7 +97,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         )
 
     def test_remove_whitespace(self) -> None:
-        options_test: Dict[str, Any] = {
+        options_test: dict[str, Any] = {
             "currency": ["EUR"],
             "date_formats": [],
             "languages": ["aa"],
@@ -107,7 +105,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
             "remove_whitespace": True,
         }
 
-        tpl: Dict[str, Any] = {}
+        tpl: dict[str, Any] = {}
         tpl["keywords"] = ["Basic Test"]
         tpl["exclude_keywords"] = []
         tpl["options"] = options_test
@@ -122,7 +120,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         self.assertEqual(optimized_str, "ab", "remove whitespace test failed")
 
     def test_lowercase(self) -> None:
-        options_test: Dict[str, Any] = {
+        options_test: dict[str, Any] = {
             "currency": ["EUR"],
             "date_formats": [],
             "languages": ["aa"],
@@ -130,7 +128,7 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
             "lowercase": True,
         }
 
-        tpl: Dict[str, Any] = {}
+        tpl: dict[str, Any] = {}
         tpl["keywords"] = ["Basic Test"]
         tpl["exclude_keywords"] = []
         tpl["options"] = options_test

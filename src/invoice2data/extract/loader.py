@@ -6,12 +6,9 @@ Templates are initially read from .yml or .json files and then kept as class.
 import codecs
 import json
 import os
+from collections.abc import Callable
 from logging import getLogger
 from typing import Any
-from typing import Callable
-from typing import Dict
-from typing import List
-from typing import Optional
 from typing import cast
 
 
@@ -32,7 +29,7 @@ logger = getLogger(__name__)
 
 def ordered_load(
     stream: str, loader: Callable[[str], Any] = json.loads
-) -> List[InvoiceTemplate]:
+) -> list[InvoiceTemplate]:
     """Loads a stream of JSON data.
 
     Args:
@@ -40,7 +37,7 @@ def ordered_load(
         loader (Callable[[str], Any], optional): JSON loader function. Defaults to json.loads.
 
     Returns:
-        List[InvoiceTemplate]: List of InvoiceTemplate objects.
+        list[InvoiceTemplate]: List of InvoiceTemplate objects.
     """
     output = []
 
@@ -54,22 +51,22 @@ def ordered_load(
     for tpl in tpl_stream:
         tpl = prepare_template(tpl)
         if tpl:
-            output.append(InvoiceTemplate(cast(Dict[str, Any], tpl)))
+            output.append(InvoiceTemplate(cast(dict[str, Any], tpl)))
 
     return output
 
 
-def read_templates(folder: Optional[str] = None) -> List[InvoiceTemplate]:
+def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
     """Load YAML templates from template folder. Return list of dicts.
 
     Use built-in templates if no folder is set.
 
     Args:
-        folder (Optional[str]): User-defined folder where templates are stored.
+        folder (str | None): User-defined folder where templates are stored.
                                 If None, uses built-in templates.
 
     Returns:
-        List[InvoiceTemplate]: List of InvoiceTemplate objects.
+        list[InvoiceTemplate]: List of InvoiceTemplate objects.
 
     Examples:
         >>> templates = read_templates("./src/invoice2data/extract/templates/au")
@@ -109,20 +106,20 @@ def read_templates(folder: Optional[str] = None) -> List[InvoiceTemplate]:
             tpl = prepare_template(tpl)
 
             if tpl:
-                output.append(InvoiceTemplate(cast(Dict[str, Any], tpl)))
+                output.append(InvoiceTemplate(cast(dict[str, Any], tpl)))
 
     logger.info("Loaded %d templates from %s", len(output), folder)
     return output
 
 
-def prepare_template(tpl: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+def prepare_template(tpl: dict[str, Any]) -> dict[str, Any] | None:
     """Prepare a template for use.
 
     Args:
-        tpl (Dict[str, Any]): Template dictionary.
+        tpl (dict[str, Any]): Template dictionary.
 
     Returns:
-        Optional[Dict[str, Any]]: Processed template dictionary.
+        dict[str, Any] | None: Processed template dictionary.
     """
     # Test if all required fields are in template
     if "keywords" not in tpl:

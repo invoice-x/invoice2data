@@ -15,9 +15,6 @@ import shutil
 import unittest
 from io import StringIO  # noqa: F401
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Union
 from unittest import mock
 
 from invoice2data.__main__ import extract_data
@@ -46,7 +43,7 @@ needs_pdfplumber = unittest.skipIf(
 )
 
 
-def _extract_data_for_export() -> List[Dict[str, Any]]:
+def _extract_data_for_export() -> list[dict[str, Any]]:
     pdf_files = get_sample_files(".pdf")
     for file in pdf_files:
         if file.endswith("oyo.pdf"):
@@ -108,7 +105,7 @@ class TestLIB(unittest.TestCase):
             if file.endswith("NetpresseInvoice.pdf"):
                 print("Testing pdfminer with file", file)
                 try:
-                    res: Union[str, Dict[str, Any]] = extract_data(
+                    res: str | dict[str, Any] = extract_data(
                         file, None, pdfminer_wrapper
                     )
                     print(res)

@@ -2,14 +2,13 @@
 
 import logging
 import os
-from typing import List
 
 
 # Reduce log level of various modules
 logging.getLogger("pdfminer").setLevel(logging.WARNING)
 
 
-def get_sample_files(extension: str, exclude_input_specific: bool = True) -> List[str]:
+def get_sample_files(extension: str, exclude_input_specific: bool = True) -> list[str]:
     """Get the  sample files.
 
     Args:
@@ -30,7 +29,7 @@ def get_sample_files(extension: str, exclude_input_specific: bool = True) -> Lis
     return compare_files
 
 
-def exclude_template(test_list: List[str], exclude_list: List[str]) -> List[str]:
+def exclude_template(test_list: list[str], exclude_list: list[str]) -> list[str]:
     """Exclude specific templates from the list.
 
     Args:

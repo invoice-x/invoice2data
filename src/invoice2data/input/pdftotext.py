@@ -2,16 +2,14 @@
 
 import os
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 
-def to_text(path: str, area_details: Optional[Dict[str, Any]] = None) -> str:
+def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
     """Extract text from a PDF file using pdftotext.
 
     Args:
         path (str): Path to the PDF file.
-        area_details (Optional[Dict[str, Any]], optional):
+        area_details (dict[str, Any] | None, optional):
             Specific area in the PDF to extract text from.
             Defaults to None (extract from the entire page).
             If provided, should be a dictionary with the following keys:

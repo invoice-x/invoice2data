@@ -2,7 +2,6 @@
 
 import logging
 import os
-from typing import Optional
 
 
 logger = logging.getLogger(__name__)
@@ -22,7 +21,7 @@ def have_google_cloud() -> bool:
     return GOOGLE_CLOUD_AVAILABLE
 
 
-def to_text(path: str, bucket_name: Optional[str] = None, language: str = "en") -> str:
+def to_text(path: str, bucket_name: str | None = None, language: str = "en") -> str:
     """Sends PDF files to Google Cloud Vision for OCR.
 
     Before using invoice2data, make sure you have the auth JSON path set as
@@ -30,7 +29,7 @@ def to_text(path: str, bucket_name: Optional[str] = None, language: str = "en") 
 
     Args:
         path (str): Path of the electronic invoice in JPG or PNG format.
-        bucket_name (Optional[str]): Name of the bucket to use for file storage
+        bucket_name (str | None): Name of the bucket to use for file storage
                                      and results cache. Defaults to "cloud-vision-84893".
         language (str, optional): Language to use for OCR. Defaults to "en".
 
