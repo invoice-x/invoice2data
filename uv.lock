@@ -780,6 +780,7 @@ docs = [
     { name = "sphinx-autobuild" },
     { name = "sphinx-click" },
     { name = "sphinx-mermaid" },
+    { name = "sphinxcontrib-svg2pdfconverter" },
 ]
 lint = [
     { name = "pydoclint" },
@@ -829,6 +830,7 @@ docs = [
     { name = "sphinx-autobuild", specifier = ">=2021.3.14" },
     { name = "sphinx-click", specifier = ">=3.0.2" },
     { name = "sphinx-mermaid", specifier = ">=0.0.7" },
+    { name = "sphinxcontrib-svg2pdfconverter", specifier = ">=2.1.0" },
 ]
 lint = [
     { name = "pydoclint", specifier = ">=0.4.2" },
@@ -2040,6 +2042,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b5/72/835d6fadb9e5d02304cf39b18f93d227cd93abd3c41ebf58e6853eeb1455/sphinxcontrib-serializinghtml-1.1.5.tar.gz", hash = "sha256:aa5f6de5dfdf809ef505c4895e51ef5c9eac17d0f287933eb49ec495280b6952", size = 21019, upload-time = "2021-05-22T16:07:43.043Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c6/77/5464ec50dd0f1c1037e3c93249b040c8fc8078fdda97530eeb02424b6eea/sphinxcontrib_serializinghtml-1.1.5-py2.py3-none-any.whl", hash = "sha256:352a9a00ae864471d3a7ead8d7d79f5fc0b57e8b3f95e9867eb9eb28999b92fd", size = 94021, upload-time = "2021-05-22T16:07:41.627Z" },
+]
+
+[[package]]
+name = "sphinxcontrib-svg2pdfconverter"
+version = "2.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sphinx" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b9/05/11b12853b6a0398bd19d5464b68cb97dde21c354265ff2c1929f92ae03a9/sphinxcontrib_svg2pdfconverter-2.1.0.tar.gz", hash = "sha256:9756e82d5f3bf11629ffcbafb1f8a1092d3bb4789e33494032cdce9a9c8459d3", size = 6805, upload-time = "2026-03-05T18:23:44.74Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ce/7d/9b6b1ef6fe13bac6455d002ca4a626fac325cf94b4183f31cafe9b1ed17c/sphinxcontrib_svg2pdfconverter-2.1.0-py3-none-any.whl", hash = "sha256:805635ac274583e1606b0ec7fb21f16b69ca8ff223dd7e237d91127015628b0c", size = 9259, upload-time = "2026-03-05T18:23:43.662Z" },
 ]
 
 [[package]]

@@ -63,6 +63,7 @@ docs = [
     "sphinx-autobuild >=2021.3.14",
     "sphinx-click >=3.0.2",
     "sphinx-mermaid >=0.0.7",
+    "sphinxcontrib-svg2pdfconverter >=2.1.0",
 ]
 mypy = ["mypy >=0.930"]
 typeguard = ["typeguard >=2.13.3"]

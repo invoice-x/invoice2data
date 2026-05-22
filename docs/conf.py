@@ -25,6 +25,10 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_click",
     "myst_parser",
+    # Converts the README's remote SVG badges to PDF so the LaTeX/PDF builder
+    # can embed them (needs the rsvg-convert binary from librsvg2-bin, which
+    # Read the Docs installs via build.apt_packages in .readthedocs.yaml).
+    "sphinxcontrib.rsvgconverter",
 ]
 autodoc_typehints = "description"
 html_theme = "furo"
