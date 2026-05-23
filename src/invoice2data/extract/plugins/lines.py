@@ -6,14 +6,18 @@ only.
 """
 
 import warnings
-from collections import OrderedDict
+from typing import TYPE_CHECKING
 from typing import Any
 
 from .. import parsers
 
 
+if TYPE_CHECKING:
+    from ..invoice_template import InvoiceTemplate
+
+
 def extract(
-    self: "OrderedDict[str, Any]",
+    self: "InvoiceTemplate",
     content: str,
     output: dict[str, Any],
     invoice_file: str | None = None,
@@ -25,7 +29,7 @@ def extract(
     only.
 
     Args:
-        self (OrderedDict[str, Any]): The current instance of the class.
+        self (InvoiceTemplate): The current instance of the class.
         content (str): The text content to parse.
         output (dict[str, Any]): A dictionary to store the extracted data.
         invoice_file (str | None): Unused; accepted for plugin-interface

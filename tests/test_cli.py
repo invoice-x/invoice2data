@@ -17,7 +17,7 @@ from .common import inputparser_specific
 
 def ocrmypdf_available() -> bool:
     try:
-        import ocrmypdf  # type: ignore[import-not-found] # noqa: F401
+        import ocrmypdf  # noqa: F401
     except ImportError:
         return False
     return True

@@ -85,12 +85,12 @@ class ColorLogFormatter(logging.Formatter):
         to the log level name.
         """
         if not hasattr(record, "prefix"):
-            record.prefix = self.LOG_LEVEL_COLOR.get(record.levelname.upper()).get(
+            record.prefix = self.LOG_LEVEL_COLOR.get(record.levelname.upper(), {}).get(
                 "prefix"
             )
 
         if not hasattr(record, "suffix"):
-            record.suffix = self.LOG_LEVEL_COLOR.get(record.levelname.upper()).get(
+            record.suffix = self.LOG_LEVEL_COLOR.get(record.levelname.upper(), {}).get(
                 "suffix"
             )
 

@@ -1,17 +1,18 @@
 """Tests for 1.0 deprecation warnings."""
 
-from collections import OrderedDict
 from typing import Any
 
 import pytest
 
+from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.plugins import lines as lines_plugin
 
 
 def test_lines_plugin_emits_deprecation_warning() -> None:
-    template: OrderedDict[str, Any] = OrderedDict(
+    template = InvoiceTemplate(
         {
             "template_name": "deprecation-test.yml",
+            "keywords": ["Item"],
             "lines": {
                 "start": "Item",
                 "end": "Total",

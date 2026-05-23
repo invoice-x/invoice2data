@@ -25,7 +25,7 @@ def prettify(elem: ElementTree.Element) -> Any:
         Any: A pretty-printed XML string.
     """
     if defusedxml_available():
-        from defusedxml import minidom  # type: ignore[import-not-found]
+        from defusedxml import minidom  # ty: ignore[unresolved-import]
     else:
         from xml.dom import minidom
 

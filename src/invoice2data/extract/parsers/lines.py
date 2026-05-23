@@ -5,12 +5,15 @@ Initial work and maintenance by Holger Brunn @hbrunn
 
 from logging import getLogger
 from re import Match
+from typing import TYPE_CHECKING
 from typing import Any
 
 from .. import _regex
 
 
-# from ..invoice_template import InvoiceTemplate  # type: ignore[unused-ignore]
+if TYPE_CHECKING:
+    from ..invoice_template import InvoiceTemplate
+
 
 logger = getLogger(__name__)
 
@@ -40,7 +43,7 @@ def parse_line(patterns: str | list[str], line: str) -> Match[str] | None:
 
 
 def parse_block(  # noqa: RUF100 C901
-    template: dict[str, Any],
+    template: "InvoiceTemplate",
     field: str,
     settings: dict[str, Any],
     content: str,
@@ -53,7 +56,7 @@ def parse_block(  # noqa: RUF100 C901
     based on the configuration.
 
     Args:
-        template (dict[str, Any]): The template containing extraction rules.
+        template (InvoiceTemplate): The template containing extraction rules.
         field (str): The name of the field to extract.
         settings (dict[str, Any]): The settings for the extraction rule.
         content (str): The text content to parse.
@@ -159,12 +162,12 @@ def parse_block(  # noqa: RUF100 C901
     for row in lines:
         for name in row.keys():
             if name in types:
-                row[name] = template.coerce_type(row[name], types[name])  # type: ignore[attr-defined]
+                row[name] = template.coerce_type(row[name], types[name])
     return lines
 
 
 def parse_by_rule(
-    template: dict[str, Any],
+    template: "InvoiceTemplate",
     field: str,
     rule: dict[str, Any],
     content: str,
@@ -172,7 +175,7 @@ def parse_by_rule(
     """Parse lines from a block of text based on a rule.
 
     Args:
-        template (dict[str, Any]): The template dictionary.
+        template (InvoiceTemplate): The template dictionary.
         field (str): The field name.
         rule (dict[str, Any]): The rule dictionary.
         content (str): The text content to parse.
@@ -224,7 +227,7 @@ def parse_by_rule(
 
 
 def parse(
-    template: dict[str, Any],
+    template: "InvoiceTemplate",
     field: str,
     settings: dict[str, Any],
     content: str,
@@ -232,7 +235,7 @@ def parse(
     """Parse lines from the content based on the given settings.
 
     Args:
-        template (dict[str, Any]): The template dictionary.
+        template (InvoiceTemplate): The template dictionary.
         field (str): The field name.
         settings (dict[str, Any]): The settings dictionary.
         content (str): The text content to parse.

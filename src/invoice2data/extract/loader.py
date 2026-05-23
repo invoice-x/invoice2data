@@ -3,13 +3,11 @@
 Templates are initially read from .yml or .json files and then kept as class.
 """
 
-import codecs
 import json
 import os
 from collections.abc import Callable
 from logging import getLogger
 from typing import Any
-from typing import cast
 
 
 try:
@@ -51,7 +49,7 @@ def ordered_load(
     for tpl in tpl_stream:
         tpl = prepare_template(tpl)
         if tpl:
-            output.append(InvoiceTemplate(cast(dict[str, Any], tpl)))
+            output.append(InvoiceTemplate(tpl))
 
     return output
 
@@ -83,9 +81,7 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
 
     for path, _subdirs, files in os.walk(folder):
         for name in sorted(files):
-            with codecs.open(
-                os.path.join(path, name), encoding="utf-8"
-            ) as template_file:
+            with open(os.path.join(path, name), encoding="utf-8") as template_file:
                 if name.endswith((".yaml", ".yml")):
                     try:
                         tpl = load(template_file.read(), Loader=SafeLoader)
@@ -106,7 +102,7 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
             tpl = prepare_template(tpl)
 
             if tpl:
-                output.append(InvoiceTemplate(cast(dict[str, Any], tpl)))
+                output.append(InvoiceTemplate(tpl))
 
     logger.info("Loaded %d templates from %s", len(output), folder)
     return output

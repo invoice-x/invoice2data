@@ -18,7 +18,7 @@ def ocrmypdf_available() -> bool:
         bool: True if ocrmypdf is available, False otherwise.
     """
     try:
-        import ocrmypdf  # type: ignore[import-not-found]  # noqa: F401
+        import ocrmypdf  # noqa: F401  # ty: ignore[unresolved-import]
     except ImportError:
         return False
     return True
@@ -91,7 +91,7 @@ def pre_process_pdf(path: str, pre_conf: dict[str, Any] | None = None) -> str | 
         logger.warning("ocrmypdf is not available. Install with 'pip install ocrmypdf'")
         return None
 
-    import ocrmypdf
+    import ocrmypdf  # ty: ignore[unresolved-import]
 
     ocrmypdf_conf = OPTIONS_DEFAULT.copy()
     if pre_conf:
