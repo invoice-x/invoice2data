@@ -1,0 +1,16 @@
+# This file is managed by Copier; do not edit by hand.
+# It records the answers used to generate this project so `copier update` works.
+_commit: b387b46
+_src_path: gh:bosd/uv-forge
+author: Manuel Riel
+development_status: 'Development Status :: 5 - Production/Stable'
+docs_host: readthedocs
+email: ''
+extension: none
+friendly_name: Invoice2Data
+github_user: invoice-x
+license: MIT
+package_name: invoice2data
+project_name: invoice2data
+version: 0.4.7
+

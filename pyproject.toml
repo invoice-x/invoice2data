@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=64"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "invoice2data"
@@ -65,9 +65,10 @@ docs = [
     "sphinx-mermaid >=0.0.7",
     "sphinxcontrib-svg2pdfconverter >=2.1.0",
 ]
-mypy = ["mypy >=0.930"]
-typeguard = ["typeguard >=2.13.3"]
-xdoctest = ["xdoctest[colors] >=0.15.10"]
+mypy = ["mypy >= 1.13"]
+ty = ["ty >= 0.0.1"]
+typeguard = ["typeguard >= 4.4"]
+xdoctest = ["xdoctest[colors] >= 1.2"]
 
 [project.optional-dependencies]
 camelot = ["camelot-py >= 1.0"]
@@ -98,14 +99,20 @@ conflicts = [
     [{ extra = "camelot" }, { extra = "pdfplumber" }],
 ]
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.hatch.build.targets.wheel]
+# Ships the package only (py.typed + the bundled templates included; test
+# fixtures live outside src/ so PDFs/PNGs never enter the wheel).
+packages = ["src/invoice2data"]
 
-[tool.setuptools.package-data]
-invoice2data = [
-    "py.typed",
-    "extract/templates/**/*.yml",
-    "extract/templates/**/*.json",
+[tool.hatch.build.targets.sdist]
+# Keep the sdist lean: ship source + test code, but not the heavy binary test
+# fixtures (PDFs/PNGs) or build/cache cruft.
+exclude = [
+    "docs/_build",
+    "**/__pycache__",
+    "*.py[cod]",
+    "tests/**/*.pdf",
+    "tests/**/*.png",
 ]
 
 
