@@ -107,11 +107,18 @@ be revisited later — **feedback welcome** on the tracker before any change.
   `pdfplumber`, so the `camelot` extra is mutually exclusive with the
   `pdfplumber` and `pdfminer-six` extras (run camelot alongside the default
   pdfium/pdftotext cascade). Plugins now also receive the source `invoice_file`.
+- **Canonical `lines`/`tax_lines` field names**: line-item output keys are
+  normalized to one vocabulary at extraction time
+  (`schema.normalize_line_fields`), so templates may keep their own group names
+  and still emit standard fields: `description → name`, `unit_price`/`unitprice
+  → price_unit`, `vat_rate`/`tax_percent → line_tax_percent`. The canonical
+  vocabulary now also documents the distinct **`product`** (product matching —
+  *not* a synonym for `name`) and **`taxes`** (tax matching) line fields.
+  **Breaking** for downstream code that read the old key names. The bundled
+  templates were also tidied to use the canonical names directly.
 
 ## Planned for 1.0 (tracked, not yet landed)
 
-- **Canonical `tax_lines`/`lines` schema**: normalize field names across the
-  built-in templates to one vocabulary.
 - **mypyc**-compiled hot paths.
 
 ## Feedback

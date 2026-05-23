@@ -10,19 +10,19 @@
     "currency": "USD",
     "lines": [
       {
-        "description": "AWS Data Transfer",
+        "name": "AWS Data Transfer",
         "price_unit": "0.01"
       },
       {
-        "description": "Amazon Elastic Compute Cloud",
+        "name": "Amazon Elastic Compute Cloud",
         "price_unit": "1.87"
       },
       {
-        "description": "Amazon Glacier",
+        "name": "Amazon Glacier",
         "price_unit": "2.22"
       },
       {
-        "description": "Amazon Simple Storage Service",
+        "name": "Amazon Simple Storage Service",
         "price_unit": "0.01"
       }
     ],

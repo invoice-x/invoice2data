@@ -67,6 +67,8 @@ INVOICE_FIELDS: frozenset[str] = frozenset(
 LINE_FIELDS: frozenset[str] = frozenset(
     {
         "name",
+        "product",
+        "taxes",
         "code",
         "barcode",
         "qty",
@@ -94,6 +96,46 @@ TAX_LINE_FIELDS: frozenset[str] = frozenset(
         "line_tax_code",
     }
 )
+
+#: Non-canonical line/tax-line field names mapped to their canonical equivalent.
+#: Applied to the *output* (not the templates) by :func:`normalize_line_fields`,
+#: so a template may keep these aliases and still produce the standard vocabulary.
+#: ``product`` is intentionally absent — it is a distinct field (product
+#: matching), not a synonym for ``name``. ``description`` maps to ``name``
+#: because Odoo reads a line's label from ``name`` (``description`` is only an
+#: invoice-level field for single-line imports).
+LINE_FIELD_ALIASES: dict[str, str] = {
+    "description": "name",
+    "unit_price": "price_unit",
+    "unitprice": "price_unit",
+    "vat_rate": "line_tax_percent",
+    "tax_percent": "line_tax_percent",
+}
+
+
+def normalize_line_fields(output: dict[str, Any]) -> None:
+    """Rename non-canonical keys in ``lines``/``tax_lines`` rows in place.
+
+    Maps each alias in :data:`LINE_FIELD_ALIASES` to its canonical name so that
+    extraction output uses one vocabulary regardless of the group names a
+    template happens to use. An alias is only applied when the canonical key is
+    not already present (so an explicit canonical value always wins).
+
+    Args:
+        output (dict[str, Any]): The extracted-fields dictionary, mutated in
+            place.
+    """
+    for array_field in ("lines", "tax_lines"):
+        rows = output.get(array_field)
+        if not isinstance(rows, list):
+            continue
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            for alias, canonical in LINE_FIELD_ALIASES.items():
+                if alias in row and canonical not in row:
+                    row[canonical] = row.pop(alias)
+
 
 # Prefixes that auto-type a field (a name starting with these is intentional,
 # e.g. amount_total, date_shipped), so they are never treated as unknown.

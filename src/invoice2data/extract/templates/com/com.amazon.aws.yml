@@ -15,7 +15,7 @@ keywords:
 lines:
   start: Detail
   end: \* May include estimated US sales tax
-  first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
+  first_line: ^    (?P<name>\w+.*)\$(?P<price_unit>\d+\.\d+)
   line: (.*)\$(\d+\.\d+)
   last_line: VAT \*\*
 options:

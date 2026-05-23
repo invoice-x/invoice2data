@@ -51,12 +51,12 @@
     "end": "TOTAAL\\s",
     "first_line": ".(?P<product>\\w+).?\\s+\\d\\s[E|€]\\s*\\d+.\\d{0,2}",
     "line": [
-      "(?P<name>POMP.*) (?P<qty>\\d+.\\d{2})\\s.+\\s.\\s(?P<unitprice>\\d.\\d{2,3})",
-      "(?i)Prijs\\s+[E|€] (?P<unitprice>\\d.\\d{2,3})\\s*[/]?(?P<uom>[l|ℓ|L])?"
+      "(?P<name>POMP.*) (?P<qty>\\d+.\\d{2})\\s.+\\s.\\s(?P<price_unit>\\d.\\d{2,3})",
+      "(?i)Prijs\\s+[E|€] (?P<price_unit>\\d.\\d{2,3})\\s*[/]?(?P<uom>[l|ℓ|L])?"
     ],
     "types": {
       "qty": "float",
-      "unitprice": "float"
+      "price_unit": "float"
     }
   },
   "keywords": ["(?i)TOTAL", "Servau", "€"],

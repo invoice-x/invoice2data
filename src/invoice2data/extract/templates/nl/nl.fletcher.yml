@@ -58,12 +58,12 @@ fields:
       - start: 'Datum\s+Omschrijving'
         end: "Totaal factuur"
         line:
-          - '(?P<date_start>\d+-\d{2}-\d{4})\s{11}(?P<name>.+)\s{10,40}(?P<qty>\d*)\s+(?P<unit_price>\d+[,.]\d{2})'
+          - '(?P<date_start>\d+-\d{2}-\d{4})\s{11}(?P<name>.+)\s{10,40}(?P<qty>\d*)\s+(?P<price_unit>\d+[,.]\d{2})'
         types:
           qty: float
           price_subtotal: float
           line_amount_tax: float
-          unit_price: float
+          price_unit: float
           date_start: date
       - start: "Totaal factuur"
         end: "Totaal betaald"

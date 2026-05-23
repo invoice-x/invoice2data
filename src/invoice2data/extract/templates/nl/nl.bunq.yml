@@ -8,7 +8,7 @@ fields:
 lines:
   start: Bedrag
   end: Totaal
-  last_line: '(?P<description>(\w+(?:\S|[ ]\w\w+)*))\s+(?P<qty>\d+)\s+(?P<price_unit>€\s\d+.\d{2})\s+(?P<amountcurrency>€\s\d+.\d{2})'
+  last_line: '(?P<name>(\w+(?:\S|[ ]\w\w+)*))\s+(?P<qty>\d+)\s+(?P<price_unit>€\s\d+.\d{2})\s+(?P<amountcurrency>€\s\d+.\d{2})'
   line: '^(?P<description2>\w+(?:\S|[ ]\w\w+){1})$' # te veel hits
   first_line: "^(?P<title>(Subscription))$"
   types:

@@ -48,12 +48,12 @@ fields:
     start: "Description"
     end: "Total"
     line:
-      - '(?P<name>[\S ]+)\s+(?P<qty>\d+)\s+(?P<unit_price>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d+[,.]\d{2})\s+(?P<price_total>\d+[,.]\d{2})'
+      - '(?P<name>[\S ]+)\s+(?P<qty>\d+)\s+(?P<price_unit>\d+[,.]\d{2})\s+(?P<line_tax_percent>\d+[,.]\d{2})\s+(?P<price_total>\d+[,.]\d{2})'
     types:
       qty: float
       price_subtotal: float
       line_amount_tax: float
-      unit_price: float
+      price_unit: float
 keywords:
   - "Runbox"
   - "Invoice"

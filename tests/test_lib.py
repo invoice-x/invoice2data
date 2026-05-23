@@ -304,5 +304,37 @@ class TestCamelotPlugin(unittest.TestCase):
         self.assertEqual(output, {})
 
 
+class TestLineFieldNormalization(unittest.TestCase):
+    """Cover schema.normalize_line_fields (canonical line/tax_line vocabulary)."""
+
+    def test_line_aliases_normalized(self) -> None:
+        from invoice2data.extract.schema import normalize_line_fields
+
+        out: dict[str, Any] = {
+            "lines": [{"description": "Widget", "unit_price": "1.00", "qty": 2}],
+            "tax_lines": [{"vat_rate": "21"}],
+        }
+        normalize_line_fields(out)
+        self.assertEqual(
+            out["lines"][0], {"name": "Widget", "price_unit": "1.00", "qty": 2}
+        )
+        self.assertEqual(out["tax_lines"][0], {"line_tax_percent": "21"})
+
+    def test_product_is_not_aliased(self) -> None:
+        from invoice2data.extract.schema import normalize_line_fields
+
+        out: dict[str, Any] = {"lines": [{"product": "ABC", "name": "Widget"}]}
+        normalize_line_fields(out)
+        # product is a distinct field (product matching), never folded into name.
+        self.assertEqual(out["lines"][0], {"product": "ABC", "name": "Widget"})
+
+    def test_existing_canonical_value_wins(self) -> None:
+        from invoice2data.extract.schema import normalize_line_fields
+
+        out: dict[str, Any] = {"lines": [{"name": "Real", "description": "Alias"}]}
+        normalize_line_fields(out)
+        self.assertEqual(out["lines"][0]["name"], "Real")
+
+
 if __name__ == "__main__":
     unittest.main()

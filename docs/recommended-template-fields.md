@@ -65,7 +65,9 @@ To be used in the lines section:
 
 | fieldname | type | Description |
 | -------------- | :---------: | :-------------------------------------- |
-| name | char | The name of the product, can be used for product matching |
+| name | char | The invoice line's label/description (Odoo line `name`). `description` is accepted as an alias and normalized to `name`. |
+| product | char | Product identifier (name or code) used for product matching. Distinct from `name`. |
+| taxes | char | Tax identifier(s) used for tax matching (the no-product line method). |
 | barcode | char | The the barcode of the product or product package, used for product matching |
 | code | char | The (internal) product code, used for product matching |
 | qty | float | The amount of items/units |
@@ -87,7 +89,7 @@ To be used in the lines section:
     lines:
         start: Item\s+Discount\s+Price$
         end: \s+Total
-        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
+        line: (?P<name>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
 ```
 
 ## Tax Line Fields
@@ -115,5 +117,5 @@ Example of an Tax line section on a invoice:
     lines:
         start: Item\s+Discount\s+Price$
         end: \s+Total
-        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
+        line: (?P<name>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
 ```
