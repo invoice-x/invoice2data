@@ -2,6 +2,8 @@
 
 # SPDX-License-Identifier: MIT
 
+from pathlib import Path
+
 
 def to_text(path: str) -> str:
     """Reads the content of a text file.
@@ -12,5 +14,5 @@ def to_text(path: str) -> str:
     Returns:
       str: The content of the text file.
     """
-    with open(path) as f:
+    with Path(path).open() as f:
         return f.read()

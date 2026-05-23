@@ -1,7 +1,7 @@
 """Poppler pdftotext input module for invoice2data."""
 
-import os
 import shutil
+from pathlib import Path
 from typing import Any
 
 
@@ -42,7 +42,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
         FileNotFoundError: If the specified PDF file is not found.
         OSError: If pdftotext fails to extract text.
     """
-    if not os.path.exists(path):
+    if not Path(path).exists():
         raise FileNotFoundError(f"File not found: {path}")
     import subprocess
 

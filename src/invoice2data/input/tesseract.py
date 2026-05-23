@@ -1,7 +1,6 @@
 """Tesseract OCR input module for invoice2data."""
 
 import mimetypes
-import os
 import shutil
 import tempfile
 from logging import getLogger
@@ -45,7 +44,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
         FileNotFoundError: If the specified image file is not found.
         OSError: If Tesseract OCR fails to extract text.
     """
-    if not os.path.exists(path):
+    if not Path(path).exists():
         raise FileNotFoundError(f"File not found: {path}")
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not shutil.which("tesseract"):

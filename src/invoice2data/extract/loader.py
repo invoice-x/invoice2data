@@ -7,6 +7,7 @@ import json
 import os
 from collections.abc import Callable
 from logging import getLogger
+from pathlib import Path
 from typing import Any
 
 
@@ -75,13 +76,13 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
     """
     output = []
     if folder is None:
-        folder = os.path.join(os.path.dirname(__file__), "templates")
+        folder = str(Path(__file__).parent / "templates")
     else:
-        folder = os.path.abspath(folder)
+        folder = str(Path(folder).resolve())
 
     for path, _subdirs, files in os.walk(folder):
         for name in sorted(files):
-            with open(os.path.join(path, name), encoding="utf-8") as template_file:
+            with (Path(path) / name).open(encoding="utf-8") as template_file:
                 if name.endswith((".yaml", ".yml")):
                     try:
                         tpl = load(template_file.read(), Loader=SafeLoader)

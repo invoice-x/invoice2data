@@ -4,6 +4,7 @@ import csv
 import datetime
 import json
 from copy import deepcopy
+from pathlib import Path
 from typing import Any
 
 from .to_json import format_item
@@ -109,7 +110,7 @@ def write_to_file(
     """
     filename = path if path.endswith(".csv") else path + ".csv"
 
-    with open(filename, "w", newline="", encoding="utf-8") as csv_file:
+    with Path(filename).open("w", newline="", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file, delimiter=",")
         if lines_mode == "explode":
             _write_exploded(writer, data, date_format)

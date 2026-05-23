@@ -1,6 +1,7 @@
 """pdminer input module for invoice2data."""
 
 from io import StringIO
+from pathlib import Path
 from typing import Any
 
 
@@ -36,7 +37,7 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     laparams = LAParams()
     laparams.all_texts = True
     device = TextConverter(rsrcmgr, retstr, laparams=laparams)
-    with open(path, "rb") as fp:
+    with Path(path).open("rb") as fp:
         interpreter = PDFPageInterpreter(rsrcmgr, device)
         password = ""
         maxpages = 0

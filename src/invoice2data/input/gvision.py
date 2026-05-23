@@ -13,6 +13,7 @@ that drops the GCS-bucket setup; it needs a Document AI processor id + the
 
 import logging
 import os
+from pathlib import Path
 
 
 logger = logging.getLogger(__name__)
@@ -73,7 +74,7 @@ def to_text(path: str, bucket_name: str | None = None, language: str = "en") -> 
             "No Google Cloud Bucket name set.\n Set it as an input variable or as an environment variable named GOOGLE_CLOUD_BUCKET_NAME"
         )
 
-    filename = os.path.basename(path)
+    filename = Path(path).name
     result_blob_basename = filename.replace(".pdf", "").replace(".PDF", "")
     result_blob_name = f"{result_blob_basename}/output-1-to-1.json"
     result_blob_uri = f"gs://{bucket_name}/{result_blob_basename}/"

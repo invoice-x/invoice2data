@@ -246,8 +246,6 @@ extend-ignore = [
     "S603",
     "UP031",  # Use fstring instead of % identifier
     "E501",   # fix this when updating docstrings
-    "PTH",    # selected, but the os.path -> pathlib migration (~70 sites) is a
-    # focused follow-up; drop this ignore when it lands.
     "TRY003", # long messages in raise (would need custom exception classes)
     # "DOC106",
     # "DOC107",
@@ -258,6 +256,8 @@ extend-ignore = [
 "*/test_*.py" = ["S101", "D100", "D101", "D102"]
 "noxfile.py" = ["S101"]
 "**/conftest.py" = ["S101"]
+# Test scaffolding keeps os.path; pathlib there is churn with no runtime benefit.
+"tests/**" = ["PTH"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

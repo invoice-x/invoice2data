@@ -3,10 +3,9 @@
 
 import datetime
 import logging
-import os
 import shutil
 from copy import deepcopy
-from os.path import join
+from pathlib import Path
 from typing import Any
 from typing import ClassVar
 
@@ -423,7 +422,7 @@ class Invoice2Data:
         Args:
             path (str): Folder containing .yml/.json templates to load.
         """
-        self.templates += read_templates(os.path.abspath(path))
+        self.templates += read_templates(str(Path(path).resolve()))
 
     def extract_data(self, path: str, input_module: Any = None) -> dict[str, Any]:
         """Extract data from an invoice using this instance's templates.
@@ -560,7 +559,7 @@ def _load_templates(
     """Load templates from the specified folder."""
     templates = []
     if template_folder:
-        templates.extend(read_templates(os.path.abspath(template_folder)))
+        templates.extend(read_templates(str(Path(template_folder).resolve())))
     if not exclude_built_in_templates:
         templates.extend(read_templates())
     return templates
@@ -583,10 +582,10 @@ def _process_and_move_copy(
             kwargs[key] = value.strftime("%Y-%m-%d")
     if copy:
         new_filename = filename_format.format(**kwargs)
-        shutil.copyfile(filename, join(copy, new_filename))
+        shutil.copyfile(filename, Path(copy) / new_filename)
     if move:
         new_filename = filename_format.format(**kwargs)
-        shutil.move(filename, join(move, new_filename))
+        shutil.move(filename, str(Path(move) / new_filename))
 
 
 if __name__ == "__main__":

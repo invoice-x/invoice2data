@@ -2,6 +2,7 @@
 
 import datetime
 import importlib.util
+from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree
 
@@ -87,7 +88,7 @@ def write_to_file(
     filename = path if path.endswith(".xml") else path + ".xml"
 
     tag_data = ElementTree.Element("data")
-    with open(filename, "w") as xml_file:
+    with Path(filename).open("w") as xml_file:
         for i, line in enumerate(data):
             tag_item = ElementTree.SubElement(tag_data, "item")
             tag_item.set("id", str(i + 1))
