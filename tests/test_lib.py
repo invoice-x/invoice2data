@@ -228,6 +228,23 @@ class TestBackendCascade(unittest.TestCase):
         # A missing file makes the backend raise; the cascade must see "".
         self.assertEqual(_safe_to_text(pdftotext, "/no/such/file.pdf"), "")
 
+    def test_explicit_backend_bypasses_template_pin(self) -> None:
+        from invoice2data.__main__ import extract_data
+        from invoice2data.extract.loader import read_templates
+        from invoice2data.input import pdfium
+
+        if not pdfium.is_available():
+            self.skipTest("pypdfium2 not installed")
+        templates = read_templates()
+        aws = "tests/compare/AmazonWebServices.pdf"
+        # The AWS template is pinned to pdftotext (its line-item table needs
+        # -layout). Auto mode honours the pin (full lines); forcing pdfium must
+        # bypass it (pypdfium2 yields no line items here).
+        auto = extract_data(aws, templates, None)
+        forced = extract_data(aws, templates, "pdfium")
+        self.assertTrue(auto.get("lines"), "auto/pin should yield line items")
+        self.assertFalse(forced.get("lines"), "explicit pdfium should bypass pin")
+
     def test_pdfium_to_text_normalised(self) -> None:
         from invoice2data.input import pdfium
 

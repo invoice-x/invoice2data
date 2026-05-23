@@ -153,6 +153,9 @@ def extract_data(
     """
     templates = templates or read_templates()
     readers = _resolve_readers(invoicefile, input_module)
+    # Per-template backend pins apply only in auto (cascade) mode; an explicit
+    # input_module forces that backend, pin or not.
+    auto = input_module is None
 
     for reader in readers:
         extracted_str = _safe_to_text(reader, invoicefile)
@@ -172,8 +175,9 @@ def extract_data(
         # A template may pin the backend it was authored for (e.g. an area or
         # table template that needs poppler's layout). Honour it by re-extracting
         # with that backend; this also short-circuits straight to the right
-        # backend once a faster default leads the cascade.
-        preferred = _preferred_module(template, used=reader)
+        # backend once a faster default leads the cascade. Pins apply in auto
+        # mode only — an explicit input_module is taken at face value.
+        preferred = _preferred_module(template, used=reader) if auto else None
         if preferred is not None:
             preferred_str = _safe_to_text(preferred, invoicefile)
             preferred_template = (
