@@ -45,7 +45,9 @@ def parse(
         logger.warning('Field "%s" doesn\'t have regex specified', field)
         return None
 
-    result = _extract_matches(settings, content)
+    # `result` morphs from a list of matches to a coerced scalar/grouped value;
+    # keep it `Any` so mypyc doesn't strict-check it against the initial list type.
+    result: Any = _extract_matches(settings, content)
     if result is None:
         return None
 
