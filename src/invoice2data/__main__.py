@@ -15,12 +15,9 @@ import click
 from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import read_templates
 
-from .input import gvision
+from .input import INPUT_MODULES
 from .input import ocrmypdf
-from .input import pdfminer_wrapper
-from .input import pdfplumber
 from .input import pdftotext
-from .input import tesseract
 from .input import text
 from .output import to_csv
 from .output import to_json
@@ -29,15 +26,8 @@ from .output import to_xml
 
 logger = logging.getLogger()
 
-input_mapping = {
-    "pdftotext": pdftotext,
-    "tesseract": tesseract,
-    "pdfminer": pdfminer_wrapper,
-    "pdfplumber": pdfplumber,
-    "gvision": gvision,
-    "text": text,
-    "ocrmypdf": ocrmypdf,
-}
+# Backend registry lives in invoice2data.input (see input.__interface__).
+input_mapping = INPUT_MODULES
 
 output_mapping = {
     "csv": to_csv,

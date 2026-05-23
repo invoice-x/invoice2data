@@ -1,7 +1,20 @@
 """Poppler pdftotext input module for invoice2data."""
 
 import os
+import shutil
 from typing import Any
+
+
+SUPPORTS_AREA = True
+
+
+def is_available() -> bool:
+    """Return whether the poppler ``pdftotext`` binary is on the PATH.
+
+    Returns:
+        bool: True if ``pdftotext`` can be run.
+    """
+    return shutil.which("pdftotext") is not None
 
 
 def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
@@ -31,7 +44,6 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
     """
     if not os.path.exists(path):
         raise FileNotFoundError(f"File not found: {path}")
-    import shutil
     import subprocess
 
     if shutil.which("pdftotext"):

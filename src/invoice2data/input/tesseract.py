@@ -17,6 +17,17 @@ from typing import Any
 
 logger = getLogger(__name__)
 
+SUPPORTS_AREA = True
+
+
+def is_available() -> bool:
+    """Return whether the ``tesseract`` and ImageMagick binaries are present.
+
+    Returns:
+        bool: True if both ``tesseract`` and ``convert`` are on the PATH.
+    """
+    return shutil.which("tesseract") is not None and shutil.which("convert") is not None
+
 
 def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
     """Extract text from image using tesseract OCR.

@@ -4,6 +4,17 @@ from io import StringIO
 from typing import Any
 
 
+def is_available() -> bool:
+    """Return whether the optional ``pdfminer.six`` package is importable.
+
+    Returns:
+        bool: True if ``pdfminer`` is installed.
+    """
+    import importlib.util
+
+    return importlib.util.find_spec("pdfminer") is not None
+
+
 def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     """Wrapper around `pdfminer` to extract text from PDF.
 

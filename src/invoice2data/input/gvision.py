@@ -21,6 +21,10 @@ def have_google_cloud() -> bool:
     return GOOGLE_CLOUD_AVAILABLE
 
 
+#: Backend availability check (see input.__interface__).
+is_available = have_google_cloud
+
+
 def to_text(path: str, bucket_name: str | None = None, language: str = "en") -> str:
     """Sends PDF files to Google Cloud Vision for OCR.
 

@@ -7,6 +7,17 @@ from typing import Any
 logger = getLogger(__name__)
 
 
+def is_available() -> bool:
+    """Return whether the optional ``pdfplumber`` package is importable.
+
+    Returns:
+        bool: True if ``pdfplumber`` is installed.
+    """
+    import importlib.util
+
+    return importlib.util.find_spec("pdfplumber") is not None
+
+
 def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     """Extract text from PDF using pdfplumber.
 

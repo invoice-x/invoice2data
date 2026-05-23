@@ -24,6 +24,11 @@ def ocrmypdf_available() -> bool:
     return True
 
 
+SUPPORTS_AREA = True
+#: Backend availability check (see input.__interface__).
+is_available = ocrmypdf_available
+
+
 # Default options for redo-ocr to act as a fallback when pdftotext fails
 OPTIONS_DEFAULT = {
     "redo_ocr": True,

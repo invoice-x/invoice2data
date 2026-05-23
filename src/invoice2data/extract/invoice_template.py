@@ -11,11 +11,7 @@ from typing import Any
 
 import dateparser  # type: ignore[import-untyped]
 
-from ..input import ocrmypdf
-
-# Area extraction is currently added for pdftotext, ocrmypdf and tesseract (which uses pdftotext)
-from ..input import pdftotext
-from ..input import tesseract
+from ..input import supports_area
 from . import _regex
 from . import parsers
 from .plugins import lines
@@ -301,7 +297,7 @@ def _handle_area(
     optimized_str: str,
 ) -> str:
     """Handle area-specific extraction."""
-    if "area" in v and input_module in (pdftotext, ocrmypdf, tesseract):
+    if "area" in v and supports_area(input_module):
         logger.debug(f"Area was specified with parameters {v['area']}")
         optimized_str_area: str = input_module.to_text(invoice_file, v["area"])
         logger.debug(
