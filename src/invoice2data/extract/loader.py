@@ -29,26 +29,33 @@ logger = getLogger(__name__)
 def ordered_load(
     stream: str, loader: Callable[[str], Any] = json.loads
 ) -> list[InvoiceTemplate]:
-    """Loads a stream of JSON data.
+    """Parse templates from an in-memory string instead of from disk.
+
+    Useful when templates live outside the filesystem (e.g. a database column or
+    an API payload): ``extract_data(file, templates=ordered_load(db_text))``. For
+    YAML data pass ``loader=yaml.safe_load``.
 
     Args:
-        stream (str): JSON data string.
-        loader (Callable[[str], Any], optional): JSON loader function. Defaults to json.loads.
+        stream (str): Serialized templates -- a JSON (default) or YAML array of
+            template mappings.
+        loader (Callable[[str], Any], optional): Callable turning ``stream`` into
+            a list of template dicts. Defaults to ``json.loads``; pass
+            ``yaml.safe_load`` for YAML.
 
     Returns:
-        list[InvoiceTemplate]: List of InvoiceTemplate objects.
+        list[InvoiceTemplate]: Parsed, prepared templates (empty list on a parse
+            error, which is logged).
     """
-    output = []
-
     try:
-        tpl_stream = json.loads(stream)
-    except ValueError as error:
-        logger.warning("JSON Loader Failed to load template stream\n%s", error)
+        tpl_stream = loader(stream)
+    except (ValueError, YAMLError) as error:
+        logger.warning("Failed to load template stream\n%s", error)
         return []
 
-    # Always pre-process template to remain backwards compatible
-    for tpl in tpl_stream:
-        tpl = prepare_template(tpl)
+    output = []
+    # Always pre-process templates to remain backwards compatible.
+    for raw_tpl in tpl_stream:
+        tpl = prepare_template(raw_tpl)
         if tpl:
             output.append(InvoiceTemplate(tpl))
 
@@ -122,7 +129,7 @@ def prepare_template(tpl: dict[str, Any]) -> dict[str, Any] | None:
     if "keywords" not in tpl:
         logger.warning(
             "Failed to load template %s. Missing mandatory 'keywords' field.",
-            tpl["template_name"],
+            tpl.get("template_name", "<stream>"),
         )
         return None
 

@@ -5,6 +5,7 @@ from collections.abc import Generator
 from pathlib import Path
 
 import pytest
+import yaml
 
 from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import ordered_load
@@ -47,6 +48,28 @@ def test_templates_stream_loader() -> None:
     assert all(isinstance(template, InvoiceTemplate) for template in templates)
 
 
+def test_templates_yaml_stream_loader() -> None:
+    # A YAML array of templates, e.g. fetched from a DB column.
+    yaml_stream = (
+        "- issuer: first biz\n"
+        "  name: first template\n"
+        "  parser: static\n"
+        "  value: NL82338015B01\n"
+        "  keywords: [Receipt, va.nl]\n"
+        "- issuer: second biz\n"
+        "  name: 2nd template\n"
+        "  parser: static\n"
+        "  value: NL828015B01\n"
+        "  keywords: [Receipt, viavia.com]\n"
+    )
+
+    templates = ordered_load(stream=yaml_stream, loader=yaml.safe_load)
+
+    assert len(templates) == 2
+    assert all(isinstance(template, InvoiceTemplate) for template in templates)
+    assert templates[0]["keywords"] == ["Receipt", "va.nl"]
+
+
 class MyTestCase(unittest.TestCase):
     def test_templates_invalid_stream_loader(self) -> None:
         invalid_tpl_stream = (
@@ -62,7 +85,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(
             cm.output,
             [
-                "WARNING:invoice2data.extract.loader:JSON Loader Failed to load template stream\nExpecting value: line"
+                "WARNING:invoice2data.extract.loader:Failed to load template stream\nExpecting value: line"
                 " 1 column 1 (char 0)"
             ],
         )

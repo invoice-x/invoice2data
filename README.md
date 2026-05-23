@@ -122,6 +122,17 @@ Using in-house templates
     templates = read_templates('/path/to/your/templates/')
     result = extract_data(filename, templates=templates)
 
+Loading templates from a string instead of disk (e.g. stored in a database
+column or returned by an API) with `ordered_load`:
+
+    import yaml
+    from invoice2data import extract_data
+    from invoice2data.extract.loader import ordered_load
+
+    templates = ordered_load(db_json_string)                       # JSON (default)
+    templates = ordered_load(db_yaml_string, loader=yaml.safe_load)  # or YAML
+    result = extract_data(filename, templates=templates)
+
 ## Template system
 
 See `invoice2data/extract/templates` for existing templates. Just extend
