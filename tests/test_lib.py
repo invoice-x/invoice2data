@@ -123,6 +123,22 @@ class TestLIB(unittest.TestCase):
             print("Testing pdfplumber with file", file)
             extract_data(file, [], pdfplumber)
 
+    @needs_pdfplumber
+    def test_pdfplumber_to_text_not_empty(self) -> None:
+        # Regression: to_text() used to always return "" because it threw away
+        # the per-page extraction and re-derived text from a dict that never had
+        # a "text" key. Guard against the backend silently going dead again.
+        pdf_files = get_sample_files(".pdf")
+        for file in pdf_files:
+            if not file.endswith("FlipkartInvoice.pdf"):
+                continue
+            text = pdfplumber.to_text(file)
+            self.assertGreater(
+                len(text.strip()),
+                0,
+                f"pdfplumber.to_text returned empty text for {file}",
+            )
+
     @unittest.skipUnless(shutil.which("tesseract"), "tesseract not installed")
     def test_tesseract_for_return(self) -> None:
         png_files = get_sample_files(".png")
