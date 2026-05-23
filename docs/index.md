@@ -1,5 +1,8 @@
+# Data extractor for PDF invoices - invoice2data
+
 ```{include} ../README.md
 ---
+start-after: <!-- docs-body -->
 end-before: <!-- github-only -->
 ---
 ```
