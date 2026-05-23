@@ -36,8 +36,7 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     from pdf_oxide import PdfDocument  # type: ignore[import-untyped]
 
     document = PdfDocument(path)
-    text = "\n".join(
-        document.extract_text(index) for index in range(document.page_count())
-    )
+    # to_plain_text_all (layout-preserving) scored best in the backend benchmark.
+    text: str = document.to_plain_text_all(preserve_layout=True)
     logger.debug("Text extraction made with pdf-oxide")
     return text
