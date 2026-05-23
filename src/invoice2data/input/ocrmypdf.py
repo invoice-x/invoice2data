@@ -37,6 +37,18 @@ OPTIONS_DEFAULT = {
     "fast_web_view": 0,
 }
 
+#: Common OCRmyPDF pre-processing knobs. Any of these may be passed through
+#: ``input_reader_config`` / ``pre_conf`` -- they are forwarded verbatim to
+#: ``ocrmypdf.ocr`` -- to clean up noisy scans: ``deskew``, ``clean``,
+#: ``clean_final``, ``rotate_pages``, ``remove_background``, ``optimize`` (0-3,
+#: image/size optimization) and ``oversample`` (target DPI). A recommended
+#: starting set for scanned receipts (spread it into ``input_reader_config``):
+RECOMMENDED_SCAN_OPTIONS = {
+    "deskew": True,
+    "clean": True,
+    "rotate_pages": True,
+}
+
 
 def to_text(
     path: str,
@@ -51,7 +63,10 @@ def to_text(
     Args:
         path (str): Path to the PDF invoice file.
         area_details (dict[str, Any] | None, optional): Details about the area to extract. Defaults to None.
-        input_reader_config (dict[str, Any] | None, optional): Configuration settings for the input reader. Defaults to None.
+        input_reader_config (dict[str, Any] | None, optional): Settings forwarded
+            to ``ocrmypdf.ocr`` -- e.g. pre-processing knobs like ``deskew`` /
+            ``clean`` / ``rotate_pages`` / ``optimize`` (see
+            :data:`RECOMMENDED_SCAN_OPTIONS`). Defaults to None.
 
     Returns:
         str: Extracted text from the PDF, or an empty string if OCRmyPDF is not available or processing fails.
@@ -73,17 +88,24 @@ def to_text(
 
 
 def pre_process_pdf(path: str, pre_conf: dict[str, Any] | None = None) -> str | None:
-    """Pre-processes PDF files with ocrmypdf before PDFtotext parsing.
+    """Pre-process a PDF with ocrmypdf, returning the cleaned PDF path.
 
-    Uses a temporary file for the output by default.
-    Logs a warning if ocrmypdf is not available.
+    The output is a deskewed/cleaned/optimized, text-layered PDF -- usually
+    smaller than the original. Callers (e.g. an Odoo integration) can use the
+    returned path to **attach or replace the stored file** for size savings, not
+    just to feed pdftotext. Writes to a unique temp file unless ``pre_conf``
+    sets ``output_file``. Logs a warning if ocrmypdf is not available.
 
     Args:
         path (str): Path to the PDF invoice file.
-        pre_conf (dict[str, Any] | None, optional): Configuration settings for ocrmypdf. Defaults to None.
+        pre_conf (dict[str, Any] | None, optional): Settings forwarded to
+            ``ocrmypdf.ocr`` (merged over :data:`OPTIONS_DEFAULT`); pass
+            pre-processing knobs here (see :data:`RECOMMENDED_SCAN_OPTIONS`).
+            Defaults to None.
 
     Returns:
-        str | None: Path to the processed PDF file, or None if processing fails.
+        str | None: Path to the processed (cleaned, smaller) PDF, or None if
+            processing fails.
     """
     if not ocrmypdf_available():
         logger.warning("ocrmypdf is not available. Install with 'pip install ocrmypdf'")
@@ -97,10 +119,10 @@ def pre_process_pdf(path: str, pre_conf: dict[str, Any] | None = None) -> str | 
     logger.debug("ocrmypdf config settings: %s", ocrmypdf_conf)
 
     if "output_file" not in ocrmypdf_conf:
-        inputfile = Path(path)
-        filename = inputfile.name
-        tmp_folder = str(tempfile.gettempdir()) + "/"
-        ocrmypdf_conf["output_file"] = tmp_folder + filename
+        # Unique temp dir per call so concurrent files with the same name do not
+        # collide; the cleaned PDF persists for the caller to read or save.
+        out_dir = tempfile.mkdtemp(prefix="invoice2data_ocrmypdf_")
+        ocrmypdf_conf["output_file"] = str(Path(out_dir) / Path(path).name)
         logger.debug(
             "No output_file specified, using temp file: %s",
             ocrmypdf_conf["output_file"],

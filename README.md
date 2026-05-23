@@ -74,6 +74,14 @@ Choose any of the following input readers:
 - ocrmypdf `invoice2data --input-reader ocrmypdf invoice.pdf`
 - gvision `invoice2data --input-reader gvision invoice.pdf` (needs `GOOGLE_APPLICATION_CREDENTIALS` env var and a Google Cloud Bucket name. The bucket name can be set as an argument to the function ``to_text`` or as an Environment variable named ``GOOGLE_CLOUD_BUCKET_NAME`` )
 
+The `ocrmypdf` reader can clean up noisy scans: any
+[OCRmyPDF option](https://ocrmypdf.readthedocs.io/) (e.g. `deskew`, `clean`,
+`rotate_pages`, `optimize`) can be passed through the input-reader config and is
+forwarded to `ocrmypdf.ocr`. When used as a library,
+`invoice2data.input.ocrmypdf.pre_process_pdf(path, pre_conf=...)` returns the path
+to the cleaned, OCR-layered (usually smaller) PDF, so an integration can attach or
+replace the stored file for size savings.
+
 Choose any of the following output formats:
 
 - csv `invoice2data --output-format csv invoice.pdf`
