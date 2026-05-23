@@ -10,6 +10,8 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
+<!-- docs-body -->
+
 [pypi status]: https://pypi.org/project/invoice2data/
 [read the docs]: https://invoice2data.readthedocs.io/
 [tests]: https://github.com/invoice-x/invoice2data/actions?workflow=Tests
