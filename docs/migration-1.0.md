@@ -77,13 +77,25 @@ be revisited later — **feedback welcome** on the tracker before any change.
   default remains stdlib `re` (non-breaking).
 - **Pluggable input backends**: a documented backend interface and registry
   (`input/__interface__.py`); `extract_data` still accepts module or string.
+- **Input-backend cascade + per-template backend**: when no backend is forced,
+  `extract_data` tries an ordered cascade (`DEFAULT_INPUT_READERS`, currently
+  `pdftotext` then `pdfium`/pypdfium2) until a template matches with all
+  required fields, then OCR (ocrmypdf) as a last resort. A template can pin the
+  backend it was authored for with a top-level `input_module:` key (e.g.
+  `input_module: pdftotext` for a layout-sensitive template); that backend is
+  then used for it regardless of which one matched first. Forcing
+  `--input-reader`/`input_module=` keeps the old single-pass behaviour. A
+  matched-but-incomplete extraction now returns `{}` (per the documented
+  contract) instead of raising `ValueError`.
 
 ## Planned for 1.0 (tracked, not yet landed)
 
 - **Canonical `tax_lines`/`lines` schema**: normalize field names across the
   built-in templates to one vocabulary.
-- **New fast PDF backends**: pypdfium2 (benchmarked ~6× faster than pdftotext;
-  no new dependency) and others, selectable via `--input-reader` (additive).
+- **Faster default backend**: flip the cascade so a faster backend (pypdfium2 —
+  benchmarked ~6× faster than pdftotext, no new dependency — or pd-oxide) leads,
+  once the benchmark confirms its accuracy on the template corpus. Today the
+  cascade leads with `pdftotext` (poppler's `-layout`, the accuracy anchor).
 - **Camelot** table extraction and **mypyc**-compiled hot paths.
 
 ## Feedback

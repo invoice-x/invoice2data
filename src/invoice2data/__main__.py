@@ -16,7 +16,9 @@ from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import read_templates
 
 from .input import INPUT_MODULES
+from .input import is_available
 from .input import ocrmypdf
+from .input import pdfium
 from .input import pdftotext
 from .input import text
 from .output import to_csv
@@ -28,6 +30,15 @@ logger = logging.getLogger()
 
 # Backend registry lives in invoice2data.input (see input.__interface__).
 input_mapping = INPUT_MODULES
+
+#: Default ordered text backends tried when ``input_module`` is not forced.
+#: ``pdftotext`` leads (poppler ``-layout`` — the layout/accuracy anchor the
+#: bundled templates are tuned for); ``pdfium`` (pypdfium2) follows as a
+#: dependency-light fallback. The order is provisional and will be revisited
+#: with the benchmark — a faster backend may lead once its accuracy is proven.
+#: Backends whose dependency is missing are skipped automatically, and a
+#: template can override the choice for itself via its ``input_module:`` key.
+DEFAULT_INPUT_READERS = [pdftotext, pdfium]
 
 output_mapping = {
     "csv": to_csv,
@@ -111,9 +122,12 @@ def extract_data(
         invoicefile (str): Path of electronic invoice file in PDF, JPEG, PNG
         templates (list[InvoiceTemplate] | None): List of instances of class `InvoiceTemplate`.
                                             Templates are loaded using `read_template` function in `loader.py`.
-        input_module (Any, optional): Library to be used to extract text
-                                        from the given `invoicefile`.
-                                        Choices: {'pdftotext', 'pdfminer', 'tesseract', 'text'}.
+        input_module (Any, optional): Backend used to extract text from the
+            given `invoicefile`, as a module or a registry name (e.g.
+            'pdftotext', 'pdfium', 'pdfminer', 'tesseract', 'text'). When
+            ``None`` (the default), a cascade of backends
+            (``DEFAULT_INPUT_READERS``) is tried in order until one yields a
+            template match with all required fields.
 
     Returns:
         dict[str, Any]: Extracted and matched fields, or an empty dict ``{}`` if
@@ -121,6 +135,9 @@ def extract_data(
 
     Notes:
         Import the required `input_module` when using invoice2data as a library.
+        A template may pin the backend it was authored for with a top-level
+        ``input_module:`` key; that backend is then used for that template
+        regardless of which one matched it first.
 
     See Also:
         read_template: Function to load templates.
@@ -134,76 +151,208 @@ def extract_data(
         {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087', 'currency': 'INR', 'hotel_details': ' OYO 4189 Resort Nanganallur', 'date_check_in': datetime.datetime(2017, 12, 31, 0, 0), 'date_check_out': datetime.datetime(2018, 1, 1, 0, 0), 'amount_rooms': 1.0, 'booking_id': 'IBZY2087', 'payment_method': 'Cash at Hotel', 'gstin': '06AABCO6063D1ZQ', 'cin': 'U63090DL2012PTC231770', 'desc': 'Invoice from OYO'}
 
     """
-    if isinstance(input_module, str):
-        input_module = input_mapping[input_module]
-    elif input_module is None:
-        input_module = text if invoicefile.lower().endswith(".txt") else pdftotext
-
-    try:
-        extracted_str = input_module.to_text(invoicefile)
-    except Exception:
-        logger.exception(
-            "Failed to extract text from %s using %s",
-            invoicefile,
-            input_module.__name__,
-        )
-        return {}
-    if not isinstance(extracted_str, str) or not extracted_str.strip():
-        logger.error(
-            "Failed to extract text from %s using %s",
-            invoicefile,
-            input_module.__name__,
-        )
-        return {}
-
-    logger.debug(
-        "START pdftotext result ===========================\n%s", extracted_str
-    )
-    logger.debug("END pdftotext result =============================")
-
     templates = templates or read_templates()
+    readers = _resolve_readers(invoicefile, input_module)
 
-    for template in templates:
-        if template.matches_input(extracted_str):
-            logger.info("Using %s template", template["template_name"])
-            optimized_str = template.prepare_input(extracted_str)
-            return template.extract(
-                optimized_str, invoicefile, input_module
-            )  # Return directly if match found
-
-    # If no template matches, try OCR fallback
-    if ocrmypdf.ocrmypdf_available() and input_module is not ocrmypdf:
-        logger.debug("Text extraction failed, falling back to ocrmypdf")
-        extracted_str, invoicefile, templates_matched = extract_data_fallback_ocrmypdf(
-            invoicefile, templates, input_module
+    for reader in readers:
+        extracted_str = _safe_to_text(reader, invoicefile)
+        if not extracted_str:
+            continue
+        logger.debug(
+            "START %s result ===========================\n%s",
+            reader.__name__,
+            extracted_str,
         )
-        if templates_matched:
-            template = templates_matched[0]
-            return template.extract(extracted_str, invoicefile, input_module)
+        logger.debug("END %s result =============================", reader.__name__)
+
+        template = _match_template(extracted_str, templates)
+        if template is None:
+            continue
+
+        # A template may pin the backend it was authored for (e.g. an area or
+        # table template that needs poppler's layout). Honour it by re-extracting
+        # with that backend; this also short-circuits straight to the right
+        # backend once a faster default leads the cascade.
+        preferred = _preferred_module(template, used=reader)
+        if preferred is not None:
+            preferred_str = _safe_to_text(preferred, invoicefile)
+            preferred_template = (
+                _match_template(preferred_str, templates) if preferred_str else None
+            )
+            if preferred_template is not None:
+                reader = preferred
+                extracted_str = preferred_str
+                template = preferred_template
+
+        logger.info("Using %s template", template["template_name"])
+        result = _run_template(template, extracted_str, invoicefile, reader)
+        if result:
+            return result
+        # Matched, but a required field was missing: fall through to the next
+        # backend in the cascade rather than returning an incomplete result.
+
+    # Nothing matched (or every match was incomplete): try OCR as a last resort.
+    result = _ocr_last_resort(invoicefile, templates, readers)
+    if result:
+        return result
 
     logger.error("No template for %s", invoicefile)
     return {}
 
 
-def extract_data_fallback_ocrmypdf(
-    invoicefile: str,
-    templates: list[InvoiceTemplate],
-    input_module: Any,
-) -> tuple[str, str, list[InvoiceTemplate]]:
-    logger.debug("Trying OCR extraction with ocrmypdf")
-    extracted_str = ocrmypdf.to_text(invoicefile)
+def _resolve_readers(invoicefile: str, input_module: Any) -> list[Any]:
+    """Return the ordered list of input backends to try for ``invoicefile``.
 
-    # Convert the filter object to a list
-    templates_matched: list[InvoiceTemplate] = list(
-        filter(lambda t: t.matches_input(extracted_str), templates)
-    )
-    templates_matched.sort(key=lambda k: k["priority"], reverse=True)
+    Args:
+        invoicefile (str): Path to the invoice file.
+        input_module (Any): An explicit backend (module or registry name) to
+            force a single-backend pass, or ``None`` to use the default cascade.
 
-    if templates_matched:
-        return extracted_str, invoicefile, templates_matched
-    else:
-        # Return empty list if no template is matched
-        return extracted_str, invoicefile, []
+    Returns:
+        list[Any]: Backends to try, in order.
+    """
+    if isinstance(input_module, str):
+        return [input_mapping[input_module]]
+    if input_module is not None:
+        return [input_module]
+    if invoicefile.lower().endswith(".txt"):
+        return [text]
+    readers = [module for module in DEFAULT_INPUT_READERS if is_available(module)]
+    return readers or [pdftotext]
+
+
+def _safe_to_text(module: Any, invoicefile: str) -> str:
+    """Extract text with ``module``, returning ``""`` on any failure.
+
+    Args:
+        module (Any): An input backend exposing ``to_text``.
+        invoicefile (str): Path to the invoice file.
+
+    Returns:
+        str: The extracted text, or ``""`` if extraction failed or was empty.
+    """
+    try:
+        extracted_str = module.to_text(invoicefile)
+    except Exception:
+        logger.debug(
+            "Backend %s failed to extract text from %s",
+            module.__name__,
+            invoicefile,
+            exc_info=True,
+        )
+        return ""
+    if not isinstance(extracted_str, str) or not extracted_str.strip():
+        logger.debug("Backend %s produced no text for %s", module.__name__, invoicefile)
+        return ""
+    return extracted_str
+
+
+def _match_template(
+    extracted_str: str, templates: list[InvoiceTemplate]
+) -> InvoiceTemplate | None:
+    """Return the first template whose keywords match the text, else ``None``.
+
+    Args:
+        extracted_str (str): The extracted invoice text.
+        templates (list[InvoiceTemplate]): Candidate templates.
+
+    Returns:
+        InvoiceTemplate | None: The first matching template, or ``None``.
+    """
+    for template in templates:
+        if template.matches_input(extracted_str):
+            return template
+    return None
+
+
+def _preferred_module(template: InvoiceTemplate, used: Any) -> Any:
+    """Resolve a template's declared ``input_module`` when it differs from ``used``.
+
+    Args:
+        template (InvoiceTemplate): The matched template.
+        used (Any): The backend that produced the current text.
+
+    Returns:
+        Any: The preferred backend module to re-extract with, or ``None`` when
+            the template declares none, declares the one already used, or
+            declares one that is unknown or unavailable.
+    """
+    name = template.get("input_module")
+    if not name:
+        return None
+    module = input_mapping.get(name) if isinstance(name, str) else name
+    if module is None:
+        logger.warning(
+            "Template %s declares unknown input_module %r; ignoring",
+            template["template_name"],
+            name,
+        )
+        return None
+    if module is used:
+        return None
+    if not is_available(module):
+        logger.warning(
+            "Template %s prefers input_module %r, but it is unavailable; using %s",
+            template["template_name"],
+            name,
+            used.__name__,
+        )
+        return None
+    return module
+
+
+def _run_template(
+    template: InvoiceTemplate, extracted_str: str, invoicefile: str, reader: Any
+) -> dict[str, Any]:
+    """Run a matched template, returning ``{}`` if required fields are missing.
+
+    Args:
+        template (InvoiceTemplate): The matched template.
+        extracted_str (str): The extracted invoice text.
+        invoicefile (str): Path to the invoice file.
+        reader (Any): The backend that produced ``extracted_str``.
+
+    Returns:
+        dict[str, Any]: The extracted fields, or ``{}`` when the template matched
+            but a required field could not be parsed.
+    """
+    optimized_str = template.prepare_input(extracted_str)
+    try:
+        return template.extract(optimized_str, invoicefile, reader)
+    except ValueError as exc:
+        logger.debug(
+            "Template %s matched under %s but extraction was incomplete: %s",
+            template["template_name"],
+            reader.__name__,
+            exc,
+        )
+        return {}
+
+
+def _ocr_last_resort(
+    invoicefile: str, templates: list[InvoiceTemplate], readers: list[Any]
+) -> dict[str, Any]:
+    """Try OCR (ocrmypdf) when the primary backends produced no usable match.
+
+    Args:
+        invoicefile (str): Path to the invoice file.
+        templates (list[InvoiceTemplate]): Candidate templates.
+        readers (list[Any]): Backends already attempted (to avoid repeating).
+
+    Returns:
+        dict[str, Any]: Extracted fields from the OCR pass, or ``{}``.
+    """
+    if not ocrmypdf.ocrmypdf_available() or ocrmypdf in readers:
+        return {}
+    logger.debug("Primary backends produced no match; falling back to ocrmypdf")
+    extracted_str = _safe_to_text(ocrmypdf, invoicefile)
+    if not extracted_str:
+        return {}
+    template = _match_template(extracted_str, templates)
+    if template is None:
+        return {}
+    logger.info("Using %s template (ocrmypdf fallback)", template["template_name"])
+    return _run_template(template, extracted_str, invoicefile, ocrmypdf)
 
 
 class Invoice2Data:

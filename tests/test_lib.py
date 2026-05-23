@@ -169,5 +169,65 @@ class TestLIB(unittest.TestCase):
             self.assertTrue(have, "ocrmypdf is installed")
 
 
+class TestBackendCascade(unittest.TestCase):
+    """Cover the input-backend cascade and template-declared ``input_module``."""
+
+    def test_resolve_readers_default_cascade(self) -> None:
+        from invoice2data.__main__ import DEFAULT_INPUT_READERS
+        from invoice2data.__main__ import _resolve_readers
+
+        readers = _resolve_readers("x.pdf", None)
+        # pdftotext leads the default cascade; every reader is an available
+        # member of the configured default list.
+        self.assertEqual(readers[0], pdftotext)
+        self.assertTrue(all(r in DEFAULT_INPUT_READERS for r in readers))
+
+    def test_resolve_readers_txt_uses_text_backend(self) -> None:
+        from invoice2data.__main__ import _resolve_readers
+        from invoice2data.input import text as text_module
+
+        self.assertEqual(_resolve_readers("x.txt", None), [text_module])
+
+    def test_resolve_readers_explicit_overrides_cascade(self) -> None:
+        from invoice2data.__main__ import _resolve_readers
+        from invoice2data.input import pdfium
+
+        self.assertEqual(_resolve_readers("x.pdf", "pdfium"), [pdfium])
+        self.assertEqual(_resolve_readers("x.pdf", pdftotext), [pdftotext])
+
+    def test_preferred_module_honours_template_pin(self) -> None:
+        from invoice2data.__main__ import _preferred_module
+        from invoice2data.extract.invoice_template import InvoiceTemplate
+        from invoice2data.input import pdfium
+
+        tmpl = InvoiceTemplate(
+            {
+                "template_name": "pinned",
+                "keywords": ["x"],
+                "exclude_keywords": [],
+                "input_module": "pdfium",
+            }
+        )
+        # A different backend matched first -> switch to the pinned one.
+        self.assertIs(_preferred_module(tmpl, used=pdftotext), pdfium)
+        # Already on the pinned backend -> no switch.
+        self.assertIsNone(_preferred_module(tmpl, used=pdfium))
+
+    def test_preferred_module_none_without_pin(self) -> None:
+        from invoice2data.__main__ import _preferred_module
+        from invoice2data.extract.invoice_template import InvoiceTemplate
+
+        tmpl = InvoiceTemplate(
+            {"template_name": "plain", "keywords": ["x"], "exclude_keywords": []}
+        )
+        self.assertIsNone(_preferred_module(tmpl, used=pdftotext))
+
+    def test_safe_to_text_swallows_backend_errors(self) -> None:
+        from invoice2data.__main__ import _safe_to_text
+
+        # A missing file makes the backend raise; the cascade must see "".
+        self.assertEqual(_safe_to_text(pdftotext, "/no/such/file.pdf"), "")
+
+
 if __name__ == "__main__":
     unittest.main()
