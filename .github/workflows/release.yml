@@ -5,69 +5,92 @@ on:
     branches:
       - main
       - master
+  release:
+    types: [published]
+
+permissions:
+  contents: read
 
 jobs:
-  release:
-    name: Release
+  release-drafter:
+    if: github.event_name == 'push'
+    name: Draft Release Notes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Draft Release
+        uses: release-drafter/release-drafter@c2e2804cc59f45f57076a99af580d0fedb697927 # v7.3.0
+        with:
+          publish: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-to-testpypi:
+    if: github.event_name == 'push'
+    name: Build and Publish to TestPyPI
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
-          fetch-depth: 2
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
+          persist-credentials: false
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
-
-      - name: Check if there is a parent commit
-        id: check-parent-commit
-        run: |
-          echo "::set-output name=sha::$(git rev-parse --verify --quiet HEAD^)"
-
-      - name: Detect and tag new version
-        id: check-version
-        if: steps.check-parent-commit.outputs.sha
-        uses: salsify/action-detect-and-tag-new-version@v2.0.3
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
-          version-command: |
-            bash -o pipefail -c "uv version | awk '{ print \$2 }'"
-
-      - name: Bump version for developmental release
-        if: "! steps.check-version.outputs.tag"
-        run: |
-          sed -i -e "s/0.0.0/${GITHUB_REF#refs/*/}/" pyproject.toml
-          # uv bump patch &&
-          # version=$(uv version | awk '{ print $2 }') &&
-          # uv bump $version.dev.$(date +%s)
-
+          enable-cache: false
       - name: Build package
-        run: |
-          uv build
-
-      - name: Publish package on PyPI
-        if: steps.check-version.outputs.tag
-        uses: pypa/gh-action-pypi-publish@v1.14.0
+        run: uv build --sdist --wheel
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
         with:
           user: __token__
-          password: ${{ secrets.PYPI_TOKEN }}
+          password: ${{ secrets.TEST_PYPI_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          skip-existing: true
 
-      # - name: Publish package on TestPyPI
-      #   if: "! steps.check-version.outputs.tag"
-      #   uses: pypa/gh-action-pypi-publish@v1.12.4
-      #   with:
-      #     user: __token__
-      #     password: ${{ secrets.TEST_PYPI_TOKEN }}
-      #     repository_url: https://test.pypi.org/legacy/
-
-      - name: Publish the release notes
-        uses: release-drafter/release-drafter@v6.1.0
+  publish_release:
+    if: github.event_name == 'release' && github.event.action == 'published'
+    name: Build, Sign and Publish to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/invoice2data
+    permissions:
+      id-token: write
+      contents: write
+      attestations: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
-          publish: ${{ steps.check-version.outputs.tag != '' }}
-          tag: ${{ steps.check-version.outputs.tag }}
+          persist-credentials: false
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: false
+      - name: Build package
+        run: uv build --sdist --wheel --out-dir dist
+      - name: Generate build provenance attestations
+        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4
+        with:
+          subject-path: "dist/*.whl, dist/*.tar.gz"
+      - name: Sign the dists with Sigstore
+        uses: sigstore/gh-action-sigstore-python@04cffa1d795717b140764e8b640de88853c92acc # v3.3.0
+        with:
+          inputs: >-
+            ./dist/*.tar.gz
+            ./dist/*.whl
+      - name: Upload artifact signatures to GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: >-
+          gh release upload
+          "$TAG_NAME" ./dist/*
+          --repo "$GITHUB_REPOSITORY"
+      - name: Remove sigstore files before publishing to PyPI
+        run: rm -f dist/*.sigstore
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1

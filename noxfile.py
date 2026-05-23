@@ -19,6 +19,7 @@ nox.options.sessions = (
     "pre-commit",
     # "safety",  # disabled for now: fails across all PRs (safety CLI now requires auth)
     "mypy",
+    "ty",
     "tests",
     "typeguard",
     "xdoctest",
@@ -142,6 +143,27 @@ def mypy(session: nox.Session) -> None:
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
+
+
+@nox.session(python=python_versions[0])
+def ty(session: nox.Session) -> None:
+    """Type-check using ty (Astral, beta).
+
+    Runs alongside mypy, which remains the authoritative type checker until ty
+    reaches a stable release.
+    """
+    # Check src only: ty is advisory and mypy remains authoritative for tests
+    # (which use test-only fixtures ty can't resolve without the dev group).
+    args = session.posargs or ["src"]
+    session.run(
+        "uv",
+        "sync",
+        "--group",
+        "ty",
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
+        external=True,
+    )
+    session.run("ty", "check", *args)
 
 
 @nox.session(python=python_versions)

@@ -57,11 +57,11 @@ dev = [
 ]
 lint = ["ruff >=0.5.1", "pydoclint >=0.4.2"]
 docs = [
-    "furo >=2021.11.12",
-    "myst-parser == 3.0.1",
-    "sphinx >= 4.3.2",
-    "sphinx-autobuild >=2021.3.14",
-    "sphinx-click >=3.0.2",
+    "shibuya >= 2025.1.29",
+    "myst-parser >= 4.0",
+    "sphinx >= 8.0",
+    "sphinx-autobuild >= 2024.10",
+    "sphinx-click >= 6.0",
     "sphinx-mermaid >=0.0.7",
     "sphinxcontrib-svg2pdfconverter >=2.1.0",
 ]
@@ -172,6 +172,13 @@ ignore_missing_imports = true
 module = ["google", "google.*", "camelot", "camelot.*"]
 follow_imports = "skip"
 ignore_missing_imports = true
+
+[tool.ty.rules]
+# ty (beta, advisory) runs without the optional backend extras installed — some
+# of them conflict (see [tool.uv] conflicts), so they can't all be present. mypy
+# is the authoritative checker for imports (via its overrides above); let ty skip
+# the optional backends it can't resolve rather than fail.
+unresolved-import = "ignore"
 
 [tool.ruff]
 src = ["src", "tests"]

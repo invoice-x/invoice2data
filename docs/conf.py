@@ -32,7 +32,7 @@ extensions = [
     "sphinxcontrib.rsvgconverter",
 ]
 autodoc_typehints = "description"
-html_theme = "furo"
+html_theme = "shibuya"
 myst_fence_as_directive = ["mermaid"]
 
 
