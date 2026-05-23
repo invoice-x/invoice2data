@@ -3,6 +3,7 @@
 
 import datetime
 import logging
+import re
 import shutil
 from copy import deepcopy
 from pathlib import Path
@@ -13,6 +14,8 @@ import click
 
 from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import read_templates
+from invoice2data.extract.template_builder import suggested_template
+from invoice2data.extract.template_builder import to_yaml
 
 from .input import INPUT_MODULES
 from .input import is_available
@@ -438,6 +441,83 @@ class Invoice2Data:
         return extract_data(path, self.templates, input_module)
 
 
+def _sample_text(invoicefile: str, input_module: Any = None) -> str:
+    """Return the first non-empty text extracted from a sample file.
+
+    Args:
+        invoicefile (str): Path to the sample document.
+        input_module (Any): Forced input backend, or None for the cascade.
+
+    Returns:
+        str: The extracted text, or ``""`` if every backend failed.
+    """
+    for reader in _resolve_readers(invoicefile, input_module):
+        text = _safe_to_text(reader, invoicefile)
+        if text:
+            return text
+    return ""
+
+
+def _default_template_path(template: dict[str, Any]) -> str:
+    """Derive a default ``<issuer>.yml`` output path from a drafted template.
+
+    Args:
+        template (dict[str, Any]): The drafted template.
+
+    Returns:
+        str: A slugified ``<issuer>.yml`` filename (``template.yml`` as fallback).
+    """
+    issuer = str(template.get("issuer") or "template")
+    slug = re.sub(r"[^a-z0-9]+", "-", issuer.lower()).strip("-") or "template"
+    return f"{slug}.yml"
+
+
+def _run_new_template(
+    sample: str, use_ai: bool, template_out: str | None, input_module: Any
+) -> None:
+    """Draft a template from a sample document and write it after confirmation.
+
+    Args:
+        sample (str): Path to the sample document.
+        use_ai (bool): Use the configured AI provider instead of heuristics.
+        template_out (str | None): Output path; defaults to ``<issuer>.yml``.
+        input_module (Any): Forced input backend, or None for the cascade.
+
+    Raises:
+        SystemExit: If no text can be extracted from the sample document.
+    """
+    text = _sample_text(sample, input_module)
+    if not text:
+        click.echo(f"Could not extract any text from {sample}", err=True)
+        raise SystemExit(1)
+
+    if use_ai:
+        from .ai.template_generator import generate_template
+
+        template = generate_template(text)
+    else:
+        template = suggested_template(text)
+
+    # preview_template is pure regex (no AI) -- reused for both modes.
+    from .ai.template_generator import preview_template
+
+    preview = preview_template(template, text)
+
+    click.echo("# Drafted template:\n")
+    click.echo(to_yaml(template))
+    click.echo("# Preview (values the field regexes capture):")
+    if preview:
+        for field, value in preview.items():
+            click.echo(f"  {field}: {value}")
+    else:
+        click.echo("  (no fields matched -- edit the regexes before use)")
+
+    out_path = template_out or _default_template_path(template)
+    if click.confirm(f"\nWrite template to {out_path}?", default=True):
+        Path(out_path).write_text(to_yaml(template), encoding="utf-8")
+        click.echo(f"Wrote {out_path}")
+
+
 @click.command()
 @click.option(
     "--input-reader",
@@ -495,6 +575,23 @@ class Invoice2Data:
     is_flag=True,
     help="Ignore built-in templates.",
 )
+@click.option(
+    "--new-template",
+    type=click.Path(exists=True, dir_okay=False),
+    help="Draft a new template from a sample document, then exit.",
+)
+@click.option(
+    "--ai",
+    "use_ai",
+    is_flag=True,
+    help="Draft the new template with the configured AI provider "
+    "(see INVOICE2DATA_AI_* env vars). Default: deterministic heuristics.",
+)
+@click.option(
+    "--template-out",
+    type=click.Path(dir_okay=False),
+    help="Path to write the drafted template (default: <issuer>.yml).",
+)
 @click.argument(
     "input_files",
     type=click.File("wb"),
@@ -513,6 +610,9 @@ def main(
     filename_format: str,
     template_folder: str | None,
     exclude_built_in_templates: bool,
+    new_template: str | None,
+    use_ai: bool,
+    template_out: str | None,
     input_files: tuple[Any, ...],
 ) -> None:
     """Extract data from PDF files and output it in a structured format."""
@@ -520,6 +620,10 @@ def main(
         logger.setLevel(logging.DEBUG)
     else:
         logger.setLevel(level=logging.INFO)
+
+    if new_template:
+        _run_new_template(new_template, use_ai, template_out, input_reader)
+        return
 
     input_module = input_reader
     output_module = output_mapping[output_format]
