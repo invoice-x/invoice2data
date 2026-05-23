@@ -45,9 +45,14 @@ has no layout mode).
 
 ## Takeaway
 
-- `pdftotext` stays the accuracy anchor and the cascade's safety net.
-- pypdfium2 is the right *fast* backend (speed + best layout-less accuracy, and
-  a permissive Apache/BSD licence, unlike AGPL PyMuPDF).
-- A pypdfium2-first default is viable **only** if layout/area/table-sensitive
-  templates declare `input_module: pdftotext`. Reproduce with
+- **pypdfium2 is now the default** (`DEFAULT_INPUT_READERS = [pdfium,
+  pdftotext]`): fast, dependency-light, permissive Apache/BSD licence (unlike
+  AGPL PyMuPDF), and the best layout-less accuracy.
+- `pdftotext` stays the accuracy anchor and the cascade's safety net. The
+  cascade falls back to it automatically when pypdfium2 fails to match, misses a
+  required field, or returns an empty `lines`/`tables` table — so most
+  layout breakage is recovered without any per-template change.
+- Only templates where pypdfium2 returns a *populated-but-wrong* non-required
+  value (an `area:` field, or a column-aligned table) need an explicit
+  `input_module: pdftotext` pin; the bundled ones are pinned. Reproduce with
   `python benchmarks/run.py`.

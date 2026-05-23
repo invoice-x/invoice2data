@@ -78,24 +78,30 @@ be revisited later — **feedback welcome** on the tracker before any change.
 - **Pluggable input backends**: a documented backend interface and registry
   (`input/__interface__.py`); `extract_data` still accepts module or string.
 - **Input-backend cascade + per-template backend**: when no backend is forced,
-  `extract_data` tries an ordered cascade (`DEFAULT_INPUT_READERS`, currently
-  `pdftotext` then `pdfium`/pypdfium2) until a template matches with all
-  required fields, then OCR (ocrmypdf) as a last resort. A template can pin the
-  backend it was authored for with a top-level `input_module:` key (e.g.
-  `input_module: pdftotext` for a layout-sensitive template); that backend is
-  then used for it regardless of which one matched first. Forcing
-  `--input-reader`/`input_module=` keeps the old single-pass behaviour. A
-  matched-but-incomplete extraction now returns `{}` (per the documented
-  contract) instead of raising `ValueError`.
+  `extract_data` tries an ordered cascade (`DEFAULT_INPUT_READERS`) until a
+  template matches with all required fields, then OCR (ocrmypdf) as a last
+  resort. A template can pin the backend it was authored for with a top-level
+  `input_module:` key (e.g. `input_module: pdftotext` for a layout-sensitive
+  template); that backend is then used for it in auto mode. Forcing
+  `--input-reader`/`input_module=` keeps the old single-pass behaviour (and now
+  takes the backend at face value — it ignores a template's pin). A
+  matched-but-incomplete extraction returns `{}` (per the documented contract)
+  instead of raising `ValueError`.
+- **Default backend is now pypdfium2** (`DEFAULT_INPUT_READERS = [pdfium,
+  pdftotext]`). It is fast and dependency-light; `pdftotext` (poppler
+  `-layout`) is the fallback. The cascade keeps accuracy at the pdftotext level
+  (see [backend benchmark](backend-benchmark.md)) because it falls back
+  automatically when pypdfium2 fails to match, misses a required field, or
+  drops a declared line-item table (empty `lines`/`tables`). **Migration for
+  template authors:** a template whose *non-required* field is silently wrong
+  under pypdfium2 — typically an `area:` field or a column-aligned table that
+  comes back populated but incorrect — should pin `input_module: pdftotext`.
+  The bundled layout/area templates that need it are already pinned.
 
 ## Planned for 1.0 (tracked, not yet landed)
 
 - **Canonical `tax_lines`/`lines` schema**: normalize field names across the
   built-in templates to one vocabulary.
-- **Faster default backend**: flip the cascade so a faster backend (pypdfium2 —
-  benchmarked ~6× faster than pdftotext, no new dependency — or pd-oxide) leads,
-  once the benchmark confirms its accuracy on the template corpus. Today the
-  cascade leads with `pdftotext` (poppler's `-layout`, the accuracy anchor).
 - **Camelot** table extraction and **mypyc**-compiled hot paths.
 
 ## Feedback

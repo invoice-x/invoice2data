@@ -32,13 +32,14 @@ logger = logging.getLogger()
 input_mapping = INPUT_MODULES
 
 #: Default ordered text backends tried when ``input_module`` is not forced.
-#: ``pdftotext`` leads (poppler ``-layout`` — the layout/accuracy anchor the
-#: bundled templates are tuned for); ``pdfium`` (pypdfium2) follows as a
-#: dependency-light fallback. The order is provisional and will be revisited
-#: with the benchmark — a faster backend may lead once its accuracy is proven.
-#: Backends whose dependency is missing are skipped automatically, and a
-#: template can override the choice for itself via its ``input_module:`` key.
-DEFAULT_INPUT_READERS = [pdftotext, pdfium]
+#: ``pdfium`` (pypdfium2) leads — fast and dependency-light — with ``pdftotext``
+#: (poppler ``-layout``, the layout/accuracy anchor) as the fallback. The
+#: benchmark (docs/backend-benchmark.md) shows this matches pdftotext's accuracy
+#: while running faster: the cascade falls back automatically when pdfium fails
+#: to match, misses a required field, or drops a declared line-item table, and
+#: layout/area-sensitive templates pin ``input_module: pdftotext`` for the rest.
+#: Backends whose dependency is missing are skipped automatically.
+DEFAULT_INPUT_READERS = [pdfium, pdftotext]
 
 output_mapping = {
     "csv": to_csv,
@@ -156,6 +157,7 @@ def extract_data(
     # Per-template backend pins apply only in auto (cascade) mode; an explicit
     # input_module forces that backend, pin or not.
     auto = input_module is None
+    best: dict[str, Any] | None = None  # complete-but-lineless result, kept as fallback
 
     for reader in readers:
         extracted_str = _safe_to_text(reader, invoicefile)
@@ -191,9 +193,19 @@ def extract_data(
         logger.info("Using %s template", template["template_name"])
         result = _run_template(template, extracted_str, invoicefile, reader)
         if result:
-            return result
+            # A template that declares line items but yields none usually means a
+            # layout-less backend dropped the table: keep the result but try the
+            # next (layout) backend, which may recover the lines.
+            if not auto or not _line_items_missing(template, result):
+                return result
+            best = best or result
+            continue
         # Matched, but a required field was missing: fall through to the next
         # backend in the cascade rather than returning an incomplete result.
+
+    # A complete-but-lineless result beats OCR / nothing.
+    if best is not None:
+        return best
 
     # Nothing matched (or every match was incomplete): try OCR as a last resort.
     result = _ocr_last_resort(invoicefile, templates, readers)
@@ -267,6 +279,36 @@ def _match_template(
         if template.matches_input(extracted_str):
             return template
     return None
+
+
+def _line_items_missing(template: InvoiceTemplate, output: dict[str, Any]) -> bool:
+    """Whether a template declares line items but none were extracted.
+
+    A soft-completeness signal for the cascade: a layout-less backend often
+    matches a template and fills the required fields yet produces empty line
+    items (the table collapses without column layout). When that happens the
+    cascade should try the next backend, which may recover the table.
+
+    Args:
+        template (InvoiceTemplate): The matched template.
+        output (dict[str, Any]): The extracted fields.
+
+    Returns:
+        bool: True if the template declares a ``lines``/``tables`` block (or a
+            ``parser: lines`` field) but no non-empty list field was produced.
+    """
+    declares = (
+        "lines" in template
+        or "tables" in template
+        or any(
+            isinstance(field, dict) and field.get("parser") in ("lines", "tables")
+            for field in template.get("fields", {}).values()
+        )
+    )
+    if not declares:
+        return False
+    has_items = any(isinstance(value, list) and value for value in output.values())
+    return not has_items
 
 
 def _preferred_module(template: InvoiceTemplate, used: Any) -> Any:

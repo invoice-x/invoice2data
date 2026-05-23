@@ -175,11 +175,13 @@ class TestBackendCascade(unittest.TestCase):
     def test_resolve_readers_default_cascade(self) -> None:
         from invoice2data.__main__ import DEFAULT_INPUT_READERS
         from invoice2data.__main__ import _resolve_readers
+        from invoice2data.input import pdfium
 
         readers = _resolve_readers("x.pdf", None)
-        # pdftotext leads the default cascade; every reader is an available
-        # member of the configured default list.
-        self.assertEqual(readers[0], pdftotext)
+        # pdfium leads the default cascade (fast), pdftotext is the fallback;
+        # every reader is an available member of the configured default list.
+        self.assertEqual(readers[0], pdfium)
+        self.assertIn(pdftotext, readers)
         self.assertTrue(all(r in DEFAULT_INPUT_READERS for r in readers))
 
     def test_resolve_readers_txt_uses_text_backend(self) -> None:
