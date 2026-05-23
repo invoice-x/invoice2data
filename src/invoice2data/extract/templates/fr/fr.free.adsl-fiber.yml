@@ -1,4 +1,6 @@
 issuer: Free
+# Layout-sensitive fields (line_number, client_id); pin pdftotext under the cascade.
+input_module: pdftotext
 fields:
   amount: Total facture\s+\d+.\d{2}\s+\d+.\d{2}\s+(\d+.\d{2})
   amount_untaxed: Total facture\s+(\d+.\d{2})
