@@ -261,5 +261,48 @@ class TestBackendCascade(unittest.TestCase):
         self.assertNotIn("﻿", text)
 
 
+class TestCamelotPlugin(unittest.TestCase):
+    """Cover the optional camelot table-extraction plugin."""
+
+    def test_rows_to_records_with_header(self) -> None:
+        from invoice2data.extract.plugins.camelot import _rows_to_records
+
+        rows = [["Item", "Qty"], ["Widget", "2"], ["Gadget", "1"]]
+        self.assertEqual(
+            _rows_to_records(rows, header=True),
+            [{"Item": "Widget", "Qty": "2"}, {"Item": "Gadget", "Qty": "1"}],
+        )
+
+    def test_rows_to_records_without_header(self) -> None:
+        from invoice2data.extract.plugins.camelot import _rows_to_records
+
+        rows = [["Widget", "2"], ["Gadget", "1"]]
+        recs = _rows_to_records(rows, header=False)
+        self.assertEqual(recs[0], {"col_0": "Widget", "col_1": "2"})
+
+    def test_camelot_extracts_lattice_table(self) -> None:
+        from invoice2data.extract.plugins import camelot
+
+        if not camelot.is_available():
+            self.skipTest("camelot-py not installed")
+        output: dict[str, Any] = {}
+        template = {
+            "template_name": "camelot-test",
+            "camelot": {"flavor": "lattice", "pages": "1", "field": "lines"},
+        }
+        camelot.extract(template, "", output, "tests/files/camelot-example.pdf")
+        self.assertIn("lines", output)
+        self.assertGreater(len(output["lines"]), 0)
+        self.assertIsInstance(output["lines"][0], dict)
+
+    def test_camelot_no_invoice_file_is_safe(self) -> None:
+        from invoice2data.extract.plugins import camelot
+
+        output: dict[str, Any] = {}
+        # Missing the file path must no-op, never raise.
+        camelot.extract({"template_name": "t", "camelot": {}}, "", output, None)
+        self.assertEqual(output, {})
+
+
 if __name__ == "__main__":
     unittest.main()

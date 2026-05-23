@@ -70,6 +70,7 @@ typeguard = ["typeguard >=2.13.3"]
 xdoctest = ["xdoctest[colors] >=0.15.10"]
 
 [project.optional-dependencies]
+camelot = ["camelot-py >= 1.0"]
 defusedxml = ["defusedxml == 0.7.1"]
 googlevision = [
     "google-cloud-storage == 2.18.2",
@@ -86,6 +87,16 @@ pyyaml = ["pyyaml == 6.0.2"]
 
 [tool.uv]
 package = true
+# Published camelot-py requires pdfminer-six>=20240706, but pdfplumber==0.11.4
+# and the `pdfminer-six` extra both hard-pin pdfminer.six==20231228 — a genuine
+# library-level conflict (not invoice2data's pin). Mark camelot mutually
+# exclusive with those pdfminer-bound extras; a camelot user runs it alongside
+# the default pdfium/pdftotext cascade. (The next-major camelot drops
+# pdfminer.six for playa-pdf, which will retire these once published.)
+conflicts = [
+    [{ extra = "camelot" }, { extra = "pdfminer-six" }],
+    [{ extra = "camelot" }, { extra = "pdfplumber" }],
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -144,9 +155,11 @@ ignore_missing_imports = true
 
 # `google.cloud` is a namespace package: mypy partially resolves it (so
 # ignore_missing_imports does not apply), but the optional storage/vision
-# submodules are absent. Skip following google entirely so it is treated as Any.
+# submodules are absent. camelot is untyped and only re-exports `read_pdf`
+# implicitly (tripping strict no-implicit-reexport when it happens to be
+# installed). Skip following both entirely so they are treated as Any.
 [[tool.mypy.overrides]]
-module = ["google", "google.*"]
+module = ["google", "google.*", "camelot", "camelot.*"]
 follow_imports = "skip"
 ignore_missing_imports = true
 

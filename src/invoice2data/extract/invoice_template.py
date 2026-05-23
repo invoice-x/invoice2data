@@ -15,6 +15,7 @@ from ..input import supports_area
 from . import _regex
 from . import parsers
 from . import schema
+from .plugins import camelot
 from .plugins import lines
 from .plugins import tables
 
@@ -38,7 +39,7 @@ PARSERS_MAPPING = {
     "static": parsers.static,
 }
 
-PLUGIN_MAPPING = {"lines": lines, "tables": tables}
+PLUGIN_MAPPING = {"lines": lines, "tables": tables, "camelot": camelot}
 
 
 class InvoiceTemplate(OrderedDictType[str, Any]):
@@ -261,10 +262,10 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
                 _handle_legacy_syntax(self, k, v, optimized_str, output)
         output["currency"] = self.options["currency"]
 
-        # Run plugins:
+        # Run plugins (invoice_file is needed by path-based plugins like camelot):
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
             if plugin_keyword in self.keys():
-                plugin_func.extract(self, optimized_str, output)
+                plugin_func.extract(self, optimized_str, output, invoice_file)
         _compute_line_tax(output)
         _validate_tax_total(output, self["template_name"])
         _validate_fields(self, output)

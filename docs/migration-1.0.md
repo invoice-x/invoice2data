@@ -97,12 +97,22 @@ be revisited later — **feedback welcome** on the tracker before any change.
   under pypdfium2 — typically an `area:` field or a column-aligned table that
   comes back populated but incorrect — should pin `input_module: pdftotext`.
   The bundled layout/area templates that need it are already pinned.
+- **Camelot table plugin** (opt-in): a new `camelot` plugin extracts ruled or
+  whitespace-aligned tables by re-reading the PDF with
+  [camelot-py](https://pypi.org/project/camelot-py/). Install the extra
+  (`pip install invoice2data[camelot]`) and add a top-level `camelot:` block to
+  a template (forwarding `camelot.read_pdf` options like `flavor`/`pages`, plus
+  `field`/`header`/`tables`). It self-excludes when camelot is not installed.
+  **Note:** the published camelot-py pins a newer `pdfminer.six` than
+  `pdfplumber`, so the `camelot` extra is mutually exclusive with the
+  `pdfplumber` and `pdfminer-six` extras (run camelot alongside the default
+  pdfium/pdftotext cascade). Plugins now also receive the source `invoice_file`.
 
 ## Planned for 1.0 (tracked, not yet landed)
 
 - **Canonical `tax_lines`/`lines` schema**: normalize field names across the
   built-in templates to one vocabulary.
-- **Camelot** table extraction and **mypyc**-compiled hot paths.
+- **mypyc**-compiled hot paths.
 
 ## Feedback
 

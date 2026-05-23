@@ -14,7 +14,10 @@ DEFAULT_OPTIONS = {"field_separator": r"\s+", "line_separator": r"\n"}
 
 
 def extract(
-    self: "OrderedDict[str, Any]", content: str, output: dict[str, Any]
+    self: "OrderedDict[str, Any]",
+    content: str,
+    output: dict[str, Any],
+    invoice_file: str | None = None,
 ) -> dict[str, Any] | None:
     """Try to extract tables from an invoice.
 
@@ -23,6 +26,8 @@ def extract(
         content (str): The content of the invoice.
         output (dict[str, Any]): The updated output dictionary with extracted
                                     data or None if parsing fails.
+        invoice_file (str | None): Unused; accepted for plugin-interface
+            compatibility (path-based plugins such as camelot need it).
 
     Returns:
         list[Any] | None: The extracted data as a list of dictionaries, or None if table parsing fails.

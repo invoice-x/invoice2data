@@ -13,7 +13,10 @@ from .. import parsers
 
 
 def extract(
-    self: "OrderedDict[str, Any]", content: str, output: dict[str, Any]
+    self: "OrderedDict[str, Any]",
+    content: str,
+    output: dict[str, Any],
+    invoice_file: str | None = None,
 ) -> None:
     """Extract individual lines from an invoice.
 
@@ -25,6 +28,8 @@ def extract(
         self (OrderedDict[str, Any]): The current instance of the class.
         content (str): The text content to parse.
         output (dict[str, Any]): A dictionary to store the extracted data.
+        invoice_file (str | None): Unused; accepted for plugin-interface
+            compatibility (path-based plugins such as camelot need it).
     """
     warnings.warn(
         "The 'lines' plugin (a top-level 'lines:' template key) is deprecated "
