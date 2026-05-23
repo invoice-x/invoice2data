@@ -81,6 +81,7 @@ typeguard = ["typeguard >= 4.4"]
 xdoctest = ["xdoctest[colors] >= 1.2"]
 
 [project.optional-dependencies]
+ai = ["httpx >= 0.27"]
 camelot = ["camelot-py >= 1.0"]
 defusedxml = ["defusedxml == 0.7.1"]
 googlevision = [
@@ -176,6 +177,7 @@ module = [
     "docutils",
     "docutils.*",
     "sphinxmermaid",
+    "httpx",
 ]
 ignore_missing_imports = true
 
