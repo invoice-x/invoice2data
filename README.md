@@ -115,6 +115,18 @@ adding new templates in templates.py)
 
 Recognize test invoices: `invoice2data invoice2data/test/pdfs/* --debug`
 
+Draft a new template from a sample document (the builder suggests fields/regexes
+from the detected dates, amounts and IBAN/VAT/BIC, previews what they capture, and
+writes a `.yml` after confirmation):
+
+`invoice2data --new-template sample.pdf`
+
+Add `--ai` to draft it with a configured LLM provider instead of the built-in
+heuristics (set `INVOICE2DATA_AI_PROVIDER` / `_MODEL` / `_API_KEY`; OpenAI,
+DeepSeek, Mistral, Gemini and local Ollama are supported):
+
+`invoice2data --new-template sample.pdf --ai`
+
 ### Use as Python Library
 
 You can easily add `invoice2data` to your own Python scripts as library.
