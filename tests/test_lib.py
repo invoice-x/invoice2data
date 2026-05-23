@@ -228,6 +228,19 @@ class TestBackendCascade(unittest.TestCase):
         # A missing file makes the backend raise; the cascade must see "".
         self.assertEqual(_safe_to_text(pdftotext, "/no/such/file.pdf"), "")
 
+    def test_pdfium_to_text_normalised(self) -> None:
+        from invoice2data.input import pdfium
+
+        if not pdfium.is_available():
+            self.skipTest("pypdfium2 not installed")
+        text = pdfium.to_text("tests/compare/oyo.pdf")
+        self.assertGreater(len(text.strip()), 0)
+        # Carriage returns and zero-width markers are normalised away so the
+        # line parser and templates (which work in terms of "\n") behave.
+        self.assertNotIn("\r", text)
+        self.assertNotIn("￾", text)
+        self.assertNotIn("﻿", text)
+
 
 if __name__ == "__main__":
     unittest.main()
