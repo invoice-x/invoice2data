@@ -6,7 +6,7 @@ author: Manuel Riel
 development_status: 'Development Status :: 5 - Production/Stable'
 docs_host: readthedocs
 email: ''
-extension: none
+extension: mypyc
 friendly_name: Invoice2Data
 github_user: invoice-x
 license: MIT

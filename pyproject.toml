@@ -1,6 +1,16 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+# mypyc compilation (setup.py, gated by INVOICE2DATA_COMPILE_MYPYC) needs
+# setuptools + mypy at build time. mypyc must see the types of every dependency
+# used by the compiled modules, so list them here too.
+requires = [
+    "setuptools>=64",
+    "mypy>=1.13",
+    "click>=8.0.1",
+    "dateparser>=1.2.0",
+    "PyYAML>=6.0",
+    "regex>=2024.4.16",
+]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "invoice2data"
@@ -99,25 +109,31 @@ conflicts = [
     [{ extra = "camelot" }, { extra = "pdfplumber" }],
 ]
 
-[tool.hatch.build.targets.wheel]
-# Ships the package only (py.typed + the bundled templates included; test
-# fixtures live outside src/ so PDFs/PNGs never enter the wheel).
-packages = ["src/invoice2data"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
-[tool.hatch.build.targets.sdist]
-# Keep the sdist lean: ship source + test code, but not the heavy binary test
-# fixtures (PDFs/PNGs) or build/cache cruft.
-exclude = [
-    "docs/_build",
-    "**/__pycache__",
-    "*.py[cod]",
-    "tests/**/*.pdf",
-    "tests/**/*.png",
+[tool.setuptools.package-data]
+# Ship py.typed + the bundled templates; test fixtures live outside src/ so
+# PDFs/PNGs never enter the wheel, and setuptools omits tests/ from the sdist.
+invoice2data = [
+    "py.typed",
+    "extract/templates/**/*.yml",
+    "extract/templates/**/*.json",
 ]
 
 
 [project.scripts]
 invoice2data = "invoice2data.__main__:main"
+
+[tool.cibuildwheel]
+# Build mypyc-compiled CPython wheels (requires-python>=3.10 is honoured
+# automatically). Skip PyPy (already JIT-compiled) and musllinux.
+build = "cp310-* cp311-* cp312-* cp313-*"
+skip = "pp* *-musllinux*"
+build-frontend = "build"
+environment = { INVOICE2DATA_COMPILE_MYPYC = "1" }
+# Smoke-test that the compiled extensions import on every target platform.
+test-command = "python -c \"import invoice2data.extract.parsers.regex, invoice2data.extract.parsers.lines, invoice2data.extract.plugins.tables, invoice2data.extract._regex, invoice2data.extract.utils; print('mypyc import OK')\""
 
 [tool.coverage.paths]
 source = ["src", "*\\src", "*/site-packages"]

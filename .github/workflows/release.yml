@@ -40,7 +40,7 @@ jobs:
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           enable-cache: false
-      - name: Build package
+      - name: Build package (pure Python)
         run: uv build --sdist --wheel
       - name: Publish to TestPyPI
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
@@ -50,9 +50,66 @@ jobs:
           repository_url: https://test.pypi.org/legacy/
           skip-existing: true
 
+  build_wheels:
+    if: github.event_name == 'release' && github.event.action == 'published'
+    name: Build wheels on ${{ matrix.os }} (${{ matrix.arch }})
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: x86_64
+            runs-on: ubuntu-latest
+          - os: linux
+            arch: aarch64
+            runs-on: ubuntu-24.04-arm
+          - os: windows
+            arch: amd64
+            runs-on: windows-latest
+          - os: macos
+            arch: x86_64
+            runs-on: macos-15-intel
+          - os: macos
+            arch: arm64
+            runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Build wheels
+        uses: pypa/cibuildwheel@8d2b08b68458a16aeb24b64e68a09ab1c8e82084 # v3.4.1
+        env:
+          INVOICE2DATA_COMPILE_MYPYC: "1"
+          CIBW_ARCHS: ${{ matrix.arch }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: cibw-wheels-${{ matrix.os }}-${{ matrix.arch }}
+          path: ./wheelhouse/*.whl
+
+  build_sdist:
+    if: github.event_name == 'release' && github.event.action == 'published'
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: false
+      - name: Build sdist
+        run: uv build --sdist --out-dir dist
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: cibw-sdist
+          path: dist/*.tar.gz
+
   publish_release:
     if: github.event_name == 'release' && github.event.action == 'published'
-    name: Build, Sign and Publish to PyPI
+    name: Sign and Publish to PyPI
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -62,16 +119,11 @@ jobs:
       contents: write
       attestations: write
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Download all artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
-          persist-credentials: false
-      - name: Install uv
-        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
-        with:
-          enable-cache: false
-      - name: Build package
-        run: uv build --sdist --wheel --out-dir dist
+          path: dist
+          merge-multiple: true
       - name: Generate build provenance attestations
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4
         with:
