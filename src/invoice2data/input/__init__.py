@@ -7,7 +7,9 @@ backend name (the `--input-reader` value) to its module.
 from types import ModuleType
 
 from . import gvision
+from . import hotpdf
 from . import ocrmypdf
+from . import pdfium
 from . import pdfminer_wrapper
 from . import pdfplumber
 from . import pdftotext
@@ -18,9 +20,11 @@ from . import text
 #: Registry: backend name (the ``--input-reader`` value) -> backend module.
 INPUT_MODULES: dict[str, ModuleType] = {
     "pdftotext": pdftotext,
+    "pdfium": pdfium,
     "tesseract": tesseract,
     "pdfminer": pdfminer_wrapper,
     "pdfplumber": pdfplumber,
+    "hotpdf": hotpdf,
     "gvision": gvision,
     "text": text,
     "ocrmypdf": ocrmypdf,

@@ -683,6 +683,18 @@ wheels = [
 ]
 
 [[package]]
+name = "hotpdf"
+version = "0.5.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pdfminer-six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8d/11/47461def10914e0ea45ed49af0a8bb700db845bdada4ae2bba885a1ce42d/hotpdf-0.5.3.tar.gz", hash = "sha256:8e671c04280dc045fac97fb8847caa57870fab9d0f27c744d0f01724ae79e52f", size = 21984, upload-time = "2026-03-03T14:56:18.844Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1d/69/1e664b7802c8dc648078db5296b9c0a866fb5e73f84a45c2f443a3929518/hotpdf-0.5.3-py3-none-any.whl", hash = "sha256:e4d0fe7e7a318faa0f9bc2ef791b4e42597aed5ef7f85affc737797b2d4c4b7b", size = 17217, upload-time = "2026-03-03T14:56:16.581Z" },
+]
+
+[[package]]
 name = "identify"
 version = "2.6.1"
 source = { registry = "https://pypi.org/simple" }
@@ -748,11 +760,17 @@ googlevision = [
     { name = "google-cloud-storage" },
     { name = "google-cloud-vision" },
 ]
+hotpdf = [
+    { name = "hotpdf" },
+]
 ocr = [
     { name = "ghostscript" },
 ]
 ocrmypdf = [
     { name = "ocrmypdf" },
+]
+pdfium = [
+    { name = "pypdfium2" },
 ]
 pdfminer-six = [
     { name = "pdfminer-six" },
@@ -804,15 +822,17 @@ requires-dist = [
     { name = "ghostscript", marker = "extra == 'ocr'", specifier = "==0.7" },
     { name = "google-cloud-storage", marker = "extra == 'googlevision'", specifier = "==2.18.2" },
     { name = "google-cloud-vision", marker = "extra == 'googlevision'", specifier = "==3.8.1" },
+    { name = "hotpdf", marker = "extra == 'hotpdf'", specifier = ">=0.1.0" },
     { name = "ocrmypdf", marker = "extra == 'ocrmypdf'", specifier = ">=14.4.0" },
     { name = "pdfminer-six", marker = "extra == 'pdfminer-six'", specifier = "==20231228" },
     { name = "pdfplumber", marker = "extra == 'pdfplumber'", specifier = "==0.11.4" },
+    { name = "pypdfium2", marker = "extra == 'pdfium'", specifier = ">=4" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "pyyaml", marker = "extra == 'pyyaml'", specifier = "==6.0.2" },
     { name = "regex", marker = "python_full_version < '3.12'", specifier = ">=2024.4.16" },
     { name = "regex", marker = "python_full_version >= '3.12'", specifier = ">=2025.2.10" },
 ]
-provides-extras = ["defusedxml", "googlevision", "ocr", "ocrmypdf", "pdfminer-six", "pdfplumber", "pyyaml"]
+provides-extras = ["defusedxml", "googlevision", "hotpdf", "ocr", "ocrmypdf", "pdfium", "pdfminer-six", "pdfplumber", "pyyaml"]
 
 [package.metadata.requires-dev]
 dev = [

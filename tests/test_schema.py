@@ -27,7 +27,9 @@ def test_auto_typed_prefixes_recognized() -> None:
 
 
 def test_extra_fields_whitelist() -> None:
-    assert schema.validate_output({"booking_id": "X"}, extra_fields=["booking_id"]) == []
+    assert (
+        schema.validate_output({"booking_id": "X"}, extra_fields=["booking_id"]) == []
+    )
 
 
 def test_line_and_tax_line_fields_validated() -> None:
