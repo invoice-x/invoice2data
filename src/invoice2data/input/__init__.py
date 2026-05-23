@@ -11,6 +11,7 @@ from . import hotpdf
 from . import ocrmypdf
 from . import pdfium
 from . import pdfminer_wrapper
+from . import pdfoxide
 from . import pdfplumber
 from . import pdftotext
 from . import tesseract
@@ -21,6 +22,7 @@ from . import text
 INPUT_MODULES: dict[str, ModuleType] = {
     "pdftotext": pdftotext,
     "pdfium": pdfium,
+    "pdfoxide": pdfoxide,
     "tesseract": tesseract,
     "pdfminer": pdfminer_wrapper,
     "pdfplumber": pdfplumber,

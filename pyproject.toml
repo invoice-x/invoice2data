@@ -80,6 +80,7 @@ ocr = ["ghostscript == 0.7"]
 ocrmypdf = ["ocrmypdf >= 14.4.0"]
 pdfium = ["pypdfium2 >= 4"]
 pdfminer-six = ["pdfminer-six == 20231228"]
+pdfoxide = ["pdf-oxide >= 0.3"]
 pdfplumber = ["pdfplumber == 0.11.4"]
 pyyaml = ["pyyaml == 6.0.2"]
 

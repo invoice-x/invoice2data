@@ -26,7 +26,7 @@ from invoice2data.input import is_available
 ROOT = Path(__file__).resolve().parent.parent
 COMPARE = ROOT / "tests" / "compare"
 CUSTOM_TEMPLATES = ROOT / "tests" / "custom" / "templates"
-BACKENDS = ["pdftotext", "pdfium", "pdfminer", "pdfplumber", "hotpdf"]
+BACKENDS = ["pdftotext", "pdfium", "pdfoxide", "pdfminer", "pdfplumber", "hotpdf"]
 RUNS = 3
 
 
