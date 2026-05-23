@@ -125,6 +125,31 @@ pretty = true
 show_column_numbers = true
 show_error_context = true
 
+# Optional third-party backends/tools that ship no type information. Centralised
+# here so the per-call inline imports stay clean and the result is the same
+# whether or not the optional dependency happens to be installed.
+[[tool.mypy.overrides]]
+module = [
+    "pdfminer",
+    "pdfminer.*",
+    "pdfplumber",
+    "pypdfium2",
+    "pdf_oxide",
+    "hotpdf",
+    "docutils",
+    "docutils.*",
+    "sphinxmermaid",
+]
+ignore_missing_imports = true
+
+# `google.cloud` is a namespace package: mypy partially resolves it (so
+# ignore_missing_imports does not apply), but the optional storage/vision
+# submodules are absent. Skip following google entirely so it is treated as Any.
+[[tool.mypy.overrides]]
+module = ["google", "google.*"]
+follow_imports = "skip"
+ignore_missing_imports = true
+
 [tool.ruff]
 src = ["src", "tests"]
 

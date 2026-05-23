@@ -33,7 +33,7 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     Returns:
         str: The extracted text, pages joined by newlines.
     """
-    from hotpdf import HotPdf  # type: ignore[import-untyped]
+    from hotpdf import HotPdf
 
     document = HotPdf(path)
     text = "\n".join(

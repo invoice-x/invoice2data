@@ -33,7 +33,7 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     Returns:
         str: The extracted text, pages joined by newlines.
     """
-    import pypdfium2  # type: ignore[import-untyped]
+    import pypdfium2
 
     document = pypdfium2.PdfDocument(path)
     try:

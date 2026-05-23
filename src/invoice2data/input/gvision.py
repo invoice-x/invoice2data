@@ -8,8 +8,8 @@ logger = logging.getLogger(__name__)
 
 
 try:
-    import google  # type: ignore[import-not-found] # noqa
-    from google.cloud import storage  # type: ignore[import-not-found]
+    import google  # noqa
+    from google.cloud import storage
     from google.cloud import vision
 
     GOOGLE_CLOUD_AVAILABLE = True

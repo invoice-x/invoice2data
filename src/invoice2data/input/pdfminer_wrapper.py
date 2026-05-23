@@ -25,11 +25,11 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     Returns:
         str: Extracted text from the PDF.
     """
-    from pdfminer.converter import TextConverter  # type: ignore[import-not-found]
-    from pdfminer.layout import LAParams  # type: ignore[import-not-found]
-    from pdfminer.pdfinterp import PDFPageInterpreter  # type: ignore[import-not-found]
+    from pdfminer.converter import TextConverter
+    from pdfminer.layout import LAParams
+    from pdfminer.pdfinterp import PDFPageInterpreter
     from pdfminer.pdfinterp import PDFResourceManager
-    from pdfminer.pdfpage import PDFPage  # type: ignore[import-not-found]
+    from pdfminer.pdfpage import PDFPage
 
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()

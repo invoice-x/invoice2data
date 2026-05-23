@@ -32,7 +32,7 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
         ImportError: If the optional `pdfplumber` dependency is not installed.
     """
     try:
-        import pdfplumber  # type: ignore[import-not-found]
+        import pdfplumber
     except ImportError:
         logger.error("Cannot import pdfplumber")
         raise

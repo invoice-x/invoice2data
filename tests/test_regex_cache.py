@@ -13,7 +13,8 @@ def test_compile_is_cached() -> None:
 
 def test_wrappers_behave_like_re() -> None:
     assert _regex.findall(r"(\d+)", "a1b22") == ["1", "22"]
-    assert _regex.search(r"\d+", "ab12").group() == "12"
+    match = _regex.search(r"\d+", "ab12")
+    assert match is not None and match.group() == "12"
     assert _regex.search(r"\d+", "abc") is None
     assert _regex.split(r"\s+", "a b  c") == ["a", "b", "c"]
     assert _regex.sub(r"\d", "#", "a1b2") == "a#b#"

@@ -33,7 +33,7 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     Returns:
         str: The extracted text, pages joined by newlines.
     """
-    from pdf_oxide import PdfDocument  # type: ignore[import-untyped]
+    from pdf_oxide import PdfDocument
 
     document = PdfDocument(path)
     # to_plain_text_all (layout-preserving) scored best in the backend benchmark.

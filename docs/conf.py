@@ -2,6 +2,7 @@
 
 import os
 import sys
+from typing import Any
 
 
 project = "Invoice2data"
@@ -50,7 +51,7 @@ language = "en"
 html_favicon = "_static/favicon.ico"
 
 
-def setup(app):
+def setup(app: Any) -> None:
     """Skip mermaid diagrams in non-HTML builders.
 
     The sphinxmermaid extension only registers an HTML visitor for its
@@ -61,7 +62,7 @@ def setup(app):
     from docutils import nodes
     from sphinxmermaid import MermaidNode
 
-    def skip_mermaid(self, node):
+    def skip_mermaid(self: Any, node: Any) -> None:
         raise nodes.SkipNode
 
     app.add_node(

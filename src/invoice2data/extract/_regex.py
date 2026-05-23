@@ -11,6 +11,7 @@ import os
 import re
 from functools import lru_cache
 from typing import Any
+from typing import cast
 
 
 _engine: Any = re
@@ -27,7 +28,7 @@ ENGINE: str = _engine.__name__
 
 
 @lru_cache(maxsize=4096)
-def compile(pattern: str, flags: int = 0) -> Any:
+def compile(pattern: str, flags: int = 0) -> "re.Pattern[str]":
     """Compile a regex pattern, caching the result.
 
     Args:
@@ -35,12 +36,13 @@ def compile(pattern: str, flags: int = 0) -> Any:
         flags (int): Regex flags passed to the engine. Defaults to 0.
 
     Returns:
-        Any: The compiled pattern object for the active engine.
+        re.Pattern[str]: The compiled pattern object. The active engine
+            (`re` or the API-compatible `regex`) is treated as `re` for typing.
     """
-    return _engine.compile(pattern, flags)
+    return cast("re.Pattern[str]", _engine.compile(pattern, flags))
 
 
-def search(pattern: str, string: str, flags: int = 0) -> Any:
+def search(pattern: str, string: str, flags: int = 0) -> "re.Match[str] | None":
     """Search ``string`` for the first match of ``pattern``.
 
     Args:
@@ -49,7 +51,7 @@ def search(pattern: str, string: str, flags: int = 0) -> Any:
         flags (int): Regex flags. Defaults to 0.
 
     Returns:
-        Any: A match object, or None if there is no match.
+        re.Match[str] | None: A match object, or None if there is no match.
     """
     return compile(pattern, flags).search(string)
 

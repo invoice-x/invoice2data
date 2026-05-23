@@ -3,6 +3,7 @@
 import csv
 import datetime
 import json
+from pathlib import Path
 
 from invoice2data.output import to_csv
 
@@ -12,7 +13,7 @@ def _read_csv(path: str) -> list[list[str]]:
         return list(csv.reader(csv_file))
 
 
-def test_csv_json_mode_encodes_arrays(tmp_path) -> None:
+def test_csv_json_mode_encodes_arrays(tmp_path: Path) -> None:
     data = [
         {
             "invoice_number": "INV1",
@@ -30,7 +31,7 @@ def test_csv_json_mode_encodes_arrays(tmp_path) -> None:
     assert [item["name"] for item in lines] == ["Widget", "Gadget"]
 
 
-def test_csv_explode_mode_one_row_per_line(tmp_path) -> None:
+def test_csv_explode_mode_one_row_per_line(tmp_path: Path) -> None:
     data = [
         {
             "invoice_number": "INV1",

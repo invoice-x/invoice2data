@@ -33,7 +33,7 @@ from .common import get_sample_files
 
 def have_pdfplumber() -> bool:
     try:
-        import pdfplumber  # type: ignore[import-not-found] # noqa: F401
+        import pdfplumber  # noqa: F401
     except ImportError:
         return False
     return True
