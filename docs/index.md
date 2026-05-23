@@ -21,6 +21,7 @@ reference
 Template Creation <tutorial>
 Recommeneded Template Fields <recommended-template-fields>
 Frequently asked Questions <faq>
+Migrating to 1.0 <migration-1.0>
 contributing
 Code of Conduct <codeofconduct>
 License <license>

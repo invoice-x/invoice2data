@@ -116,7 +116,8 @@ def extract_data(
                                         Choices: {'pdftotext', 'pdfminer', 'tesseract', 'text'}.
 
     Returns:
-        dict[str, Any]: Extracted and matched fields, or False if no template matches.
+        dict[str, Any]: Extracted and matched fields, or an empty dict ``{}`` if
+            text extraction fails or no template matches.
 
     Notes:
         Import the required `input_module` when using invoice2data as a library.

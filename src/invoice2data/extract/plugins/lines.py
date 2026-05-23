@@ -5,6 +5,7 @@ should use the parser instead. It's provided for backward compatibility
 only.
 """
 
+import warnings
 from collections import OrderedDict
 from typing import Any
 
@@ -25,6 +26,13 @@ def extract(
         content (str): The text content to parse.
         output (dict[str, Any]): A dictionary to store the extracted data.
     """
+    warnings.warn(
+        "The 'lines' plugin (a top-level 'lines:' template key) is deprecated "
+        "and will be removed in a future release. Define it as a field with "
+        "'parser: lines' instead. See docs/migration-1.0.md.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     lines_data = parsers.lines.parse(self, "lines", self["lines"], content)
     if lines_data is not None:
         output["lines"] = lines_data
