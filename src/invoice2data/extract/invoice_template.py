@@ -3,7 +3,6 @@
 Templates are initially read from .yml files and then kept as class.
 """
 
-import re
 import unicodedata
 from collections import OrderedDict as OrderedDictType
 from logging import getLogger
@@ -17,6 +16,7 @@ from ..input import ocrmypdf
 # Area extraction is currently added for pdftotext, ocrmypdf and tesseract (which uses pdftotext)
 from ..input import pdftotext
 from ..input import tesseract
+from . import _regex
 from . import parsers
 from .plugins import lines
 from .plugins import tables
@@ -92,13 +92,13 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
         """Input raw string and do transformations, as set in template file."""
         # Remove whitespace
         if self.options["remove_whitespace"]:
-            optimized_str = re.sub(" +", "", extracted_str)
+            optimized_str = _regex.sub(" +", "", extracted_str)
         else:
             optimized_str = extracted_str
 
         # Remove accents
         if self.options["remove_accents"]:
-            optimized_str = re.sub(
+            optimized_str = _regex.sub(
                 "[\u0300-\u0362]", "", unicodedata.normalize("NFKD", optimized_str)
             )
 
@@ -115,7 +115,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
                 "Error in Template %s A replace should be a list of exactly 2 elements."
                 % self["template_name"]
             )
-            optimized_str = re.sub(replace[0], replace[1], optimized_str)
+            optimized_str = _regex.sub(replace[0], replace[1], optimized_str)
 
         return optimized_str
 
@@ -184,7 +184,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
         thousands_separator = "," if self.options["decimal_separator"] == "." else "."
 
         # Remove all possible thousands separators
-        amount_no_thousand_sep = re.sub(
+        amount_no_thousand_sep = _regex.sub(
             r"[\s']", "", value.replace(thousands_separator, "")
         )
 

@@ -1,10 +1,10 @@
 """Plugin to extract tables from an invoice."""
 
-import re
 from collections import OrderedDict
 from logging import getLogger
 from typing import Any
 
+from .. import _regex
 from ..utils import _apply_grouping
 
 
@@ -94,8 +94,8 @@ def _extract_table_body(content: str, table: dict[str, Any]) -> str | None:
         str | None: The extracted table body, or None if start or end
                        regexes are not found.
     """
-    start = re.search(table["start"], content)
-    end = re.search(table["end"], content)
+    start = _regex.search(table["start"], content)
+    end = _regex.search(table["end"], content)
 
     if not start:
         logger.debug("Failed to find the start of the table")
@@ -130,7 +130,7 @@ def _process_table_lines(
     types = table.get("types", {})
     no_match_found = True
     line_output: dict[str, Any] = {}
-    for line in re.split(table["line_separator"], table_body):
+    for line in _regex.split(table["line_separator"], table_body):
         if not line.strip("").strip("\n") or line.isspace():
             continue
 
@@ -170,7 +170,7 @@ def _process_table_line(  # noqa: C901
     Returns:
         bool: True if processing is successful, False if date parsing fails.
     """
-    match = re.search(table["body"], line)
+    match = _regex.search(table["body"], line)
     if match:
         for field, value in match.groupdict().items():
             logger.debug(

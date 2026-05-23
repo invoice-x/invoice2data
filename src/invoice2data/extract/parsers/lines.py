@@ -3,10 +3,11 @@
 Initial work and maintenance by Holger Brunn @hbrunn
 """
 
-import re
 from logging import getLogger
 from re import Match
 from typing import Any
+
+from .. import _regex
 
 
 # from ..invoice_template import InvoiceTemplate  # type: ignore[unused-ignore]
@@ -32,7 +33,7 @@ def parse_line(patterns: str | list[str], line: str) -> Match[str] | None:
     """
     patterns = patterns if isinstance(patterns, list) else [patterns]
     for pattern in patterns:
-        match = re.search(pattern, line)
+        match = _regex.search(pattern, line)
         if match:
             return match
     return None
@@ -89,7 +90,7 @@ def parse_block(  # noqa: RUF100 C901
     # As we enter the loop, we set the boolean for first_line being found to False,
     # This indicates the we are looking for the first_line pattern
     first_line_found = False
-    for line in re.split(settings["line_separator"], content):
+    for line in _regex.split(settings["line_separator"], content):
         # If the line has empty lines in it , skip them
         if not line.strip("").strip("\n").strip("\r") or not line:
             continue
@@ -132,11 +133,11 @@ def parse_block(  # noqa: RUF100 C901
                 if isinstance(settings["skip_line"], list):
                     # Accepts a list
                     skip_line_results = [
-                        re.search(x, line) for x in settings["skip_line"]
+                        _regex.search(x, line) for x in settings["skip_line"]
                     ]
                 else:
                     # Or a simple string
-                    skip_line_results = [re.search(settings["skip_line"], line)]
+                    skip_line_results = [_regex.search(settings["skip_line"], line)]
                 if any(skip_line_results):
                     # There was at least one match to a skip_line
                     logger.debug("skip_line match on \ns*%s*", line)
@@ -196,13 +197,13 @@ def parse_by_rule(
 
     # Try finding & parsing blocks of lines one by one
     while True:
-        start = re.search(settings["start"], content)
+        start = _regex.search(settings["start"], content)
         if not start:
             logger.debug("Failed to find lines block start")
             break
         content = content[start.end() :]
 
-        end = re.search(settings["end"], content)
+        end = _regex.search(settings["end"], content)
         if not end:
             logger.debug("Failed to find lines block end")
             break

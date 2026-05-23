@@ -12,10 +12,10 @@ For more detailed parsing "type" and "group" settings can be specified.
 """
 
 import logging
-import re
 from collections import OrderedDict
 from typing import Any
 
+from .. import _regex
 from ..utils import _apply_grouping
 
 
@@ -78,7 +78,7 @@ def _extract_matches(settings: dict[str, Any], content: str) -> list[Any] | None
             )
             continue
 
-        matches = re.findall(regex, content)
+        matches = _regex.findall(regex, content)
         logger.debug(
             "field=\033[1m\033[93m%s\033[0m | regex=\033[36m%s\033[0m | matches=\033[1m\033[92m%s\033[0m",
             settings.get("field", ""),
