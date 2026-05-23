@@ -14,6 +14,7 @@ import dateparser  # type: ignore[import-untyped]
 from ..input import supports_area
 from . import _regex
 from . import parsers
+from . import schema
 from .plugins import lines
 from .plugins import tables
 
@@ -266,6 +267,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
                 plugin_func.extract(self, optimized_str, output)
         _compute_line_tax(output)
         _validate_tax_total(output, self["template_name"])
+        _validate_fields(self, output)
         return _check_required_fields(self, output)
 
 
@@ -412,6 +414,43 @@ def _validate_tax_total(output: dict[str, Any], template_name: str) -> None:
             amount_tax,
             template_name,
         )
+
+
+def _validate_fields(self: InvoiceTemplate, output: dict[str, Any]) -> None:
+    """Validate output field names against the canonical schema.
+
+    Quiet by default: only warns when an unrecognized field looks like a typo of
+    a canonical name. With the template option ``strict_fields: true`` it raises
+    on any unrecognized field (except those listed in ``options.extra_fields``).
+
+    Args:
+        self (InvoiceTemplate): The template instance.
+        output (dict[str, Any]): The extracted-fields dictionary.
+
+    Raises:
+        ValueError: If ``strict_fields`` is set and unrecognized fields remain.
+    """
+    extra = self.options.get("extra_fields", []) or []
+    issues = schema.validate_output(output, extra_fields=extra)
+    if not issues:
+        return
+    if self.options.get("strict_fields", False):
+        names = ", ".join(name for name, _ in issues)
+        raise ValueError(
+            f"Unrecognized fields in template {self['template_name']}: {names}"
+        )
+    for name, suggestion in issues:
+        if suggestion:
+            logger.warning(
+                "Field '%s' is not a recognized field; did you mean '%s'? (%s)",
+                name,
+                suggestion,
+                self["template_name"],
+            )
+        else:
+            logger.debug(
+                "Field '%s' is not a canonical field (%s)", name, self["template_name"]
+            )
 
 
 def _check_required_fields(

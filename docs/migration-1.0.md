@@ -56,19 +56,35 @@ be revisited later — **feedback welcome** on the tracker before any change.
   **empty dict `{}`** when text extraction fails or no template matches. (It does
   not return `False`; older docs said so.)
 
+## Landed in 1.0
+
+- **Field validation** (`extract/schema.py`): output field names are checked
+  against the recommended vocabulary. It is quiet by default — a field is only
+  flagged when it looks like a **typo** of a canonical name (custom fields are
+  fine). Opt into strict checking per template with `options.strict_fields:
+  true` (raises on any unrecognized field), and whitelist custom names with
+  `options.extra_fields: [...]`.
+- **Computed `tax_lines` amounts**: a missing `line_tax_amount` in a `tax_lines`
+  row is computed from `price_subtotal * line_tax_percent / 100` (never
+  overwrites existing values). An advisory warning is logged if `tax_lines`
+  don't sum to `amount_tax`.
+- **CSV output** now JSON-encodes `lines`/`tax_lines` cells (valid, parseable
+  CSV) instead of writing Python `repr`. **Breaking** for anything that parsed
+  the previous output. New `--csv-lines={json,explode}` (`explode` writes one
+  row per line item).
+- **Faster regex**: patterns are compiled once and cached. The API-compatible
+  `regex` engine can be opted into with `INVOICE2DATA_REGEX_ENGINE=regex`; the
+  default remains stdlib `re` (non-breaking).
+- **Pluggable input backends**: a documented backend interface and registry
+  (`input/__interface__.py`); `extract_data` still accepts module or string.
+
 ## Planned for 1.0 (tracked, not yet landed)
 
-- **Field/output validation**: output field names/types validated against the
-  recommended vocabulary; unknown/legacy names warn (a `--strict` mode will be
-  available to turn warnings into errors). Non-strict by default.
-- **Canonical `tax_lines`/`lines` schema** and **CSV output that flattens line
-  arrays**. The CSV change is **breaking** for anything parsing the previous
-  (broken) CSV, which serialized line arrays as Python `repr` strings.
-- **Faster regex** (already landed): patterns are compiled once and cached. The
-  API-compatible `regex` engine can be opted into with
-  `INVOICE2DATA_REGEX_ENGINE=regex`; the default remains stdlib `re` (non-breaking).
-- **Pluggable input backends** (already landed) plus new fast PDF backends
-  (pypdfium2 and others), selectable via `--input-reader` (additive, non-breaking).
+- **Canonical `tax_lines`/`lines` schema**: normalize field names across the
+  built-in templates to one vocabulary.
+- **New fast PDF backends**: pypdfium2 (benchmarked ~6× faster than pdftotext;
+  no new dependency) and others, selectable via `--input-reader` (additive).
+- **Camelot** table extraction and **mypyc**-compiled hot paths.
 
 ## Feedback
 
