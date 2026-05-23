@@ -50,10 +50,7 @@ def write_to_file(
         for k, v in invoice.items():
             invoice[k] = format_item(v, date_format)
 
-    if not path.endswith(".json"):
-        filename = path + ".json"
-    else:
-        filename = path
+    filename = path if path.endswith(".json") else path + ".json"
 
     with open(filename, "w", encoding="utf-8") as json_file:
         json.dump(data, json_file, indent=4, ensure_ascii=False)

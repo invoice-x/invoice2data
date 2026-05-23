@@ -86,9 +86,9 @@ def _extract_and_validate_settings(
     table = plugin_settings
 
     for key in ("start", "end", "body"):
-        assert (
-            key in table
-        ), f"Error in Template {self['template_name']} Table {key} regex missing"
+        assert key in table, (
+            f"Error in Template {self['template_name']} Table {key} regex missing"
+        )
     return table
 
 
@@ -146,10 +146,9 @@ def _process_table_lines(
         # Correct the function call and return logic
         if not _process_table_line(self, table, line, types, line_output):
             return None  # Return None immediately if line parsing fails
-        else:
-            no_match_found = (
-                False  # Update no_match_found only if line processing is successful
-            )
+        no_match_found = (
+            False  # Update no_match_found only if line processing is successful
+        )
 
     if no_match_found:
         logger.debug(
@@ -219,7 +218,6 @@ def _process_table_line(  # noqa: C901
                 output[field] = value
         # Return True if a match is found and processed successfully
         return True
-    else:
-        logger.debug("The following line doesn't match anything:\n*%s*", line)
-        # Return True to continue processing even if a line doesn't match
-        return True
+    logger.debug("The following line doesn't match anything:\n*%s*", line)
+    # Return True to continue processing even if a line doesn't match
+    return True

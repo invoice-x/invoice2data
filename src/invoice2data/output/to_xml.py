@@ -84,10 +84,7 @@ def write_to_file(
         >>> data = [{'amount': 123.45, 'date': datetime.datetime(2024, 1, 1)}]
         >>> to_xml.write_to_file(data, "invoice.xml")
     """
-    if not path.endswith(".xml"):
-        filename = path + ".xml"
-    else:
-        filename = path
+    filename = path if path.endswith(".xml") else path + ".xml"
 
     tag_data = ElementTree.Element("data")
     with open(filename, "w") as xml_file:

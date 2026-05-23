@@ -73,7 +73,7 @@ def to_text(path: str, bucket_name: str | None = None, language: str = "en") -> 
             "No Google Cloud Bucket name set.\n Set it as an input variable or as an environment variable named GOOGLE_CLOUD_BUCKET_NAME"
         )
 
-    path_dir, filename = os.path.split(path)
+    filename = os.path.basename(path)
     result_blob_basename = filename.replace(".pdf", "").replace(".PDF", "")
     result_blob_name = f"{result_blob_basename}/output-1-to-1.json"
     result_blob_uri = f"gs://{bucket_name}/{result_blob_basename}/"

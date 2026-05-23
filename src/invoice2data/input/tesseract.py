@@ -136,7 +136,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
         assert "W" in area_details, "Area W details missing"
         assert "H" in area_details, "Area H details missing"
         # Convert all of the values to strings
-        for key in area_details.keys():
+        for key in area_details:
             area_details[key] = str(area_details[key])
         pdftotext_cmd += [
             "-f",
@@ -159,7 +159,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
     logger.debug("Calling pdfttext with, %s", pdftotext_cmd)
     p3 = Popen(pdftotext_cmd, stdin=p2.stdout, stdout=PIPE)
     try:
-        out, err = p3.communicate(timeout=timeout)
+        out, _ = p3.communicate(timeout=timeout)
 
         extracted_str = out
     except TimeoutExpired:

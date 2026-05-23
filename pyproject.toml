@@ -65,7 +65,7 @@ dev = [
     "pytest-mock >= 3.14.0",
     "pygments >=2.10.0",
 ]
-lint = ["ruff >=0.5.1", "pydoclint >=0.4.2"]
+lint = ["ruff >=0.8", "pydoclint >=0.4.2"]
 docs = [
     "shibuya >= 2025.1.29",
     "myst-parser >= 4.0",
@@ -201,17 +201,27 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 extend-select = [
-    "B",   # flake8-bugbear
-    "C90", # mccabe
-    "D",   # pydocstyle
-    "E",   # pycodestyle
-    "F",   # pyflakes
-    "I",   # isort
-    "N",   # pep8-naming
-    "RUF", # Ruff-specific rules
-    "S",   # flake8-bandit
-    "UP",  # pyupgrade
-    "W",   # pycodestyle
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "C4",    # flake8-comprehensions
+    "C90",   # mccabe
+    "D",     # pydocstyle
+    "E",     # pycodestyle
+    "F",     # pyflakes
+    "FURB",  # refurb
+    "I",     # isort
+    "LOG",   # flake8-logging
+    "N",     # pep8-naming
+    "PERF",  # perflint
+    "PIE",   # flake8-pie
+    "PTH",   # flake8-use-pathlib
+    "RET",   # flake8-return
+    "RUF",   # Ruff-specific rules
+    "S",     # flake8-bandit
+    "SIM",   # flake8-simplify
+    "TRY",   # tryceratops
+    "UP",    # pyupgrade
+    "W",     # pycodestyle
 ]
 # ignore checks that conflict with ruff formatter (https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules)
 extend-ignore = [
@@ -236,6 +246,9 @@ extend-ignore = [
     "S603",
     "UP031",  # Use fstring instead of % identifier
     "E501",   # fix this when updating docstrings
+    "PTH",    # selected, but the os.path -> pathlib migration (~70 sites) is a
+    # focused follow-up; drop this ignore when it lands.
+    "TRY003", # long messages in raise (would need custom exception classes)
     # "DOC106",
     # "DOC107",
     # "DOC111",

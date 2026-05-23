@@ -34,7 +34,7 @@ def to_text(path: str, **kwargs: dict[str, Any]) -> str:
     try:
         import pdfplumber
     except ImportError:
-        logger.error("Cannot import pdfplumber")
+        logger.exception("Cannot import pdfplumber")
         raise
 
     with pdfplumber.open(path, laparams={"detect_vertical": True}) as pdf:

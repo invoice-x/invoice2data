@@ -539,7 +539,7 @@ def main(
                     _process_and_move_copy(
                         f.name, res, copy, move, filename_format
                     )  # Extract file processing and copy/move
-        except Exception as e:
+        except Exception as e:  # noqa: PERF203
             logger.critical(
                 "Invoice2data failed to process %s. \nError message: %s", f.name, e
             )

@@ -76,5 +76,4 @@ def _post_process(text: str) -> str:
     """
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     # U+FEFF (BOM / zero-width no-break space) and U+FFFE (non-character).
-    text = text.replace("﻿", "").replace("￾", "")
-    return text
+    return text.replace("﻿", "").replace("￾", "")

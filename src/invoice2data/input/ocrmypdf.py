@@ -68,10 +68,8 @@ def to_text(
     pre_proc_output = pre_process_pdf(path, pre_conf=input_reader_config)
 
     if pre_proc_output:
-        extracted_str = pdftotext.to_text(pre_proc_output, area_details)
-        return extracted_str
-    else:
-        return ""
+        return pdftotext.to_text(pre_proc_output, area_details)
+    return ""
 
 
 def pre_process_pdf(path: str, pre_conf: dict[str, Any] | None = None) -> str | None:
@@ -122,6 +120,5 @@ def pre_process_pdf(path: str, pre_conf: dict[str, Any] | None = None) -> str | 
         logger.debug("ocrmypdf output file: %s", pre_proc_output)
         assert isinstance(pre_proc_output, str)
         return pre_proc_output  # Return the output file path
-    else:
-        logger.warning("ocrmypdf failed, stopping processing of this file")
-        return None
+    logger.warning("ocrmypdf failed, stopping processing of this file")
+    return None

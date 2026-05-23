@@ -59,7 +59,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
             assert "W" in area_details, "Area W details missing"
             assert "H" in area_details, "Area H details missing"
             # Convert all of the values to strings
-            for key in area_details.keys():
+            for key in area_details:
                 area_details[key] = str(area_details[key])
             cmd += [
                 "-f",
@@ -79,9 +79,8 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
             ]
         cmd += [path, "-"]
         # Run the extraction
-        out, err = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()
+        out, _ = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()
         return out.decode("utf-8")
-    else:
-        raise OSError(
-            "pdftotext not installed. Can be downloaded from https://poppler.freedesktop.org/"
-        )
+    raise OSError(
+        "pdftotext not installed. Can be downloaded from https://poppler.freedesktop.org/"
+    )

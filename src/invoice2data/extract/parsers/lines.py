@@ -160,7 +160,7 @@ def parse_block(  # noqa: RUF100 C901
 
     types = settings.get("types", [])
     for row in lines:
-        for name in row.keys():
+        for name in row:
             if name in types:
                 row[name] = template.coerce_type(row[name], types[name])
     return lines

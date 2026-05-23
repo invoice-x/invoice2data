@@ -111,8 +111,5 @@ def _apply_type_coercion(
 def _remove_duplicates(legacy: bool, result: Any | None) -> Any | None:
     """Remove duplicate values from the result."""
     if isinstance(result, list):
-        if legacy:
-            result = list(set(result))
-        else:
-            result = list(OrderedDict.fromkeys(result))
+        result = list(set(result)) if legacy else list(OrderedDict.fromkeys(result))
     return result

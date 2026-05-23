@@ -127,32 +127,28 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             bool: True if the extracted string matches the template keywords,
                 False otherwise.
         """
-        if all([keyword in extracted_str for keyword in self["keywords"]]):
+        if all(keyword in extracted_str for keyword in self["keywords"]):
             # All keywords found
-            if self["exclude_keywords"]:
-                if any(
-                    [
-                        exclude_keyword in extracted_str
-                        for exclude_keyword in self["exclude_keywords"]
-                    ]
-                ):
-                    # At least one exclude_keyword found
-                    logger.debug(
-                        "Template: %s | Keywords matched. Exclude keyword found!",
-                        self["template_name"],
-                    )
-                    return False
+            if self["exclude_keywords"] and any(
+                exclude_keyword in extracted_str
+                for exclude_keyword in self["exclude_keywords"]
+            ):
+                # At least one exclude_keyword found
+                logger.debug(
+                    "Template: %s | Keywords matched. Exclude keyword found!",
+                    self["template_name"],
+                )
+                return False
             # No exclude_keywords or none found, template is good
             logger.debug(
                 "Template: %s | Keywords matched. No exclude keywords found.",
                 self["template_name"],
             )
             return True
-        else:
-            logger.debug(
-                "Template: %s | Failed to match all keywords.", self["template_name"]
-            )
-            return False
+        logger.debug(
+            "Template: %s | Failed to match all keywords.", self["template_name"]
+        )
+        return False
 
     def parse_number(self, value: str) -> float:
         """Parses a number from a string.
@@ -219,13 +215,11 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             if not value:
                 return 0
             return int(self.parse_number(value))
-        elif target_type == "float":
+        if target_type == "float":
             if not value:
                 return 0.0
             return float(self.parse_number(value))
-        elif target_type == "date":
-            return self.parse_date(value)
-        elif target_type == "datetime":
+        if target_type == "date" or target_type == "datetime":
             return self.parse_date(value)
         raise AssertionError("Unknown type")
 
@@ -472,12 +466,11 @@ def _check_required_fields(
         output["desc"] = "Invoice from %s" % (self["issuer"])
         logger.debug("\n %s", pformat(output, indent=2))
         return output
-    else:
-        fields = list(set(output.keys()))
-        logger.error(
-            "Unable to match all required fields. "
-            f"The required fields are: {required_fields}. "
-            f"Output contains the following fields: {fields}."
-        )
-        missing = set(required_fields) - set(fields)
-        raise ValueError(f"Unable to parse required field(s): {missing}")
+    fields = list(set(output.keys()))
+    logger.error(
+        "Unable to match all required fields. "
+        f"The required fields are: {required_fields}. "
+        f"Output contains the following fields: {fields}."
+    )
+    missing = set(required_fields) - set(fields)
+    raise ValueError(f"Unable to parse required field(s): {missing}")

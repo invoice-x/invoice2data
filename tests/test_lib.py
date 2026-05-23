@@ -48,8 +48,7 @@ def _extract_data_for_export() -> list[dict[str, Any]]:
     pdf_files = get_sample_files(".pdf")
     for file in pdf_files:
         if file.endswith("oyo.pdf"):
-            res = [extract_data(file, [])]
-            return res
+            return [extract_data(file, [])]
     return []  # Return an empty list if no matching file is found
 
 

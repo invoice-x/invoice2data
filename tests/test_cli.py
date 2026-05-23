@@ -255,7 +255,7 @@ class TestCLI(unittest.TestCase):
         compare_folder = os.path.dirname("tests/compare/")
         for path, _subdirs, files in os.walk(compare_folder):
             for file in files:
-                root, ext = os.path.splitext(file)
+                root, _ext = os.path.splitext(file)
                 if "AzureInterior" in file:
                     continue
                 if inputparser_specific(file):
