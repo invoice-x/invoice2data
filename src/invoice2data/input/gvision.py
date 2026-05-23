@@ -1,4 +1,15 @@
-"""Google Cloud Vision input module for invoice2data."""
+"""Google Cloud Vision input module for invoice2data.
+
+Uses Cloud Vision's async ``DOCUMENT_TEXT_DETECTION`` staged through Google Cloud
+Storage, so a GCS bucket is required (set ``GOOGLE_CLOUD_BUCKET_NAME``) plus
+``GOOGLE_APPLICATION_CREDENTIALS``.
+
+A modern, bucket-free alternative is Google **Document AI** (an "OCR processor"
+run synchronously) — see the OCA module ``account_invoice_google_document_ai``
+(OCA/account-invoicing) for that approach. Worth considering as a future backend
+that drops the GCS-bucket setup; it needs a Document AI processor id + the
+``google-cloud-documentai`` client.
+"""
 
 import logging
 import os
@@ -23,6 +34,9 @@ def have_google_cloud() -> bool:
 
 #: Backend availability check (see input.__interface__).
 is_available = have_google_cloud
+
+#: Google Vision OCRs the whole document; it has no area-restricted mode.
+SUPPORTS_AREA = False
 
 
 def to_text(path: str, bucket_name: str | None = None, language: str = "en") -> str:
@@ -92,16 +106,21 @@ def to_text(path: str, bucket_name: str | None = None, language: str = "en") -> 
         )
 
         async_request = vision.AsyncAnnotateFileRequest(
-            features=[feature], input_config=input_config, output_config=output_config
+            features=[feature],
+            input_config=input_config,
+            output_config=output_config,
+            image_context=vision.ImageContext(language_hints=[language]),
         )
 
         operation = client.async_batch_annotate_files(requests=[async_request])
 
-        print("Waiting for the operation to finish.")
+        logger.info("Waiting for the Google Vision OCR operation to finish.")
         operation.result(timeout=180)
 
     # Get result after OCR is completed
     result_blob = bucket.get_blob(result_blob_name)
+    if result_blob is None:
+        raise OSError(f"Google Cloud Vision produced no OCR result for {filename}")
 
     json_string = result_blob.download_as_string()
     response = vision.AnnotateFileResponse.from_json(json_string)
