@@ -270,6 +270,13 @@ class Invoice2Data:
     default="invoices-output",
     help="Custom name for output file. Extension is added based on chosen format.",
 )
+@click.option(
+    "--csv-lines",
+    type=click.Choice(["json", "explode"]),
+    default="json",
+    help="How the CSV output renders line arrays: 'json' (default) JSON-encodes "
+    "them; 'explode' writes one row per line item.",
+)
 @click.option("--debug", is_flag=True, help="Enable debug information.")
 @click.option(
     "--copy", "-c", help="Copy and rename processed PDFs to specified folder."
@@ -305,6 +312,7 @@ def main(
     output_format: str,
     output_date_format: str,
     output_name: str,
+    csv_lines: str,
     debug: bool,
     copy: str | None,
     move: str | None,
@@ -343,7 +351,11 @@ def main(
         finally:
             f.close()
 
-    if output_module is not None:
+    if output_module is to_csv:
+        to_csv.write_to_file(
+            output, output_name, output_date_format, lines_mode=csv_lines
+        )
+    elif output_module is not None:
         output_module.write_to_file(output, output_name, output_date_format)
 
 

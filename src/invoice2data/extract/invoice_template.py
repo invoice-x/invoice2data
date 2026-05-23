@@ -264,6 +264,8 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
             if plugin_keyword in self.keys():
                 plugin_func.extract(self, optimized_str, output)
+        _compute_line_tax(output)
+        _validate_tax_total(output, self["template_name"])
         return _check_required_fields(self, output)
 
 
@@ -353,6 +355,63 @@ def _handle_legacy_syntax(
         output[k] = result
     else:
         logger.warning("regexp for field %s didn't match", k)
+
+
+def _compute_line_tax(output: dict[str, Any]) -> None:
+    """Fill in a missing ``line_tax_amount`` for ``tax_lines`` rows.
+
+    For each per-rate row in ``tax_lines`` that has ``line_tax_percent`` and
+    ``price_subtotal`` but no ``line_tax_amount``, compute it as
+    ``round(price_subtotal * line_tax_percent / 100, 2)``. Existing values are
+    never overwritten. (Product ``lines`` are left untouched.)
+
+    Args:
+        output (dict[str, Any]): The extracted-fields dictionary, modified in place.
+    """
+    rows = output.get("tax_lines")
+    if not isinstance(rows, list):
+        return
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if (
+            "line_tax_amount" not in row
+            and "line_tax_percent" in row
+            and "price_subtotal" in row
+        ):
+            try:
+                percent = float(row["line_tax_percent"])
+                subtotal = float(row["price_subtotal"])
+            except (TypeError, ValueError):
+                continue
+            row["line_tax_amount"] = round(subtotal * percent / 100, 2)
+
+
+def _validate_tax_total(output: dict[str, Any], template_name: str) -> None:
+    """Warn if the per-rate tax amounts don't add up to ``amount_tax``.
+
+    Purely advisory (a tolerance-based warning); never raises or alters output.
+
+    Args:
+        output (dict[str, Any]): The extracted-fields dictionary.
+        template_name (str): Template name, for the log message.
+    """
+    tax_lines = output.get("tax_lines")
+    amount_tax = output.get("amount_tax")
+    if not isinstance(tax_lines, list) or not isinstance(amount_tax, int | float):
+        return
+    total = sum(
+        row["line_tax_amount"]
+        for row in tax_lines
+        if isinstance(row, dict) and isinstance(row.get("line_tax_amount"), int | float)
+    )
+    if total and abs(total - amount_tax) > 0.02:
+        logger.warning(
+            "tax_lines total (%.2f) does not match amount_tax (%.2f) in %s",
+            total,
+            amount_tax,
+            template_name,
+        )
 
 
 def _check_required_fields(
