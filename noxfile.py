@@ -188,6 +188,10 @@ def tests(session: nox.Session) -> None:
         "pdfplumber",
         "--extra",
         "pyyaml",
+        "--extra",
+        "ai",
+        "--extra",
+        "dateparser",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )
     session.run(

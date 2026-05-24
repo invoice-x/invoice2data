@@ -262,6 +262,12 @@ The lines package has multiple settings:
             - ['M', 'meter']
 ````
 
+**Dates:** invoice2data parses dates fastest-first — your template's
+`date_formats` via stdlib `strptime`, then `dateutil`, then `dateparser`.
+`dateparser` handles localized month names (non-English invoices) and is an
+**optional** extra: `pip install invoice2data[dateparser]` if your invoices use
+localized dates. Numeric / English dates work without it.
+
 :warning: Invoice2data uses a yaml templating system. The yaml templates are loaded with [pyyaml](https://github.com/yaml/pyyaml) which is a pure python implementation. (thus rather slow)
 As an alternative json templates can be used. Which are natively better supported by python.
 
