@@ -146,6 +146,7 @@ tests = ["tests", "*/tests"]
 [tool.coverage.run]
 branch = true
 source = ["invoice2data", "tests"]
+relative_files = true
 
 [tool.coverage.report]
 show_missing = true
