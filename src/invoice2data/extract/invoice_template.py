@@ -294,6 +294,8 @@ def _initialize_output_and_log(
 
     output = {}
     output["issuer"] = self["issuer"]
+    # Expose which template matched, for downstream tooling (issue #618).
+    output["template_name"] = self.get("template_name", "")
     return output
 
 

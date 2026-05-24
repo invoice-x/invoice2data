@@ -43,7 +43,12 @@ class TestCLI(unittest.TestCase):
         with open(test_file) as json_test_file, open(json_file) as json_json_file:
             jdatatest = json.load(json_test_file)
             jdatajson = json.load(json_json_file)
-            return jdatajson == jdatatest
+        # template_name is run metadata (issue #618), not extracted data; the
+        # goldens compare extracted fields only.
+        for record in (*jdatatest, *jdatajson):
+            if isinstance(record, dict):
+                record.pop("template_name", None)
+        return jdatajson == jdatatest
 
     def test_input(self) -> None:
         """Tests the --input-reader argument."""

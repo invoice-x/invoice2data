@@ -60,6 +60,8 @@ INVOICE_FIELDS: frozenset[str] = frozenset(
         "lines",
         "tax_lines",
         "desc",
+        # metadata auto-added to every result
+        "template_name",  # which template matched (issue #618)
     }
 )
 

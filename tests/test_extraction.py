@@ -58,6 +58,8 @@ class TestExtraction(unittest.TestCase):
                         for key, value in res.items():
                             if isinstance(value, datetime.datetime):
                                 res[key] = value.strftime("%Y-%m-%d")
+                        # template_name is run metadata (#618), not extracted data.
+                        res.pop("template_name", None)
                         res = [res]  # type: ignore
                         with open(jfile) as json_file:
                             ref_json = json.load(json_file)
