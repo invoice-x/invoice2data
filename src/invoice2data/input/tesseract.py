@@ -156,10 +156,10 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
     pdftotext_cmd += [tmp_folder + filename + ".pdf", "-"]
 
     logger.debug("Calling pdfttext with, %s", pdftotext_cmd)
+    extracted_str = b""
     p3 = Popen(pdftotext_cmd, stdin=p2.stdout, stdout=PIPE)
     try:
         out, _ = p3.communicate(timeout=timeout)
-
         extracted_str = out
     except TimeoutExpired:
         p3.kill()
