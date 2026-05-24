@@ -2,6 +2,7 @@
 """Command-line interface."""
 
 import datetime
+import json
 import logging
 import os
 import re
@@ -113,6 +114,22 @@ class PlainLogFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """Format the record and strip any ANSI color escape sequences."""
         return _ANSI_RE.sub("", super().format(record))
+
+
+class JsonLogFormatter(logging.Formatter):
+    """Machine-readable JSON log formatter (one object per line, for --in-automation)."""
+
+    def format(self, record: logging.LogRecord) -> str:
+        """Render the record as a single-line JSON object (ANSI stripped)."""
+        payload = {
+            "time": self.formatTime(record, "%Y-%m-%dT%H:%M:%S"),
+            "level": record.levelname,
+            "name": record.name,
+            "message": _ANSI_RE.sub("", record.getMessage()),
+        }
+        if record.exc_info:
+            payload["exc_info"] = self.formatException(record.exc_info)
+        return json.dumps(payload)
 
 
 stream_handler = logging.StreamHandler()
@@ -612,6 +629,11 @@ def _run_new_template(
     help="Disable colored log output (also honored via the NO_COLOR env var).",
 )
 @click.option(
+    "--in-automation",
+    is_flag=True,
+    help="Emit logs as machine-readable JSON (one object per line) for automation.",
+)
+@click.option(
     "--copy", "-c", help="Copy and rename processed PDFs to specified folder."
 )
 @click.option(
@@ -672,6 +694,7 @@ def main(  # noqa: C901
     debug: bool,
     debug_optimized_str: bool,
     no_color: bool,
+    in_automation: bool,
     copy: str | None,
     move: str | None,
     filename_format: str,
@@ -689,7 +712,9 @@ def main(  # noqa: C901
     else:
         logger.setLevel(level=logging.INFO)
 
-    if no_color or "NO_COLOR" in os.environ:
+    if in_automation:
+        stream_handler.setFormatter(JsonLogFormatter())
+    elif no_color or "NO_COLOR" in os.environ:
         stream_handler.setFormatter(PlainLogFormatter())
 
     if debug_optimized_str:

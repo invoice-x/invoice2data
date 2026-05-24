@@ -131,6 +131,11 @@ Disable colored log output (also honored via the `NO_COLOR` environment variable
 
 `invoice2data --no-color my_invoice.pdf`
 
+Emit machine-readable JSON logs (one object per line, on stderr) for automation
+pipelines — combine with `--output-name -` for clean data on stdout:
+
+`invoice2data --in-automation --output-format json --output-name - my_invoice.pdf`
+
 Recognize test invoices: `invoice2data invoice2data/test/pdfs/* --debug`
 
 Draft a new template from a sample document (the builder suggests fields/regexes
