@@ -47,7 +47,7 @@ def parse(
 
     # `result` morphs from a list of matches to a coerced scalar/grouped value;
     # keep it `Any` so mypyc doesn't strict-check it against the initial list type.
-    result: Any = _extract_matches(settings, content)
+    result: Any = _extract_matches(field, settings, content)
     if result is None:
         return None
 
@@ -63,7 +63,9 @@ def parse(
     return result
 
 
-def _extract_matches(settings: dict[str, Any], content: str) -> list[Any] | None:
+def _extract_matches(
+    field: str, settings: dict[str, Any], content: str
+) -> list[Any] | None:
     """Extract matches from the content using the given regexes."""
     if isinstance(settings["regex"], list):
         regexes = settings["regex"]
@@ -75,7 +77,7 @@ def _extract_matches(settings: dict[str, Any], content: str) -> list[Any] | None
         if not isinstance(regex, str):
             logger.warning(
                 'Field "%s" regex is not a string (%s)',
-                settings.get("field", ""),
+                field,
                 str(regex),
             )
             continue
@@ -83,7 +85,7 @@ def _extract_matches(settings: dict[str, Any], content: str) -> list[Any] | None
         matches = _regex.findall(regex, content)
         logger.debug(
             "field=\033[1m\033[93m%s\033[0m | regex=\033[36m%s\033[0m | matches=\033[1m\033[92m%s\033[0m",
-            settings.get("field", ""),
+            field,
             settings["regex"],
             matches,
         )

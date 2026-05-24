@@ -305,9 +305,12 @@ def _match_template(
         templates (list[InvoiceTemplate]): Candidate templates.
 
     Returns:
-        InvoiceTemplate | None: The first matching template, or ``None``.
+        InvoiceTemplate | None: The highest-priority matching template, or
+            ``None``. Templates are tried by descending ``priority`` (default 5),
+            preserving alphabetical order within the same priority.
     """
-    for template in templates:
+    ordered = sorted(templates, key=lambda t: t.get("priority", 5), reverse=True)
+    for template in ordered:
         if template.matches_input(extracted_str):
             return template
     return None
