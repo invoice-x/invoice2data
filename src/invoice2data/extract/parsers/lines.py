@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING
 from typing import Any
 
 from .. import _regex
+from .regex import _normalize_replacements
+from .regex import _replace_value
 
 
 if TYPE_CHECKING:
@@ -158,12 +160,57 @@ def parse_block(  # noqa: RUF100 C901
         # All lines processed, so append whatever the final current_row was to output
         lines.append(current_row)
 
+    _apply_line_replace(settings, lines)
+
     types = settings.get("types", [])
     for row in lines:
         for name in row:
             if name in types:
                 row[name] = template.coerce_type(row[name], types[name])
     return lines
+
+
+def _normalize_line_replace(spec: Any) -> dict[str, list[tuple[str, str]]]:
+    """Normalize a lines ``replace`` setting to {sub-field: [(pattern, repl)]}.
+
+    Accepts a mapping ``{uom: [...], name: [...]}`` or a list of single-key
+    mappings ``[{uom: [...]}, {name: [...]}]`` (each value being a single pair or
+    a list of pairs, as for a field-level replace).
+
+    Args:
+        spec (Any): The raw ``replace`` value from the lines settings.
+
+    Returns:
+        dict[str, list[tuple[str, str]]]: Per-sub-field replacement pairs.
+    """
+    if not spec:
+        return {}
+    raw: dict[str, Any] = {}
+    if isinstance(spec, dict):
+        raw = spec
+    else:
+        for entry in spec:
+            raw.update(entry)
+    return {field: _normalize_replacements(pairs) for field, pairs in raw.items()}
+
+
+def _apply_line_replace(settings: dict[str, Any], lines: list[dict[str, Any]]) -> None:
+    """Apply per-sub-field ``replace`` to each line row in place (issue #497).
+
+    Lets a lines/tables template map captured sub-field values, e.g. units of
+    measure ``PS`` -> ``unit``, before type coercion.
+
+    Args:
+        settings (dict[str, Any]): The lines settings (may hold ``replace``).
+        lines (list[dict[str, Any]]): The parsed rows, mutated in place.
+    """
+    replace_map = _normalize_line_replace(settings.get("replace"))
+    if not replace_map:
+        return
+    for row in lines:
+        for field, replacements in replace_map.items():
+            if field in row:
+                row[field] = _replace_value(row[field], replacements)
 
 
 def parse_by_rule(

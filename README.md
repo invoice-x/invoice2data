@@ -246,6 +246,16 @@ The lines package has multiple settings:
 - line > If first_line is not provided, this will be used as the primary line pattern. If first_line is provided, this is the pattern for any sub-lines such as line item details.
 - skip_line > Optional. If first_line is passed, this pattern indicates which sub-lines will be skipped and their data not recorded. This is useful if tables span multiple pages and you need to skip over page numbers or headers that appear mid-table.
 - last_line > Optional. If first_line is passed, this pattern denotes the final line of the sub-lines and is included in the output data.
+- replace > Optional. Per-sub-field regex substitutions applied to captured line values (before type coercion) — e.g. normalize units of measure:
+
+````yaml
+    lines:
+        ...
+        replace:
+          uom:
+            - ['PS', 'unit']
+            - ['M', 'meter']
+````
 
 :warning: Invoice2data uses a yaml templating system. The yaml templates are loaded with [pyyaml](https://github.com/yaml/pyyaml) which is a pure python implementation. (thus rather slow)
 As an alternative json templates can be used. Which are natively better supported by python.
