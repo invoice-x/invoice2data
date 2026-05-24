@@ -20,6 +20,7 @@ from invoice2data.extract.template_builder import suggested_template
 from invoice2data.extract.template_builder import to_yaml
 
 from .input import INPUT_MODULES
+from .input import extract_text
 from .input import is_available
 from .input import ocrmypdf
 from .input import pdfium
@@ -312,7 +313,7 @@ def _safe_to_text(module: Any, invoicefile: str) -> str:
         str: The extracted text, or ``""`` if extraction failed or was empty.
     """
     try:
-        extracted_str = module.to_text(invoicefile)
+        extracted_str = extract_text(module, invoicefile)
     except Exception:
         logger.debug(
             "Backend %s failed to extract text from %s",

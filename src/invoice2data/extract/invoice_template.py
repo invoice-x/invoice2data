@@ -11,6 +11,7 @@ from typing import Any
 
 import dateparser  # type: ignore[import-untyped]
 
+from ..input import extract_text
 from ..input import supports_area
 from . import _regex
 from . import parsers
@@ -309,7 +310,7 @@ def _handle_area(
     """Handle area-specific extraction."""
     if "area" in v and supports_area(input_module):
         logger.debug(f"Area was specified with parameters {v['area']}")
-        optimized_str_area: str = input_module.to_text(invoice_file, v["area"])
+        optimized_str_area: str = extract_text(input_module, invoice_file, v["area"])
         logger.debug(
             "START pdftotext area result ===========================\n%s",
             optimized_str_area,
