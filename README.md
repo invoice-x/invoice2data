@@ -268,6 +268,37 @@ The lines package has multiple settings:
 **optional** extra: `pip install invoice2data[dateparser]` if your invoices use
 localized dates. Numeric / English dates work without it.
 
+### Area (region) extraction
+
+A field can restrict its match to a rectangular **region** of the page instead of
+the whole document — useful when the same word (e.g. a label) appears in several
+places, or to read a fixed address block. Add an `area:` to the field:
+
+````yaml
+    fields:
+      partner_zip:
+        parser: regex
+        area: { f: 1, l: 1, x: 0, y: 14, r: 100, W: 550, H: 310 }
+        regex: '\s(\d{4}\s?[A-Z]{2})\s'
+````
+
+The area keys are:
+
+- `x`, `y` > top-left corner of the region, in **pixels** (origin is the page's
+  top-left).
+- `W`, `H` > width and height of the region, in pixels.
+- `r` > resolution in DPI that the pixel values are measured at (commonly `100`).
+- `f`, `l` > first and last page to read the region from (1-based).
+
+At `r` DPI, 1 inch = `r` pixels and an A4 page (210×297 mm) is about `8.27·r ×
+11.69·r` pixels — so at `r: 100` a full A4 page is roughly `827 × 1169`. A quick
+way to find coordinates is to render the page at the same DPI and read the
+pixel box off an image viewer, then narrow it down.
+
+Area extraction is supported by the `pdftotext`, `pdfium` and `tesseract` input
+readers. Their text output differs slightly, so tune an area template against the
+backend it will run with (pin it with `input_module:` if needed).
+
 :warning: Invoice2data uses a yaml templating system. The yaml templates are loaded with [pyyaml](https://github.com/yaml/pyyaml) which is a pure python implementation. (thus rather slow)
 As an alternative json templates can be used. Which are natively better supported by python.
 
