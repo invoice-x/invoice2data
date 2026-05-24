@@ -5,6 +5,7 @@ Templates are initially read from .yml files and then kept as class.
 
 import unicodedata
 from collections import OrderedDict as OrderedDictType
+from logging import DEBUG
 from logging import getLogger
 from pprint import pformat
 from typing import Any
@@ -473,7 +474,9 @@ def _check_required_fields(
 
     if set(required_fields).issubset(output.keys()):
         output["desc"] = "Invoice from %s" % (self["issuer"])
-        logger.debug("\n %s", pformat(output, indent=2))
+        # pformat is expensive; only build it when debug logging is actually on.
+        if logger.isEnabledFor(DEBUG):
+            logger.debug("\n %s", pformat(output, indent=2))
         return output
     fields = list(set(output.keys()))
     logger.error(

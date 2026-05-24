@@ -192,7 +192,7 @@ def extract_data(  # noqa: C901
         {'issuer': 'OYO', 'amount': 1939.0, 'date': datetime.datetime(2017, 12, 31, 0, 0), 'invoice_number': 'IBZY2087', 'currency': 'INR', 'hotel_details': ' OYO 4189 Resort Nanganallur', 'date_check_in': datetime.datetime(2017, 12, 31, 0, 0), 'date_check_out': datetime.datetime(2018, 1, 1, 0, 0), 'amount_rooms': 1.0, 'booking_id': 'IBZY2087', 'payment_method': 'Cash at Hotel', 'gstin': '06AABCO6063D1ZQ', 'cin': 'U63090DL2012PTC231770', 'desc': 'Invoice from OYO'}
 
     """
-    templates = templates or read_templates()
+    templates = _by_priority(templates or read_templates())
     readers = _resolve_readers(invoicefile, input_module)
     # Per-template backend pins apply only in auto (cascade) mode; an explicit
     # input_module forces that backend, pin or not.
@@ -338,15 +338,29 @@ def _match_template(
         templates (list[InvoiceTemplate]): Candidate templates.
 
     Returns:
-        InvoiceTemplate | None: The highest-priority matching template, or
-            ``None``. Templates are tried by descending ``priority`` (default 5),
-            preserving alphabetical order within the same priority.
+        InvoiceTemplate | None: The first matching template, or ``None``.
+            ``templates`` is expected to be priority-ordered already (see
+            :func:`_by_priority`, applied once in ``extract_data``).
     """
-    ordered = sorted(templates, key=lambda t: t.get("priority", 5), reverse=True)
-    for template in ordered:
+    for template in templates:
         if template.matches_input(extracted_str):
             return template
     return None
+
+
+def _by_priority(templates: list[InvoiceTemplate]) -> list[InvoiceTemplate]:
+    """Order templates by descending ``priority`` (default 5).
+
+    A stable sort, so alphabetical order is preserved within a priority level.
+    Done once per ``extract_data`` call rather than on every template match.
+
+    Args:
+        templates (list[InvoiceTemplate]): Templates to order.
+
+    Returns:
+        list[InvoiceTemplate]: Templates highest-priority first.
+    """
+    return sorted(templates, key=lambda t: t.get("priority", 5), reverse=True)
 
 
 def _line_items_missing(template: InvoiceTemplate, output: dict[str, Any]) -> bool:

@@ -4,6 +4,7 @@ import logging
 
 import pytest
 
+from invoice2data.__main__ import _by_priority
 from invoice2data.__main__ import _match_template
 from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import prepare_template
@@ -29,8 +30,12 @@ def test_match_template_prefers_higher_priority() -> None:
     text = "Invoice containing SharedKeyword here"
 
     # Higher priority wins regardless of list/alphabetical order.
-    assert _match_template(text, [low, high])["template_name"] == "zzz.yml"
-    assert _match_template(text, [high, low])["template_name"] == "zzz.yml"
+    assert (
+        _match_template(text, _by_priority([low, high]))["template_name"] == "zzz.yml"
+    )
+    assert (
+        _match_template(text, _by_priority([high, low]))["template_name"] == "zzz.yml"
+    )
 
 
 def test_match_template_stable_within_same_priority() -> None:
@@ -38,7 +43,10 @@ def test_match_template_stable_within_same_priority() -> None:
     second = _template("bbb.yml", 5)
     text = "SharedKeyword"
     # Equal priority keeps the original (alphabetical) order.
-    assert _match_template(text, [first, second])["template_name"] == "aaa.yml"
+    assert (
+        _match_template(text, _by_priority([first, second]))["template_name"]
+        == "aaa.yml"
+    )
 
 
 def test_regex_warning_includes_field_name(
