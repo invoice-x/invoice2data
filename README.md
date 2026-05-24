@@ -127,6 +127,12 @@ DeepSeek, Mistral, Gemini and local Ollama are supported):
 
 `invoice2data --new-template sample.pdf --ai`
 
+As a last resort, let an LLM extract fields when **no template matches** (opt-in;
+uses the same `INVOICE2DATA_AI_*` configuration). Results are tagged
+`extraction_method: ai` so they are never confused with a template match:
+
+`invoice2data --ai-fallback invoice.pdf`
+
 ### Use as Python Library
 
 You can easily add `invoice2data` to your own Python scripts as library.

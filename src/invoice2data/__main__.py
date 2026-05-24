@@ -108,10 +108,11 @@ if not logger.handlers:
     logger.addHandler(stream_handler)
 
 
-def extract_data(
+def extract_data(  # noqa: C901
     invoicefile: str,
     templates: list[InvoiceTemplate] | None = None,
     input_module: Any = None,
+    ai_fallback: bool = False,
 ) -> dict[str, Any]:
     """Extracts structured data from PDF/image invoices.
 
@@ -131,6 +132,10 @@ def extract_data(
             ``None`` (the default), a cascade of backends
             (``DEFAULT_INPUT_READERS``) is tried in order until one yields a
             template match with all required fields.
+        ai_fallback (bool, optional): When True and no template matches (or every
+            match is incomplete) and OCR does not help, extract fields with the
+            configured AI provider (see ``INVOICE2DATA_AI_*`` env vars). Result is
+            tagged ``extraction_method: "ai"``. Opt-in; defaults to False.
 
     Returns:
         dict[str, Any]: Extracted and matched fields, or an empty dict ``{}`` if
@@ -214,8 +219,33 @@ def extract_data(
     if result:
         return result
 
+    # Opt-in AI fallback: let an LLM extract fields when no template fit.
+    ai_result = _ai_last_resort(invoicefile, input_module, ai_fallback)
+    if ai_result:
+        return ai_result
+
     logger.error("No template for %s", invoicefile)
     return {}
+
+
+def _ai_last_resort(
+    invoicefile: str, input_module: Any, ai_fallback: bool
+) -> dict[str, Any]:
+    """Try the configured AI provider when no template matched (opt-in).
+
+    Args:
+        invoicefile (str): Path to the invoice file.
+        input_module (Any): Forced input backend, or None for the cascade.
+        ai_fallback (bool): Whether AI fallback is enabled.
+
+    Returns:
+        dict[str, Any]: AI-extracted fields, or ``{}`` when disabled/unavailable.
+    """
+    if not ai_fallback:
+        return {}
+    from .ai.fallback import ai_fallback_extract
+
+    return ai_fallback_extract(_sample_text(invoicefile, input_module))
 
 
 def _resolve_readers(invoicefile: str, input_module: Any) -> list[Any]:
@@ -592,6 +622,12 @@ def _run_new_template(
     type=click.Path(dir_okay=False),
     help="Path to write the drafted template (default: <issuer>.yml).",
 )
+@click.option(
+    "--ai-fallback",
+    is_flag=True,
+    help="If no template matches, extract fields with the configured AI provider "
+    "(opt-in; see INVOICE2DATA_AI_* env vars).",
+)
 @click.argument(
     "input_files",
     type=click.File("wb"),
@@ -613,6 +649,7 @@ def main(
     new_template: str | None,
     use_ai: bool,
     template_out: str | None,
+    ai_fallback: bool,
     input_files: tuple[Any, ...],
 ) -> None:
     """Extract data from PDF files and output it in a structured format."""
@@ -633,7 +670,12 @@ def main(
     output = []
     for f in input_files:
         try:
-            res = extract_data(f.name, templates=templates, input_module=input_module)
+            res = extract_data(
+                f.name,
+                templates=templates,
+                input_module=input_module,
+                ai_fallback=ai_fallback,
+            )
             if res:
                 logger.info(res)
                 output.append(res)
