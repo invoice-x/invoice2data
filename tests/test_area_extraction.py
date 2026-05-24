@@ -38,3 +38,13 @@ def test_area_excludes_content_outside_the_region() -> None:
 
     assert "OYO" in full  # present lower on the page
     assert "OYO" not in top  # but excluded by the top-band crop
+
+
+def test_area_crop_text_is_field_regex_matchable() -> None:
+    # End-to-end: the cropped region text feeds a field regex (as in a template).
+    from invoice2data.extract.parsers import regex
+    from invoice2data.input import extract_text
+
+    text = extract_text(pdftotext, OYO, TOP_BAND)
+    value = regex.parse(None, "date", {"regex": r"Date:\s*(\S+)"}, text)
+    assert value == "31/12/2017"
