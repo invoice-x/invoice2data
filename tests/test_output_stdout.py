@@ -14,6 +14,11 @@ def test_json_output_to_stdout(name: str, capsys: pytest.CaptureFixture[str]) ->
     assert json.loads(capsys.readouterr().out) == [{"a": 1, "b": "x"}]
 
 
+def test_json_output_to_stderr(capsys: pytest.CaptureFixture[str]) -> None:
+    to_json.write_to_file([{"a": 1}], "/dev/stderr")
+    assert json.loads(capsys.readouterr().err) == [{"a": 1}]
+
+
 def test_csv_output_to_stdout(capsys: pytest.CaptureFixture[str]) -> None:
     to_csv.write_to_file([{"amount": 1.0, "desc": "x"}], "-")
     out = capsys.readouterr().out

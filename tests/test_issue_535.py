@@ -43,6 +43,22 @@ def test_apply_tax_to_lines_does_not_overwrite() -> None:
     assert output["lines"][0]["line_tax_percent"] == 6.0  # explicit value kept
 
 
+def test_apply_tax_to_lines_ignores_non_list_inputs() -> None:
+    # Missing or wrong-typed tax_lines/lines -> no error, no change.
+    out1: dict[str, Any] = {"lines": [{"name": "X"}]}  # no tax_lines key
+    _apply_tax_to_lines(out1)
+    assert "line_tax_percent" not in out1["lines"][0]
+
+    out2: dict[str, Any] = {"tax_lines": "nope", "lines": [{"name": "X"}]}
+    _apply_tax_to_lines(out2)
+    assert "line_tax_percent" not in out2["lines"][0]
+
+
+def test_single_active_rate_skips_non_dict_rows() -> None:
+    rows = ["junk", {"line_tax_percent": 21.0, "price_subtotal": 5.0}]
+    assert _single_active_rate(rows) == 21.0
+
+
 def test_single_active_rate_picks_the_only_taxed_rate() -> None:
     # Valk-style summary: only the 21% row carries amounts -> single active rate.
     tax_lines = [
