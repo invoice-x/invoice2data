@@ -6,6 +6,7 @@ backend name (the `--input-reader` value) to its module.
 
 from types import ModuleType
 
+from . import doctr
 from . import gvision
 from . import hotpdf
 from . import ocrmypdf
@@ -28,6 +29,7 @@ INPUT_MODULES: dict[str, ModuleType] = {
     "pdfplumber": pdfplumber,
     "hotpdf": hotpdf,
     "gvision": gvision,
+    "doctr": doctr,
     "text": text,
     "ocrmypdf": ocrmypdf,
 }

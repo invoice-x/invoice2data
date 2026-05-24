@@ -84,6 +84,7 @@ xdoctest = ["xdoctest[colors] >= 1.2"]
 ai = ["httpx >= 0.27"]
 camelot = ["camelot-py >= 1.0"]
 defusedxml = ["defusedxml == 0.7.1"]
+doctr = ["python-doctr[torch] >= 0.8"]
 googlevision = [
     "google-cloud-storage == 2.18.2",
     "google-cloud-vision == 3.8.1",
@@ -178,6 +179,8 @@ module = [
     "docutils.*",
     "sphinxmermaid",
     "httpx",
+    "doctr",
+    "doctr.*",
 ]
 ignore_missing_imports = true
 

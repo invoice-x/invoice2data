@@ -73,6 +73,7 @@ Choose any of the following input readers:
 - pdfplumber `invoice2data --input-reader pdfplumber invoice.pdf`
 - ocrmypdf `invoice2data --input-reader ocrmypdf invoice.pdf`
 - gvision `invoice2data --input-reader gvision invoice.pdf` (needs `GOOGLE_APPLICATION_CREDENTIALS` env var and a Google Cloud Bucket name. The bucket name can be set as an argument to the function ``to_text`` or as an Environment variable named ``GOOGLE_CLOUD_BUCKET_NAME`` )
+- docTR `invoice2data --input-reader doctr invoice.pdf` (local deep-learning OCR; install with `pip install invoice2data[doctr]`. Handles scans/photos well with little pre-processing; the model weights download on first run.)
 
 The `ocrmypdf` reader can clean up noisy scans: any
 [OCRmyPDF option](https://ocrmypdf.readthedocs.io/) (e.g. `deskew`, `clean`,
