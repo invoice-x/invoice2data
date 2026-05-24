@@ -773,6 +773,23 @@ def _load_templates(
     return templates
 
 
+#: Characters not allowed in filenames on common filesystems (the Windows set is
+#: a superset of POSIX's, so this is cross-platform safe), plus control chars.
+_ILLEGAL_FS_CHARS = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
+
+
+def _sanitize_filename_part(value: str) -> str:
+    """Replace characters illegal in filenames with ``_`` (issue #544).
+
+    Args:
+        value (str): A field value substituted into the filename format.
+
+    Returns:
+        str: The value with illegal filename characters replaced by ``_``.
+    """
+    return _ILLEGAL_FS_CHARS.sub("_", value)
+
+
 def _process_and_move_copy(
     filename: str,
     res: dict[str, Any],
@@ -788,6 +805,11 @@ def _process_and_move_copy(
     for key, value in kwargs.items():
         if isinstance(value, datetime.datetime):
             kwargs[key] = value.strftime("%Y-%m-%d")
+    # Sanitize field values so illegal filename characters (e.g. the "/" in an
+    # invoice number like 123/001/2023) don't break the move/copy path (#544).
+    for key, value in kwargs.items():
+        if isinstance(value, str):
+            kwargs[key] = _sanitize_filename_part(value)
     if copy:
         new_filename = filename_format.format(**kwargs)
         shutil.copyfile(filename, Path(copy) / new_filename)
