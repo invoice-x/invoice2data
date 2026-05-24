@@ -206,6 +206,22 @@ Example:
         last_line: VAT \*\*
 ````
 
+A field using the `regex` parser can sanitize its captured value with a
+field-level `replace` (applied before type coercion). This lets you keep a simple
+regex and clean up the result — e.g. capture a VAT number that the OCR split with
+punctuation and strip the non-word characters:
+
+````yaml
+    fields:
+      vat:
+        parser: regex
+        regex: VAT NUMBER\s+(\S+)
+        replace: ['\W+', '']        # NL.999,999.999,B01 -> NL999999999B01
+````
+
+`replace` accepts a single `[pattern, replacement]` pair or a list of pairs
+applied in order (each is a `re.sub`).
+
 The lines package has multiple settings:
 
 - start > The pattern where the lines begin. This is typically the header row of the table. This row is not included in the line matching.

@@ -51,6 +51,8 @@ def parse(
     if result is None:
         return None
 
+    result = _apply_replace(settings, result)
+
     result = _apply_type_coercion(template, settings, result)
 
     result = _apply_grouping(settings, result)
@@ -98,6 +100,38 @@ def _extract_matches(
                     return None
             result += matches
     return result
+
+
+def _normalize_replacements(spec: Any) -> list[tuple[str, str]]:
+    r"""Normalize a field ``replace`` setting to a list of (pattern, repl) pairs.
+
+    Accepts a single flat pair ``["\W+", ""]`` or a list of pairs
+    ``[["\W+", ""], ["PS", "unit"]]``.
+    """
+    if len(spec) == 2 and all(isinstance(item, str) for item in spec):
+        return [(spec[0], spec[1])]
+    return [(pair[0], pair[1]) for pair in spec]
+
+
+def _replace_value(value: Any, replacements: list[tuple[str, str]]) -> Any:
+    """Apply each (pattern, repl) regex substitution to a single string value."""
+    if not isinstance(value, str):
+        return value
+    for pattern, repl in replacements:
+        value = _regex.sub(pattern, repl, value)
+    return value
+
+
+def _apply_replace(settings: dict[str, Any], result: list[Any]) -> list[Any]:
+    r"""Apply a field-level ``replace`` to each matched value (issue #497).
+
+    Lets a template use a simple regex and sanitize the captured value, e.g.
+    ``replace: ["\W+", ""]`` turns ``NL.999,999.999,B01`` into ``NL999999999B01``.
+    """
+    if "replace" not in settings:
+        return result
+    replacements = _normalize_replacements(settings["replace"])
+    return [_replace_value(value, replacements) for value in result]
 
 
 def _apply_type_coercion(
