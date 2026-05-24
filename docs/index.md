@@ -23,6 +23,7 @@ usage
 reference
 Template Creation <tutorial>
 Recommeneded Template Fields <recommended-template-fields>
+Backend Benchmark <backend-benchmark>
 Frequently asked Questions <faq>
 Migrating to 1.0 <migration-1.0>
 contributing
