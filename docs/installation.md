@@ -35,6 +35,25 @@ It can be installed on most distributions by:
 ````
 
 
+## Installation using conda
+
+Conda (or mamba) is the easiest route when you want the system tools handled for
+you: `poppler`, `tesseract` and `ghostscript` are all on
+[conda-forge](https://conda-forge.org/), so there is no separate system-library
+install. An [`environment.yml`](https://github.com/invoice-x/invoice2data/blob/master/environment.yml)
+is provided in the repository:
+
+```bash
+conda env create -f environment.yml
+conda activate invoice2data
+```
+
+This creates an environment with invoice2data, the common PDF backends and the
+OCR tools ready to use. invoice2data itself is installed from PyPI inside the
+environment (there is no dedicated conda-forge package yet); its runtime
+dependencies are already provided by the conda packages, so nothing extra is
+pulled in.
+
 ## Installation of input modules
 
 ### tesseract

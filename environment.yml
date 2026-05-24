@@ -1,0 +1,37 @@
+# Conda environment for invoice2data (issue #626).
+#
+# Creates a ready-to-use environment with invoice2data's runtime, the common PDF
+# backends, and the OCR system tools (poppler, tesseract, ghostscript) — all from
+# conda-forge, so no separate system-library install is needed.
+#
+#     conda env create -f environment.yml
+#     conda activate invoice2data
+#
+# invoice2data itself is installed from PyPI (there is no conda-forge package
+# yet); its runtime dependencies are already provided by the conda packages
+# below, so pip does not pull anything extra.
+name: invoice2data
+channels:
+  - conda-forge
+dependencies:
+  - python >=3.10
+  # --- core runtime (mirrors pyproject "dependencies") ---
+  - click >=8.0.1
+  - python-dateutil >=2.8
+  - pyyaml >=6.0
+  - libyaml          # 10x faster YAML template loading
+  - regex >=2024.4.16
+  # --- system tools pip cannot install ---
+  - poppler          # provides pdftotext (table-aware text extraction)
+  - tesseract        # OCR engine
+  - ghostscript      # ocrmypdf / image handling
+  - imagemagick      # tesseract input conversion
+  # --- common optional backends/extras ---
+  - pypdfium2 >=4    # default in-process PDF text backend
+  - pdfplumber
+  - pdfminer.six
+  - dateparser >=1.2.0
+  - ocrmypdf >=14.4.0
+  - pip
+  - pip:
+      - invoice2data
