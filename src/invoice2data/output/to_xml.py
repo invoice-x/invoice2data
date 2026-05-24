@@ -2,9 +2,10 @@
 
 import datetime
 import importlib.util
-from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree
+
+from . import open_output
 
 
 def defusedxml_available() -> bool:
@@ -85,10 +86,8 @@ def write_to_file(
         >>> data = [{'amount': 123.45, 'date': datetime.datetime(2024, 1, 1)}]
         >>> to_xml.write_to_file(data, "invoice.xml")
     """
-    filename = path if path.endswith(".xml") else path + ".xml"
-
     tag_data = ElementTree.Element("data")
-    with Path(filename).open("w") as xml_file:
+    with open_output(path, ".xml") as xml_file:
         for i, line in enumerate(data):
             tag_item = ElementTree.SubElement(tag_data, "item")
             tag_item.set("id", str(i + 1))

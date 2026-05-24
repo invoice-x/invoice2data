@@ -97,6 +97,12 @@ Save output file with custom name or a specific folder
 **Note:** You must specify the `output-format` in order to create
 `output-name`
 
+Use `--output-name -` (or `/dev/stdout`, `/dev/stderr`) to stream the output to a
+standard stream instead of a file — handy for piping into other tools (logs go to
+stderr, so stdout stays clean):
+
+`invoice2data --output-format json --output-name - invoice.pdf | jq .`
+
 Specify folder with yml templates. (e.g. your suppliers)
 
 `invoice2data --template-folder ACME-templates invoice.pdf`

@@ -4,9 +4,9 @@ import csv
 import datetime
 import json
 from copy import deepcopy
-from pathlib import Path
 from typing import Any
 
+from . import open_output
 from .to_json import format_item
 
 
@@ -108,9 +108,7 @@ def write_to_file(
         >>> data = [{'amount': 123.45, 'date': datetime.datetime(2024, 1, 1)}]
         >>> to_csv.write_to_file(data, "invoice.csv")
     """
-    filename = path if path.endswith(".csv") else path + ".csv"
-
-    with Path(filename).open("w", newline="", encoding="utf-8") as csv_file:
+    with open_output(path, ".csv", newline="", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file, delimiter=",")
         if lines_mode == "explode":
             _write_exploded(writer, data, date_format)
