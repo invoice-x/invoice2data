@@ -10,6 +10,7 @@ Run with the package installed (the relevant ``--extra`` backends synced):
     python benchmarks/run.py
 """
 
+import contextlib
 import datetime
 import json
 import logging
@@ -66,7 +67,7 @@ def main() -> None:
             continue
         matched = total = 0
         for pdf, golden_path in cases:
-            with open(golden_path, encoding="utf-8") as handle:
+            with Path(golden_path).open(encoding="utf-8") as handle:
                 golden = json.load(handle)[0]
             try:
                 result = extract_data(str(pdf), templates, backend)
@@ -81,10 +82,8 @@ def main() -> None:
         for _ in range(RUNS):
             start = time.perf_counter()
             for pdf, _golden_path in cases:
-                try:
+                with contextlib.suppress(Exception):
                     module.to_text(str(pdf))
-                except Exception:  # noqa: S110
-                    pass
             times.append(time.perf_counter() - start)
         accuracy = 100 * matched / total if total else 0.0
         speed = statistics.median(times) / len(cases) * 1000

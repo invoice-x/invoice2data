@@ -1,7 +1,7 @@
 """Sphinx configuration."""
 
-import os
 import sys
+from pathlib import Path
 from typing import Any
 
 
@@ -18,7 +18,7 @@ copyright = "2024, Manuel Riel"
 # sys.path.insert(0, os.path.abspath('..'))
 
 # Insert invoice2data's path into the system.
-sys.path.insert(0, os.path.abspath("../src"))
+sys.path.insert(0, str(Path("../src").resolve()))
 
 extensions = [
     "sphinxmermaid",

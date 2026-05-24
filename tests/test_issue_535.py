@@ -1,11 +1,13 @@
 """Apply tax-summary rates onto invoice lines by code (issue #535)."""
 
+from typing import Any
+
 from invoice2data.extract.invoice_template import _apply_tax_to_lines
 from invoice2data.extract.invoice_template import _single_active_rate
 
 
 def test_apply_tax_to_lines_by_code() -> None:
-    output = {
+    output: dict[str, Any] = {
         "lines": [
             {"name": "Diesel", "price_subtotal": 100.0, "line_tax_code": "2"},
             {"name": "Coffee", "price_subtotal": 10.0, "line_tax_code": "1"},
@@ -26,10 +28,14 @@ def test_apply_tax_to_lines_by_code() -> None:
 
 
 def test_apply_tax_to_lines_does_not_overwrite() -> None:
-    output = {
+    output: dict[str, Any] = {
         "lines": [
-            {"name": "X", "price_subtotal": 100.0, "line_tax_code": "1",
-             "line_tax_percent": 6.0},
+            {
+                "name": "X",
+                "price_subtotal": 100.0,
+                "line_tax_code": "1",
+                "line_tax_percent": 6.0,
+            },
         ],
         "tax_lines": [{"line_tax_code": "1", "line_tax_percent": 9.0}],
     }
@@ -65,15 +71,18 @@ def test_single_active_rate_none_when_no_amounts() -> None:
 
 def test_apply_single_rate_to_codeless_lines() -> None:
     # No codes anywhere, summary has one active rate -> apply it to every line.
-    output = {
+    output: dict[str, Any] = {
         "lines": [
             {"name": "Room", "price_subtotal": 30.0},
             {"name": "Breakfast", "price_subtotal": 12.73},
         ],
         "tax_lines": [
             {"line_tax_percent": 9.0, "price_subtotal": 0.0, "line_tax_amount": 0.0},
-            {"line_tax_percent": 21.0, "price_subtotal": 42.73,
-             "line_tax_amount": 8.97},
+            {
+                "line_tax_percent": 21.0,
+                "price_subtotal": 42.73,
+                "line_tax_amount": 8.97,
+            },
         ],
     }
     _apply_tax_to_lines(output)
@@ -83,7 +92,7 @@ def test_apply_single_rate_to_codeless_lines() -> None:
 
 
 def test_no_single_rate_applied_when_mixed() -> None:
-    output = {
+    output: dict[str, Any] = {
         "lines": [{"name": "X", "price_subtotal": 100.0}],
         "tax_lines": [
             {"line_tax_percent": 9.0, "price_subtotal": 10.0, "line_tax_amount": 0.9},
@@ -96,7 +105,7 @@ def test_no_single_rate_applied_when_mixed() -> None:
 
 def test_apply_tax_to_lines_noop_without_codes_single_rate_still_applies() -> None:
     # A single non-zero rate now DOES enrich code-less lines (case 1, issue #535).
-    output = {
+    output: dict[str, Any] = {
         "lines": [{"name": "X", "price_subtotal": 100.0}],
         "tax_lines": [{"line_tax_percent": 21.0, "price_subtotal": 100.0}],
     }

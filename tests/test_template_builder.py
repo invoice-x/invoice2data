@@ -1,6 +1,6 @@
 import re
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 from click.testing import CliRunner
 
 from invoice2data.__main__ import main

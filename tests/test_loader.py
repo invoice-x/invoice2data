@@ -5,7 +5,7 @@ from collections.abc import Generator
 from pathlib import Path
 
 import pytest
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import ordered_load

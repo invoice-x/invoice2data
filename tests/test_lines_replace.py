@@ -18,7 +18,7 @@ LINE_RE = r"(?P<pos>\d+)\s+(?P<name>\S+)\s+(?P<uom>\S+)\s+(?P<qty>\d+)"
 
 def _parse(replace: Any) -> list[dict[str, Any]]:
     settings = {"line": LINE_RE, "line_separator": r"\n", "replace": replace}
-    return lines.parse_block(_Template(), "lines", settings, CONTENT)
+    return lines.parse_block(_Template(), "lines", settings, CONTENT)  # type: ignore[arg-type]
 
 
 def test_lines_replace_mapping_form() -> None:
