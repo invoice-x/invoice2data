@@ -574,9 +574,11 @@ is filled in from the summary, and `line_tax_amount` is computed from
       line_tax_percent: float
 ```
 
-When a line cannot be matched to a code (the summary-only case), simply return
-the whole breakdown in `tax_lines`; accounting software can then post a single
-global tax-adjustment line.
+When the lines carry no code but the summary has only **one** active (non-zero)
+tax rate, that rate is applied to every line automatically — no code column is
+needed. Summaries with several active rates are left untouched (which line is at
+which rate is ambiguous): return the whole breakdown in `tax_lines` and let the
+accounting software post a single global tax-adjustment line.
 
 ## Example of template using most options
 ```yaml

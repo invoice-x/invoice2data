@@ -3,7 +3,6 @@
 Templates are initially read from .yml files and then kept as class.
 """
 
-import contextlib
 import unicodedata
 from collections import OrderedDict as OrderedDictType
 from logging import DEBUG
@@ -369,14 +368,83 @@ def _handle_legacy_syntax(
         logger.warning("regexp for field %s didn't match", k)
 
 
-def _apply_tax_to_lines(output: dict[str, Any]) -> None:
-    """Apply the tax-summary rate onto product lines by code (issue #535).
+def _to_float(value: Any) -> float | None:
+    """Return ``value`` as a float, or ``None`` when it cannot be converted.
 
-    When product ``lines`` carry a ``line_tax_code`` (e.g. a receipt's "BTW type"
-    column) and the ``tax_lines`` summary maps that code to a
-    ``line_tax_percent``, copy the rate onto each matching line and compute its
-    ``line_tax_amount`` from ``price_subtotal`` when both are available. Existing
-    line values are never overwritten, and lines without a code are left as-is.
+    Args:
+        value (Any): The value to convert (already type-coerced in most templates).
+
+    Returns:
+        float | None: The float value, or ``None`` when conversion fails.
+    """
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _set_line_rate(line: dict[str, Any], percent: Any) -> None:
+    """Set ``line_tax_percent`` on a line and compute its ``line_tax_amount``.
+
+    The amount is only computed when a ``price_subtotal`` is present and no
+    ``line_tax_amount`` was extracted.
+
+    Args:
+        line (dict[str, Any]): A single product line, modified in place.
+        percent (Any): The tax rate to apply.
+    """
+    line["line_tax_percent"] = percent
+    if "line_tax_amount" not in line and "price_subtotal" in line:
+        subtotal = _to_float(line["price_subtotal"])
+        rate = _to_float(percent)
+        if subtotal is not None and rate is not None:
+            line["line_tax_amount"] = round(subtotal * rate / 100, 2)
+
+
+def _single_active_rate(tax_lines: list[Any]) -> Any:
+    """Return the sole non-zero tax rate in a summary, or ``None`` if ambiguous.
+
+    A row counts as "active" when its ``line_tax_percent`` is non-zero and it has
+    a non-zero ``price_subtotal`` or ``line_tax_amount`` (goods were taxed at that
+    rate). With exactly one distinct active rate the summary is unambiguous; with
+    zero or several active rates the rate cannot be assigned to a line safely.
+
+    Args:
+        tax_lines (list[Any]): The ``tax_lines`` summary rows.
+
+    Returns:
+        Any: The single active rate, or ``None`` when zero/several are present.
+    """
+    rates: dict[float, Any] = {}
+    for row in tax_lines:
+        if not isinstance(row, dict):
+            continue
+        percent = _to_float(row.get("line_tax_percent"))
+        if not percent:
+            continue
+        subtotal = _to_float(row.get("price_subtotal")) or 0.0
+        amount = _to_float(row.get("line_tax_amount")) or 0.0
+        if subtotal or amount:
+            rates[percent] = row["line_tax_percent"]
+    if len(rates) == 1:
+        return next(iter(rates.values()))
+    return None
+
+
+def _apply_tax_to_lines(output: dict[str, Any]) -> None:
+    """Apply the tax-summary rate onto product lines (issue #535).
+
+    Two strategies, both non-destructive (existing line values are kept):
+
+    1. **By code** — when product ``lines`` carry a ``line_tax_code`` (e.g. a
+       receipt's "BTW type" column) and the ``tax_lines`` summary maps that code
+       to a ``line_tax_percent``, copy the rate onto each matching line.
+    2. **Single rate** — when the summary has exactly one active (non-zero) tax
+       rate, apply it to every line that still lacks a rate. Mixed-rate summaries
+       are left untouched (ambiguous; use the ``tax_lines`` global adjustment).
+
+    In both cases ``line_tax_amount`` is computed from ``price_subtotal`` when
+    available.
 
     Args:
         output (dict[str, Any]): The extracted-fields dictionary, modified in place.
@@ -393,21 +461,20 @@ def _apply_tax_to_lines(output: dict[str, Any]) -> None:
         and "line_tax_code" in row
         and "line_tax_percent" in row
     }
-    if not rate_by_code:
-        return
-
     for line in lines:
-        if not isinstance(line, dict) or "line_tax_code" not in line:
+        if not isinstance(line, dict) or "line_tax_percent" in line:
             continue
-        percent = rate_by_code.get(str(line["line_tax_code"]))
-        if percent is None or "line_tax_percent" in line:
-            continue
-        line["line_tax_percent"] = percent
-        if "line_tax_amount" not in line and "price_subtotal" in line:
-            with contextlib.suppress(TypeError, ValueError):
-                line["line_tax_amount"] = round(
-                    float(line["price_subtotal"]) * float(percent) / 100, 2
-                )
+        if "line_tax_code" in line:
+            percent = rate_by_code.get(str(line["line_tax_code"]))
+            if percent is not None:
+                _set_line_rate(line, percent)
+
+    single_rate = _single_active_rate(tax_lines)
+    if single_rate is None:
+        return
+    for line in lines:
+        if isinstance(line, dict) and "line_tax_percent" not in line:
+            _set_line_rate(line, single_rate)
 
 
 def _compute_line_tax(output: dict[str, Any]) -> None:

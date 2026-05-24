@@ -71,8 +71,9 @@ be revisited later — **feedback welcome** on the tracker before any change.
 - **Tax rate applied to invoice lines** (issue #535): when product `lines` carry
   a `line_tax_code` and the `tax_lines` summary maps that code to a
   `line_tax_percent`, the rate is copied onto each matching line (and its
-  `line_tax_amount` computed). Existing line values and code-less lines are left
-  untouched.
+  `line_tax_amount` computed). Existing line values are never overwritten. When
+  lines carry no code but the summary has a single active (non-zero) rate, that
+  rate is applied to every line; mixed-rate summaries are left untouched.
 - **CSV output** now JSON-encodes `lines`/`tax_lines` cells (valid, parseable
   CSV) instead of writing Python `repr`. **Breaking** for anything that parsed
   the previous output. New `--csv-lines={json,explode}` (`explode` writes one
