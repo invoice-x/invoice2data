@@ -115,6 +115,16 @@ adding new templates in templates.py)
 
 `invoice2data --debug my_invoice.pdf`
 
+Print just the `optimized_str` a template is matched against (the text after
+whitespace/replace processing) — handy for writing templates, without the full
+`--debug` noise:
+
+`invoice2data --debug-optimized-str my_invoice.pdf`
+
+Disable colored log output (also honored via the `NO_COLOR` environment variable):
+
+`invoice2data --no-color my_invoice.pdf`
+
 Recognize test invoices: `invoice2data invoice2data/test/pdfs/* --debug`
 
 Draft a new template from a sample document (the builder suggests fields/regexes

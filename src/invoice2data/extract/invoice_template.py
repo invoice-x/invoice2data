@@ -22,6 +22,10 @@ from .plugins import tables
 
 logger = getLogger(__name__)
 
+#: Dedicated logger for the optimized_str dump, so `--debug-optimized-str` can show
+#: just that (without the rest of the debug noise) by raising this logger alone.
+optimized_str_logger = getLogger("invoice2data.optimized_str")
+
 OPTIONS_DEFAULT = {
     "remove_whitespace": False,
     "remove_accents": False,
@@ -273,8 +277,10 @@ def _initialize_output_and_log(
     self: InvoiceTemplate, optimized_str: str
 ) -> dict[str, Any]:
     """Initialize the output dictionary and log debug information."""
-    logger.debug("START optimized_str ========================\n" + optimized_str)
-    logger.debug("END optimized_str ==========================")
+    optimized_str_logger.debug(
+        "START optimized_str ========================\n%s", optimized_str
+    )
+    optimized_str_logger.debug("END optimized_str ==========================")
     logger.debug(
         "Date parsing: languages=%s date_formats=%s",
         self.options["languages"],

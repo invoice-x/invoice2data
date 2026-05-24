@@ -3,6 +3,7 @@
 
 import datetime
 import logging
+import os
 import re
 import shutil
 from copy import deepcopy
@@ -98,6 +99,20 @@ class ColorLogFormatter(logging.Formatter):
 
         formatter = logging.Formatter(self.FORMAT)
         return formatter.format(record)
+
+
+_ANSI_RE = re.compile(r"\033\[[0-9;]*m")
+
+
+class PlainLogFormatter(logging.Formatter):
+    """Plain log formatter that strips ANSI color codes (for --no-color/NO_COLOR)."""
+
+    def __init__(self) -> None:
+        super().__init__("%(levelname)s:%(name)s: %(message)s")
+
+    def format(self, record: logging.LogRecord) -> str:
+        """Format the record and strip any ANSI color escape sequences."""
+        return _ANSI_RE.sub("", super().format(record))
 
 
 stream_handler = logging.StreamHandler()
@@ -586,6 +601,17 @@ def _run_new_template(
 )
 @click.option("--debug", is_flag=True, help="Enable debug information.")
 @click.option(
+    "--debug-optimized-str",
+    is_flag=True,
+    help="Print the optimized_str each template is matched against "
+    "(for template debugging), without the full --debug noise.",
+)
+@click.option(
+    "--no-color",
+    is_flag=True,
+    help="Disable colored log output (also honored via the NO_COLOR env var).",
+)
+@click.option(
     "--copy", "-c", help="Copy and rename processed PDFs to specified folder."
 )
 @click.option(
@@ -637,13 +663,15 @@ def _run_new_template(
     nargs=-1,
 )
 @click.version_option()
-def main(
+def main(  # noqa: C901
     input_reader: str | None,
     output_format: str,
     output_date_format: str,
     output_name: str,
     csv_lines: str,
     debug: bool,
+    debug_optimized_str: bool,
+    no_color: bool,
     copy: str | None,
     move: str | None,
     filename_format: str,
@@ -660,6 +688,12 @@ def main(
         logger.setLevel(logging.DEBUG)
     else:
         logger.setLevel(level=logging.INFO)
+
+    if no_color or "NO_COLOR" in os.environ:
+        stream_handler.setFormatter(PlainLogFormatter())
+
+    if debug_optimized_str:
+        logging.getLogger("invoice2data.optimized_str").setLevel(logging.DEBUG)
 
     if new_template:
         _run_new_template(new_template, use_ai, template_out, input_reader)
