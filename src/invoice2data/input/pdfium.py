@@ -2,9 +2,10 @@
 
 A fast, dependency-light PDF text backend (Google's PDFium bindings). Its text
 order/spacing differs from poppler's ``pdftotext -layout`` (PDFium has no layout
-mode), and area extraction is not supported (PDFium uses a different coordinate
-system). Layout- or area-sensitive templates should pin
-``input_module: pdftotext``.
+mode), so layout-sensitive templates should still pin ``input_module: pdftotext``.
+Area (region) extraction is supported in-process via PDFium's
+``get_text_bounded``; note its output is not identical to pdftotext's area output,
+so an area template targets one backend's text, not both.
 """
 
 from logging import getLogger
@@ -12,6 +13,9 @@ from typing import Any
 
 
 logger = getLogger(__name__)
+
+#: PDFium can extract a bounded region in-process (see _crop_pages).
+SUPPORTS_AREA = True
 
 
 def is_available() -> bool:
@@ -32,32 +36,67 @@ def to_text(
 
     Args:
         path (str): Path to the PDF file.
-        area_details (dict[str, Any] | None): Unsupported by this backend
-            (PDFium uses a different coordinate system); a warning is logged and
-            the value is ignored. Pin ``input_module: pdftotext`` on area
-            templates.
+        area_details (dict[str, Any] | None): Restrict extraction to a region.
+            Keys (pixels at ``r`` dpi, top-left origin): ``f``/``l`` (first/last
+            page), ``x``/``y`` (top-left), ``W``/``H`` (size), ``r`` (dpi).
+            Defaults to None (whole document).
         **kwargs (Any): Ignored; accepted for backend compatibility.
 
     Returns:
         str: The extracted text, pages joined by newlines.
     """
-    if area_details is not None:
-        logger.warning(
-            "pypdfium2 does not support area extraction; ignoring area_details"
-        )
-
     import pypdfium2
 
     document = pypdfium2.PdfDocument(path)
     try:
-        pages = [
-            document[index].get_textpage().get_text_bounded()
-            for index in range(len(document))
-        ]
+        if area_details is not None:
+            pages = _crop_pages(document, area_details)
+        else:
+            pages = [
+                document[index].get_textpage().get_text_bounded()
+                for index in range(len(document))
+            ]
     finally:
         document.close()
     logger.debug("Text extraction made with pypdfium2")
     return _post_process("\n".join(pages))
+
+
+def _crop_pages(document: Any, area: dict[str, Any]) -> list[str]:
+    """Extract each page's text within the area rectangle.
+
+    The area is pixels at dpi ``r`` with a top-left origin (poppler convention);
+    PDFium uses points with a bottom-left origin, so the rectangle is scaled
+    (``pt = px * 72 / r``) and the y axis is flipped using the page height.
+
+    Args:
+        document (Any): An open ``pypdfium2.PdfDocument``.
+        area (dict[str, Any]): Keys f, l, r, x, y, W, H.
+
+    Returns:
+        list[str]: The cropped text, one entry per page in the range.
+    """
+    for key in ("f", "l", "r", "x", "y", "W", "H"):
+        assert key in area, f"Area {key} details missing"
+    first, last = int(area["f"]), int(area["l"])
+    factor = 72.0 / float(area["r"])
+    x, y = float(area["x"]), float(area["y"])
+    width, height = float(area["W"]), float(area["H"])
+
+    pages: list[str] = []
+    for index in range(first - 1, min(last, len(document))):
+        page = document[index]
+        _, page_height = page.get_size()
+        left = x * factor
+        right = (x + width) * factor
+        top = page_height - y * factor
+        bottom = page_height - (y + height) * factor
+        pages.append(
+            page.get_textpage().get_text_bounded(
+                left=left, bottom=bottom, right=right, top=top
+            )
+        )
+    return pages
 
 
 def _post_process(text: str) -> str:

@@ -48,3 +48,17 @@ def test_area_crop_text_is_field_regex_matchable() -> None:
     text = extract_text(pdftotext, OYO, TOP_BAND)
     value = regex.parse(None, "date", {"regex": r"Date:\s*(\S+)"}, text)
     assert value == "31/12/2017"
+
+
+def test_pdfium_area_extraction() -> None:
+    # pypdfium2 supports the same area crop in-process (coordinate-flipped).
+    import pytest
+
+    pytest.importorskip("pypdfium2")
+    from invoice2data.input import pdfium
+
+    assert pdfium.SUPPORTS_AREA is True
+    top = pdfium.to_text(OYO, TOP_BAND)
+    assert "PAYMENT RECEIPT" in top  # header inside the band
+    assert "31/12/2017" in top
+    assert "OYO" not in top  # excluded by the top-band crop
