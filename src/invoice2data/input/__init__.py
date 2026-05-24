@@ -10,6 +10,7 @@ from . import doctr
 from . import gvision
 from . import hotpdf
 from . import ocrmypdf
+from . import paddleocr
 from . import pdfium
 from . import pdfminer_wrapper
 from . import pdfoxide
@@ -30,6 +31,7 @@ INPUT_MODULES: dict[str, ModuleType] = {
     "hotpdf": hotpdf,
     "gvision": gvision,
     "doctr": doctr,
+    "paddleocr": paddleocr,
     "text": text,
     "ocrmypdf": ocrmypdf,
 }
