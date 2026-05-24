@@ -546,6 +546,38 @@ Example template:
       line_tax_amount: float
 ```
 
+#### Applying a tax rate to invoice lines
+
+Many receipts print a short tax *code* next to each line (e.g. a Dutch receipt's
+"BTW type" column: `1`, `2`) and resolve those codes to rates only in the tax
+summary at the bottom (`1 → 9%`, `2 → 21%`). Capture the code on the line as
+`line_tax_code` and on the matching summary row as `line_tax_code` +
+`line_tax_percent`, and invoice2data joins them automatically: each line's rate
+is filled in from the summary, and `line_tax_amount` is computed from
+`price_subtotal` when both are present. Lines that already carry a
+`line_tax_percent`, and lines without a code, are left untouched.
+
+```yaml
+  lines:
+    parser: lines
+    start: 'Article'
+    end: 'Subtotal'
+    line: '(?P<line_tax_code>\d)\s+(?P<description>.+?)\s+(?P<price_subtotal>[\d.,]+)'
+    types:
+      price_subtotal: float
+  tax_lines:
+    parser: lines
+    start: 'BTW'
+    end: '\Z'
+    line: '(?P<line_tax_code>\d)\s+(?P<line_tax_percent>[\d.,]+)%'
+    types:
+      line_tax_percent: float
+```
+
+When a line cannot be matched to a code (the summary-only case), simply return
+the whole breakdown in `tax_lines`; accounting software can then post a single
+global tax-adjustment line.
+
 ## Example of template using most options
 ```yaml
     issuer: Free Mobile

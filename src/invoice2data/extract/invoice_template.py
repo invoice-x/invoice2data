@@ -3,6 +3,7 @@
 Templates are initially read from .yml files and then kept as class.
 """
 
+import contextlib
 import unicodedata
 from collections import OrderedDict as OrderedDictType
 from logging import DEBUG
@@ -269,6 +270,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
         # Normalise line/tax_line field names to the canonical vocabulary before
         # any computation/validation runs on them.
         schema.normalize_line_fields(output)
+        _apply_tax_to_lines(output)
         _compute_line_tax(output)
         _validate_tax_total(output, self["template_name"])
         _validate_fields(self, output)
@@ -365,6 +367,47 @@ def _handle_legacy_syntax(
         output[k] = result
     else:
         logger.warning("regexp for field %s didn't match", k)
+
+
+def _apply_tax_to_lines(output: dict[str, Any]) -> None:
+    """Apply the tax-summary rate onto product lines by code (issue #535).
+
+    When product ``lines`` carry a ``line_tax_code`` (e.g. a receipt's "BTW type"
+    column) and the ``tax_lines`` summary maps that code to a
+    ``line_tax_percent``, copy the rate onto each matching line and compute its
+    ``line_tax_amount`` from ``price_subtotal`` when both are available. Existing
+    line values are never overwritten, and lines without a code are left as-is.
+
+    Args:
+        output (dict[str, Any]): The extracted-fields dictionary, modified in place.
+    """
+    tax_lines = output.get("tax_lines")
+    lines = output.get("lines")
+    if not isinstance(tax_lines, list) or not isinstance(lines, list):
+        return
+
+    rate_by_code = {
+        str(row["line_tax_code"]): row["line_tax_percent"]
+        for row in tax_lines
+        if isinstance(row, dict)
+        and "line_tax_code" in row
+        and "line_tax_percent" in row
+    }
+    if not rate_by_code:
+        return
+
+    for line in lines:
+        if not isinstance(line, dict) or "line_tax_code" not in line:
+            continue
+        percent = rate_by_code.get(str(line["line_tax_code"]))
+        if percent is None or "line_tax_percent" in line:
+            continue
+        line["line_tax_percent"] = percent
+        if "line_tax_amount" not in line and "price_subtotal" in line:
+            with contextlib.suppress(TypeError, ValueError):
+                line["line_tax_amount"] = round(
+                    float(line["price_subtotal"]) * float(percent) / 100, 2
+                )
 
 
 def _compute_line_tax(output: dict[str, Any]) -> None:

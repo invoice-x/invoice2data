@@ -68,6 +68,11 @@ be revisited later — **feedback welcome** on the tracker before any change.
   row is computed from `price_subtotal * line_tax_percent / 100` (never
   overwrites existing values). An advisory warning is logged if `tax_lines`
   don't sum to `amount_tax`.
+- **Tax rate applied to invoice lines** (issue #535): when product `lines` carry
+  a `line_tax_code` and the `tax_lines` summary maps that code to a
+  `line_tax_percent`, the rate is copied onto each matching line (and its
+  `line_tax_amount` computed). Existing line values and code-less lines are left
+  untouched.
 - **CSV output** now JSON-encodes `lines`/`tax_lines` cells (valid, parseable
   CSV) instead of writing Python `repr`. **Breaking** for anything that parsed
   the previous output. New `--csv-lines={json,explode}` (`explode` writes one
