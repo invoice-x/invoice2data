@@ -207,8 +207,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "chardet" },
     { name = "click" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.14' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.13' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "opencv-python-headless" },
     { name = "openpyxl" },
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
@@ -642,7 +642,7 @@ name = "cuda-bindings"
 version = "12.9.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cuda-pathfinder", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine != 's390x' and sys_platform == 'emscripten' and extra != 'extra-12-invoice2data-camelot') or (platform_machine != 's390x' and sys_platform == 'win32' and extra != 'extra-12-invoice2data-camelot') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "cuda-pathfinder", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/37/31/bfcc870f69c6a017c4ad5c42316207fc7551940db6f3639aa4466ec5faf3/cuda_bindings-12.9.4-cp310-cp310-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:a022c96b8bd847e8dc0675523431149a4c3e872f440e3002213dbb9e08f0331a", size = 11800959, upload-time = "2025-10-21T14:51:26.458Z" },
@@ -1077,8 +1077,8 @@ name = "h5py"
 version = "3.16.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/db/33/acd0ce6863b6c0d7735007df01815403f5589a21ff8c2e1ee2587a38f548/h5py-3.16.0.tar.gz", hash = "sha256:a0dbaad796840ccaa67a4c144a0d0c8080073c34c76d5a6941d6818678ef2738", size = 446526, upload-time = "2026-03-06T13:49:08.07Z" }
 wheels = [
@@ -1276,7 +1276,7 @@ version = "0.4.7"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
-    { name = "dateparser" },
+    { name = "python-dateutil" },
     { name = "pyyaml" },
     { name = "regex", version = "2024.11.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "regex", version = "2025.9.18", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
@@ -1288,6 +1288,9 @@ ai = [
 ]
 camelot = [
     { name = "camelot-py" },
+]
+dateparser = [
+    { name = "dateparser" },
 ]
 defusedxml = [
     { name = "defusedxml" },
@@ -1372,7 +1375,7 @@ xdoctest = [
 requires-dist = [
     { name = "camelot-py", marker = "extra == 'camelot'", specifier = ">=1.0" },
     { name = "click", specifier = ">=8.0.1" },
-    { name = "dateparser", specifier = ">=1.2.0" },
+    { name = "dateparser", marker = "extra == 'dateparser'", specifier = ">=1.2.0" },
     { name = "defusedxml", marker = "extra == 'defusedxml'", specifier = "==0.7.1" },
     { name = "ghostscript", marker = "extra == 'ocr'", specifier = "==0.7" },
     { name = "google-cloud-storage", marker = "extra == 'googlevision'", specifier = "==2.18.2" },
@@ -1387,13 +1390,14 @@ requires-dist = [
     { name = "pdfplumber", marker = "extra == 'pdfplumber'", specifier = "==0.11.4" },
     { name = "pypdfium2", marker = "extra == 'paddleocr'", specifier = ">=4" },
     { name = "pypdfium2", marker = "extra == 'pdfium'", specifier = ">=4" },
+    { name = "python-dateutil", specifier = ">=2.8" },
     { name = "python-doctr", extras = ["torch"], marker = "extra == 'doctr'", specifier = ">=0.8" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "pyyaml", marker = "extra == 'pyyaml'", specifier = "==6.0.2" },
     { name = "regex", marker = "python_full_version < '3.12'", specifier = ">=2024.4.16" },
     { name = "regex", marker = "python_full_version >= '3.12'", specifier = ">=2025.2.10" },
 ]
-provides-extras = ["ai", "camelot", "defusedxml", "doctr", "paddleocr", "googlevision", "hotpdf", "ocr", "ocrmypdf", "pdfium", "pdfminer-six", "pdfoxide", "pdfplumber", "pyyaml"]
+provides-extras = ["ai", "camelot", "dateparser", "defusedxml", "doctr", "paddleocr", "googlevision", "hotpdf", "ocr", "ocrmypdf", "pdfium", "pdfminer-six", "pdfoxide", "pdfplumber", "pyyaml"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -1854,8 +1858,8 @@ name = "ml-dtypes"
 version = "0.5.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0e/4a/c27b42ed9b1c7d13d9ba8b6905dece787d6259152f2309338aed29b2447b/ml_dtypes-0.5.4.tar.gz", hash = "sha256:8ab06a50fb9bf9666dd0fe5dfb4676fa2b0ac0f31ecff72a6c3af8e22c063453", size = 692314, upload-time = "2025-11-17T22:32:31.031Z" }
 wheels = [
@@ -2165,33 +2169,6 @@ name = "numpy"
 version = "2.2.6"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.15' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "python_full_version == '3.13.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "(python_full_version == '3.13.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.12.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
     "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'win32'",
@@ -2279,30 +2256,30 @@ name = "numpy"
 version = "2.3.5"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version >= '3.15' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
     "python_full_version == '3.13.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'win32'",
     "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version == '3.13.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'win32'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
@@ -2429,7 +2406,7 @@ name = "nvidia-cudnn-cu12"
 version = "9.10.2.21"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine != 's390x' and sys_platform == 'emscripten' and extra != 'extra-12-invoice2data-camelot') or (platform_machine != 's390x' and sys_platform == 'win32' and extra != 'extra-12-invoice2data-camelot') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cublas-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fa/41/e79269ce215c857c935fd86bcfe91a451a584dfc27f1e068f568b9ad1ab7/nvidia_cudnn_cu12-9.10.2.21-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:c9132cc3f8958447b4910a1720036d9eff5928cc3179b0a51fb6d167c6cc87d8", size = 705026878, upload-time = "2025-06-06T21:52:51.348Z" },
@@ -2442,7 +2419,7 @@ name = "nvidia-cufft-cu12"
 version = "11.3.3.83"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine != 's390x' and sys_platform == 'emscripten' and extra != 'extra-12-invoice2data-camelot') or (platform_machine != 's390x' and sys_platform == 'win32' and extra != 'extra-12-invoice2data-camelot') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-nvjitlink-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/60/bc/7771846d3a0272026c416fbb7e5f4c1f146d6d80704534d0b187dd6f4800/nvidia_cufft_cu12-11.3.3.83-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:848ef7224d6305cdb2a4df928759dca7b1201874787083b6e7550dd6765ce69a", size = 193109211, upload-time = "2025-03-07T01:44:56.873Z" },
@@ -2474,9 +2451,9 @@ name = "nvidia-cusolver-cu12"
 version = "11.7.3.90"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine != 's390x' and sys_platform == 'emscripten' and extra != 'extra-12-invoice2data-camelot') or (platform_machine != 's390x' and sys_platform == 'win32' and extra != 'extra-12-invoice2data-camelot') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-cusparse-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine != 's390x' and sys_platform == 'emscripten' and extra != 'extra-12-invoice2data-camelot') or (platform_machine != 's390x' and sys_platform == 'win32' and extra != 'extra-12-invoice2data-camelot') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-nvjitlink-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine != 's390x' and sys_platform == 'emscripten' and extra != 'extra-12-invoice2data-camelot') or (platform_machine != 's390x' and sys_platform == 'win32' and extra != 'extra-12-invoice2data-camelot') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cublas-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cusparse-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-nvjitlink-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c8/32/f7cd6ce8a7690544d084ea21c26e910a97e077c9b7f07bf5de623ee19981/nvidia_cusolver_cu12-11.7.3.90-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:db9ed69dbef9715071232caa9b69c52ac7de3a95773c2db65bdba85916e4e5c0", size = 267229841, upload-time = "2025-03-07T01:46:54.356Z" },
@@ -2489,7 +2466,7 @@ name = "nvidia-cusparse-cu12"
 version = "12.5.8.93"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine != 's390x' and sys_platform == 'emscripten' and extra != 'extra-12-invoice2data-camelot') or (platform_machine != 's390x' and sys_platform == 'win32' and extra != 'extra-12-invoice2data-camelot') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-nvjitlink-cu12", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bc/f7/cd777c4109681367721b00a106f491e0d0d15cfa1fd59672ce580ce42a97/nvidia_cusparse_cu12-12.5.8.93-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:9b6c161cb130be1a07a27ea6923df8141f3c295852f4b260c65f18f3e0a091dc", size = 288117129, upload-time = "2025-03-07T01:47:40.407Z" },
@@ -2573,8 +2550,8 @@ version = "1.21.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ml-dtypes" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "protobuf" },
     { name = "typing-extensions" },
 ]
@@ -2614,8 +2591,8 @@ name = "opencv-contrib-python"
 version = "4.10.0.84"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1d/33/7b8ec6c4d45e678b26297e4a5e76464a93033a9adcc8c17eac01097065f6/opencv-contrib-python-4.10.0.84.tar.gz", hash = "sha256:4a3eae0ed9cadf1abe9293a6938a25a540e2fd6d7fc308595caa5896c8b36a0c", size = 150433857, upload-time = "2024-06-17T18:30:50.217Z" }
 wheels = [
@@ -2632,8 +2609,8 @@ name = "opencv-python"
 version = "4.13.0.92"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fc/6f/5a28fef4c4a382be06afe3938c64cc168223016fa520c5abaf37e8862aa5/opencv_python-4.13.0.92-cp37-abi3-macosx_13_0_arm64.whl", hash = "sha256:caf60c071ec391ba51ed00a4a920f996d0b64e3e46068aac1f646b5de0326a19", size = 46247052, upload-time = "2026-02-05T07:01:25.046Z" },
@@ -2651,8 +2628,8 @@ name = "opencv-python-headless"
 version = "4.13.0.92"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.14' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.13' and extra == 'extra-12-invoice2data-camelot') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/79/42/2310883be3b8826ac58c3f2787b9358a2d46923d61f88fedf930bc59c60c/opencv_python_headless-4.13.0.92-cp37-abi3-macosx_13_0_arm64.whl", hash = "sha256:1a7d040ac656c11b8c38677cc8cccdc149f98535089dbe5b081e80a4e5903209", size = 46247192, upload-time = "2026-02-05T07:01:35.187Z" },
@@ -2682,8 +2659,8 @@ name = "opt-einsum"
 version = "3.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7d/bf/9257e53a0e7715bc1127e15063e831f076723c6cd60985333a1c18878fb8/opt_einsum-3.3.0.tar.gz", hash = "sha256:59f6475f77bbc37dcf7cd748519c0ec60722e91e63ca114e68821c0c54a46549", size = 73951, upload-time = "2020-07-19T22:40:32.141Z" }
 wheels = [
@@ -2722,8 +2699,8 @@ dependencies = [
     { name = "httpx" },
     { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "opt-einsum" },
     { name = "pillow" },
     { name = "protobuf" },
@@ -2757,11 +2734,11 @@ dependencies = [
     { name = "filelock" },
     { name = "huggingface-hub" },
     { name = "modelscope" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "packaging" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pandas", version = "3.0.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and python_full_version < '3.14') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "pandas", version = "3.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "pillow" },
     { name = "prettytable" },
     { name = "py-cpuinfo" },
@@ -2792,24 +2769,6 @@ name = "pandas"
 version = "2.3.3"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.15' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version < '3.11' and platform_machine == 'aarch64' and sys_platform == 'linux'",
     "(python_full_version < '3.11' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'linux')",
@@ -2817,10 +2776,10 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "python-dateutil", marker = "python_full_version < '3.11' or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pytz", marker = "python_full_version < '3.11' or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "tzdata", marker = "python_full_version < '3.11' or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "python-dateutil", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "pytz", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "tzdata", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/33/01/d40b85317f86cf08d853a4f495195c73815fdf205eef3993821720274518/pandas-2.3.3.tar.gz", hash = "sha256:e05e1af93b977f7eafa636d043f9f94c7ee3ac81af99c13508215942e64c993b", size = 4495223, upload-time = "2025-09-29T23:34:51.853Z" }
 wheels = [
@@ -2878,12 +2837,30 @@ name = "pandas"
 version = "3.0.3"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'darwin'",
+    "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
+    "(python_full_version >= '3.15' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
     "python_full_version == '3.13.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'win32'",
     "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version == '3.13.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'win32'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
@@ -2905,30 +2882,12 @@ resolution-markers = [
     "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'win32'",
     "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(python_full_version >= '3.15' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and python_full_version < '3.13') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
-    { name = "python-dateutil", marker = "(python_full_version >= '3.11' and python_full_version < '3.14') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "tzdata", marker = "(python_full_version >= '3.11' and python_full_version < '3.14' and sys_platform == 'emscripten') or (python_full_version >= '3.11' and python_full_version < '3.14' and sys_platform == 'win32') or (python_full_version >= '3.14' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and sys_platform == 'emscripten' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and sys_platform == 'win32' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version < '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and python_full_version < '3.13') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "python-dateutil", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "tzdata", marker = "(python_full_version >= '3.11' and sys_platform == 'emscripten') or (python_full_version >= '3.11' and sys_platform == 'win32') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f8/87/4341c6252d1c47b08768c3d25ac487362bf403f0313ddae4a2a26c9b1b4c/pandas-3.0.3.tar.gz", hash = "sha256:696a4a00a2a2a35d4e5deb3fc946641b96c944f02230e4f76137fe35d806c4fc", size = 4651414, upload-time = "2026-05-11T18:54:29.21Z" }
 wheels = [
@@ -3076,50 +3035,50 @@ name = "pdfminer-six"
 version = "20260107"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version >= '3.15' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
     "python_full_version == '3.13.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version == '3.13.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.12.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version == '3.12.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.11.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version < '3.11' and platform_machine == 'aarch64' and sys_platform == 'linux'",
@@ -3691,14 +3650,14 @@ name = "pypdf"
 version = "3.17.4"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.11.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version < '3.11' and platform_machine == 'aarch64' and sys_platform == 'linux'",
@@ -3716,41 +3675,41 @@ name = "pypdf"
 version = "5.9.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version >= '3.15' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version >= '3.15' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version >= '3.15' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
-    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
     "python_full_version == '3.13.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.14.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version == '3.13.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.13.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
+    "python_full_version == '3.14.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'win32'",
-    "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
-    "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'darwin'",
     "python_full_version == '3.12.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform == 'emscripten'",
     "(python_full_version == '3.12.*' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version == '3.12.*' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
     "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'win32'",
+    "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform == 'emscripten'",
     "python_full_version == '3.12.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/89/3a/584b97a228950ed85aec97c811c68473d9b8d149e6a8c155668287cf1a28/pypdf-5.9.0.tar.gz", hash = "sha256:30f67a614d558e495e1fbb157ba58c1de91ffc1718f5e0dfeb82a029233890a1", size = 5035118, upload-time = "2025-07-27T14:04:52.364Z" }
@@ -3961,8 +3920,8 @@ dependencies = [
     { name = "h5py" },
     { name = "huggingface-hub" },
     { name = "langdetect" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "onnx" },
     { name = "opencv-python" },
     { name = "pillow" },
@@ -4629,8 +4588,8 @@ resolution-markers = [
     "python_full_version == '3.11.*' and platform_machine == 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and python_full_version < '3.13') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and python_full_version < '3.13') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7a/97/5a3609c4f8d58b039179648e62dd220f89864f56f7357f5d4f45c29eb2cc/scipy-1.17.1.tar.gz", hash = "sha256:95d8e012d8cb8816c226aef832200b1d45109ed4464303e997c5b13122b297c0", size = 30573822, upload-time = "2026-02-23T00:26:24.851Z" }
 wheels = [
@@ -4710,8 +4669,8 @@ name = "shapely"
 version = "2.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4d/bc/0989043118a27cccb4e906a46b7565ce36ca7b57f5a18b78f4f1b0f72d9d/shapely-2.1.2.tar.gz", hash = "sha256:2ed4ecb28320a433db18a5bf029986aa8afcfd740745e78847e330d5d94922a9", size = 315489, upload-time = "2025-09-24T13:51:41.432Z" }
 wheels = [
@@ -5263,8 +5222,8 @@ name = "torchvision"
 version = "0.25.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.14' and extra == 'extra-12-invoice2data-camelot') or (python_full_version >= '3.14' and extra != 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-pdfminer-six' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version == '3.13.*' and extra != 'extra-12-invoice2data-camelot' and extra != 'extra-12-invoice2data-pdfminer-six')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.3.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
     { name = "pillow" },
     { name = "torch" },
 ]

@@ -5,13 +5,13 @@ Templates are initially read from .yml files and then kept as class.
 
 import unicodedata
 from collections import OrderedDict as OrderedDictType
-from functools import lru_cache
 from logging import getLogger
 from pprint import pformat
 from typing import Any
 
 from ..input import extract_text
 from ..input import supports_area
+from . import _dates
 from . import _regex
 from . import parsers
 from . import schema
@@ -25,47 +25,6 @@ logger = getLogger(__name__)
 #: Dedicated logger for the optimized_str dump, so `--debug-optimized-str` can show
 #: just that (without the rest of the debug noise) by raising this logger alone.
 optimized_str_logger = getLogger("invoice2data.optimized_str")
-
-
-@lru_cache(maxsize=8)
-def _date_data_parser(languages: tuple[str, ...]) -> Any:
-    """Return a reusable ``DateDataParser`` for a language set.
-
-    ``dateparser.parse`` rebuilds a parser (re-loading locale/config) on every
-    call -- the dominant cost in profiling. Reusing one parser per language set
-    avoids that per-call initialization.
-
-    Args:
-        languages (tuple[str, ...]): Language codes, or empty for auto-detect.
-
-    Returns:
-        Any: A ``DateDataParser`` instance.
-    """
-    from dateparser.date import DateDataParser  # type: ignore[import-untyped]
-
-    return DateDataParser(languages=list(languages) or None)
-
-
-@lru_cache(maxsize=4096)
-def _parse_date_cached(
-    value: str, date_formats: tuple[str, ...], languages: tuple[str, ...]
-) -> Any:
-    """Parse a date via a reused parser, memoized on the inputs.
-
-    Absolute-date parsing is deterministic for given inputs, so the result is
-    cached (repeated parses -- the cascade re-extracting a doc, or batches of
-    similar invoices -- become free).
-
-    Args:
-        value (str): The date string to parse.
-        date_formats (tuple[str, ...]): Candidate formats, or empty for any.
-        languages (tuple[str, ...]): Language codes, or empty for auto-detect.
-
-    Returns:
-        Any: The parsed ``datetime``, or None.
-    """
-    parser = _date_data_parser(languages)
-    return parser.get_date_data(value, date_formats=list(date_formats) or None).date_obj
 
 
 OPTIONS_DEFAULT = {
@@ -235,7 +194,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
     def parse_date(self, value: str) -> Any:
         """Parses date and returns date after parsing."""
-        res = _parse_date_cached(
+        res = _dates.parse_date(
             value,
             tuple(self.options["date_formats"] or ()),
             tuple(self.options["languages"] or ()),

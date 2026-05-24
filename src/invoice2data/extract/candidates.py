@@ -15,8 +15,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-import dateparser  # type: ignore[import-untyped]
-
+from ._dates import parse_date
 from .validators import classify_identifier
 
 
@@ -90,7 +89,7 @@ def find_dates(text: str) -> list[Candidate]:
     """
     candidates = []
     for match in _DATE_RE.finditer(text):
-        parsed = dateparser.parse(match.group())
+        parsed = parse_date(match.group())
         if isinstance(parsed, datetime.datetime):
             candidates.append(
                 Candidate("date", match.group(), match.start(), match.end(), parsed)

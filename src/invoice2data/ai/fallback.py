@@ -11,9 +11,8 @@ import contextlib
 import logging
 from typing import Any
 
-import dateparser  # type: ignore[import-untyped]
-
 from ..extract import schema
+from ..extract._dates import parse_date
 from .__interface__ import AIProvider
 from .__interface__ import get_provider
 from .schema_json import invoice_json_schema
@@ -43,7 +42,7 @@ def _coerce(raw: dict[str, Any]) -> dict[str, Any]:
         if value in (None, "", []):
             continue
         if key.startswith("date") and isinstance(value, str):
-            parsed = dateparser.parse(value)
+            parsed = parse_date(value)
             cleaned[key] = parsed if parsed is not None else value
         elif key.startswith("amount") and not isinstance(value, (int, float)):
             with contextlib.suppress(ValueError, TypeError):
