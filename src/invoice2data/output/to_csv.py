@@ -104,9 +104,14 @@ def write_to_file(
         Provide a filename to the `path` parameter.
 
     Examples:
+        >>> import tempfile
+        >>> from pathlib import Path
         >>> from invoice2data.output import to_csv
         >>> data = [{'amount': 123.45, 'date': datetime.datetime(2024, 1, 1)}]
-        >>> to_csv.write_to_file(data, "invoice.csv")
+        >>> path = Path(tempfile.mkdtemp()) / "invoice.csv"
+        >>> to_csv.write_to_file(data, str(path))
+        >>> path.exists()
+        True
     """
     with open_output(path, ".csv", newline="", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file, delimiter=",")
