@@ -62,256 +62,37 @@ Go from PDF files to this:
     {'issuer': 'Envato', 'amount': 101.0, 'date': datetime.datetime(2015, 1, 28, 0, 0), 'invoice_number': '12429647', 'currency': 'USD', 'desc': 'Invoice 12429647 from Envato'}
 
 
-## Usage
+## Quickstart
 
-Basic usage. Process PDF files and write result to CSV.
-Please see the [Command-line Reference] for details.
+```bash
+pip install invoice2data
+invoice2data invoice.pdf                          # extract -> CSV
+invoice2data --output-format json invoice.pdf     # or JSON / XML
+```
 
-- `invoice2data invoice.pdf`
-- `invoice2data invoice.txt`
-- `invoice2data *.pdf`
+As a Python library:
 
-Choose any of the following input readers:
+```python
+from invoice2data import extract_data
 
-- pdftotext `invoice2data --input-reader pdftotext invoice.pdf`
-- pdftotext `invoice2data --input-reader text invoice.txt`
-- tesseract `invoice2data --input-reader tesseract invoice.pdf`
-- pdfminer.six `invoice2data --input-reader pdfminer invoice.pdf`
-- pdfplumber `invoice2data --input-reader pdfplumber invoice.pdf`
-- ocrmypdf `invoice2data --input-reader ocrmypdf invoice.pdf`
-- gvision `invoice2data --input-reader gvision invoice.pdf` (needs `GOOGLE_APPLICATION_CREDENTIALS` env var and a Google Cloud Bucket name. The bucket name can be set as an argument to the function ``to_text`` or as an Environment variable named ``GOOGLE_CLOUD_BUCKET_NAME`` )
-- docTR `invoice2data --input-reader doctr invoice.pdf` (local deep-learning OCR; install with `pip install invoice2data[doctr]`. Handles scans/photos well with little pre-processing; the model weights download on first run.)
-- PaddleOCR `invoice2data --input-reader paddleocr invoice.pdf` (local deep-learning OCR with broad language coverage; install with `pip install invoice2data[paddleocr]`. Pass `lang=` when used as a library; weights download on first run.)
+result = extract_data("invoice.pdf")
+```
 
-The `ocrmypdf` reader can clean up noisy scans: any
-[OCRmyPDF option](https://ocrmypdf.readthedocs.io/) (e.g. `deskew`, `clean`,
-`rotate_pages`, `optimize`) can be passed through the input-reader config and is
-forwarded to `ocrmypdf.ocr`. When used as a library,
-`invoice2data.input.ocrmypdf.pre_process_pdf(path, pre_conf=...)` returns the path
-to the cleaned, OCR-layered (usually smaller) PDF, so an integration can attach or
-replace the stored file for size savings.
+No system libraries are required by default — the `pdfium` backend bundles its own
+engine. Optional backends and extras (poppler, OCR, AI, ...) are covered in the
+[installation guide][installation].
 
-Choose any of the following output formats:
+## Documentation
 
-- csv `invoice2data --output-format csv invoice.pdf`
-- json `invoice2data --output-format json invoice.pdf`
-- xml `invoice2data --output-format xml invoice.pdf`
+Full documentation: **<https://invoice2data.readthedocs.io/>**
 
-Save output file with custom name or a specific folder
-
-`invoice2data --output-format csv --output-name myinvoices/invoices.csv invoice.pdf`
-
-**Note:** You must specify the `output-format` in order to create
-`output-name`
-
-Use `--output-name -` (or `/dev/stdout`, `/dev/stderr`) to stream the output to a
-standard stream instead of a file — handy for piping into other tools (logs go to
-stderr, so stdout stays clean):
-
-`invoice2data --output-format json --output-name - invoice.pdf | jq .`
-
-Specify folder with yml templates. (e.g. your suppliers)
-
-`invoice2data --template-folder ACME-templates invoice.pdf`
-
-Only use your own templates and exclude built-ins
-
-`invoice2data --exclude-built-in-templates --template-folder ACME-templates invoice.pdf`
-
-Processes a folder of invoices and copies renamed invoices to new
-folder.
-
-`invoice2data --copy new_folder folder_with_invoices/*.pdf`
-
-Processes a single file and dumps whole file for debugging (useful when
-adding new templates in templates.py)
-
-`invoice2data --debug my_invoice.pdf`
-
-Print just the `optimized_str` a template is matched against (the text after
-whitespace/replace processing) — handy for writing templates, without the full
-`--debug` noise:
-
-`invoice2data --debug-optimized-str my_invoice.pdf`
-
-Disable colored log output (also honored via the `NO_COLOR` environment variable):
-
-`invoice2data --no-color my_invoice.pdf`
-
-Emit machine-readable JSON logs (one object per line, on stderr) for automation
-pipelines — combine with `--output-name -` for clean data on stdout:
-
-`invoice2data --in-automation --output-format json --output-name - my_invoice.pdf`
-
-Recognize test invoices: `invoice2data invoice2data/test/pdfs/* --debug`
-
-Draft a new template from a sample document (the builder suggests fields/regexes
-from the detected dates, amounts and IBAN/VAT/BIC, previews what they capture, and
-writes a `.yml` after confirmation):
-
-`invoice2data --new-template sample.pdf`
-
-Add `--ai` to draft it with a configured LLM provider instead of the built-in
-heuristics (set `INVOICE2DATA_AI_PROVIDER` / `_MODEL` / `_API_KEY`; OpenAI,
-DeepSeek, Mistral, Gemini and local Ollama are supported):
-
-`invoice2data --new-template sample.pdf --ai`
-
-As a last resort, let an LLM extract fields when **no template matches** (opt-in;
-uses the same `INVOICE2DATA_AI_*` configuration). Results are tagged
-`extraction_method: ai` so they are never confused with a template match:
-
-`invoice2data --ai-fallback invoice.pdf`
-
-### Use as Python Library
-
-You can easily add `invoice2data` to your own Python scripts as library.
-
-    from invoice2data import extract_data
-    result = extract_data('path/to/my/file.pdf')
-
-Using in-house templates
-
-    from invoice2data import extract_data
-    from invoice2data.extract.loader import read_templates
-
-    templates = read_templates('/path/to/your/templates/')
-    result = extract_data(filename, templates=templates)
-
-Loading templates from a string instead of disk (e.g. stored in a database
-column or returned by an API) with `ordered_load`:
-
-    import yaml
-    from invoice2data import extract_data
-    from invoice2data.extract.loader import ordered_load
-
-    templates = ordered_load(db_json_string)                       # JSON (default)
-    templates = ordered_load(db_yaml_string, loader=yaml.safe_load)  # or YAML
-    result = extract_data(filename, templates=templates)
-
-## Template system
-
-See `invoice2data/extract/templates` for existing templates. Just extend
-the list to add your own. If deployed by a bigger organisation, there
-should be an interface to edit templates for new suppliers. 80-20 rule.
-For a short tutorial on how to add new templates, see the [template creation tutorial][tutorial].
-
-Templates are based on Yaml or JSON. They define one or more keywords to find
-the right template, one or more exclude_keywords to further narrow it down
-and regexp for fields to be extracted. They could also be a static value,
-like the full company name.
-
-Template files are tried in alphabetical order.
-
-We may extend them to feature options to be used during invoice
-processing.
-
-Example:
-
-````yaml
-    issuer: Amazon Web Services, Inc.
-    keywords:
-    - Amazon Web Services
-    exclude_keywords:
-    - San Jose
-    fields:
-      amount: TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)
-      amount_untaxed: TOTAL AMOUNT DUE ON.*\$(\d+\.\d+)
-      date: Invoice Date:\s+([a-zA-Z]+ \d+ , \d+)
-      invoice_number: Invoice Number:\s+(\d+)
-      partner_name: (Amazon Web Services, Inc\.)
-    options:
-      remove_whitespace: false
-      currency: HKD
-      date_formats:
-        - '%d/%m/%Y'
-    lines:
-        start: Detail
-        end: \* May include estimated US sales tax
-        first_line: ^    (?P<description>\w+.*)\$(?P<price_unit>\d+\.\d+)
-        line: (.*)\$(\d+\.\d+)
-        skip_line: Note
-        last_line: VAT \*\*
-````
-
-A field using the `regex` parser can sanitize its captured value with a
-field-level `replace` (applied before type coercion). This lets you keep a simple
-regex and clean up the result — e.g. capture a VAT number that the OCR split with
-punctuation and strip the non-word characters:
-
-````yaml
-    fields:
-      vat:
-        parser: regex
-        regex: VAT NUMBER\s+(\S+)
-        replace: ['\W+', '']        # NL.999,999.999,B01 -> NL999999999B01
-````
-
-`replace` accepts a single `[pattern, replacement]` pair or a list of pairs
-applied in order (each is a `re.sub`).
-
-The lines package has multiple settings:
-
-- start > The pattern where the lines begin. This is typically the header row of the table. This row is not included in the line matching.
-- end > The pattern denoting where the lines end. Typically some text at the very end or immediately below the table. Also not included in the line matching.
-- first_line > Optional. This is the primary line item for each entry.
-- line > If first_line is not provided, this will be used as the primary line pattern. If first_line is provided, this is the pattern for any sub-lines such as line item details.
-- skip_line > Optional. If first_line is passed, this pattern indicates which sub-lines will be skipped and their data not recorded. This is useful if tables span multiple pages and you need to skip over page numbers or headers that appear mid-table.
-- last_line > Optional. If first_line is passed, this pattern denotes the final line of the sub-lines and is included in the output data.
-- replace > Optional. Per-sub-field regex substitutions applied to captured line values (before type coercion) — e.g. normalize units of measure:
-
-````yaml
-    lines:
-        ...
-        replace:
-          uom:
-            - ['PS', 'unit']
-            - ['M', 'meter']
-````
-
-**Dates:** invoice2data parses dates fastest-first — your template's
-`date_formats` via stdlib `strptime`, then `dateutil`, then `dateparser`.
-`dateparser` handles localized month names (non-English invoices) and is an
-**optional** extra: `pip install invoice2data[dateparser]` if your invoices use
-localized dates. Numeric / English dates work without it.
-
-### Area (region) extraction
-
-A field can restrict its match to a rectangular **region** of the page instead of
-the whole document — useful when the same word (e.g. a label) appears in several
-places, or to read a fixed address block. Add an `area:` to the field:
-
-````yaml
-    fields:
-      partner_zip:
-        parser: regex
-        area: { f: 1, l: 1, x: 0, y: 14, r: 100, W: 550, H: 310 }
-        regex: '\s(\d{4}\s?[A-Z]{2})\s'
-````
-
-The area keys are:
-
-- `x`, `y` > top-left corner of the region, in **pixels** (origin is the page's
-  top-left).
-- `W`, `H` > width and height of the region, in pixels.
-- `r` > resolution in DPI that the pixel values are measured at (commonly `100`).
-- `f`, `l` > first and last page to read the region from (1-based).
-
-At `r` DPI, 1 inch = `r` pixels and an A4 page (210×297 mm) is about `8.27·r ×
-11.69·r` pixels — so at `r: 100` a full A4 page is roughly `827 × 1169`. A quick
-way to find coordinates is to render the page at the same DPI and read the
-pixel box off an image viewer, then narrow it down.
-
-Area extraction is supported by the `pdftotext`, `pdfium` and `tesseract` input
-readers. Their text output differs slightly, so tune an area template against the
-backend it will run with (pin it with `input_module:` if needed).
-
-:warning: Invoice2data uses a yaml templating system. The yaml templates are loaded with [pyyaml](https://github.com/yaml/pyyaml) which is a pure python implementation. (thus rather slow)
-As an alternative json templates can be used. Which are natively better supported by python.
-
-The performance with yaml templates can be greatly increased **10x** by using [libyaml](https://github.com/yaml/libyaml)
-It can be installed on most distributions by:
-`sudo apt-get install libyaml-dev`
+- [How it works][how-it-works] — the extraction pipeline
+- [Installation][installation] — backends, OCR and optional extras
+- [Usage][usage] — all CLI options and common tasks
+- [Template creation][tutorial] — write templates for your invoices
+- [Recommended fields][fields] — the canonical output schema
+- [AI features][ai] — optional LLM fallback & template generation
+- [FAQ][faq] — including a comparison with other tools
 
 ## Development
 
@@ -367,3 +148,9 @@ To learn more, see the [Contributor Guide].
 [contributor guide]: https://invoice2data.readthedocs.io/latest/contributing.html
 [command-line reference]: https://invoice2data.readthedocs.io/latest/usage.html
 [tutorial]: https://invoice2data.readthedocs.io/latest/tutorial.html
+[installation]: https://invoice2data.readthedocs.io/latest/installation.html
+[how-it-works]: https://invoice2data.readthedocs.io/latest/how-it-works.html
+[usage]: https://invoice2data.readthedocs.io/latest/usage.html
+[fields]: https://invoice2data.readthedocs.io/latest/recommended-template-fields.html
+[ai]: https://invoice2data.readthedocs.io/latest/ai.html
+[faq]: https://invoice2data.readthedocs.io/latest/faq.html

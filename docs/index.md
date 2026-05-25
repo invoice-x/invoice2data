@@ -11,6 +11,12 @@ end-before: <!-- github-only -->
 [contributor guide]: contributing
 [command-line reference]: usage
 [tutorial]: tutorial
+[installation]: installation
+[how-it-works]: how-it-works
+[usage]: usage
+[fields]: recommended-template-fields
+[ai]: ai
+[faq]: faq
 
 ```{toctree}
 ---
