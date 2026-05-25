@@ -106,8 +106,16 @@ a `.yml` after you confirm:
 
 ```bash
 invoice2data --new-template sample.pdf
-invoice2data --new-template sample.pdf --ai   # draft with a configured LLM instead
+invoice2data --new-template sample.pdf --ai            # draft with a configured LLM instead
+invoice2data --new-template sample.pdf --interactive   # review/edit each field via prompts
 ```
+
+With `--interactive`, the builder walks you through each drafted field — showing
+what it captures (after cleanup) and letting you keep, edit the regex, or skip it
+— then offers to add fields it didn't detect. Captured values are cleaned up
+automatically where useful: a VAT id keeps its dots in the capture but strips them
+on output (`NL12.34.56.789.B01` → `NL123456789B01`), and a Chamber-of-Commerce
+number drops an appended place name (`12345678 Amsterdam` → `12345678`).
 
 As a last resort, let an LLM extract fields when **no template matches**:
 

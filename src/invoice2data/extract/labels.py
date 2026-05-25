@@ -32,12 +32,18 @@ class LabelSpec:
     field: str
     labels: tuple[str, ...]
     value: str
+    cleanup: tuple[tuple[str, str], ...] = ()
 
 
 # Identifier value shapes. Country-prefixed VAT vs. digit-only CoC is what makes
-# the label essential to tell them apart.
-_VAT = r"[A-Z]{2}[A-Z0-9][A-Z0-9 .\-]{5,15}"
-_COC = r"\d[\d .\-]{5,16}"
+# the label essential to tell them apart. The patterns deliberately *capture the
+# noisy form* (dots inside a VAT id, a place name next to a CoC number) so a
+# ``cleanup`` replace can normalise it -- the template stays robust on the next
+# invoice even if this sample happens to be clean.
+_VAT = r"[A-Z]{2}[A-Z0-9][A-Z0-9.\-]{5,18}"  # e.g. NL12.34.56.789.B01
+_COC = (
+    r"(?=[A-Za-z0-9.\- ]*\d{4})[A-Za-z0-9][A-Za-z0-9.\- ]{5,27}"  # 12345678 Amsterdam
+)
 # Require a digit so a generic label like "Invoice" can't capture a plain word
 # (e.g. the "Date" in "Invoice Date").
 _DOCNO = r"(?=[A-Za-z0-9.\-/]*\d)[A-Za-z0-9][A-Za-z0-9.\-/]{2,20}"
@@ -74,6 +80,8 @@ LABEL_SPECS: tuple[LabelSpec, ...] = (
             "Tax Number",
         ),
         _VAT,
+        # Drop separators people sprinkle in (NL12.34.56.789.B01 -> NL123456789B01).
+        cleanup=(("[^A-Z0-9]", ""),),
     ),
     LabelSpec(
         "partner_coc",
@@ -96,6 +104,9 @@ LABEL_SPECS: tuple[LabelSpec, ...] = (
             "SIREN",
         ),
         _COC,
+        # Keep just the digits; drop the place a NL CoC line often appends
+        # (e.g. "12345678 Amsterdam" -> "12345678").
+        cleanup=((r"\D", ""),),
     ),
     LabelSpec(
         "invoice_number",
@@ -170,6 +181,8 @@ class LabeledMatch:
         end (int): End offset of the value in the source text.
         value_pattern (str): The value regex (for building the field's template
             regex).
+        cleanup (tuple[tuple[str, str], ...]): ``(pattern, replacement)`` pairs to
+            sanitise the captured value (becomes the field's ``replace``).
     """
 
     field: str
@@ -178,6 +191,7 @@ class LabeledMatch:
     start: int
     end: int
     value_pattern: str
+    cleanup: tuple[tuple[str, str], ...] = ()
 
 
 def _compile(spec: LabelSpec) -> re.Pattern[str]:
@@ -225,6 +239,7 @@ def find_labeled_fields(text: str) -> dict[str, LabeledMatch]:
                 start=match.start(2),
                 end=match.end(2),
                 value_pattern=spec.value,
+                cleanup=spec.cleanup,
             )
             claimed.append(span)
             break

@@ -18,6 +18,9 @@ from invoice2data.exceptions import NoTemplateFoundError
 from invoice2data.exceptions import RequiredFieldsMissingError
 from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import read_templates
+from invoice2data.extract.template_builder import field_regex
+from invoice2data.extract.template_builder import preview_field
+from invoice2data.extract.template_builder import set_field_regex
 from invoice2data.extract.template_builder import suggested_template
 from invoice2data.extract.template_builder import to_yaml
 
@@ -582,8 +585,54 @@ def _default_template_path(template: dict[str, Any]) -> str:
     return f"{slug}.yml"
 
 
+def _interactive_template(template: dict[str, Any], text: str) -> dict[str, Any]:
+    """Walk the user through each drafted field (accept / edit / skip) + additions.
+
+    Shows what each field captures (after cleanup), lets the user keep it, edit its
+    regex, or drop it, then offers to add fields the builder did not detect.
+
+    Args:
+        template (dict[str, Any]): The drafted template.
+        text (str): The sample document text (to preview captures).
+
+    Returns:
+        dict[str, Any]: The template with its ``fields`` revised by the user.
+    """
+    kept: dict[str, Any] = {}
+    click.echo("\nReview each field — [Enter] keep, 'e' edit regex, 's' skip:\n")
+    for name, spec in template.get("fields", {}).items():
+        click.echo(f"  {name}")
+        click.echo(f"    regex:    {field_regex(spec)}")
+        click.echo(f"    captures: {preview_field(spec, text)!r}")
+        choice = click.prompt(f"  keep '{name}'?", default="", show_default=False)
+        action = choice.strip().lower()[:1]
+        if action == "s":
+            continue
+        if action == "e":
+            spec = set_field_regex(
+                spec, click.prompt("    regex", default=field_regex(spec))
+            )
+            click.echo(f"    now captures: {preview_field(spec, text)!r}")
+        kept[name] = spec
+
+    while click.confirm("\nAdd another field?", default=False):
+        name = click.prompt("  field name").strip()
+        if not name:
+            break
+        spec = click.prompt("  regex (one capture group)")
+        click.echo(f"    captures: {preview_field(spec, text)!r}")
+        kept[name] = spec
+
+    template["fields"] = kept
+    return template
+
+
 def _run_new_template(
-    sample: str, use_ai: bool, template_out: str | None, input_module: Any
+    sample: str,
+    use_ai: bool,
+    template_out: str | None,
+    input_module: Any,
+    interactive: bool = False,
 ) -> None:
     """Draft a template from a sample document and write it after confirmation.
 
@@ -592,6 +641,7 @@ def _run_new_template(
         use_ai (bool): Use the configured AI provider instead of heuristics.
         template_out (str | None): Output path; defaults to ``<issuer>.yml``.
         input_module (Any): Forced input backend, or None for the cascade.
+        interactive (bool): Review/edit each field via prompts before writing.
 
     Raises:
         SystemExit: If no text can be extracted from the sample document.
@@ -611,16 +661,20 @@ def _run_new_template(
     # preview_template is pure regex (no AI) -- reused for both modes.
     from .ai.template_generator import preview_template
 
-    preview = preview_template(template, text)
-
     click.echo("# Drafted template:\n")
     click.echo(to_yaml(template))
     click.echo("# Preview (values the field regexes capture):")
+    preview = preview_template(template, text)
     if preview:
         for field, value in preview.items():
             click.echo(f"  {field}: {value}")
     else:
         click.echo("  (no fields matched -- edit the regexes before use)")
+
+    if interactive:
+        template = _interactive_template(template, text)
+        click.echo("\n# Final template:\n")
+        click.echo(to_yaml(template))
 
     out_path = template_out or _default_template_path(template)
     if click.confirm(f"\nWrite template to {out_path}?", default=True):
@@ -719,6 +773,11 @@ def _run_new_template(
     help="Path to write the drafted template (default: <issuer>.yml).",
 )
 @click.option(
+    "--interactive",
+    is_flag=True,
+    help="With --new-template, review/edit each drafted field via prompts.",
+)
+@click.option(
     "--ai-fallback",
     is_flag=True,
     help="If no template matches, extract fields with the configured AI provider "
@@ -748,6 +807,7 @@ def main(  # noqa: C901
     new_template: str | None,
     use_ai: bool,
     template_out: str | None,
+    interactive: bool,
     ai_fallback: bool,
     input_files: tuple[Any, ...],
 ) -> None:
@@ -766,7 +826,7 @@ def main(  # noqa: C901
         logging.getLogger("invoice2data.optimized_str").setLevel(logging.DEBUG)
 
     if new_template:
-        _run_new_template(new_template, use_ai, template_out, input_reader)
+        _run_new_template(new_template, use_ai, template_out, input_reader, interactive)
         return
 
     input_module = input_reader

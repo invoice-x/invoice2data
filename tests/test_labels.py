@@ -4,6 +4,7 @@ import re
 
 from invoice2data.extract.labels import find_labeled_fields
 from invoice2data.extract.template_builder import _labeled_regex
+from invoice2data.extract.template_builder import preview_field
 from invoice2data.extract.template_builder import suggested_template
 
 
@@ -56,7 +57,19 @@ def test_builder_includes_label_only_fields() -> None:
     # partner_coc + invoice_number are identifiable only via their labels.
     assert "partner_coc" in template["fields"]
     assert "invoice_number" in template["fields"]
-    # The drafted regex captures the value.
-    coc = re.search(template["fields"]["partner_coc"], SAMPLE)
-    assert coc is not None
-    assert coc.group(1).strip() == "12345678"
+    # The drafted field captures (and cleans) the value.
+    assert preview_field(template["fields"]["partner_coc"], SAMPLE) == "12345678"
+
+
+def test_vat_cleanup_strips_separators() -> None:
+    template = suggested_template("ACME\nBTW: NL12.34.56.789.B01\n")
+    spec = template["fields"]["vat"]
+    assert isinstance(spec, dict)  # cleanup -> field dict with replace
+    assert preview_field(spec, "BTW: NL12.34.56.789.B01") == "NL123456789B01"
+
+
+def test_coc_cleanup_keeps_only_digits() -> None:
+    template = suggested_template("ACME\nKvK: 12345678 Amsterdam\n")
+    assert preview_field(
+        template["fields"]["partner_coc"], "KvK 12345678 Amsterdam"
+    ) == ("12345678")

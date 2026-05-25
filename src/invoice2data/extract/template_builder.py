@@ -79,6 +79,77 @@ def _labeled_regex(match: LabeledMatch) -> str:
     return rf"{_anchor(match.label)}\s*[:.#=\-]?\s*({match.value_pattern})"
 
 
+def _labeled_field(match: LabeledMatch) -> str | dict[str, Any]:
+    """Build a template field from a labeled match.
+
+    A plain regex string when no cleanup is needed; otherwise a field dict with a
+    ``replace`` so the captured value is sanitised (dots in a VAT id, a place name
+    after a CoC number) before use.
+
+    Args:
+        match (LabeledMatch): The labeled value found in the document.
+
+    Returns:
+        str | dict[str, Any]: A regex string, or a ``{parser, regex, replace}`` dict.
+    """
+    regex = _labeled_regex(match)
+    if not match.cleanup:
+        return regex
+    return {
+        "parser": "regex",
+        "regex": regex,
+        "replace": [list(pair) for pair in match.cleanup],
+    }
+
+
+def field_regex(spec: str | dict[str, Any]) -> str:
+    """Return the regex of a field spec (a bare string or a field dict).
+
+    Args:
+        spec (str | dict[str, Any]): A template field value.
+
+    Returns:
+        str: The field's regex pattern.
+    """
+    return spec["regex"] if isinstance(spec, dict) else spec
+
+
+def set_field_regex(spec: str | dict[str, Any], regex: str) -> str | dict[str, Any]:
+    """Return ``spec`` with its regex replaced (keeping any cleanup/replace).
+
+    Args:
+        spec (str | dict[str, Any]): The existing field spec.
+        regex (str): The new regex pattern.
+
+    Returns:
+        str | dict[str, Any]: The updated spec (same shape as the input).
+    """
+    if isinstance(spec, dict):
+        return {**spec, "regex": regex}
+    return regex
+
+
+def preview_field(spec: str | dict[str, Any], text: str) -> str | None:
+    """Return what a field spec captures from ``text``, after any cleanup.
+
+    Args:
+        spec (str | dict[str, Any]): A template field value (regex or dict).
+        text (str): The sample text to match against.
+
+    Returns:
+        str | None: The captured (and ``replace``-cleaned) value, or None if the
+            regex does not match.
+    """
+    match = re.search(field_regex(spec), text)
+    if match is None:
+        return None
+    value = match.group(1) if match.groups() else match.group(0)
+    if isinstance(spec, dict):
+        for pattern, replacement in spec.get("replace", []):
+            value = re.sub(pattern, replacement, value)
+    return value
+
+
 def _guess_issuer(text: str) -> str:
     """Guess the issuer from the first non-empty line of text.
 
@@ -106,14 +177,20 @@ def suggested_template(text: str) -> dict[str, Any]:
             ``fields`` (canonical field name -> regex).
     """
     suggestions = suggest_fields(find_candidates(text))
-    fields = {
+    fields: dict[str, Any] = {
         field: field_regex_from_candidate(text, candidate)
         for field, candidate in suggestions.items()
     }
-    # Label-driven fields (e.g. partner_coc / invoice_number, which a bare value
-    # pattern can't identify on its own) fill any field the candidate pass missed.
+    # Labels give a better field than a bare value pattern: they anchor the regex
+    # and add cleanup (dots in a VAT id, a place after a CoC number), and they
+    # identify label-only fields (partner_coc, invoice_number). Prefer them --
+    # except for date/amount, where the candidate heuristics (earliest date,
+    # largest amount) pick better among several values.
+    keep_value_based = {"date", "amount"}
     for field, match in find_labeled_fields(text).items():
-        fields.setdefault(field, _labeled_regex(match))
+        if field in keep_value_based and field in fields:
+            continue
+        fields[field] = _labeled_field(match)
     issuer = _guess_issuer(text)
     return {
         "issuer": issuer,

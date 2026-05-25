@@ -128,11 +128,16 @@ def preview_template(template: dict[str, Any], text: str) -> dict[str, str]:
             match are omitted.
     """
     preview: dict[str, str] = {}
-    for field, pattern in template.get("fields", {}).items():
-        if not isinstance(pattern, str):
+    for field, spec in template.get("fields", {}).items():
+        regex = spec["regex"] if isinstance(spec, dict) else spec
+        if not isinstance(regex, str):
             continue
-        match = re.search(pattern, text)
+        match = re.search(regex, text)
         if match is None:
             continue
-        preview[field] = match.group(1) if match.groups() else match.group(0)
+        value = match.group(1) if match.groups() else match.group(0)
+        if isinstance(spec, dict):
+            for pair in spec.get("replace", []):
+                value = re.sub(pair[0], pair[1], value)
+        preview[field] = value
     return preview
