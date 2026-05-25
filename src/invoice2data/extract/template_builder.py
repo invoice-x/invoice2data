@@ -13,6 +13,8 @@ import yaml  # type: ignore[import-untyped]
 
 from .candidates import Candidate
 from .candidates import find_candidates
+from .labels import LabeledMatch
+from .labels import find_labeled_fields
 from .suggestions import suggest_fields
 
 
@@ -43,9 +45,38 @@ def field_regex_from_candidate(text: str, candidate: Candidate) -> str:
     prefix = text[line_start : candidate.start].strip()
     value_pattern = _VALUE_PATTERNS.get(candidate.kind, r"\S+")
     if prefix:
-        anchor = re.sub(r"\s+", r"\\s+", re.escape(prefix))
-        return rf"{anchor}\s*({value_pattern})"
+        return rf"{_anchor(prefix)}\s*({value_pattern})"
     return rf"({value_pattern})"
+
+
+def _anchor(literal: str) -> str:
+    r"""Turn a label/prefix into a whitespace-flexible literal regex anchor.
+
+    Each non-space token is escaped and joined with ``\s+`` so the anchor still
+    matches when the document re-flows the spacing. (Escaping the whole string
+    first would mangle multi-word labels, since ``re.escape`` escapes spaces.)
+
+    Args:
+        literal (str): The label or line-prefix text from the document.
+
+    Returns:
+        str: A regex fragment matching the label with flexible whitespace.
+    """
+    return r"\s+".join(re.escape(part) for part in literal.split())
+
+
+def _labeled_regex(match: LabeledMatch) -> str:
+    r"""Build a field regex anchored on a known label.
+
+    e.g. a ``BTW: NL123…`` match becomes ``BTW\s*[:.#=\-]?\s*([A-Z]{2}…)``.
+
+    Args:
+        match (LabeledMatch): The labeled value found in the document.
+
+    Returns:
+        str: A regex with one capturing group around the value.
+    """
+    return rf"{_anchor(match.label)}\s*[:.#=\-]?\s*({match.value_pattern})"
 
 
 def _guess_issuer(text: str) -> str:
@@ -79,6 +110,10 @@ def suggested_template(text: str) -> dict[str, Any]:
         field: field_regex_from_candidate(text, candidate)
         for field, candidate in suggestions.items()
     }
+    # Label-driven fields (e.g. partner_coc / invoice_number, which a bare value
+    # pattern can't identify on its own) fill any field the candidate pass missed.
+    for field, match in find_labeled_fields(text).items():
+        fields.setdefault(field, _labeled_regex(match))
     issuer = _guess_issuer(text)
     return {
         "issuer": issuer,

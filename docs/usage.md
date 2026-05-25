@@ -96,8 +96,13 @@ invoice2data --in-automation --output-format json --output-name - my_invoice.pdf
 
 ## Generating templates & AI
 
-Draft a new template from a sample document (the builder suggests fields/regexes
-from detected dates, amounts and IBAN/VAT/BIC, previews them, and writes a `.yml`):
+Draft a new template from a sample document. The builder suggests fields/regexes
+from detected dates, amounts and IBAN/VAT/BIC, **and from common labels** — it
+recognises `label: value` pairs with multilingual synonyms (e.g. `BTW`/`VAT`,
+`KvK`/`CoC`/`Chamber of Commerce`, `Invoice No`/`Factuurnummer`), which lets it
+identify label-only fields like the Chamber-of-Commerce number (just digits) and
+anchor each regex on its label. It previews what each field captures, then writes
+a `.yml` after you confirm:
 
 ```bash
 invoice2data --new-template sample.pdf
