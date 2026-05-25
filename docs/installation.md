@@ -1,14 +1,19 @@
+# Installation
 
-Installation
-============
+## Dependencies
 
-## Installation of dependencies
+By default invoice2data extracts text with **[`pypdfium2`](https://github.com/pypdfium2-team/pypdfium2)** —
+a self-contained wheel that bundles its own PDF engine, so the common path needs
+**no system libraries**. `pip install invoice2data` is enough to get started on
+Windows, macOS and Linux.
 
-Invoice2data depends on [xpdf/poppler-utils](https://poppler.freedesktop.org/) to extract texts from pdf's.
+Some optional backends need extra system tools:
 
-**Install pdftotext**
-
-If possible get the latest [xpdf/poppler-utils](https://poppler.freedesktop.org/) version. It's included with macOS Homebrew, Debian and Ubuntu. Without it, `pdftotext` won't parse tables in PDF correctly.
+- **`pdftotext`** ([xpdf/poppler-utils](https://poppler.freedesktop.org/)) — better
+  at preserving table layout (`-layout`); recommended for layout-sensitive
+  templates. Included with macOS Homebrew, Debian and Ubuntu.
+- **OCR** — `tesseract` + ImageMagick, or `ocrmypdf` + Ghostscript, for scanned /
+  image-only PDFs (see below).
 
 
 
@@ -55,6 +60,34 @@ dependencies are already provided by the conda packages, so nothing extra is
 pulled in.
 
 ## Installation of input modules
+
+Most backends are optional and installed via extras. Pick what you need:
+
+```bash
+pip install "invoice2data[pdfplumber]"      # pdfplumber backend
+pip install "invoice2data[doctr]"           # local deep-learning OCR (docTR)
+pip install "invoice2data[paddleocr]"       # local deep-learning OCR (PaddleOCR)
+pip install "invoice2data[ai]"              # LLM fallback / template generation
+```
+
+| backend | extra | use |
+|---------|-------|-----|
+| `pdfium` | (built-in) | **default** text extraction, no system deps |
+| `text` | (built-in) | already-extracted `.txt` input |
+| `pdftotext` | system `poppler` | layout-preserving text |
+| `pdfplumber` / `pdfminer` | `pdfplumber` / `pdfminer-six` | pure-Python extraction |
+| `tesseract` / `ocrmypdf` | system tools | OCR for scanned PDFs |
+| `doctr` / `paddleocr` | `doctr` / `paddleocr` | local deep-learning OCR (privacy-friendly) |
+| `gvision` | `googlevision` | Google Cloud Vision OCR |
+
+See {doc}`how-it-works` for the default backend cascade, and {doc}`ai` for the AI
+features.
+
+### docTR / PaddleOCR
+
+Local deep-learning OCR backends — good for scans/photos with little
+pre-processing, and keep data on your machine. The model weights download on
+first run. Select with `--input-reader doctr` or `--input-reader paddleocr`.
 
 ### tesseract
 An [tesseract](https://github.com/tesseract-ocr/tessdoc/blob/main/FAQ.md#how-do-i-get-tesseract) wrapper is included in auto language mode. It will test your input files against the languages installed on your system. To use it, tesseract and imagemagick needs to be installed.

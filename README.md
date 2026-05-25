@@ -1,12 +1,15 @@
+<p align="center">
+  <img src="docs/_static/banner.svg" alt="invoice2data" width="640">
+</p>
+
 # Data extractor for PDF invoices - invoice2data
 
 [![Read the documentation at https://invoice2data.readthedocs.io/](https://img.shields.io/readthedocs/invoice2data/latest.svg?label=Read%20the%20Docs)][read the docs]
-[![invoice2data build status on GitHub Actions](https://github.com/invoice-x/invoice2data/workflows/Test/badge.svg)](https://github.com/invoice-x/invoice2data/actions)
 [![Version](https://img.shields.io/pypi/v/invoice2data.svg)](https://pypi.python.org/pypi/invoice2data)
 [![Support Python versions](https://img.shields.io/pypi/pyversions/invoice2data.svg)](https://pypi.python.org/pypi/invoice2data)
 [![License](https://img.shields.io/pypi/l/invoice2data)][license]
 [![Tests](https://github.com/invoice-x/invoice2data/workflows/Tests/badge.svg)][tests]
-[![Codecov](https://codecov.io/gh/invoice-x/invoice2data/branch/main/graph/badge.svg)][codecov]
+[![Coverage](https://raw.githubusercontent.com/invoice-x/invoice2data/python-coverage-comment-action-data/badge.svg)][coverage]
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
@@ -15,7 +18,7 @@
 [pypi status]: https://pypi.org/project/invoice2data/
 [read the docs]: https://invoice2data.readthedocs.io/
 [tests]: https://github.com/invoice-x/invoice2data/actions?workflow=Tests
-[codecov]: https://app.codecov.io/gh/invoice-x/invoice2data
+[coverage]: https://github.com/invoice-x/invoice2data/actions?workflow=Tests
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [ruff badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
 [ruff project]: https://github.com/charliermarsh/ruff
@@ -23,18 +26,22 @@
 A command line tool and Python library that automates the extraction of key information from invoices to support your accounting
 process. The library is very flexible and can be used on other types of business documents as well.
 
-In essence, invoice2data simplifies the process of getting data from invoices by:
+In essence, invoice2data simplifies getting data from invoices by:
 
-Automating text extraction: No more manual copying and pasting.
-Using templates for structure: Handles different invoice layouts.
-Providing structured output: Makes the data ready for analysis or further processing.
-This makes it a valuable tool for businesses and developers dealing with a large volume of invoices, saving time and reducing errors associated with manual data entry.
+- **Automating text extraction** — no more manual copying and pasting.
+- **Using templates for structure** — handles different invoice layouts.
+- **Providing structured output** — data ready for analysis or further processing.
 
-1. extracts text from PDF files using different techniques, like
-   `pdftotext`, `text`, `ocrmypdf`, `pdfminer`, `pdfplumber` or OCR -- `tesseract`, or
-   `gvision` (Google Cloud Vision).
+This makes it a valuable tool for businesses and developers dealing with a large
+volume of invoices, saving time and reducing manual-entry errors. It:
+
+1. extracts text from PDF files with a pluggable, cascading backend —
+   `pdfium` (default, no system deps), `pdftotext`, `text`, `pdfminer`,
+   `pdfplumber`, or OCR (`tesseract`, `ocrmypdf`, `docTR`, `paddleocr`,
+   `gvision`).
 2. searches for regex in the result using a YAML or JSON-based template system
-3. saves results as CSV, JSON or XML or renames PDF files to match the content.
+   (with an optional [AI fallback](https://invoice2data.readthedocs.io/en/latest/ai.html)).
+3. saves results as CSV, JSON or XML, or renames PDF files to match the content.
 
 With the flexible template system you can:
 
@@ -49,10 +56,10 @@ With the flexible template system you can:
 
 Go from PDF files to this:
 
-    {'date': (2014, 5, 7), 'invoice_number': '30064443', 'amount': 34.73, 'desc': 'Invoice 30064443 from QualityHosting', 'lines': [{'price': 42.0, 'desc': u'Small Business StandardExchange 2010\nGrundgeb\xfchr pro Einheit\nDienst: OUDJQ_office\n01.05.14-31.05.14\n', 'pos': u'7', 'qty': 1.0}]}
-    {'date': (2014, 6, 4), 'invoice_number': 'EUVINS1-OF5-DE-120725895', 'amount': 35.24, 'desc': 'Invoice EUVINS1-OF5-DE-120725895 from Amazon EU'}
-    {'date': (2014, 8, 3), 'invoice_number': '42183017', 'amount': 4.11, 'desc': 'Invoice 42183017 from Amazon Web Services'}
-    {'date': (2015, 1, 28), 'invoice_number': '12429647', 'amount': 101.0, 'desc': 'Invoice 12429647 from Envato'}
+    {'issuer': 'QualityHosting', 'amount': 34.73, 'date': datetime.datetime(2014, 5, 7, 0, 0), 'invoice_number': '30064443', 'currency': 'EUR', 'desc': 'Invoice 30064443 from QualityHosting', 'template_name': 'com.qualityhosting.yml'}
+    {'issuer': 'Amazon EU', 'amount': 35.24, 'date': datetime.datetime(2014, 6, 4, 0, 0), 'invoice_number': 'EUVINS1-OF5-DE-120725895', 'currency': 'EUR', 'desc': 'Invoice EUVINS1-OF5-DE-120725895 from Amazon EU'}
+    {'issuer': 'Amazon Web Services', 'amount': 4.11, 'date': datetime.datetime(2014, 8, 3, 0, 0), 'invoice_number': '42183017', 'currency': 'USD', 'desc': 'Invoice 42183017 from Amazon Web Services'}
+    {'issuer': 'Envato', 'amount': 101.0, 'date': datetime.datetime(2015, 1, 28, 0, 0), 'invoice_number': '12429647', 'currency': 'USD', 'desc': 'Invoice 12429647 from Envato'}
 
 
 ## Usage

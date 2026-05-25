@@ -1,7 +1,6 @@
-Frequently asked Questions
-==========================
+# Frequently asked Questions
 
-## Can invoice2data output ubl compliant invoices?
+## Can invoice2data output UBL compliant invoices?
 
 While invoice2data is excellent at extracting data from invoices, it currently cannot output fully compliant UBL (Universal Business Language) invoices. Here's why:
 
@@ -20,7 +19,7 @@ While invoice2data is excellent at extracting data from invoices, it currently c
 
 Despite these limitations, invoice2data remains a valuable tool for automating data extraction from invoices. Its output can be a crucial first step in generating UBL invoices or integrating with other systems that require structured invoice data.
 
-## What is the easiest wway to generate a invoice2data template?
+## What is the easiest way to generate an invoice2data template?
 
 The easiest way to generate an invoice2data template is to **start with an existing one and modify it.** Here's a step-by-step guide:
 
@@ -57,36 +56,36 @@ Let's say you have an invoice from "Acme Corp." and you find a template for "Exa
 
 By starting with an existing template and iteratively refining it, you can quickly create a template that accurately extracts data from your invoices.
 
-## Can Gemini create invoice2data templates?
+## Can an LLM help create templates?
 
-While Gemini can't directly create ready-to-use invoice2data templates yet, Gemini can definitely help you with the process! Here's how Gemini can assist:
+Yes — and invoice2data has this built in. Point it at a sample document and it
+drafts a template for you:
 
-**1. Understanding Your Invoice:**
+```bash
+invoice2data --new-template sample.pdf --ai --template-out acme.yml
+```
 
-**Provide Gemeini with an example invoice:** You can share an image or a PDF of the invoice you want to process.
-Describe the key fields: Tell Gemini which fields are important to you (e.g., invoice number, date, total amount, line items, etc.).
-Point out any specific challenges: If there are any particular difficulties with the invoice layout or format, let Gemini know.
-**2. Generating Template Components:**
+Without `--ai` it uses deterministic heuristics; with `--ai` it asks your
+configured provider (Gemini, Mistral, DeepSeek, Ollama, ...) to propose the
+regexes. You still get a YAML/JSON template you own and can refine by hand. You
+can also let an LLM extract fields directly when no template matches, with
+`--ai-fallback`. See {doc}`ai` for setup. (You can of course also paste a sample
+into any external chatbot and ask it to draft a template — the built-in commands
+just automate that.)
 
-**Suggesting keywords:** Based on the invoice, Gemini can propose relevant keywords for the keywords field in the template.
-Crafting regular expressions: Gemini can help you create regular expressions to extract specific data fields from the invoice.
-Identifying potential issues: Gemini can analyze the invoice and point out potential challenges that might require more complex regex or template logic.
-**3. Providing Template Structure:**
+## How does invoice2data compare to other tools?
 
-**YAML formatting:** Gemini can help you structure the template in the correct YAML format.
-Organizing fields: Gemini can suggest how to organize the different fields and sections within the template.
-Adding comments and documentation: Gemini can help you add clear comments and documentation to your template to make it easier to understand and maintain.
-**4. Refining the Template:**
+invoice2data occupies a specific niche: **template-driven, deterministic,
+self-hosted** invoice extraction. A rough comparison:
 
-**Analyzing debug output:** If you provide the output of the `--debug option`, Gemini can help you analyze it and identify areas for improvement in the template.
-Suggesting regex modifications: Gemini can propose modifications to your regular expressions to improve accuracy and efficiency.
-Troubleshooting errors: If you encounter any errors, Gemini can help you troubleshoot them and find solutions.
-Example:
+| Tool | Approach | Notes |
+|------|----------|-------|
+| **invoice2data** | Regex/YAML templates per layout, optional LLM fallback | Deterministic and auditable; runs offline; you own the templates; great when you see the same vendors repeatedly. |
+| **invoice2data + AI** | LLM fallback / template generation | Opt-in, text-only, provider-pluggable (cloud or local Ollama). See {doc}`ai`. |
+| **Pure-LLM / document-AI services** (e.g. cloud "invoice parser" APIs) | ML models, no templates | Handle unseen layouts with zero setup, but are non-deterministic, usually paid, and send data to a third party. |
+| **OCR libraries** (tesseract, docTR, PaddleOCR) | Image → text only | Solve a different problem (text extraction); invoice2data *uses* them as backends, then structures the text. |
+| **Camelot / pdfplumber** | Table/text extraction primitives | Lower-level; invoice2data wraps them as plugins/backends and adds the matching + schema layer. |
 
-You: "I have an invoice from 'ABC Company' with a strange date format. Can you help me create a template?"
-
-Me: "Sure! Please share the invoice with me. Gemini can help you identify unique keywords and create a regex to capture that date format."
-
-In essence, Gemini can act as your assistant in the template creation process, providing suggestions, generating code snippets, and helping you refine the template for optimal performance.
-
-While Gemini can't fully automate the process yet, Gemini can significantly speed it up and make it easier for you to create effective invoice2data templates.
+Choose invoice2data when you want predictable, repeatable results you can version
+and run on your own infrastructure. Reach for the AI fallback (or a document-AI
+service) for the long tail of one-off layouts you don't have a template for.

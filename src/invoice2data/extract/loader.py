@@ -23,6 +23,10 @@ except ImportError:  # pragma: no cover
 from .invoice_template import InvoiceTemplate  # type: ignore[unused-ignore]
 
 
+# Public API of this module (keeps the imported InvoiceTemplate out of the
+# generated API docs, where it has its own dedicated entry).
+__all__ = ["ordered_load", "prepare_template", "read_templates"]
+
 logger = getLogger(__name__)
 
 
