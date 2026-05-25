@@ -150,7 +150,9 @@ relative_files = true
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 75
+# Locked in at 90 (combined coverage is ~94%); not the uv-forge template default
+# of 100 — that's unrealistic here. Catches regressions, small buffer for variance.
+fail_under = 90
 exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
 
 [tool.ruff.lint.isort]
