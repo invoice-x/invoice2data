@@ -12,6 +12,27 @@ interface see the [usage](usage) page.
 Load templates with {func}`read_templates <invoice2data.extract.loader.read_templates>`
 (documented under [Extract → loader](#loader)).
 
+### Exceptions
+
+By default `extract_data` returns `{}` on failure. Pass `raise_on_error=True` to
+get a typed exception instead, so a caller can tell *why* extraction failed:
+
+```python
+from invoice2data import extract_data, NoTemplateFoundError, RequiredFieldsMissingError
+
+try:
+    data = extract_data("invoice.pdf", raise_on_error=True)
+except RequiredFieldsMissingError as exc:
+    print("matched a template but missing:", exc.fields)
+except NoTemplateFoundError:
+    print("no template matched")
+```
+
+```{eval-rst}
+.. automodule:: invoice2data.exceptions
+   :members:
+```
+
 ## Input modules
 
 invoice2data resolves a backend by name or module object. When none is forced it

@@ -143,7 +143,10 @@ templates = ordered_load(db_yaml_string, loader=yaml.safe_load)   # or YAML
 result = extract_data(filename, templates=templates)
 ```
 
-See the {doc}`reference` for the full library API.
+By default `extract_data` returns `{}` when nothing matches. Pass
+`raise_on_error=True` to get a typed `InvoiceProcessingError`
+(`RequiredFieldsMissingError` / `NoTemplateFoundError`) instead — see the
+{doc}`reference` for the full library API.
 
 ## Command-line reference
 

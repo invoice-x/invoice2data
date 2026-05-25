@@ -68,6 +68,12 @@ be revisited later — **feedback welcome** on the tracker before any change.
   row is computed from `price_subtotal * line_tax_percent / 100` (never
   overwrites existing values). An advisory warning is logged if `tax_lines`
   don't sum to `amount_tax`.
+- **Typed extraction errors** (issue #190): `extract_data(..., raise_on_error=True)`
+  raises an `InvoiceProcessingError` instead of returning `{}` —
+  `RequiredFieldsMissingError` (with `.fields`) when a template matched but a
+  required field couldn't be parsed, else `NoTemplateFoundError`. Opt-in and
+  non-breaking; the default still returns `{}`. The errors subclass `ValueError`,
+  so existing cascade handling is unaffected. Importable from `invoice2data`.
 - **Tax rate applied to invoice lines** (issue #535): when product `lines` carry
   a `line_tax_code` and the `tax_lines` summary maps that code to a
   `line_tax_percent`, the rate is copied onto each matching line (and its

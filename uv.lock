@@ -1422,7 +1422,7 @@ lint = [
     { name = "ruff", specifier = ">=0.8" },
 ]
 mypy = [{ name = "mypy", specifier = ">=1.13" }]
-ty = [{ name = "ty", specifier = ">=0.0.1" }]
+ty = [{ name = "ty", specifier = "==0.0.39" }]
 typeguard = [{ name = "typeguard", specifier = ">=4.4" }]
 xdoctest = [{ name = "xdoctest", extras = ["colors"], specifier = ">=1.2" }]
 

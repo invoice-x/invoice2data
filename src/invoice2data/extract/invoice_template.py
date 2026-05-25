@@ -10,6 +10,7 @@ from logging import getLogger
 from pprint import pformat
 from typing import Any
 
+from ..exceptions import RequiredFieldsMissingError
 from ..input import extract_text
 from ..input import supports_area
 from . import _dates
@@ -595,4 +596,6 @@ def _check_required_fields(
         f"Output contains the following fields: {fields}."
     )
     missing = set(required_fields) - set(fields)
-    raise ValueError(f"Unable to parse required field(s): {missing}")
+    # RequiredFieldsMissingError subclasses ValueError, so the cascade's existing
+    # `except ValueError` retry handling is unaffected.
+    raise RequiredFieldsMissingError(missing, self.get("template_name"))

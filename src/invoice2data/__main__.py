@@ -14,6 +14,8 @@ from typing import ClassVar
 
 import click
 
+from invoice2data.exceptions import NoTemplateFoundError
+from invoice2data.exceptions import RequiredFieldsMissingError
 from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import read_templates
 from invoice2data.extract.template_builder import suggested_template
@@ -146,6 +148,7 @@ def extract_data(  # noqa: C901
     templates: list[InvoiceTemplate] | None = None,
     input_module: Any = None,
     ai_fallback: bool = False,
+    raise_on_error: bool = False,
 ) -> dict[str, Any]:
     """Extracts structured data from PDF/image invoices.
 
@@ -169,10 +172,20 @@ def extract_data(  # noqa: C901
             match is incomplete) and OCR does not help, extract fields with the
             configured AI provider (see ``INVOICE2DATA_AI_*`` env vars). Result is
             tagged ``extraction_method: "ai"``. Opt-in; defaults to False.
+        raise_on_error (bool, optional): When True, raise a typed
+            :class:`~invoice2data.exceptions.InvoiceProcessingError` on failure
+            instead of returning ``{}`` -- ``RequiredFieldsMissingError`` when a
+            template matched but a required field could not be parsed, otherwise
+            ``NoTemplateFoundError``. Defaults to False (the historical ``{}`` contract).
 
     Returns:
         dict[str, Any]: Extracted and matched fields, or an empty dict ``{}`` if
-            text extraction fails or no template matches.
+            text extraction fails or no template matches (unless
+            ``raise_on_error`` is set).
+
+    Raises:
+        InvoiceProcessingError: When ``raise_on_error`` is True and extraction
+            fails (``RequiredFieldsMissingError`` or ``NoTemplateFoundError``).
 
     Notes:
         Import the required `input_module` when using invoice2data as a library.
@@ -198,6 +211,7 @@ def extract_data(  # noqa: C901
     # input_module forces that backend, pin or not.
     auto = input_module is None
     best: dict[str, Any] | None = None  # complete-but-lineless result, kept as fallback
+    field_errors: list[RequiredFieldsMissingError] = []  # missing-fields reasons (#190)
 
     for reader in readers:
         extracted_str = _safe_to_text(reader, invoicefile)
@@ -231,7 +245,9 @@ def extract_data(  # noqa: C901
                 template = preferred_template
 
         logger.info("Using %s template", template["template_name"])
-        result = _run_template(template, extracted_str, invoicefile, reader)
+        result = _run_template(
+            template, extracted_str, invoicefile, reader, field_errors
+        )
         if result:
             # A template that declares line items but yields none usually means a
             # layout-less backend dropped the table: keep the result but try the
@@ -258,6 +274,12 @@ def extract_data(  # noqa: C901
         return ai_result
 
     logger.error("No template for %s", invoicefile)
+    if raise_on_error:
+        # A matched-but-incomplete template is a more useful reason than "no
+        # template", so prefer the missing-fields error when we have one.
+        if field_errors:
+            raise field_errors[-1]
+        raise NoTemplateFoundError(f"No template matched {invoicefile}")
     return {}
 
 
@@ -430,7 +452,11 @@ def _preferred_module(template: InvoiceTemplate, used: Any) -> Any:
 
 
 def _run_template(
-    template: InvoiceTemplate, extracted_str: str, invoicefile: str, reader: Any
+    template: InvoiceTemplate,
+    extracted_str: str,
+    invoicefile: str,
+    reader: Any,
+    errors: list[RequiredFieldsMissingError] | None = None,
 ) -> dict[str, Any]:
     """Run a matched template, returning ``{}`` if required fields are missing.
 
@@ -439,6 +465,8 @@ def _run_template(
         extracted_str (str): The extracted invoice text.
         invoicefile (str): Path to the invoice file.
         reader (Any): The backend that produced ``extracted_str``.
+        errors (list[RequiredFieldsMissingError] | None): When given, a missing-fields
+            failure is appended here (so the caller can surface why it failed).
 
     Returns:
         dict[str, Any]: The extracted fields, or ``{}`` when the template matched
@@ -454,6 +482,8 @@ def _run_template(
             reader.__name__,
             exc,
         )
+        if errors is not None and isinstance(exc, RequiredFieldsMissingError):
+            errors.append(exc)
         return {}
 
 
