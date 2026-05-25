@@ -30,7 +30,7 @@ is_available = ocrmypdf_available
 
 
 # Default options for redo-ocr to act as a fallback when pdftotext fails
-OPTIONS_DEFAULT = {
+OPTIONS_DEFAULT: dict[str, Any] = {
     "redo_ocr": True,
     "optimize": 0,
     "output_type": "pdf",

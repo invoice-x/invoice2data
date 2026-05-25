@@ -149,11 +149,13 @@ def mypy(session: nox.Session) -> None:
 def ty(session: nox.Session) -> None:
     """Type-check using ty (Astral, beta).
 
-    Runs alongside mypy, which remains the authoritative type checker until ty
-    reaches a stable release.
+    Runs alongside mypy (the authoritative checker) as a second, fast gate. ty is
+    green on ``src`` and pinned in the ``ty`` group so a new beta release can't
+    silently break CI.
     """
-    # Check src only: ty is advisory and mypy remains authoritative for tests
-    # (which use test-only fixtures ty can't resolve without the dev group).
+    # Check src only. mypy stays authoritative for tests because ty does not
+    # honour mypy's ``# type: ignore`` comments that the test fixtures rely on
+    # (ty would report them as errors). Revisit when ty has stable suppression.
     args = session.posargs or ["src"]
     session.run(
         "uv",

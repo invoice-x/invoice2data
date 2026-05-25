@@ -76,7 +76,7 @@ docs = [
     "sphinxcontrib-svg2pdfconverter >=2.1.0",
 ]
 mypy = ["mypy >= 1.13"]
-ty = ["ty >= 0.0.1"]
+ty = ["ty == 0.0.39"]  # beta + fast-moving: pin so new diagnostics don't surprise CI
 typeguard = ["typeguard >= 4.4"]
 xdoctest = ["xdoctest[colors] >= 1.2"]
 
