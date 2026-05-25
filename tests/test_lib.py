@@ -62,6 +62,7 @@ class TestLIB(unittest.TestCase):
             )  # Check why logger.info is not working, for the time being using print
             self.assertTrue(isinstance(res, dict), "return is not a dict")
 
+    @unittest.skipUnless(shutil.which("pdftotext"), "pdftotext (poppler) not installed")
     def test_extract_data_pdftotext(self) -> None:
         pdf_files = get_sample_files(".pdf")
         for file in pdf_files:

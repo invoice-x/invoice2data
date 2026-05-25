@@ -25,7 +25,18 @@ def ocrmypdf_available() -> bool:
 
 needs_ocrmypdf = unittest.skipIf(not ocrmypdf_available(), reason="requires ocrmypdf")
 
+# The CLI golden tests drive the bundled compare PDFs through templates, some of
+# which pin ``input_module: pdftotext`` (or rely on the cascade's poppler
+# fallback). Skip the whole class when poppler is absent — e.g. on a Windows
+# runner where the system-dep install didn't land — so it stays green on the
+# pypdfium2-only path.
+needs_pdftotext = unittest.skipUnless(
+    shutil.which("pdftotext"),
+    reason="requires pdftotext (poppler) for layout-pinned templates",
+)
 
+
+@needs_pdftotext
 class TestCLI(unittest.TestCase):
     def setUp(self) -> None:
         self.templates = read_templates()

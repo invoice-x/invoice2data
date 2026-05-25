@@ -24,7 +24,7 @@ jobs:
           - { python: "3.12", os: "ubuntu-latest", session: "tests" }
           - { python: "3.11", os: "ubuntu-latest", session: "tests" }
           - { python: "3.10", os: "ubuntu-latest", session: "tests" }
-          # - { python: "3.12", os: "windows-latest", session: "tests" }
+          - { python: "3.12", os: "windows-latest", session: "tests" }
           - { python: "3.12", os: "macos-latest", session: "tests" }
           # - { python: "3.12", os: "ubuntu-latest", session: "typeguard" }
           - { python: "3.13", os: "ubuntu-latest", session: "xdoctest" }
@@ -79,6 +79,11 @@ jobs:
 
       - name: Install system dependencies (windows-latest)
         if: matrix.os == 'windows-latest'
+        # Best-effort: the default backend (pypdfium2) needs no system binaries,
+        # and the poppler/tesseract-dependent tests skip when their binary is
+        # absent. So Chocolatey flakiness must not fail the Windows job — it just
+        # means fewer tests run. Add what installs cleanly.
+        continue-on-error: true
         run: |
           choco install --yes --no-progress --pre tesseract
           choco install --yes --no-progress --ignore-checksums ghostscript --version 9.56.1
