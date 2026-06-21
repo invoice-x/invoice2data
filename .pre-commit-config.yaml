@@ -15,6 +15,8 @@ repos:
         entry: check-yaml
         language: system
         types: [yaml]
+        # conda-recipe/meta.yaml uses Jinja2 (`{% set %}`) → not parseable as plain YAML.
+        exclude: ^conda-recipe/meta\.yaml$
         args: [--unsafe] # needed to allow duplicate keys
       - id: end-of-file-fixer
         name: Fix End of Files

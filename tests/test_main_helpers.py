@@ -69,7 +69,9 @@ def test_plain_log_formatter_is_ansi_free() -> None:
 
 
 def test_json_log_formatter_emits_one_json_object() -> None:
-    payload = json.loads(JsonLogFormatter().format(_record("json msg", logging.WARNING)))
+    payload = json.loads(
+        JsonLogFormatter().format(_record("json msg", logging.WARNING))
+    )
     assert payload["level"] == "WARNING"
     assert payload["message"] == "json msg"
     assert payload["name"] == "invoice2data"
@@ -82,4 +84,6 @@ def test_run_new_template_exits_when_no_text(
 
     monkeypatch.setattr(main_module, "_sample_text", lambda *a, **k: "")
     with pytest.raises(SystemExit):
-        _run_new_template("missing.pdf", use_ai=False, template_out=None, input_module=None)
+        _run_new_template(
+            "missing.pdf", use_ai=False, template_out=None, input_module=None
+        )
