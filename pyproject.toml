@@ -1,12 +1,13 @@
 [build-system]
 # mypyc compilation (setup.py, gated by INVOICE2DATA_COMPILE_MYPYC) needs
 # setuptools + mypy at build time. mypyc must see the types of every dependency
-# used by the compiled modules, so list them here too.
+# used by the compiled modules, so list them here too. (dateparser is NOT here
+# because `_dates.py` -- the only module that imports it -- is intentionally
+# not compiled; keeping dateparser truly optional at install time.)
 requires = [
     "setuptools>=64",
     "mypy>=1.13",
     "click>=8.0.1",
-    "dateparser>=1.2.0",
     "PyYAML>=6.0",
     "regex>=2024.4.16",
 ]
