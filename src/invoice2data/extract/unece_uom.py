@@ -41,7 +41,7 @@ UNECE_CODES: dict[str, str] = {
     "l": "LTR",
     "ltr": "LTR",
     "lt": "LTR",
-    "ℓ": "LTR",
+    "ℓ": "LTR",  # noqa: RUF001 — Greek script-small-L is the intended printed litre symbol
     "liter": "LTR",
     "litre": "LTR",
     "liters": "LTR",

@@ -161,7 +161,7 @@ By default `extract_data` returns `{}` when nothing matches. Pass
 (`RequiredFieldsMissingError` / `NoTemplateFoundError`) instead — see the
 {doc}`reference` for the full library API.
 
-### Authoring camelot templates with Excalibur
+### Authoring camelot templates with Excalibur (or a notebook)
 
 [Excalibur](https://github.com/camelot-dev/excalibur) is Camelot's visual web
 UI for picking table regions on a PDF. Once you have saved a rule there, export
@@ -178,6 +178,21 @@ print(excalibur_to_camelot_yaml(rule_options, field="lines"))
 
 The output is a `camelot:` block (one entry per page) that drops straight into
 your template — pairs with the `invoice2data[camelot]` plugin.
+
+```{note}
+Excalibur is slow-cadence (v1.0.1 in January 2025, nothing since). A Jupyter
+notebook is a faster-iterating alternative for picking `table_areas` /
+`columns`: load the PDF with `camelot.read_pdf(...)`, plot detected tables
+with `camelot.plot(table, kind='contour')` until the regions look right, then
+hand-build the rule and convert it the same way:
+
+​    rule = {"flavor": "stream",
+            "pages": {"1": {"table_areas": [...], "columns": [...]}}}
+​    print(excalibur_to_camelot_yaml(rule))
+
+`excalibur_to_camelot_yaml` accepts any dict in the same shape, so you do not
+need Excalibur installed to use it.
+```
 
 ## Command-line reference
 

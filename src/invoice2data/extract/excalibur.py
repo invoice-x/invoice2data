@@ -14,6 +14,13 @@ Round-trip semantics mirror Excalibur's ``tasks.extract`` exactly: per-page
 kwargs are merged with the top-level kwargs, ``flavor`` is lower-cased, and
 ``columns`` is dropped when ``flavor`` is ``lattice`` (it has no effect there).
 
+.. note::
+   Excalibur is slow-cadence (v1.0.1 in January 2025, nothing since). A Jupyter
+   notebook with ``camelot.plot(table, kind='contour')`` is a faster-iterating
+   alternative for picking ``table_areas`` / ``columns``. The functions here
+   accept any dict in the same shape, so they work the same on a notebook-
+   crafted rule -- you do not need Excalibur installed.
+
 Example::
 
     >>> from invoice2data.extract.excalibur import excalibur_to_template
