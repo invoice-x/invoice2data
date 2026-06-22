@@ -51,7 +51,11 @@ jobs:
         run: uv venv
 
       - name: Install system dependencies (Linux)
-        if: matrix.os == 'ubuntu-latest'
+        # poppler/tesseract/ocrmypdf are only exercised by sessions that actually
+        # extract — skip the apt install on lint/type-check/docs jobs to shave
+        # ~20s off most matrix runs. xdoctest runs the extract_data doctest, so
+        # it needs them; mypy/ty/pre-commit/pip-audit/docs-build do not.
+        if: matrix.os == 'ubuntu-latest' && (matrix.session == 'tests' || matrix.session == 'xdoctest' || matrix.session == 'typeguard')
         run: |
           sudo apt update
           sudo apt install tesseract-ocr poppler-utils imagemagick ghostscript
