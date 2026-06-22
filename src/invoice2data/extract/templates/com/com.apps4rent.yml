@@ -7,5 +7,7 @@ keywords:
   - Apps4Rent
   - Maplewood
 options:
+  date_formats:
+    - '%m/%d/%Y'
   currency: USD
   remove_whitespace: true

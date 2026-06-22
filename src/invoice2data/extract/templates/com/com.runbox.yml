@@ -60,6 +60,8 @@ keywords:
 required_fields:
   - lines
 options:
+  date_formats:
+    - '%Y-%m-%d'
   languages:
     - en
   currency: EUR

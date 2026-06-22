@@ -29,16 +29,35 @@
       "amountcurrency": "float"
     }
   },
-  "keywords": ["Alibaba.com Singapore E-Commerce Private Limited"],
+  "keywords": [
+    "Alibaba.com Singapore E-Commerce Private Limited"
+  ],
   "options": {
     "currency": "EUR",
-    "languages": ["en"],
+    "languages": [
+      "en"
+    ],
     "decimal_separator": ".",
     "replace": [
-      ["\\s-\\s", "1"],
-      ["/", "_"],
-      ["\\n\\n", "\\n"],
-      ["\\n\\s\\s\\s", ""]
+      [
+        "\\s-\\s",
+        "1"
+      ],
+      [
+        "/",
+        "_"
+      ],
+      [
+        "\\n\\n",
+        "\\n"
+      ],
+      [
+        "\\n\\s\\s\\s",
+        ""
+      ]
+    ],
+    "date_formats": [
+      "%Y-%m-%d"
     ]
   }
 }

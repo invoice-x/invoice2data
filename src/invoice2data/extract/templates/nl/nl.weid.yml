@@ -64,6 +64,8 @@ keywords:
   - We-ID
   - EUR
 options:
+  date_formats:
+    - '%d/%m/%Y'
   currency: EUR
   languages:
     - nl

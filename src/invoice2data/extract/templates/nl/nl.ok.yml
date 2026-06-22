@@ -59,6 +59,8 @@ keywords:
   - OK
   - €
 options:
+  date_formats:
+    - '%d-%m-%Y %H:%M:%S'
   currency: EUR
   languages:
     - nl

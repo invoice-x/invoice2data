@@ -70,7 +70,9 @@
     },
     "date": {
       "parser": "regex",
-      "regex": ["datum\\s+\\S\\s+(\\d{2}-\\d{2}-\\d{4})"],
+      "regex": [
+        "datum\\s+\\S\\s+(\\d{2}-\\d{2}-\\d{4})"
+      ],
       "group": "min",
       "type": "date"
     },
@@ -97,10 +99,19 @@
       "regex": "BTW-nummer\\s+\\S?\\s+(\\w{2}\\d{9}B\\d{2})"
     }
   },
-  "keywords": ["Factuur", "Marktplaats", "28058712"],
+  "keywords": [
+    "Factuur",
+    "Marktplaats",
+    "28058712"
+  ],
   "options": {
-    "languages": ["nl"],
+    "languages": [
+      "nl"
+    ],
     "decimal_separator": ",",
-    "currency": "EUR"
+    "currency": "EUR",
+    "date_formats": [
+      "%d-%m-%Y"
+    ]
   }
 }

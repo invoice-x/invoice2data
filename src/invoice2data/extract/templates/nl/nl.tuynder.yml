@@ -67,6 +67,8 @@ keywords:
   - NL820781812B01
   - EUR
 options:
+  date_formats:
+    - '%d-%m-%y'
   currency: EUR
   languages:
     - nl

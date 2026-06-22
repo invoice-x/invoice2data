@@ -25,6 +25,8 @@ keywords:
   - NL812334966B01
   - TransIP
 options:
+  date_formats:
+    - '%d-%m-%Y'
   currency: EUR
   languages:
     - nl

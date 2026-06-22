@@ -59,13 +59,17 @@
     },
     "date": {
       "parser": "regex",
-      "regex": ["Datum[:]\\s+(\\d{2}[-]\\d{2}[-]\\d{4})"],
+      "regex": [
+        "Datum[:]\\s+(\\d{2}[-]\\d{2}[-]\\d{4})"
+      ],
       "group": "min",
       "type": "date"
     },
     "date_due": {
       "parser": "regex",
-      "regex": ["Datum[:]\\s+(\\d{2}[-]\\d{2}[-]\\d{4})"],
+      "regex": [
+        "Datum[:]\\s+(\\d{2}[-]\\d{2}[-]\\d{4})"
+      ],
       "group": "max",
       "type": "date"
     },
@@ -134,10 +138,19 @@
       }
     }
   ],
-  "keywords": ["MEGEKKO", "NL808060016B01", "FACTUUR"],
+  "keywords": [
+    "MEGEKKO",
+    "NL808060016B01",
+    "FACTUUR"
+  ],
   "options": {
-    "languages": ["nl"],
+    "languages": [
+      "nl"
+    ],
     "decimal_separator": ".",
-    "currency": "EUR"
+    "currency": "EUR",
+    "date_formats": [
+      "%d-%m-%Y"
+    ]
   }
 }

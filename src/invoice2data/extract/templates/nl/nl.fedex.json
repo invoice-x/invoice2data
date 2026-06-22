@@ -42,10 +42,21 @@
       "regex": "BIC[:]\\s+(\\w{8,11})"
     }
   },
-  "keywords": ["(?i)fedex", "(?i)NL857768578B01", "(?i)nl", "(?i)factuur"],
+  "keywords": [
+    "(?i)fedex",
+    "(?i)NL857768578B01",
+    "(?i)nl",
+    "(?i)factuur"
+  ],
   "options": {
     "currency": "EUR",
-    "languages": ["nl"],
-    "decimal_separator": ","
+    "languages": [
+      "nl"
+    ],
+    "decimal_separator": ",",
+    "date_formats": [
+      "%d-%m-%Y",
+      "%d/%m/%Y"
+    ]
   }
 }

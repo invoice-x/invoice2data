@@ -95,6 +95,8 @@ keywords:
 required_fields:
   - amount_tax
 options:
+  date_formats:
+    - '%d-%m-%Y'
   decimal_separator: ","
   languages:
     - nl

@@ -8,6 +8,8 @@ keywords:
   - IBANBE68370103949634
   - FACTURE
 options:
+  date_formats:
+    - '%d/%m/%Y'
   currency: EUR
   remove_whitespace: true
   decimal_separator: ","

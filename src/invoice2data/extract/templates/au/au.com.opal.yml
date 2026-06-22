@@ -23,5 +23,7 @@ lines:
   line: '^[ ]{18,24}(?P<datestamp>(\d\d/\d\d/\d\d)?)[ ]{,32}(?P<details>\S+( \S+)*)?$'
   last_line: "^$"
 options:
+  date_formats:
+    - '%H:%M %d %b %Y'
   currency: AUD
   remove_whitespace: false

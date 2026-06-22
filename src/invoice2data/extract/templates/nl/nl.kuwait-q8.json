@@ -74,11 +74,22 @@
   ],
   "options": {
     "currency": "EUR",
-    "languages": ["nl"],
+    "languages": [
+      "nl"
+    ],
     "decimal_separator": ".",
     "replace": [
-      ["Euro 95", "E10 (Euro 95)"],
-      ["GASOIL - DIESEL", "Diesel"]
+      [
+        "Euro 95",
+        "E10 (Euro 95)"
+      ],
+      [
+        "GASOIL - DIESEL",
+        "Diesel"
+      ]
+    ],
+    "date_formats": [
+      "%d/%m/%Y"
     ]
   }
 }

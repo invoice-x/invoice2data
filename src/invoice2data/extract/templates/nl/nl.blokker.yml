@@ -69,6 +69,8 @@ keywords:
   - NL854525154B01
   - €
 options:
+  date_formats:
+    - '%d-%m-%y'
   currency: EUR
   languages:
     - nl

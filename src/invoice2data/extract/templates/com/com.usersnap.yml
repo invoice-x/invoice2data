@@ -6,5 +6,7 @@ fields:
 keywords:
   - ATU67824857
 options:
+  date_formats:
+    - '%Y-%m-%d'
   remove_whitespace: true
   currency: USD

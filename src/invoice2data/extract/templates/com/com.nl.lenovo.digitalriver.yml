@@ -54,6 +54,8 @@ keywords:
   - "NL815471166B01"
   - "Factuur"
 options:
+  date_formats:
+    - '%d.%m.%Y'
   currency: EUR
   languages:
     - nl
