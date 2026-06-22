@@ -10,6 +10,11 @@ jobs:
   tests:
     name: ${{ matrix.session }} ${{ matrix.python }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    # Windows is best-effort: chocolatey poppler is flaky and the Windows
+    # poppler builds extract subtly different text than Linux poppler, so the
+    # golden compare tests don't always match bit-for-bit. The job runs (so we
+    # still get a smoke signal) but doesn't block PR merges.
+    continue-on-error: ${{ matrix.os == 'windows-latest' }}
     strategy:
       fail-fast: false
       matrix:

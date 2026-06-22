@@ -61,7 +61,19 @@ def dict_to_tags(
         elif isinstance(v, list):
             for e in v:
                 item = ElementTree.SubElement(tag, "item")
-                dict_to_tags(item, e, date_format)
+                # Scalar list elements (lines parsed without grouping, an
+                # `amounts:` list, ...) used to fall through to
+                # `dict_to_tags(item, e, ...)` which calls `e.items()` and blew
+                # up with `AttributeError: 'float' object has no attribute
+                # 'items'`. Type-dispatch on the element instead.
+                if isinstance(e, dict):
+                    dict_to_tags(item, e, date_format)
+                elif isinstance(e, str):
+                    item.text = e
+                elif isinstance(e, int | float):
+                    item.text = str(e)
+                elif isinstance(e, datetime.date):
+                    item.text = e.strftime(date_format)
 
 
 def write_to_file(
