@@ -161,6 +161,24 @@ By default `extract_data` returns `{}` when nothing matches. Pass
 (`RequiredFieldsMissingError` / `NoTemplateFoundError`) instead — see the
 {doc}`reference` for the full library API.
 
+### Authoring camelot templates with Excalibur
+
+[Excalibur](https://github.com/camelot-dev/excalibur) is Camelot's visual web
+UI for picking table regions on a PDF. Once you have saved a rule there, export
+its `rule_options` JSON and turn it into a ready-to-paste template stanza:
+
+```python
+from invoice2data.extract.excalibur import excalibur_to_camelot_yaml
+
+with open("excalibur_rule.json") as fh:
+    rule_options = fh.read()
+
+print(excalibur_to_camelot_yaml(rule_options, field="lines"))
+```
+
+The output is a `camelot:` block (one entry per page) that drops straight into
+your template — pairs with the `invoice2data[camelot]` plugin.
+
 ## Command-line reference
 
 ```{eval-rst}
