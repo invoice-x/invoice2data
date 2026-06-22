@@ -31,7 +31,7 @@ from collections.abc import Mapping
 from typing import Any
 
 
-__all__ = ["excalibur_to_template", "excalibur_to_camelot_yaml"]
+__all__ = ["excalibur_to_camelot_yaml", "excalibur_to_template"]
 
 _DEFAULT_FLAVOR = "lattice"
 
@@ -54,10 +54,22 @@ def excalibur_to_template(
             template diff-able against the Excalibur rule.
 
     Raises:
-        ValueError: When ``rule_options`` is a string that doesn't parse as
-            JSON, or when it isn't a mapping (no top-level ``pages`` to walk).
+        ValueError: When ``rule_options`` is a string that doesn't parse as JSON.
+        TypeError: When ``rule_options`` (or its JSON-decoded form) is not a mapping.
     """
-    options = _coerce_to_dict(rule_options)
+    if isinstance(rule_options, str):
+        try:
+            parsed = json.loads(rule_options)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"rule_options is not valid JSON: {exc}") from exc
+    else:
+        parsed = rule_options
+    if not isinstance(parsed, Mapping):
+        raise TypeError(
+            "rule_options must be a mapping or a JSON object, got "
+            f"{type(parsed).__name__}"
+        )
+    options = dict(parsed)
     flavor = str(options.pop("flavor", _DEFAULT_FLAVOR)).lower()
     pages = options.pop("pages", {}) or {}
     shared_kwargs = options  # everything else is shared across pages
@@ -97,10 +109,6 @@ def excalibur_to_camelot_yaml(
               pages: '1'
               flavor: stream
               field: lines
-
-    Raises:
-        ImportError: When PyYAML is not importable (it's a core dependency,
-            so this should never fire in normal installs).
     """
     import yaml  # type: ignore[import-untyped]
 
@@ -109,29 +117,3 @@ def excalibur_to_camelot_yaml(
         block.setdefault("field", field)
     rendered: str = yaml.safe_dump({"camelot": blocks}, sort_keys=False)
     return rendered
-
-
-def _coerce_to_dict(rule_options: Mapping[str, Any] | str) -> dict[str, Any]:
-    """Accept either a mapping or a JSON string; return a fresh dict.
-
-    Args:
-        rule_options (Mapping[str, Any] | str): Either a mapping or JSON string.
-
-    Returns:
-        dict[str, Any]: A shallow-copied dict (safe to mutate).
-
-    Raises:
-        ValueError: On unparseable JSON or non-mapping input.
-    """
-    if isinstance(rule_options, str):
-        try:
-            parsed = json.loads(rule_options)
-        except json.JSONDecodeError as exc:
-            raise ValueError(f"rule_options is not valid JSON: {exc}") from exc
-    else:
-        parsed = rule_options
-    if not isinstance(parsed, Mapping):
-        raise ValueError(
-            f"rule_options must be a mapping or a JSON object, got {type(parsed).__name__}"
-        )
-    return dict(parsed)

@@ -17,6 +17,7 @@ from . import _dates
 from . import _regex
 from . import parsers
 from . import schema
+from . import unece_uom
 from .plugins import camelot
 from .plugins import lines
 from .plugins import tables
@@ -268,8 +269,10 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             if plugin_keyword in self.keys():
                 plugin_func.extract(self, optimized_str, output, invoice_file)
         # Normalise line/tax_line field names to the canonical vocabulary before
-        # any computation/validation runs on them.
+        # any computation/validation runs on them. Then derive `unece_code` from
+        # captured `uom` literals so the OCA Odoo importer can map it straight.
         schema.normalize_line_fields(output)
+        unece_uom.normalize_lines_uom(output)
         _apply_tax_to_lines(output)
         _compute_line_tax(output)
         _validate_tax_total(output, self["template_name"])

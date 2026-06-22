@@ -74,6 +74,15 @@ be revisited later — **feedback welcome** on the tracker before any change.
   required field couldn't be parsed, else `NoTemplateFoundError`. Opt-in and
   non-breaking; the default still returns `{}`. The errors subclass `ValueError`,
   so existing cascade handling is unaffected. Importable from `invoice2data`.
+- **UoM → UNECE Rec 20 normalization** (issue #497 follow-up): each line's
+  printed `uom` literal is mapped to a canonical UNECE Recommendation 20 code
+  on `unece_code` when the latter is missing (e.g. `kg → KGM`, `pcs → H87`,
+  `l → LTR`). Auto-populates only — an explicit `unece_code` always wins and
+  unknown literals are left alone. Lookup lives in `extract.unece_uom`. See
+  *UoM normalization* in `docs/recommended-template-fields.md` for the full
+  table. **Additive but visible**: output dicts now carry the extra key
+  for any line that previously had a known `uom` literal without an
+  `unece_code`.
 - **Tax rate applied to invoice lines** (issue #535): when product `lines` carry
   a `line_tax_code` and the `tax_lines` summary maps that code to a
   `line_tax_percent`, the rate is copied onto each matching line (and its

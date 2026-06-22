@@ -89,8 +89,8 @@ def test_bad_json_string_raises_value_error() -> None:
         excalibur_to_template("not-json")
 
 
-def test_non_mapping_input_raises_value_error() -> None:
-    with pytest.raises(ValueError, match="must be a mapping"):
+def test_non_mapping_input_raises_type_error() -> None:
+    with pytest.raises(TypeError, match="must be a mapping"):
         excalibur_to_template("[1, 2, 3]")
 
 

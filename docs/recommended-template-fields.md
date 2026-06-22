@@ -71,8 +71,8 @@ To be used in the lines section:
 | barcode | char | The the barcode of the product or product package, used for product matching |
 | code | char | The (internal) product code, used for product matching |
 | qty | float | The amount of items/units |
-| unece_code | char | The unece code of the products units of measure can be passed |
-| uom | char | The name of the unit of measure, internally if will be mapped to the unece code. Example L will be mapped to unece_code LTR |
+| unece_code | char | The unece code (Recommendation 20) of the line's unit of measure. Auto-derived from `uom` when present — see *UoM normalization* below. |
+| uom | char | The printed unit of measure exactly as it appears on the invoice; mapped to `unece_code` when the literal is known. |
 | price_unit | float | The unit price of the item. (excluding taxes) |
 | discount | float | The amount of discount for this line. Eg 20 for 20% discount or 0.0 for no discount |
 | price_total | float | The total amount of the invoice line including taxes. It can be used to select the correct tax tag. |
@@ -91,6 +91,34 @@ To be used in the lines section:
         end: \s+Total
         line: (?P<name>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
 ```
+
+### UoM normalization (UNECE Rec 20)
+
+invoice2data normalizes the printed unit of measure to its UNECE
+Recommendation 20 code — the same code OCA's
+`account_invoice_import_invoice2data` consumes — by mapping common literals on
+each line:
+
+| literal (case-insensitive)              | UNECE code |
+| --------------------------------------- | ---------- |
+| `l`, `ltr`, `liter`, `litre`, `ℓ`       | `LTR`      |
+| `ml`                                    | `MLT`      |
+| `kg`, `kilogram`                        | `KGM`      |
+| `g`, `gr`, `gram`                       | `GRM`      |
+| `m`, `meter`, `metre`                   | `MTR`      |
+| `cm` / `mm` / `km`                      | `CMT` / `MMT` / `KMT` |
+| `pcs`, `pc`, `piece`, `ea`, `unit`, `stuk`, `stk`, `x`, ...  | `H87` |
+| `set`                                   | `SET`      |
+| `h`, `hour`, `uur`                      | `HUR`      |
+| `min`, `minute`                         | `MIN`      |
+| `d`, `day`, `dag`                       | `DAY`      |
+| `month`, `maand`, `mnd`                 | `MON`      |
+| `year`, `jaar`                          | `ANN`      |
+
+A template that already captures `unece_code` directly always wins; the
+mapping only fills in `unece_code` when it's missing. Unknown literals are
+left alone (their `uom` is preserved). To add literals, extend
+`UNECE_CODES` in `invoice2data.extract.unece_uom`.
 
 ## Tax Line Fields
 
