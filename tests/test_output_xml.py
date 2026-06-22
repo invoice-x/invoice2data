@@ -29,7 +29,8 @@ def test_xml_handles_all_value_types(tmp_path: Path) -> None:
 
 
 def test_xml_handles_scalar_lists(tmp_path: Path) -> None:
-    """Regression: a list of floats / strings / dates used to blow up with
+    """Regression: a list of floats / strings / dates used to blow up.
+
     `AttributeError: 'float' object has no attribute 'items'` because the
     list branch recursed into dict_to_tags() unconditionally.
     """
