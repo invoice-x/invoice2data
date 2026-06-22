@@ -70,6 +70,21 @@ def findall(pattern: str, string: str, flags: int = 0) -> Any:
     return compile(pattern, flags).findall(string)
 
 
+def finditer(pattern: str, string: str, flags: int = 0) -> Any:
+    """Iterate over all non-overlapping match objects of ``pattern`` in ``string``.
+
+    Args:
+        pattern (str): The regular expression pattern.
+        string (str): The text to search.
+        flags (int): Regex flags. Defaults to 0.
+
+    Returns:
+        Any: A callable iterator yielding ``re.Match`` objects (or the active
+            engine's equivalent).
+    """
+    return compile(pattern, flags).finditer(string)
+
+
 def split(pattern: str, string: str, maxsplit: int = 0, flags: int = 0) -> Any:
     """Split ``string`` by occurrences of ``pattern``.
 

@@ -81,8 +81,11 @@ def test_extract_number_keeps_sign() -> None:
 
 
 def test_extract_number_returns_input_on_no_digits() -> None:
-    """No digits -> hand the value back so downstream coerce/parse logs the
-    real problem instead of swallowing it as ``""``."""
+    """No digits -> hand the value back unchanged.
+
+    Downstream coerce/parse will then log the real problem instead of
+    swallowing it as ``""``.
+    """
     assert _extract_number("N/A") == "N/A"
     assert _extract_number("") == ""
 
@@ -111,24 +114,23 @@ def test_regex_parser_extract_number_float() -> None:
         "type": "float",
         "extract_number": True,
     }
-    result = regex_parser.parse(
-        _TEMPLATE_STUB, "price", settings, "price €25.50"
-    )
+    result = regex_parser.parse(_TEMPLATE_STUB, "price", settings, "price €25.50")
     assert result == 25.50
 
 
 def test_regex_parser_extract_number_off_by_default() -> None:
-    """Without the opt-in, the wider capture stays as-is and coerce_type
-    fails -- the contributor's original change globally broke this path."""
+    """Without the opt-in, the wider capture stays as-is and coerce_type fails.
+
+    (The contributor's original change applied number extraction globally,
+    which silently broke this path for any existing template.)
+    """
     settings = {"regex": r"qty\s+(\d+\s+Stk\.)", "type": "int"}
     # Without extract_number, parse_number cannot turn "12123 Stk." into an
     # int and raises -- the test simply asserts behavior is unchanged.
     import contextlib
 
     with contextlib.suppress(Exception):
-        result = regex_parser.parse(
-            _TEMPLATE_STUB, "qty", settings, "qty 12123 Stk."
-        )
+        result = regex_parser.parse(_TEMPLATE_STUB, "qty", settings, "qty 12123 Stk.")
         # If it didn't raise, the wider string should still be there.
         assert result != 12123
 
@@ -163,9 +165,7 @@ def test_skip_line_list_of_patterns_drops_any_match() -> None:
         r"(?P<name>\w+)\s+(?P<qty>\d+)\s+(?P<price>\d+\.\d+)",
         skip=[r"^Subtotal", r"^VAT"],
     )
-    content = (
-        "Apples 3 1.50\nSubtotal 9 4.50\nVAT 0 0.85\nBananas 2 0.75"
-    )
+    content = "Apples 3 1.50\nSubtotal 9 4.50\nVAT 0 0.85\nBananas 2 0.75"
     result = lines_parser.parse_block(_TEMPLATE_STUB, "lines", settings, content)
     names = [row["name"] for row in result]
     assert names == ["Apples", "Bananas"]

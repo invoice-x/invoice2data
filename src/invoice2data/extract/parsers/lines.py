@@ -143,21 +143,6 @@ def parse_block(  # noqa: RUF100 C901
                     # Flip first_line_found boolean to look for first_line again on next loop
                     first_line_found = False
                     continue
-            # Next we see if this is a line that should be skipped
-            if "skip_line" in settings:
-                # If skip_line was provided, check for a match now
-                if isinstance(settings["skip_line"], list):
-                    # Accepts a list
-                    skip_line_results = [
-                        _regex.search(x, line) for x in settings["skip_line"]
-                    ]
-                else:
-                    # Or a simple string
-                    skip_line_results = [_regex.search(settings["skip_line"], line)]
-                if any(skip_line_results):
-                    # There was at least one match to a skip_line
-                    logger.debug("skip_line match on \ns*%s*", line)
-                    continue
             # If none of those have continued the loop, check if this is just a normal line
             match = parse_line(settings["line"], line)
             if match:
@@ -255,6 +240,14 @@ def parse_by_rule(
 
     blocks_count = 0
     lines = []
+    end_match_strategy = settings.get("end_match", "first")
+    if end_match_strategy not in ("first", "last"):
+        logger.warning(
+            "Template %s: end_match=%r is not 'first' or 'last'; defaulting to 'first'",
+            template.get("template_name"),
+            end_match_strategy,
+        )
+        end_match_strategy = "first"
 
     # Try finding & parsing blocks of lines one by one
     while True:
@@ -264,7 +257,14 @@ def parse_by_rule(
             break
         content = content[start.end() :]
 
-        end = _regex.search(settings["end"], content)
+        if end_match_strategy == "last":
+            # Cross-page recipe: if `end` matches a per-page footer (e.g. a
+            # repeated total/separator block), use the LAST match in this
+            # `start`-bounded slice so the block can span all pages.
+            end_matches = list(_regex.finditer(settings["end"], content))
+            end = end_matches[-1] if end_matches else None
+        else:
+            end = _regex.search(settings["end"], content)
         if not end:
             logger.debug("Failed to find lines block end")
             break
@@ -306,7 +306,16 @@ def parse(
         rules = settings["rules"]
     else:
         # Original syntax stored line-parsing rules in top field YAML object
-        keys = ("start", "end", "line", "first_line", "last_line", "skip_line", "types")
+        keys = (
+            "start",
+            "end",
+            "end_match",
+            "line",
+            "first_line",
+            "last_line",
+            "skip_line",
+            "types",
+        )
         rules = [{k: v for k, v in settings.items() if k in keys}]
 
     lines = []

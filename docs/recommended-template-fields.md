@@ -92,6 +92,31 @@ To be used in the lines section:
         line: (?P<name>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
 ```
 
+### Multi-page invoices (`end_match: last`)
+
+When an invoice's items span multiple pages and the `end` regex matches a
+*repeating* footer (totals/separator block on every page), set
+`end_match: last` so the parser uses the **last** occurrence of `end` in the
+`start`-bounded slice — letting the block span all pages. Combine with
+`skip_line` to drop the per-page header/footer text between item rows.
+
+```yaml
+lines:
+    start: ^ITEMS$
+    end: ^_+\n\s*Total this page
+    end_match: last     # span all pages; default is 'first'
+    line: (?P<sku>\S+)\s+(?P<qty>\d+)\s+(?P<price>[\d.]+)
+    skip_line:
+      - ^Page \d+ of \d+
+      - ^Acme Corp \| Invoice continued
+```
+
+For invoices where one line item's **description** spans multiple text lines
+followed by the amounts on their own line, bracket each item with
+`first_line` (description start) + `line` (continuation, repeats) + `last_line`
+(the amounts row). The `line` matches accumulate into the same record (joined
+with `\n`), and `last_line` closes it.
+
 ### Skipping unwanted lines (`skip_line`)
 
 A `lines` block can drop lines that match an unwanted shape *before* its `line`
