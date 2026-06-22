@@ -92,6 +92,42 @@ To be used in the lines section:
         line: (?P<name>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
 ```
 
+### Skipping unwanted lines (`skip_line`)
+
+A `lines` block can drop lines that match an unwanted shape *before* its `line`
+/ `first_line` / `last_line` matchers see them. Useful when a sub-total, tax,
+or footer line would otherwise wrongly match the line regex.
+
+```yaml
+lines:
+    line: (?P<name>.+)\s+(?P<qty>\d+)\s+(?P<price_total>\d+\.\d+)
+    skip_line:
+      - ^Subtotal
+      - ^VAT
+      - ^Total
+```
+
+A single pattern can be given as a string; multiple as a list.
+
+### Extracting numbers from text (`extract_number`)
+
+For regex fields whose capture contains units or currency mixed with the
+number (e.g. `12123 Stk.`, `€25.50`, `4 Stück`), set `extract_number: true`
+to pluck the first numeric token before type coercion. Sign, thousands and
+decimal separators are preserved; parsing into `int`/`float` then proceeds
+locale-aware via `parse_number`.
+
+```yaml
+fields:
+  qty:
+    parser: regex
+    regex: 'Quantity\s+(\d+\s+Stk\.)'
+    type: int
+    extract_number: true
+```
+
+Opt-in per field — existing `int`/`float` fields keep their current behavior.
+
 ### UoM normalization (UNECE Rec 20)
 
 invoice2data normalizes the printed unit of measure to its UNECE

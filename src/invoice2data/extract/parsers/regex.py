@@ -53,6 +53,8 @@ def parse(
 
     result = _apply_replace(settings, result)
 
+    result = _apply_extract_number(settings, result)
+
     result = _apply_type_coercion(template, settings, result)
 
     result = _apply_grouping(settings, result)
@@ -132,6 +134,54 @@ def _apply_replace(settings: dict[str, Any], result: list[Any]) -> list[Any]:
         return result
     replacements = _normalize_replacements(settings["replace"])
     return [_replace_value(value, replacements) for value in result]
+
+
+#: First numeric token in a string -- sign + digits with optional thousands /
+#: decimal separators (``.``, ``,``, whitespace, ``'``). Does NOT truncate
+#: large numbers: matches ``1234``, ``1234.56``, ``1.234,56``, ``1,234.56``,
+#: ``12123``, ``25.50``, ``-42`` in full. Locale-aware splitting into integer
+#: vs decimal is left to :func:`InvoiceTemplate.parse_number` downstream.
+_NUMBER_RE = r"[-+]?\d+(?:[.,\s']\d+)*"
+
+
+def _extract_number(value: Any) -> Any:
+    """Pluck the first numeric token from a string that may contain units/text.
+
+    Returns the input unchanged if it isn't a string or contains no digits, so
+    later steps (replace, type coercion) see the same value they would have
+    seen without ``extract_number: true``.
+
+    Args:
+        value (Any): A single captured value from the regex parser.
+
+    Returns:
+        Any: The matched numeric substring, or the original value on miss.
+    """
+    if not isinstance(value, str):
+        return value
+    match = _regex.search(_NUMBER_RE, value)
+    return match.group() if match else value
+
+
+def _apply_extract_number(settings: dict[str, Any], result: list[Any]) -> list[Any]:
+    """Extract the first numeric token from each captured value, when opted in.
+
+    Enabled per-field with ``extract_number: true``. Useful when the regex
+    captures a wider region than the number itself (e.g. ``"12123 Stk."`` ->
+    ``"12123"``, ``"€25.50"`` -> ``"25.50"``). Runs *after* ``replace`` and
+    *before* type coercion so ``parse_number`` sees a clean numeric string.
+
+    Args:
+        settings (dict[str, Any]): The field's configuration.
+        result (list[Any]): The list of captured values to process.
+
+    Returns:
+        list[Any]: The list with numeric tokens extracted (unchanged if the
+            field does not opt in).
+    """
+    if not settings.get("extract_number"):
+        return result
+    return [_extract_number(value) for value in result]
 
 
 def _apply_type_coercion(

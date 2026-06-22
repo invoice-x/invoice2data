@@ -95,9 +95,20 @@ def parse_block(  # noqa: RUF100 C901
     # As we enter the loop, we set the boolean for first_line being found to False,
     # This indicates the we are looking for the first_line pattern
     first_line_found = False
+    skip_patterns = settings.get("skip_line")
+    if skip_patterns and not isinstance(skip_patterns, list):
+        skip_patterns = [skip_patterns]
     for line in _regex.split(settings["line_separator"], content):
         # If the line has empty lines in it , skip them
         if not line.strip("").strip("\n").strip("\r") or not line:
+            continue
+        # `skip_line: pattern` or `skip_line: [pat1, pat2]` lets a template drop
+        # lines that match an unwanted shape (e.g. a sub-total / VAT footer that
+        # the line regex would otherwise wrongly match). Issue #652.
+        if skip_patterns and any(
+            _regex.search(pattern, line) for pattern in skip_patterns
+        ):
+            logger.debug("skip_line match on %r", line)
             continue
         if "first_line" in settings:
             # Check if the current lines the first_line pattern
