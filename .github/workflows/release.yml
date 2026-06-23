@@ -65,7 +65,7 @@ jobs:
             arch: aarch64
             runs-on: ubuntu-24.04-arm
           - os: windows
-            arch: amd64
+            arch: AMD64  # cibuildwheel 3.x renamed amd64 -> AMD64 on Windows
             runs-on: windows-latest
           - os: macos
             arch: x86_64
