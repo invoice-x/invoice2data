@@ -6,10 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  # For conda-forge submission, point at the released PyPI sdist and fill in the
-  # sha256 (see conda-recipe/README.md). Until 1.0.0 is on PyPI this is a template.
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 0000000000000000000000000000000000000000000000000000000000000000
+  sha256: 1f3cb559b7e7aa7ee4f7d7dc061e4d45cfd84de47c0f34c45cd5e7b10fce018e
 
 build:
   # Pure-Python: invoice2data's mypyc compilation is opt-in
