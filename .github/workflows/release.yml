@@ -31,11 +31,6 @@ jobs:
     if: github.event_name == 'push'
     name: Build and Publish to TestPyPI
     runs-on: ubuntu-latest
-    # OIDC for Trusted Publishing (now set up on TestPyPI too); the previous
-    # token + password fields are dropped because the pypa action prefers TP
-    # whenever it can fetch an OIDC token.
-    permissions:
-      id-token: write
     steps:
       - name: Check out the repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -50,6 +45,8 @@ jobs:
       - name: Publish to TestPyPI
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
         with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
           skip-existing: true
 
@@ -68,7 +65,7 @@ jobs:
             arch: aarch64
             runs-on: ubuntu-24.04-arm
           - os: windows
-            arch: amd64
+            arch: AMD64  # cibuildwheel 3.x renamed amd64 -> AMD64 on Windows
             runs-on: windows-latest
           - os: macos
             arch: x86_64
@@ -131,21 +128,19 @@ jobs:
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4
         with:
           subject-path: "dist/*.whl, dist/*.tar.gz"
-      - name: Sign the dists with Sigstore
+      - name: Sign the dists with Sigstore + attach to GitHub Release
+        # `release-signing-artifacts: true` (default in v3) uploads both the
+        # signed inputs (.whl, .tar.gz) and their .sigstore.json sidecars to
+        # the GitHub Release that triggered the run. A previous `gh release
+        # upload ./dist/*` step that ran after this one was therefore
+        # redundant and failed with "asset under the same name already exists"
+        # -- removed.
         uses: sigstore/gh-action-sigstore-python@04cffa1d795717b140764e8b640de88853c92acc # v3.3.0
         with:
           inputs: >-
             ./dist/*.tar.gz
             ./dist/*.whl
-      - name: Upload artifact signatures to GitHub Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ github.event.release.tag_name }}
-        run: >-
-          gh release upload
-          "$TAG_NAME" ./dist/*
-          --repo "$GITHUB_REPOSITORY"
       - name: Remove sigstore files before publishing to PyPI
-        run: rm -f dist/*.sigstore
+        run: rm -f dist/*.sigstore dist/*.sigstore.json
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
