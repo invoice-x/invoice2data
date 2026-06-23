@@ -1,4 +1,6 @@
 issuer: Buijtendijk B.V.
+# Uses area extraction, which pypdfium2 can't do; pin pdftotext.
+input_module: pdftotext
 fields:
   amount:
     parser: regex

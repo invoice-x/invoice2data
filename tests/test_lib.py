@@ -33,7 +33,7 @@ from .common import get_sample_files
 
 def have_pdfplumber() -> bool:
     try:
-        import pdfplumber  # type: ignore[import-not-found] # noqa: F401
+        import pdfplumber  # noqa: F401
     except ImportError:
         return False
     return True
@@ -48,8 +48,7 @@ def _extract_data_for_export() -> list[dict[str, Any]]:
     pdf_files = get_sample_files(".pdf")
     for file in pdf_files:
         if file.endswith("oyo.pdf"):
-            res = [extract_data(file, [])]
-            return res
+            return [extract_data(file, [])]
     return []  # Return an empty list if no matching file is found
 
 
@@ -63,6 +62,7 @@ class TestLIB(unittest.TestCase):
             )  # Check why logger.info is not working, for the time being using print
             self.assertTrue(isinstance(res, dict), "return is not a dict")
 
+    @unittest.skipUnless(shutil.which("pdftotext"), "pdftotext (poppler) not installed")
     def test_extract_data_pdftotext(self) -> None:
         pdf_files = get_sample_files(".pdf")
         for file in pdf_files:
@@ -167,6 +167,173 @@ class TestLIB(unittest.TestCase):
             have = ocrmypdf.ocrmypdf_available()
             print("ocrmypdf should be available have is %s" % have)
             self.assertTrue(have, "ocrmypdf is installed")
+
+
+class TestBackendCascade(unittest.TestCase):
+    """Cover the input-backend cascade and template-declared ``input_module``."""
+
+    def test_resolve_readers_default_cascade(self) -> None:
+        from invoice2data.__main__ import DEFAULT_INPUT_READERS
+        from invoice2data.__main__ import _resolve_readers
+        from invoice2data.input import pdfium
+
+        readers = _resolve_readers("x.pdf", None)
+        # pdfium leads the default cascade (fast), pdftotext is the fallback;
+        # every reader is an available member of the configured default list.
+        self.assertEqual(readers[0], pdfium)
+        self.assertIn(pdftotext, readers)
+        self.assertTrue(all(r in DEFAULT_INPUT_READERS for r in readers))
+
+    def test_resolve_readers_txt_uses_text_backend(self) -> None:
+        from invoice2data.__main__ import _resolve_readers
+        from invoice2data.input import text as text_module
+
+        self.assertEqual(_resolve_readers("x.txt", None), [text_module])
+
+    def test_resolve_readers_explicit_overrides_cascade(self) -> None:
+        from invoice2data.__main__ import _resolve_readers
+        from invoice2data.input import pdfium
+
+        self.assertEqual(_resolve_readers("x.pdf", "pdfium"), [pdfium])
+        self.assertEqual(_resolve_readers("x.pdf", pdftotext), [pdftotext])
+
+    def test_preferred_module_honours_template_pin(self) -> None:
+        from invoice2data.__main__ import _preferred_module
+        from invoice2data.extract.invoice_template import InvoiceTemplate
+        from invoice2data.input import pdfium
+
+        tmpl = InvoiceTemplate(
+            {
+                "template_name": "pinned",
+                "keywords": ["x"],
+                "exclude_keywords": [],
+                "input_module": "pdfium",
+            }
+        )
+        # A different backend matched first -> switch to the pinned one.
+        self.assertIs(_preferred_module(tmpl, used=pdftotext), pdfium)
+        # Already on the pinned backend -> no switch.
+        self.assertIsNone(_preferred_module(tmpl, used=pdfium))
+
+    def test_preferred_module_none_without_pin(self) -> None:
+        from invoice2data.__main__ import _preferred_module
+        from invoice2data.extract.invoice_template import InvoiceTemplate
+
+        tmpl = InvoiceTemplate(
+            {"template_name": "plain", "keywords": ["x"], "exclude_keywords": []}
+        )
+        self.assertIsNone(_preferred_module(tmpl, used=pdftotext))
+
+    def test_safe_to_text_swallows_backend_errors(self) -> None:
+        from invoice2data.__main__ import _safe_to_text
+
+        # A missing file makes the backend raise; the cascade must see "".
+        self.assertEqual(_safe_to_text(pdftotext, "/no/such/file.pdf"), "")
+
+    def test_explicit_backend_bypasses_template_pin(self) -> None:
+        from invoice2data.__main__ import extract_data
+        from invoice2data.extract.loader import read_templates
+        from invoice2data.input import pdfium
+
+        if not pdfium.is_available():
+            self.skipTest("pypdfium2 not installed")
+        templates = read_templates()
+        aws = "tests/compare/AmazonWebServices.pdf"
+        # The AWS template is pinned to pdftotext (its line-item table needs
+        # -layout). Auto mode honours the pin (full lines); forcing pdfium must
+        # bypass it (pypdfium2 yields no line items here).
+        auto = extract_data(aws, templates, None)
+        forced = extract_data(aws, templates, "pdfium")
+        self.assertTrue(auto.get("lines"), "auto/pin should yield line items")
+        self.assertFalse(forced.get("lines"), "explicit pdfium should bypass pin")
+
+    def test_pdfium_to_text_normalised(self) -> None:
+        from invoice2data.input import pdfium
+
+        if not pdfium.is_available():
+            self.skipTest("pypdfium2 not installed")
+        text = pdfium.to_text("tests/compare/oyo.pdf")
+        self.assertGreater(len(text.strip()), 0)
+        # Carriage returns and zero-width markers are normalised away so the
+        # line parser and templates (which work in terms of "\n") behave.
+        self.assertNotIn("\r", text)
+        self.assertNotIn("￾", text)
+        self.assertNotIn("﻿", text)
+
+
+class TestCamelotPlugin(unittest.TestCase):
+    """Cover the optional camelot table-extraction plugin."""
+
+    def test_rows_to_records_with_header(self) -> None:
+        from invoice2data.extract.plugins.camelot import _rows_to_records
+
+        rows = [["Item", "Qty"], ["Widget", "2"], ["Gadget", "1"]]
+        self.assertEqual(
+            _rows_to_records(rows, header=True),
+            [{"Item": "Widget", "Qty": "2"}, {"Item": "Gadget", "Qty": "1"}],
+        )
+
+    def test_rows_to_records_without_header(self) -> None:
+        from invoice2data.extract.plugins.camelot import _rows_to_records
+
+        rows = [["Widget", "2"], ["Gadget", "1"]]
+        recs = _rows_to_records(rows, header=False)
+        self.assertEqual(recs[0], {"col_0": "Widget", "col_1": "2"})
+
+    def test_camelot_extracts_lattice_table(self) -> None:
+        from invoice2data.extract.plugins import camelot
+
+        if not camelot.is_available():
+            self.skipTest("camelot-py not installed")
+        output: dict[str, Any] = {}
+        template = {
+            "template_name": "camelot-test",
+            "camelot": {"flavor": "lattice", "pages": "1", "field": "lines"},
+        }
+        camelot.extract(template, "", output, "tests/files/camelot-example.pdf")
+        self.assertIn("lines", output)
+        self.assertGreater(len(output["lines"]), 0)
+        self.assertIsInstance(output["lines"][0], dict)
+
+    def test_camelot_no_invoice_file_is_safe(self) -> None:
+        from invoice2data.extract.plugins import camelot
+
+        output: dict[str, Any] = {}
+        # Missing the file path must no-op, never raise.
+        camelot.extract({"template_name": "t", "camelot": {}}, "", output, None)
+        self.assertEqual(output, {})
+
+
+class TestLineFieldNormalization(unittest.TestCase):
+    """Cover schema.normalize_line_fields (canonical line/tax_line vocabulary)."""
+
+    def test_line_aliases_normalized(self) -> None:
+        from invoice2data.extract.schema import normalize_line_fields
+
+        out: dict[str, Any] = {
+            "lines": [{"description": "Widget", "unit_price": "1.00", "qty": 2}],
+            "tax_lines": [{"vat_rate": "21"}],
+        }
+        normalize_line_fields(out)
+        self.assertEqual(
+            out["lines"][0], {"name": "Widget", "price_unit": "1.00", "qty": 2}
+        )
+        self.assertEqual(out["tax_lines"][0], {"line_tax_percent": "21"})
+
+    def test_product_is_not_aliased(self) -> None:
+        from invoice2data.extract.schema import normalize_line_fields
+
+        out: dict[str, Any] = {"lines": [{"product": "ABC", "name": "Widget"}]}
+        normalize_line_fields(out)
+        # product is a distinct field (product matching), never folded into name.
+        self.assertEqual(out["lines"][0], {"product": "ABC", "name": "Widget"})
+
+    def test_existing_canonical_value_wins(self) -> None:
+        from invoice2data.extract.schema import normalize_line_fields
+
+        out: dict[str, Any] = {"lines": [{"name": "Real", "description": "Alias"}]}
+        normalize_line_fields(out)
+        self.assertEqual(out["lines"][0]["name"], "Real")
 
 
 if __name__ == "__main__":

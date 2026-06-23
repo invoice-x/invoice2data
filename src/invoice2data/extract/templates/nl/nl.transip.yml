@@ -16,7 +16,7 @@ fields:
 lines:
   start: Aantal
   end: Subtotaal\s
-  line: (?P<description>\w+.*)\s+(?P<period>\w+.*)\s+(?P<date_start>\d{2}-\d{2}-\d{4})\s-\s(?P<date_end>\d{2}-\d{2}-\d{4})\s+(?P<qty>\d+)\s+[€]\s+(?P<price_unit>(\d+,\d{2}))
+  line: (?P<name>\w+.*)\s+(?P<period>\w+.*)\s+(?P<date_start>\d{2}-\d{2}-\d{4})\s-\s(?P<date_end>\d{2}-\d{2}-\d{4})\s+(?P<qty>\d+)\s+[€]\s+(?P<price_unit>(\d+,\d{2}))
   types:
     qty: float
     vat_percent: float
@@ -25,6 +25,8 @@ keywords:
   - NL812334966B01
   - TransIP
 options:
+  date_formats:
+    - '%d-%m-%Y'
   currency: EUR
   languages:
     - nl

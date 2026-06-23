@@ -49,10 +49,15 @@ def exclude_template(test_list: list[str], exclude_list: list[str]) -> list[str]
 def inputparser_specific(file: str) -> bool:
     """Checks if a file requires a specific input parser.
 
+    These are not generic template-matching samples: ``saeco`` needs a specific
+    text input parser, and ``camelot-*`` fixtures need the optional camelot
+    plugin. They are referenced directly by their own tests, so they must be
+    kept out of the generic ``get_sample_files`` sweep.
+
     Args:
         file (str): The name of the file.
 
     Returns:
         bool: True if the file requires a specific input parser, False otherwise.
     """
-    return file.startswith("saeco")
+    return file.startswith(("saeco", "camelot"))

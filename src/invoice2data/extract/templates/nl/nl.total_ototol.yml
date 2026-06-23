@@ -84,6 +84,8 @@ keywords:
   - POMP
   - €
 options:
+  date_formats:
+    - '%d-%m-%Y %H:%M:%S'
   currency: EUR
   languages:
     - nl

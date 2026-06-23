@@ -3,13 +3,12 @@
 Templates are initially read from .yml or .json files and then kept as class.
 """
 
-import codecs
 import json
 import os
 from collections.abc import Callable
 from logging import getLogger
+from pathlib import Path
 from typing import Any
-from typing import cast
 
 
 try:
@@ -24,34 +23,45 @@ except ImportError:  # pragma: no cover
 from .invoice_template import InvoiceTemplate  # type: ignore[unused-ignore]
 
 
+# Public API of this module (keeps the imported InvoiceTemplate out of the
+# generated API docs, where it has its own dedicated entry).
+__all__ = ["ordered_load", "prepare_template", "read_templates"]
+
 logger = getLogger(__name__)
 
 
 def ordered_load(
     stream: str, loader: Callable[[str], Any] = json.loads
 ) -> list[InvoiceTemplate]:
-    """Loads a stream of JSON data.
+    """Parse templates from an in-memory string instead of from disk.
+
+    Useful when templates live outside the filesystem (e.g. a database column or
+    an API payload): ``extract_data(file, templates=ordered_load(db_text))``. For
+    YAML data pass ``loader=yaml.safe_load``.
 
     Args:
-        stream (str): JSON data string.
-        loader (Callable[[str], Any], optional): JSON loader function. Defaults to json.loads.
+        stream (str): Serialized templates -- a JSON (default) or YAML array of
+            template mappings.
+        loader (Callable[[str], Any], optional): Callable turning ``stream`` into
+            a list of template dicts. Defaults to ``json.loads``; pass
+            ``yaml.safe_load`` for YAML.
 
     Returns:
-        list[InvoiceTemplate]: List of InvoiceTemplate objects.
+        list[InvoiceTemplate]: Parsed, prepared templates (empty list on a parse
+            error, which is logged).
     """
-    output = []
-
     try:
-        tpl_stream = json.loads(stream)
-    except ValueError as error:
-        logger.warning("JSON Loader Failed to load template stream\n%s", error)
+        tpl_stream = loader(stream)
+    except (ValueError, YAMLError) as error:
+        logger.warning("Failed to load template stream\n%s", error)
         return []
 
-    # Always pre-process template to remain backwards compatible
-    for tpl in tpl_stream:
-        tpl = prepare_template(tpl)
+    output = []
+    # Always pre-process templates to remain backwards compatible.
+    for raw_tpl in tpl_stream:
+        tpl = prepare_template(raw_tpl)
         if tpl:
-            output.append(InvoiceTemplate(cast(dict[str, Any], tpl)))
+            output.append(InvoiceTemplate(tpl))
 
     return output
 
@@ -77,15 +87,13 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
     """
     output = []
     if folder is None:
-        folder = os.path.join(os.path.dirname(__file__), "templates")
+        folder = str(Path(__file__).parent / "templates")
     else:
-        folder = os.path.abspath(folder)
+        folder = str(Path(folder).resolve())
 
     for path, _subdirs, files in os.walk(folder):
         for name in sorted(files):
-            with codecs.open(
-                os.path.join(path, name), encoding="utf-8"
-            ) as template_file:
+            with (Path(path) / name).open(encoding="utf-8") as template_file:
                 if name.endswith((".yaml", ".yml")):
                     try:
                         tpl = load(template_file.read(), Loader=SafeLoader)
@@ -106,7 +114,7 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
             tpl = prepare_template(tpl)
 
             if tpl:
-                output.append(InvoiceTemplate(cast(dict[str, Any], tpl)))
+                output.append(InvoiceTemplate(tpl))
 
     logger.info("Loaded %d templates from %s", len(output), folder)
     return output
@@ -125,7 +133,7 @@ def prepare_template(tpl: dict[str, Any]) -> dict[str, Any] | None:
     if "keywords" not in tpl:
         logger.warning(
             "Failed to load template %s. Missing mandatory 'keywords' field.",
-            tpl["template_name"],
+            tpl.get("template_name", "<stream>"),
         )
         return None
 

@@ -1,75 +1,78 @@
+# How It Works
 
-How It Works
-============
-
-This part of the documentation includes a high-level explanation of how invoice2data extracts text from PDF files.
+This part of the documentation gives a high-level overview of how invoice2data
+turns a PDF (or image) into structured data.
 
 ```mermaid
 
 flowchart LR
 
-    InvoiceFile[fa:fa-file-invoice Invoicefile\n\npdf\nimage\ntext] --> Input-module(Input Module\n\npdftotext\ntext\npdfminer\npdfplumber\ntesseract\ngvision)
+    InvoiceFile[fa:fa-file-invoice Invoice file\n\npdf\nimage\ntext] --> Input-module(Input module\n\npdfium default\npdftotext\ntext\npdfminer\npdfplumber\ntesseract / ocrmypdf\ndocTR / paddleocr\ngvision)
 
-    Input-module --> |Extracted Text| C{keyword\nmatching}
+    Input-module --> |Extracted text| C{keyword\nmatching}
 
-    Invoice-Templates[(fa:fa-file-lines Invoice Templates)] --> C{keyword\nmatching}
+    Invoice-Templates[(fa:fa-file-lines Invoice templates)] --> C{keyword\nmatching}
 
-    C --> |Extracted Text + fa:fa-file-circle-check Template| E(Template Processing\n apply options from template\nremove accents, replaces etc...)
+    C --> |Text + fa:fa-file-circle-check Template| E(Template processing\napply template options\nremove accents, replaces ...)
 
-    E --> |Optimized String|Plugins&Parsers(Call plugins + parsers)
+    E --> |Optimized string| Plugins&Parsers(Plugins + parsers)
 
     subgraph Plugins&Parsers
-
       direction BT
-
         tables[fa:fa-table tables] ~~~ lines[fa:fa-grip-lines lines]
-
         lines ~~~ regex[fa:fa-code regex]
-
         regex ~~~ static[fa:fa-check static]
-
-
-
+        static ~~~ camelot[fa:fa-table-cells camelot]
     end
 
-    Plugins&Parsers --> |output| result[result\nfa:fa-file-csv,\njson,\nXML]
+    Plugins&Parsers --> |fields| V(Canonical schema\nnormalise + validate)
+    C -.->|no match / missing fields| AI(AI fallback\noptional)
+    AI -.-> V
+    V --> |output| result[result\nfa:fa-file-csv csv,\njson,\nXML]
 
-
-
- click Invoice-Templates https://github.com/invoice-x/invoice2data/blob/master/docs/tutorial.md
-
- click result https://github.com/invoice-x/invoice2data#usage
-
- click Input-module https://github.com/invoice-x/invoice2data#installation-of-input-modules
-
- click E https://github.com/invoice-x/invoice2data/blob/master/docs/tutorial.md#options
-
- click tables https://github.com/invoice-x/invoice2data/blob/master/docs/tutorial.md#tables
-
- click lines https://github.com/invoice-x/invoice2data/blob/master/docs/tutorial.md#lines
-
- click regex https://github.com/invoice-x/invoice2data/blob/master/docs/tutorial.md#regex
-
- click static https://github.com/invoice-x/invoice2data/blob/master/docs/tutorial.md#parser-static
+ click Invoice-Templates "tutorial.html"
+ click result "usage.html"
+ click Input-module "installation.html"
+ click AI "ai.html"
+ click E "tutorial.html"
+ click tables "tutorial.html"
+ click lines "tutorial.html"
+ click regex "tutorial.html"
+ click static "tutorial.html"
+ click camelot "tutorial.html"
 
 ```
 
+## 1. Text extraction
 
-## 1. Text Extraction:
+invoice2data extracts text with a pluggable backend. By default it tries an
+ordered **cascade** — `pdfium` first (a self-contained wheel, no system binaries),
+then `pdftotext` — and falls back to OCR (`ocrmypdf`) as a last resort. You can
+force a backend with `--input-reader`, and a template can pin the backend it was
+authored for with a top-level `input_module:`. See {doc}`installation` for the
+optional backends (docTR, PaddleOCR, Google Vision, ...).
 
-Variety of Techniques: invoice2data uses different methods to extract text from PDF invoices. It can utilize tools like pdftotext, pdfminer, or even OCR (Optical Character Recognition) if the PDF is image-based.
+## 2. Template matching
 
-## 2. Template Matching:
+YAML or JSON templates describe each invoice layout. A template is selected by
+matching its `keywords` against the extracted text; regular expressions then
+locate the fields. The system is flexible: static fields, multiple regexes per
+field, line-item and table plugins, and per-field options.
 
-YAML or JSON Templates: You provide invoice2data with a template that defines the structure of your invoices. This template uses regular expressions (regex) to identify and locate specific pieces of information like invoice number, date, total amount, etc.
-Flexible Templates: The template system is designed to be flexible and can handle variations in invoice layouts. You can define static fields, line item patterns, and even use plugins for complex table extraction.
+## 3. Data extraction
 
-## 3. Data Extraction:
+The matched template's regexes (and the `lines`/`tables`/`camelot` plugins) pull
+the values out of the optimized text. Results are then **normalised to the
+canonical field schema** and lightly **validated** (typo-aware field names, tax
+totals); see {doc}`recommended-template-fields`.
 
-Regex Matching: invoice2data uses the regex patterns in your template to search the extracted text and identify the relevant information.
-Data Organization: The extracted data is then organized into a structured format, such as a dictionary or a list, making it easy to work with.
+## 4. Optional AI fallback
 
-## 4. Output:
+When no template matches — or a match misses required fields — an optional,
+configured LLM can extract the canonical fields instead. This is opt-in and
+text-only; see {doc}`ai`.
 
-Various Formats: You can output the extracted data in different formats like CSV, JSON, or XML.
-File Renaming: invoice2data can even rename the PDF files based on the extracted information.
+## 5. Output
+
+The structured data is written as CSV, JSON or XML, or used to rename the source
+PDF based on its contents.

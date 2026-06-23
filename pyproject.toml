@@ -1,12 +1,23 @@
 [build-system]
-requires = ["setuptools>=64"]
+# mypyc compilation (setup.py, gated by INVOICE2DATA_COMPILE_MYPYC) needs
+# setuptools + mypy at build time. mypyc must see the types of every dependency
+# used by the compiled modules, so list them here too. (dateparser is NOT here
+# because `_dates.py` -- the only module that imports it -- is intentionally
+# not compiled; keeping dateparser truly optional at install time.)
+requires = [
+    "setuptools>=64",
+    "mypy>=1.13",
+    "click>=8.0.1",
+    "PyYAML>=6.0",
+    "regex>=2024.4.16",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "invoice2data"
 authors = [{ name = "Manuel Riel" }]
 description = "Python parser to extract data from pdf invoice"
-version = "0.5.0"
+version = "1.0.0"
 keywords = ["python", "data-mining", "accounting", "invoice", "pdf", "parcing"]
 license = { text = "MIT" }
 readme = "README.md"
@@ -32,7 +43,7 @@ classifiers = [
 
 dependencies = [
     "click >=8.0.1",
-    "dateparser >= 1.2.0",
+    "python-dateutil >= 2.8",
     "PyYAML >= 6.0",
     "regex >= 2025.2.10; python_version >= '3.12'",
     "regex >= 2024.4.16; python_version < '3.12'",
@@ -55,39 +66,60 @@ dev = [
     "pytest-mock >= 3.14.0",
     "pygments >=2.10.0",
 ]
-lint = ["ruff >=0.5.1", "pydoclint >=0.4.2"]
+lint = ["ruff >=0.8", "pydoclint >=0.4.2"]
 docs = [
-    "furo >=2021.11.12",
-    "myst-parser == 3.0.1",
-    "sphinx >= 4.3.2",
-    "sphinx-autobuild >=2021.3.14",
-    "sphinx-click >=3.0.2",
+    "shibuya >= 2025.1.29",
+    "myst-parser >= 4.0",
+    "sphinx >= 8.0",
+    "sphinx-autobuild >= 2024.10",
+    "sphinx-click >= 6.0",
     "sphinx-mermaid >=0.0.7",
     "sphinxcontrib-svg2pdfconverter >=2.1.0",
 ]
-mypy = ["mypy >=0.930"]
-typeguard = ["typeguard >=2.13.3"]
-xdoctest = ["xdoctest[colors] >=0.15.10"]
+mypy = ["mypy >= 1.13"]
+ty = ["ty == 0.0.39"]  # beta + fast-moving: pin so new diagnostics don't surprise CI
+typeguard = ["typeguard >= 4.4"]
+xdoctest = ["xdoctest[colors] >= 1.2"]
 
 [project.optional-dependencies]
+ai = ["httpx >= 0.27"]
+camelot = ["camelot-py >= 1.0"]
+dateparser = ["dateparser >= 1.2.0"]
 defusedxml = ["defusedxml == 0.7.1"]
+doctr = ["python-doctr[torch] >= 0.8"]
+paddleocr = ["paddleocr >= 2.7", "paddlepaddle >= 2.5", "pypdfium2 >= 4"]
 googlevision = [
     "google-cloud-storage == 2.18.2",
     "google-cloud-vision == 3.8.1",
 ]
+hotpdf = ["hotpdf >= 0.1.0"]
 ocr = ["ghostscript == 0.7"]
 ocrmypdf = ["ocrmypdf >= 14.4.0"]
+pdfium = ["pypdfium2 >= 4"]
 pdfminer-six = ["pdfminer-six == 20231228"]
+pdfoxide = ["pdf-oxide >= 0.3"]
 pdfplumber = ["pdfplumber == 0.11.4"]
 pyyaml = ["pyyaml == 6.0.2"]
 
 [tool.uv]
 package = true
+# Published camelot-py requires pdfminer-six>=20240706, but pdfplumber==0.11.4
+# and the `pdfminer-six` extra both hard-pin pdfminer.six==20231228 — a genuine
+# library-level conflict (not invoice2data's pin). Mark camelot mutually
+# exclusive with those pdfminer-bound extras; a camelot user runs it alongside
+# the default pdfium/pdftotext cascade. (The next-major camelot drops
+# pdfminer.six for playa-pdf, which will retire these once published.)
+conflicts = [
+    [{ extra = "camelot" }, { extra = "pdfminer-six" }],
+    [{ extra = "camelot" }, { extra = "pdfplumber" }],
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
+# Ship py.typed + the bundled templates; test fixtures live outside src/ so
+# PDFs/PNGs never enter the wheel, and setuptools omits tests/ from the sdist.
 invoice2data = [
     "py.typed",
     "extract/templates/**/*.yml",
@@ -98,6 +130,16 @@ invoice2data = [
 [project.scripts]
 invoice2data = "invoice2data.__main__:main"
 
+[tool.cibuildwheel]
+# Build mypyc-compiled CPython wheels (requires-python>=3.10 is honoured
+# automatically). Skip PyPy (already JIT-compiled) and musllinux.
+build = "cp310-* cp311-* cp312-* cp313-*"
+skip = "pp* *-musllinux*"
+build-frontend = "build"
+environment = { INVOICE2DATA_COMPILE_MYPYC = "1" }
+# Smoke-test that the compiled extensions import on every target platform.
+test-command = "python -c \"import invoice2data.extract.parsers.regex, invoice2data.extract.parsers.lines, invoice2data.extract.plugins.tables, invoice2data.extract._regex, invoice2data.extract.utils; print('mypyc import OK')\""
+
 [tool.coverage.paths]
 source = ["src", "*\\src", "*/site-packages"]
 tests = ["tests", "*/tests"]
@@ -105,10 +147,13 @@ tests = ["tests", "*/tests"]
 [tool.coverage.run]
 branch = true
 source = ["invoice2data", "tests"]
+relative_files = true
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 75
+# Locked in at 90 (combined coverage is ~94%); not the uv-forge template default
+# of 100 — that's unrealistic here. Catches regressions, small buffer for variance.
+fail_under = 90
 exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
 
 [tool.ruff.lint.isort]
@@ -122,22 +167,78 @@ pretty = true
 show_column_numbers = true
 show_error_context = true
 
+# Optional third-party backends/tools that ship no type information. Centralised
+# here so the per-call inline imports stay clean and the result is the same
+# whether or not the optional dependency happens to be installed.
+[[tool.mypy.overrides]]
+module = [
+    "pdfminer",
+    "pdfminer.*",
+    "pdfplumber",
+    "pypdfium2",
+    "pdf_oxide",
+    "hotpdf",
+    "ocrmypdf",
+    "defusedxml",
+    "defusedxml.*",
+    "docutils",
+    "docutils.*",
+    "sphinxmermaid",
+    "httpx",
+    "doctr",
+    "doctr.*",
+    "paddleocr",
+    "paddleocr.*",
+    "dateparser",
+    "dateparser.*",
+    "dateutil",
+    "dateutil.*",
+]
+ignore_missing_imports = true
+
+# `google.cloud` is a namespace package: mypy partially resolves it (so
+# ignore_missing_imports does not apply), but the optional storage/vision
+# submodules are absent. camelot is untyped and only re-exports `read_pdf`
+# implicitly (tripping strict no-implicit-reexport when it happens to be
+# installed). Skip following both entirely so they are treated as Any.
+[[tool.mypy.overrides]]
+module = ["google", "google.*", "camelot", "camelot.*"]
+follow_imports = "skip"
+ignore_missing_imports = true
+
+[tool.ty.rules]
+# ty (beta, advisory) runs without the optional backend extras installed — some
+# of them conflict (see [tool.uv] conflicts), so they can't all be present. mypy
+# is the authoritative checker for imports (via its overrides above); let ty skip
+# the optional backends it can't resolve rather than fail.
+unresolved-import = "ignore"
+
 [tool.ruff]
 src = ["src", "tests"]
 
 [tool.ruff.lint]
 extend-select = [
-    "B",   # flake8-bugbear
-    "C90", # mccabe
-    "D",   # pydocstyle
-    "E",   # pycodestyle
-    "F",   # pyflakes
-    "I",   # isort
-    "N",   # pep8-naming
-    "RUF", # Ruff-specific rules
-    "S",   # flake8-bandit
-    "UP",  # pyupgrade
-    "W",   # pycodestyle
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "C4",    # flake8-comprehensions
+    "C90",   # mccabe
+    "D",     # pydocstyle
+    "E",     # pycodestyle
+    "F",     # pyflakes
+    "FURB",  # refurb
+    "I",     # isort
+    "LOG",   # flake8-logging
+    "N",     # pep8-naming
+    "PERF",  # perflint
+    "PIE",   # flake8-pie
+    "PTH",   # flake8-use-pathlib
+    "RET",   # flake8-return
+    "RUF",   # Ruff-specific rules
+    "S",     # flake8-bandit
+    "SIM",   # flake8-simplify
+    "TRY",   # tryceratops
+    "UP",    # pyupgrade
+    "W",     # pycodestyle
 ]
 # ignore checks that conflict with ruff formatter (https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules)
 extend-ignore = [
@@ -162,6 +263,7 @@ extend-ignore = [
     "S603",
     "UP031",  # Use fstring instead of % identifier
     "E501",   # fix this when updating docstrings
+    "TRY003", # long messages in raise (would need custom exception classes)
     # "DOC106",
     # "DOC107",
     # "DOC111",
@@ -171,6 +273,8 @@ extend-ignore = [
 "*/test_*.py" = ["S101", "D100", "D101", "D102"]
 "noxfile.py" = ["S101"]
 "**/conftest.py" = ["S101"]
+# Test scaffolding keeps os.path; pathlib there is churn with no runtime benefit.
+"tests/**" = ["PTH"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

@@ -1,7 +1,6 @@
 """Tesseract OCR input module for invoice2data."""
 
 import mimetypes
-import os
 import shutil
 import tempfile
 from logging import getLogger
@@ -16,6 +15,17 @@ from typing import Any
 
 
 logger = getLogger(__name__)
+
+SUPPORTS_AREA = True
+
+
+def is_available() -> bool:
+    """Return whether the ``tesseract`` and ImageMagick binaries are present.
+
+    Returns:
+        bool: True if both ``tesseract`` and ``convert`` are on the PATH.
+    """
+    return shutil.which("tesseract") is not None and shutil.which("convert") is not None
 
 
 def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
@@ -34,7 +44,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
         FileNotFoundError: If the specified image file is not found.
         OSError: If Tesseract OCR fails to extract text.
     """
-    if not os.path.exists(path):
+    if not Path(path).exists():
         raise FileNotFoundError(f"File not found: {path}")
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not shutil.which("tesseract"):
@@ -125,7 +135,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
         assert "W" in area_details, "Area W details missing"
         assert "H" in area_details, "Area H details missing"
         # Convert all of the values to strings
-        for key in area_details.keys():
+        for key in area_details:
             area_details[key] = str(area_details[key])
         pdftotext_cmd += [
             "-f",
@@ -146,10 +156,10 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
     pdftotext_cmd += [tmp_folder + filename + ".pdf", "-"]
 
     logger.debug("Calling pdfttext with, %s", pdftotext_cmd)
+    extracted_str = b""
     p3 = Popen(pdftotext_cmd, stdin=p2.stdout, stdout=PIPE)
     try:
-        out, err = p3.communicate(timeout=timeout)
-
+        out, _ = p3.communicate(timeout=timeout)
         extracted_str = out
     except TimeoutExpired:
         p3.kill()

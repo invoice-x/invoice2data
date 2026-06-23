@@ -17,8 +17,9 @@ python_versions = ["3.13", "3.12", "3.11", "3.10"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
-    # "safety",  # disabled for now: fails across all PRs (safety CLI now requires auth)
+    "pip-audit",  # replaced `safety` — pypa/pip-audit needs no auth
     "mypy",
+    "ty",
     "tests",
     "typeguard",
     "xdoctest",
@@ -101,6 +102,42 @@ def activate_virtualenv_in_precommit_hooks(session: nox.Session) -> None:
                 break
 
 
+@nox.session(name="pip-audit", python=python_versions[0])
+def pip_audit(session: nox.Session) -> None:
+    """Scan locked dependencies for known vulnerabilities.
+
+    Uses pypa/pip-audit (no auth, no quota — replaces the `safety` CLI which
+    moved behind a login wall). Resolves ``uv export`` -> requirements format,
+    then audits it. Advisory: surfaces a report in CI so Dependabot bumps can
+    be cross-checked, but treats non-zero (= vulnerabilities found) as non-
+    fatal so a fresh CVE doesn't immediately red-line every PR.
+    """
+    requirements = Path(session.create_tmp()) / "requirements.txt"
+    session.run(
+        "uv",
+        "export",
+        "--frozen",
+        "--no-emit-project",
+        "--no-hashes",
+        "--format",
+        "requirements-txt",
+        "--output-file",
+        str(requirements),
+        external=True,
+    )
+    session.install("pip-audit")
+    # uv.lock already pins the full transitive tree -> `--no-deps` (so pip-audit
+    # trusts the exported list) + `--disable-pip` (no extra resolution needed).
+    session.run(
+        "pip-audit",
+        "--disable-pip",
+        "--no-deps",
+        "--requirement",
+        str(requirements),
+        success_codes=[0, 1],
+    )
+
+
 @nox.session(name="pre-commit", python=python_versions[0])
 def precommit(session: nox.Session) -> None:
     """Lint using pre-commit."""
@@ -144,6 +181,29 @@ def mypy(session: nox.Session) -> None:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
 
 
+@nox.session(python=python_versions[0])
+def ty(session: nox.Session) -> None:
+    """Type-check using ty (Astral, beta).
+
+    Runs alongside mypy (the authoritative checker) as a second, fast gate. ty is
+    green on ``src`` and pinned in the ``ty`` group so a new beta release can't
+    silently break CI.
+    """
+    # Check src only. mypy stays authoritative for tests because ty does not
+    # honour mypy's ``# type: ignore`` comments that the test fixtures rely on
+    # (ty would report them as errors). Revisit when ty has stable suppression.
+    args = session.posargs or ["src"]
+    session.run(
+        "uv",
+        "sync",
+        "--group",
+        "ty",
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
+        external=True,
+    )
+    session.run("ty", "check", *args)
+
+
 @nox.session(python=python_versions)
 def tests(session: nox.Session) -> None:
     """Run the test suite."""
@@ -166,6 +226,10 @@ def tests(session: nox.Session) -> None:
         "pdfplumber",
         "--extra",
         "pyyaml",
+        "--extra",
+        "ai",
+        "--extra",
+        "dateparser",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )
     session.run(

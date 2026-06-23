@@ -1,0 +1,26 @@
+# Posts the coverage comment produced by the "Tests" workflow. Split into its
+# own workflow_run job so the comment can be posted for pull requests opened from
+# forks (which run without write permissions in the main workflow).
+name: Post coverage comment
+
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    types:
+      - completed
+
+jobs:
+  comment:
+    name: Post coverage comment
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    permissions:
+      pull-requests: write
+      contents: write
+      actions: read
+    steps:
+      - name: Post comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_PR_RUN_ID: ${{ github.event.workflow_run.id }}

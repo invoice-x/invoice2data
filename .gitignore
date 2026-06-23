@@ -45,6 +45,12 @@ nosetests.xml
 coverage.xml
 *,cover
 
+# Generated output artifacts (default CLI/test/doctest output names, repo root)
+/invoice.json
+/invoice.csv
+/invoice.xml
+/invoices-output*
+
 # Translations
 *.mo
 *.pot

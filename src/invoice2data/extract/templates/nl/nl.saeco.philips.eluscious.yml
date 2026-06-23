@@ -86,6 +86,8 @@ keywords:
   - NL8152[.]54[.]295[.]B01
   - 04080176
 options:
+  date_formats:
+    - '%d-%m-%Y'
   currency: EUR
   languages:
     - nl

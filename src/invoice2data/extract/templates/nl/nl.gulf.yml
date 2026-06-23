@@ -68,12 +68,12 @@ fields:
         end: TOTAAL\s
         first_line: '(\s|[*])(?P<code>(\w+\s(?:\s?\S+){2}))\s+.\s+.?\s*\d+.\d{0,2}'
         line:
-          - '(?P<name>POMP.*).?\s(?P<qty>\d+.\d{2})\s+.?.?\s+€?\s*(?P<unit_price>\d.\d{3}).(?P<uom>.)[)]'
+          - '(?P<name>POMP.*).?\s(?P<qty>\d+.\d{2})\s+.?.?\s+€?\s*(?P<price_unit>\d.\d{3}).(?P<uom>.)[)]'
         types:
           qty: float
           line_tax_percent: float
           amount_untaxed: float
-          unit_price: float
+          price_unit: float
           price_unit: float
         line_tax_amount: float
 tables:
@@ -85,6 +85,8 @@ keywords:
   - (?i)GULF
   - KLANTENBON
 options:
+  date_formats:
+    - '%d-%m-%Y %H:%M:%S'
   currency: EUR
   languages:
     - nl

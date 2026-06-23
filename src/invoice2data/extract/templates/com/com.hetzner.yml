@@ -58,13 +58,13 @@ fields:
     end: "Subtotal"
     first_line:
       - '(?P<sectionheader>\w+(?:\s\S+)+\s+[(]\d{2}.\d{2}.\d{4}\s-\s\d{2}.\d{2}.\d{4}[)])\s[*]'
-      - '\d+\s+(?P<name>\w+(?:\s\w+)+)\s+(?P<qty>\d+)\s+[$€]\s(?P<unit_price>\d+.\d+)\s+[$€]\s(?P<price_subtotal>\d+.\d+)'
+      - '\d+\s+(?P<name>\w+(?:\s\w+)+)\s+(?P<qty>\d+)\s+[$€]\s(?P<price_unit>\d+.\d+)\s+[$€]\s(?P<price_subtotal>\d+.\d+)'
     line:
       - (?P<date_start>\d{2}.\d{2}.\d{4})\s-\s(?P<date_end>\d{2}.\d{2}.\d{4})
       - Quantity type[:]\s(?P<uom>\w+)
     types:
       qty: float
-      unit_price: float
+      price_unit: float
       price_subtotal: float
       date_start: date
       date_end: date
@@ -85,6 +85,8 @@ keywords:
 required_fields:
   - lines
 options:
+  date_formats:
+    - '%d.%m.%Y'
   languages:
     - en
   currency: EUR

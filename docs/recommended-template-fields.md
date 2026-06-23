@@ -65,12 +65,14 @@ To be used in the lines section:
 
 | fieldname | type | Description |
 | -------------- | :---------: | :-------------------------------------- |
-| name | char | The name of the product, can be used for product matching |
+| name | char | The invoice line's label/description (Odoo line `name`). `description` is accepted as an alias and normalized to `name`. |
+| product | char | Product identifier (name or code) used for product matching. Distinct from `name`. |
+| taxes | char | Tax identifier(s) used for tax matching (the no-product line method). |
 | barcode | char | The the barcode of the product or product package, used for product matching |
 | code | char | The (internal) product code, used for product matching |
 | qty | float | The amount of items/units |
-| unece_code | char | The unece code of the products units of measure can be passed |
-| uom | char | The name of the unit of measure, internally if will be mapped to the unece code. Example L will be mapped to unece_code LTR |
+| unece_code | char | The unece code (Recommendation 20) of the line's unit of measure. Auto-derived from `uom` when present — see *UoM normalization* below. |
+| uom | char | The printed unit of measure exactly as it appears on the invoice; mapped to `unece_code` when the literal is known. |
 | price_unit | float | The unit price of the item. (excluding taxes) |
 | discount | float | The amount of discount for this line. Eg 20 for 20% discount or 0.0 for no discount |
 | price_total | float | The total amount of the invoice line including taxes. It can be used to select the correct tax tag. |
@@ -87,8 +89,97 @@ To be used in the lines section:
     lines:
         start: Item\s+Discount\s+Price$
         end: \s+Total
-        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
+        line: (?P<name>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
 ```
+
+### Multi-page invoices (`end_match: last`)
+
+When an invoice's items span multiple pages and the `end` regex matches a
+*repeating* footer (totals/separator block on every page), set
+`end_match: last` so the parser uses the **last** occurrence of `end` in the
+`start`-bounded slice — letting the block span all pages. Combine with
+`skip_line` to drop the per-page header/footer text between item rows.
+
+```yaml
+lines:
+    start: ^ITEMS$
+    end: ^_+\n\s*Total this page
+    end_match: last     # span all pages; default is 'first'
+    line: (?P<sku>\S+)\s+(?P<qty>\d+)\s+(?P<price>[\d.]+)
+    skip_line:
+      - ^Page \d+ of \d+
+      - ^Acme Corp \| Invoice continued
+```
+
+For invoices where one line item's **description** spans multiple text lines
+followed by the amounts on their own line, bracket each item with
+`first_line` (description start) + `line` (continuation, repeats) + `last_line`
+(the amounts row). The `line` matches accumulate into the same record (joined
+with `\n`), and `last_line` closes it.
+
+### Skipping unwanted lines (`skip_line`)
+
+A `lines` block can drop lines that match an unwanted shape *before* its `line`
+/ `first_line` / `last_line` matchers see them. Useful when a sub-total, tax,
+or footer line would otherwise wrongly match the line regex.
+
+```yaml
+lines:
+    line: (?P<name>.+)\s+(?P<qty>\d+)\s+(?P<price_total>\d+\.\d+)
+    skip_line:
+      - ^Subtotal
+      - ^VAT
+      - ^Total
+```
+
+A single pattern can be given as a string; multiple as a list.
+
+### Extracting numbers from text (`extract_number`)
+
+For regex fields whose capture contains units or currency mixed with the
+number (e.g. `12123 Stk.`, `€25.50`, `4 Stück`), set `extract_number: true`
+to pluck the first numeric token before type coercion. Sign, thousands and
+decimal separators are preserved; parsing into `int`/`float` then proceeds
+locale-aware via `parse_number`.
+
+```yaml
+fields:
+  qty:
+    parser: regex
+    regex: 'Quantity\s+(\d+\s+Stk\.)'
+    type: int
+    extract_number: true
+```
+
+Opt-in per field — existing `int`/`float` fields keep their current behavior.
+
+### UoM normalization (UNECE Rec 20)
+
+invoice2data normalizes the printed unit of measure to its UNECE
+Recommendation 20 code — the same code OCA's
+`account_invoice_import_invoice2data` consumes — by mapping common literals on
+each line:
+
+| literal (case-insensitive)              | UNECE code |
+| --------------------------------------- | ---------- |
+| `l`, `ltr`, `liter`, `litre`, `ℓ`       | `LTR`      |
+| `ml`                                    | `MLT`      |
+| `kg`, `kilogram`                        | `KGM`      |
+| `g`, `gr`, `gram`                       | `GRM`      |
+| `m`, `meter`, `metre`                   | `MTR`      |
+| `cm` / `mm` / `km`                      | `CMT` / `MMT` / `KMT` |
+| `pcs`, `pc`, `piece`, `ea`, `unit`, `stuk`, `stk`, `x`, ...  | `H87` |
+| `set`                                   | `SET`      |
+| `h`, `hour`, `uur`                      | `HUR`      |
+| `min`, `minute`                         | `MIN`      |
+| `d`, `day`, `dag`                       | `DAY`      |
+| `month`, `maand`, `mnd`                 | `MON`      |
+| `year`, `jaar`                          | `ANN`      |
+
+A template that already captures `unece_code` directly always wins; the
+mapping only fills in `unece_code` when it's missing. Unknown literals are
+left alone (their `uom` is preserved). To add literals, extend
+`UNECE_CODES` in `invoice2data.extract.unece_uom`.
 
 ## Tax Line Fields
 
@@ -115,5 +206,5 @@ Example of an Tax line section on a invoice:
     lines:
         start: Item\s+Discount\s+Price$
         end: \s+Total
-        line: (?P<description>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
+        line: (?P<name>.+)\s+(?P<discount>\d+.\d+)\s+(?P<price_total>\d+\d+)
 ```

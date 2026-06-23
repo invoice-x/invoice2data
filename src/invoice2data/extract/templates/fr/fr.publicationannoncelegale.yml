@@ -1,4 +1,6 @@
 issuer: NETPRESSE
+# date is extracted from an `area:` which pypdfium2 can't do; pin pdftotext.
+input_module: pdftotext
 fields:
   amount: Total TTC\s+:\s+([\d ]+,\d{2})
   amount_untaxed: Total HT\s+:\s+([\d ]+,\d{2})

@@ -3,26 +3,32 @@
 Templates are initially read from .yml files and then kept as class.
 """
 
-import re
 import unicodedata
 from collections import OrderedDict as OrderedDictType
+from logging import DEBUG
 from logging import getLogger
 from pprint import pformat
 from typing import Any
 
-import dateparser  # type: ignore[import-untyped]
-
-from ..input import ocrmypdf
-
-# Area extraction is currently added for pdftotext, ocrmypdf and tesseract (which uses pdftotext)
-from ..input import pdftotext
-from ..input import tesseract
+from ..exceptions import RequiredFieldsMissingError
+from ..input import extract_text
+from ..input import supports_area
+from . import _dates
+from . import _regex
 from . import parsers
+from . import schema
+from . import unece_uom
+from .plugins import camelot
 from .plugins import lines
 from .plugins import tables
 
 
 logger = getLogger(__name__)
+
+#: Dedicated logger for the optimized_str dump, so `--debug-optimized-str` can show
+#: just that (without the rest of the debug noise) by raising this logger alone.
+optimized_str_logger = getLogger("invoice2data.optimized_str")
+
 
 OPTIONS_DEFAULT = {
     "remove_whitespace": False,
@@ -41,7 +47,7 @@ PARSERS_MAPPING = {
     "static": parsers.static,
 }
 
-PLUGIN_MAPPING = {"lines": lines, "tables": tables}
+PLUGIN_MAPPING = {"lines": lines, "tables": tables, "camelot": camelot}
 
 
 class InvoiceTemplate(OrderedDictType[str, Any]):
@@ -92,13 +98,13 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
         """Input raw string and do transformations, as set in template file."""
         # Remove whitespace
         if self.options["remove_whitespace"]:
-            optimized_str = re.sub(" +", "", extracted_str)
+            optimized_str = _regex.sub(" +", "", extracted_str)
         else:
             optimized_str = extracted_str
 
         # Remove accents
         if self.options["remove_accents"]:
-            optimized_str = re.sub(
+            optimized_str = _regex.sub(
                 "[\u0300-\u0362]", "", unicodedata.normalize("NFKD", optimized_str)
             )
 
@@ -115,7 +121,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
                 "Error in Template %s A replace should be a list of exactly 2 elements."
                 % self["template_name"]
             )
-            optimized_str = re.sub(replace[0], replace[1], optimized_str)
+            optimized_str = _regex.sub(replace[0], replace[1], optimized_str)
 
         return optimized_str
 
@@ -129,32 +135,28 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             bool: True if the extracted string matches the template keywords,
                 False otherwise.
         """
-        if all([keyword in extracted_str for keyword in self["keywords"]]):
+        if all(keyword in extracted_str for keyword in self["keywords"]):
             # All keywords found
-            if self["exclude_keywords"]:
-                if any(
-                    [
-                        exclude_keyword in extracted_str
-                        for exclude_keyword in self["exclude_keywords"]
-                    ]
-                ):
-                    # At least one exclude_keyword found
-                    logger.debug(
-                        "Template: %s | Keywords matched. Exclude keyword found!",
-                        self["template_name"],
-                    )
-                    return False
+            if self["exclude_keywords"] and any(
+                exclude_keyword in extracted_str
+                for exclude_keyword in self["exclude_keywords"]
+            ):
+                # At least one exclude_keyword found
+                logger.debug(
+                    "Template: %s | Keywords matched. Exclude keyword found!",
+                    self["template_name"],
+                )
+                return False
             # No exclude_keywords or none found, template is good
             logger.debug(
                 "Template: %s | Keywords matched. No exclude keywords found.",
                 self["template_name"],
             )
             return True
-        else:
-            logger.debug(
-                "Template: %s | Failed to match all keywords.", self["template_name"]
-            )
-            return False
+        logger.debug(
+            "Template: %s | Failed to match all keywords.", self["template_name"]
+        )
+        return False
 
     def parse_number(self, value: str) -> float:
         """Parses a number from a string.
@@ -184,7 +186,7 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
         thousands_separator = "," if self.options["decimal_separator"] == "." else "."
 
         # Remove all possible thousands separators
-        amount_no_thousand_sep = re.sub(
+        amount_no_thousand_sep = _regex.sub(
             r"[\s']", "", value.replace(thousands_separator, "")
         )
 
@@ -195,10 +197,10 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
     def parse_date(self, value: str) -> Any:
         """Parses date and returns date after parsing."""
-        res = dateparser.parse(
+        res = _dates.parse_date(
             value,
-            date_formats=self.options["date_formats"],
-            languages=self.options["languages"],
+            tuple(self.options["date_formats"] or ()),
+            tuple(self.options["languages"] or ()),
         )
         logger.debug("result of date parsing=%s", res)
         return res
@@ -221,13 +223,11 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             if not value:
                 return 0
             return int(self.parse_number(value))
-        elif target_type == "float":
+        if target_type == "float":
             if not value:
                 return 0.0
             return float(self.parse_number(value))
-        elif target_type == "date":
-            return self.parse_date(value)
-        elif target_type == "datetime":
+        if target_type == "date" or target_type == "datetime":
             return self.parse_date(value)
         raise AssertionError("Unknown type")
 
@@ -264,10 +264,19 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
                 _handle_legacy_syntax(self, k, v, optimized_str, output)
         output["currency"] = self.options["currency"]
 
-        # Run plugins:
+        # Run plugins (invoice_file is needed by path-based plugins like camelot):
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
             if plugin_keyword in self.keys():
-                plugin_func.extract(self, optimized_str, output)
+                plugin_func.extract(self, optimized_str, output, invoice_file)
+        # Normalise line/tax_line field names to the canonical vocabulary before
+        # any computation/validation runs on them. Then derive `unece_code` from
+        # captured `uom` literals so the OCA Odoo importer can map it straight.
+        schema.normalize_line_fields(output)
+        unece_uom.normalize_lines_uom(output)
+        _apply_tax_to_lines(output)
+        _compute_line_tax(output)
+        _validate_tax_total(output, self["template_name"])
+        _validate_fields(self, output)
         return _check_required_fields(self, output)
 
 
@@ -275,8 +284,10 @@ def _initialize_output_and_log(
     self: InvoiceTemplate, optimized_str: str
 ) -> dict[str, Any]:
     """Initialize the output dictionary and log debug information."""
-    logger.debug("START optimized_str ========================\n" + optimized_str)
-    logger.debug("END optimized_str ==========================")
+    optimized_str_logger.debug(
+        "START optimized_str ========================\n%s", optimized_str
+    )
+    optimized_str_logger.debug("END optimized_str ==========================")
     logger.debug(
         "Date parsing: languages=%s date_formats=%s",
         self.options["languages"],
@@ -290,6 +301,8 @@ def _initialize_output_and_log(
 
     output = {}
     output["issuer"] = self["issuer"]
+    # Expose which template matched, for downstream tooling (issue #618).
+    output["template_name"] = self.get("template_name", "")
     return output
 
 
@@ -301,9 +314,9 @@ def _handle_area(
     optimized_str: str,
 ) -> str:
     """Handle area-specific extraction."""
-    if "area" in v and input_module in (pdftotext, ocrmypdf, tesseract):
+    if "area" in v and supports_area(input_module):
         logger.debug(f"Area was specified with parameters {v['area']}")
-        optimized_str_area: str = input_module.to_text(invoice_file, v["area"])
+        optimized_str_area: str = extract_text(input_module, invoice_file, v["area"])
         logger.debug(
             "START pdftotext area result ===========================\n%s",
             optimized_str_area,
@@ -359,6 +372,209 @@ def _handle_legacy_syntax(
         logger.warning("regexp for field %s didn't match", k)
 
 
+def _to_float(value: Any) -> float | None:
+    """Return ``value`` as a float, or ``None`` when it cannot be converted.
+
+    Args:
+        value (Any): The value to convert (already type-coerced in most templates).
+
+    Returns:
+        float | None: The float value, or ``None`` when conversion fails.
+    """
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _set_line_rate(line: dict[str, Any], percent: Any) -> None:
+    """Set ``line_tax_percent`` on a line and compute its ``line_tax_amount``.
+
+    The amount is only computed when a ``price_subtotal`` is present and no
+    ``line_tax_amount`` was extracted.
+
+    Args:
+        line (dict[str, Any]): A single product line, modified in place.
+        percent (Any): The tax rate to apply.
+    """
+    line["line_tax_percent"] = percent
+    if "line_tax_amount" not in line and "price_subtotal" in line:
+        subtotal = _to_float(line["price_subtotal"])
+        rate = _to_float(percent)
+        if subtotal is not None and rate is not None:
+            line["line_tax_amount"] = round(subtotal * rate / 100, 2)
+
+
+def _single_active_rate(tax_lines: list[Any]) -> Any:
+    """Return the sole non-zero tax rate in a summary, or ``None`` if ambiguous.
+
+    A row counts as "active" when its ``line_tax_percent`` is non-zero and it has
+    a non-zero ``price_subtotal`` or ``line_tax_amount`` (goods were taxed at that
+    rate). With exactly one distinct active rate the summary is unambiguous; with
+    zero or several active rates the rate cannot be assigned to a line safely.
+
+    Args:
+        tax_lines (list[Any]): The ``tax_lines`` summary rows.
+
+    Returns:
+        Any: The single active rate, or ``None`` when zero/several are present.
+    """
+    rates: dict[float, Any] = {}
+    for row in tax_lines:
+        if not isinstance(row, dict):
+            continue
+        percent = _to_float(row.get("line_tax_percent"))
+        if not percent:
+            continue
+        subtotal = _to_float(row.get("price_subtotal")) or 0.0
+        amount = _to_float(row.get("line_tax_amount")) or 0.0
+        if subtotal or amount:
+            rates[percent] = row["line_tax_percent"]
+    if len(rates) == 1:
+        return next(iter(rates.values()))
+    return None
+
+
+def _apply_tax_to_lines(output: dict[str, Any]) -> None:
+    """Apply the tax-summary rate onto product lines (issue #535).
+
+    Two strategies, both non-destructive (existing line values are kept):
+
+    1. **By code** — when product ``lines`` carry a ``line_tax_code`` (e.g. a
+       receipt's "BTW type" column) and the ``tax_lines`` summary maps that code
+       to a ``line_tax_percent``, copy the rate onto each matching line.
+    2. **Single rate** — when the summary has exactly one active (non-zero) tax
+       rate, apply it to every line that still lacks a rate. Mixed-rate summaries
+       are left untouched (ambiguous; use the ``tax_lines`` global adjustment).
+
+    In both cases ``line_tax_amount`` is computed from ``price_subtotal`` when
+    available.
+
+    Args:
+        output (dict[str, Any]): The extracted-fields dictionary, modified in place.
+    """
+    tax_lines = output.get("tax_lines")
+    lines = output.get("lines")
+    if not isinstance(tax_lines, list) or not isinstance(lines, list):
+        return
+
+    rate_by_code = {
+        str(row["line_tax_code"]): row["line_tax_percent"]
+        for row in tax_lines
+        if isinstance(row, dict)
+        and "line_tax_code" in row
+        and "line_tax_percent" in row
+    }
+    for line in lines:
+        if not isinstance(line, dict) or "line_tax_percent" in line:
+            continue
+        if "line_tax_code" in line:
+            percent = rate_by_code.get(str(line["line_tax_code"]))
+            if percent is not None:
+                _set_line_rate(line, percent)
+
+    single_rate = _single_active_rate(tax_lines)
+    if single_rate is None:
+        return
+    for line in lines:
+        if isinstance(line, dict) and "line_tax_percent" not in line:
+            _set_line_rate(line, single_rate)
+
+
+def _compute_line_tax(output: dict[str, Any]) -> None:
+    """Fill in a missing ``line_tax_amount`` for ``tax_lines`` rows.
+
+    For each per-rate row in ``tax_lines`` that has ``line_tax_percent`` and
+    ``price_subtotal`` but no ``line_tax_amount``, compute it as
+    ``round(price_subtotal * line_tax_percent / 100, 2)``. Existing values are
+    never overwritten. (Product ``lines`` are left untouched.)
+
+    Args:
+        output (dict[str, Any]): The extracted-fields dictionary, modified in place.
+    """
+    rows = output.get("tax_lines")
+    if not isinstance(rows, list):
+        return
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if (
+            "line_tax_amount" not in row
+            and "line_tax_percent" in row
+            and "price_subtotal" in row
+        ):
+            try:
+                percent = float(row["line_tax_percent"])
+                subtotal = float(row["price_subtotal"])
+            except (TypeError, ValueError):
+                continue
+            row["line_tax_amount"] = round(subtotal * percent / 100, 2)
+
+
+def _validate_tax_total(output: dict[str, Any], template_name: str) -> None:
+    """Warn if the per-rate tax amounts don't add up to ``amount_tax``.
+
+    Purely advisory (a tolerance-based warning); never raises or alters output.
+
+    Args:
+        output (dict[str, Any]): The extracted-fields dictionary.
+        template_name (str): Template name, for the log message.
+    """
+    tax_lines = output.get("tax_lines")
+    amount_tax = output.get("amount_tax")
+    if not isinstance(tax_lines, list) or not isinstance(amount_tax, int | float):
+        return
+    total = sum(
+        row["line_tax_amount"]
+        for row in tax_lines
+        if isinstance(row, dict) and isinstance(row.get("line_tax_amount"), int | float)
+    )
+    if total and abs(total - amount_tax) > 0.02:
+        logger.warning(
+            "tax_lines total (%.2f) does not match amount_tax (%.2f) in %s",
+            total,
+            amount_tax,
+            template_name,
+        )
+
+
+def _validate_fields(self: InvoiceTemplate, output: dict[str, Any]) -> None:
+    """Validate output field names against the canonical schema.
+
+    Quiet by default: only warns when an unrecognized field looks like a typo of
+    a canonical name. With the template option ``strict_fields: true`` it raises
+    on any unrecognized field (except those listed in ``options.extra_fields``).
+
+    Args:
+        self (InvoiceTemplate): The template instance.
+        output (dict[str, Any]): The extracted-fields dictionary.
+
+    Raises:
+        ValueError: If ``strict_fields`` is set and unrecognized fields remain.
+    """
+    extra = self.options.get("extra_fields", []) or []
+    issues = schema.validate_output(output, extra_fields=extra)
+    if not issues:
+        return
+    if self.options.get("strict_fields", False):
+        names = ", ".join(name for name, _ in issues)
+        raise ValueError(
+            f"Unrecognized fields in template {self['template_name']}: {names}"
+        )
+    for name, suggestion in issues:
+        if suggestion:
+            logger.warning(
+                "Field '%s' is not a recognized field; did you mean '%s'? (%s)",
+                name,
+                suggestion,
+                self["template_name"],
+            )
+        else:
+            logger.debug(
+                "Field '%s' is not a canonical field (%s)", name, self["template_name"]
+            )
+
+
 def _check_required_fields(
     self: InvoiceTemplate, output: dict[str, Any]
 ) -> dict[str, Any]:
@@ -372,14 +588,17 @@ def _check_required_fields(
 
     if set(required_fields).issubset(output.keys()):
         output["desc"] = "Invoice from %s" % (self["issuer"])
-        logger.debug("\n %s", pformat(output, indent=2))
+        # pformat is expensive; only build it when debug logging is actually on.
+        if logger.isEnabledFor(DEBUG):
+            logger.debug("\n %s", pformat(output, indent=2))
         return output
-    else:
-        fields = list(set(output.keys()))
-        logger.error(
-            "Unable to match all required fields. "
-            f"The required fields are: {required_fields}. "
-            f"Output contains the following fields: {fields}."
-        )
-        missing = set(required_fields) - set(fields)
-        raise ValueError(f"Unable to parse required field(s): {missing}")
+    fields = list(set(output.keys()))
+    logger.error(
+        "Unable to match all required fields. "
+        f"The required fields are: {required_fields}. "
+        f"Output contains the following fields: {fields}."
+    )
+    missing = set(required_fields) - set(fields)
+    # RequiredFieldsMissingError subclasses ValueError, so the cascade's existing
+    # `except ValueError` retry handling is unaffected.
+    raise RequiredFieldsMissingError(missing, self.get("template_name"))

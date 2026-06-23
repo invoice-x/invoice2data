@@ -149,7 +149,7 @@
       "start": "Vertrek",
       "end": "Totaal factuur",
       "first_line": "^\\s{11}(?P<name>([a-zA-Z]+(?:\\s\\D+){0,8}))",
-      "line": "(?P<date_start>\\d{2}[-]\\d{1,2}[-]\\d{4}\\s\\d{2}.\\d{2}.\\d{2})\\s+(?P<qty>\\d+)\\s+(?P<unit_price>-?\\d*[.]?\\d+[.,]\\d{2})\\s+(?P<price_subtotal>-?\\d*[.]?\\d+[.,]\\d{2})",
+      "line": "(?P<date_start>\\d{2}[-]\\d{1,2}[-]\\d{4}\\s\\d{2}.\\d{2}.\\d{2})\\s+(?P<qty>\\d+)\\s+(?P<price_unit>-?\\d*[.]?\\d+[.,]\\d{2})\\s+(?P<price_subtotal>-?\\d*[.]?\\d+[.,]\\d{2})",
       "types": {
         "price_unit": "float",
         "price_subtotal": "float",

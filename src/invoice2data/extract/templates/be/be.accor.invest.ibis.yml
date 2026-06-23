@@ -65,6 +65,8 @@ keywords:
   - 'BE\s0673\s923'
   - "Factuur"
 options:
+  date_formats:
+    - '%d/%m/%Y'
   currency: EUR
   languages:
     - nl

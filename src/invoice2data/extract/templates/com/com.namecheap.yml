@@ -33,5 +33,7 @@ keywords:
 - (?i)NameCheap
 - RECEIPT
 options:
+  date_formats:
+    - '%d.%m.%Y'
   remove_whitespace: false
   currency: USD

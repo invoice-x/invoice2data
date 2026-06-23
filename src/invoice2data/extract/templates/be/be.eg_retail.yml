@@ -44,12 +44,12 @@ lines:
 # code below works, but without product
     start: BEDRAG
     end: (\d{1,2}-\d{2}-\d{4}\s+\d{1,2}.\d{2}.\d{2}) # TOTAAL\s
-    line: (?P<name>POMP.*).?\s(?P<qty>\d+.\d{2})\s+.?.?\s+€?\s+(?P<unit_price>\d.\d{3}).(?P<uom>.)[)]
+    line: (?P<name>POMP.*).?\s(?P<qty>\d+.\d{2})\s+.?.?\s+€?\s+(?P<price_unit>\d.\d{3}).(?P<uom>.)[)]
     first_line: '\s(?P<code>(\w+\s(?:\s?\S+){2}))\s+.\s+[E|€]\s*\d+.\d{0,2}'
     types:
       qty: float
       line_tax_percent: float
-      unit_price: float
+      price_unit: float
       line_tax_amount: float
 keywords:
   - BE.406

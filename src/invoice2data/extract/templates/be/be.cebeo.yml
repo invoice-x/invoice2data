@@ -8,6 +8,8 @@ keywords:
   - www.cebeo.be
   - FACTURE
 options:
+  date_formats:
+    - '%d/%m/%Y'
   currency: EUR
   remove_whitespace: true
   decimal_separator: ","

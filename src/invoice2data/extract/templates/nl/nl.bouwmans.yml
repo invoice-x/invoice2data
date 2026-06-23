@@ -65,6 +65,10 @@ keywords:
   - Benzine
   - €
 options:
+  date_formats:
+    - '%d-%m-%Y'
+    - '%d/%m/%Y'
+    - '%d.%m.%Y'
   currency: EUR
   languages:
     - nl

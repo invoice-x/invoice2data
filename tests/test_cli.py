@@ -17,7 +17,7 @@ from .common import inputparser_specific
 
 def ocrmypdf_available() -> bool:
     try:
-        import ocrmypdf  # type: ignore[import-not-found] # noqa: F401
+        import ocrmypdf  # noqa: F401
     except ImportError:
         return False
     return True
@@ -25,7 +25,18 @@ def ocrmypdf_available() -> bool:
 
 needs_ocrmypdf = unittest.skipIf(not ocrmypdf_available(), reason="requires ocrmypdf")
 
+# The CLI golden tests drive the bundled compare PDFs through templates, some of
+# which pin ``input_module: pdftotext`` (or rely on the cascade's poppler
+# fallback). Skip the whole class when poppler is absent — e.g. on a Windows
+# runner where the system-dep install didn't land — so it stays green on the
+# pypdfium2-only path.
+needs_pdftotext = unittest.skipUnless(
+    shutil.which("pdftotext"),
+    reason="requires pdftotext (poppler) for layout-pinned templates",
+)
 
+
+@needs_pdftotext
 class TestCLI(unittest.TestCase):
     def setUp(self) -> None:
         self.templates = read_templates()
@@ -43,7 +54,12 @@ class TestCLI(unittest.TestCase):
         with open(test_file) as json_test_file, open(json_file) as json_json_file:
             jdatatest = json.load(json_test_file)
             jdatajson = json.load(json_json_file)
-            return jdatajson == jdatatest
+        # template_name is run metadata (issue #618), not extracted data; the
+        # goldens compare extracted fields only.
+        for record in (*jdatatest, *jdatajson):
+            if isinstance(record, dict):
+                record.pop("template_name", None)
+        return jdatajson == jdatatest
 
     def test_input(self) -> None:
         """Tests the --input-reader argument."""
@@ -255,7 +271,7 @@ class TestCLI(unittest.TestCase):
         compare_folder = os.path.dirname("tests/compare/")
         for path, _subdirs, files in os.walk(compare_folder):
             for file in files:
-                root, ext = os.path.splitext(file)
+                root, _ext = os.path.splitext(file)
                 if "AzureInterior" in file:
                     continue
                 if inputparser_specific(file):

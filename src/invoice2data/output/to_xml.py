@@ -5,6 +5,8 @@ import importlib.util
 from typing import Any
 from xml.etree import ElementTree
 
+from . import open_output
+
 
 def defusedxml_available() -> bool:
     """Checks if the defusedxml module is available.
@@ -25,7 +27,7 @@ def prettify(elem: ElementTree.Element) -> Any:
         Any: A pretty-printed XML string.
     """
     if defusedxml_available():
-        from defusedxml import minidom  # type: ignore[import-not-found]
+        from defusedxml import minidom
     else:
         from xml.dom import minidom
 
@@ -50,16 +52,30 @@ def dict_to_tags(
     """
     for k, v in data.items():
         tag = ElementTree.SubElement(parent, k)
-        if isinstance(v, str):
-            tag.text = v
-        elif isinstance(v, int | float):
-            tag.text = str(v)
-        elif isinstance(v, datetime.date):
-            tag.text = v.strftime(date_format)
-        elif isinstance(v, list):
+        if isinstance(v, list):
+            # Scalar list elements (lines parsed without grouping, an
+            # `amounts:` list, ...) used to fall through to
+            # `dict_to_tags(item, e, ...)` which calls `e.items()` and blew up
+            # with `AttributeError: 'float' object has no attribute 'items'`.
+            # Type-dispatch on each element instead.
             for e in v:
                 item = ElementTree.SubElement(tag, "item")
-                dict_to_tags(item, e, date_format)
+                if isinstance(e, dict):
+                    dict_to_tags(item, e, date_format)
+                else:
+                    _set_scalar(item, e, date_format)
+        else:
+            _set_scalar(tag, v, date_format)
+
+
+def _set_scalar(tag: ElementTree.Element, value: Any, date_format: str) -> None:
+    """Set ``tag.text`` from a single scalar value (str/number/date)."""
+    if isinstance(value, str):
+        tag.text = value
+    elif isinstance(value, int | float):
+        tag.text = str(value)
+    elif isinstance(value, datetime.date):
+        tag.text = value.strftime(date_format)
 
 
 def write_to_file(
@@ -80,17 +96,17 @@ def write_to_file(
         Provide a filename to the `path` parameter.
 
     Examples:
+        >>> import tempfile
+        >>> from pathlib import Path
         >>> from invoice2data.output import to_xml
         >>> data = [{'amount': 123.45, 'date': datetime.datetime(2024, 1, 1)}]
-        >>> to_xml.write_to_file(data, "invoice.xml")
+        >>> path = Path(tempfile.mkdtemp()) / "invoice.xml"
+        >>> to_xml.write_to_file(data, str(path))
+        >>> path.exists()
+        True
     """
-    if not path.endswith(".xml"):
-        filename = path + ".xml"
-    else:
-        filename = path
-
     tag_data = ElementTree.Element("data")
-    with open(filename, "w") as xml_file:
+    with open_output(path, ".xml") as xml_file:
         for i, line in enumerate(data):
             tag_item = ElementTree.SubElement(tag_data, "item")
             tag_item.set("id", str(i + 1))

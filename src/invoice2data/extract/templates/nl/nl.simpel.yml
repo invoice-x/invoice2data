@@ -11,6 +11,8 @@ keywords:
   - NL853855249B01
   - KvK. 60316306
 options:
+  date_formats:
+    - '%d-%m-%Y'
   currency: EUR
   languages:
     - nl

@@ -71,8 +71,8 @@ def test_to_text_existing_result(mocker: "pytest_mock.MockerFixture") -> None:  
     )
 
     # Mock bucket.get_blob to return the result blob when called with the result blob name
-    mock_bucket.get_blob.side_effect = (
-        lambda x: mock_result_blob if "output-1-to-1.json" in x else None
+    mock_bucket.get_blob.side_effect = lambda x: (
+        mock_result_blob if "output-1-to-1.json" in x else None
     )
 
     # Call the function

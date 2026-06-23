@@ -1,0 +1,63 @@
+{% set name = "invoice2data" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  # For conda-forge submission, point at the released PyPI sdist and fill in the
+  # sha256 (see conda-recipe/README.md). Until 1.0.0 is on PyPI this is a template.
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 0000000000000000000000000000000000000000000000000000000000000000
+
+build:
+  # Pure-Python: invoice2data's mypyc compilation is opt-in
+  # (INVOICE2DATA_COMPILE_MYPYC=1, off by default), so a plain pip install needs
+  # no compiler and the package can ship noarch.
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  entry_points:
+    - invoice2data = invoice2data.__main__:main
+
+requirements:
+  host:
+    - python >=3.10
+    - pip
+    - setuptools
+  run:
+    - python >=3.10
+    - click >=8.0.1
+    - python-dateutil >=2.8
+    - pyyaml >=6.0
+    - regex >=2024.4.16
+
+test:
+  imports:
+    - invoice2data
+    - invoice2data.extract
+    - invoice2data.input
+    - invoice2data.output
+  commands:
+    - invoice2data --help
+  requires:
+    - pip
+
+about:
+  home: https://github.com/invoice-x/invoice2data
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.md
+  summary: Python parser to extract data from pdf invoice
+  description: |
+    A command-line tool and Python library to automate extraction of data from
+    PDF invoices, using a flexible YAML/JSON template system, pluggable input
+    backends (pypdfium2 by default, plus pdftotext, OCR and others) and
+    CSV / JSON / XML output.
+  doc_url: https://invoice2data.readthedocs.io
+  dev_url: https://github.com/invoice-x/invoice2data
+
+extra:
+  recipe-maintainers:
+    - bosd

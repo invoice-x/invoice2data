@@ -36,9 +36,9 @@ def test_skip_template_with_too_long_lang_code() -> None:
     try:
         InvoiceTemplate(tpl)
     except Exception:
-        assert (
-            True
-        ), "Template with language code length != 2 characters is not initiated"
+        assert True, (
+            "Template with language code length != 2 characters is not initiated"
+        )
     else:
         raise AssertionError(  # Raise AssertionError here
             "Template with language code length != 2 characters is initiated"

@@ -58,6 +58,10 @@ Each field can be:
   This takes the following arguments: `f` (first page), `l` (last page), `x` (top-left x-coord), `y` (top-left y-coord),
   `r` (resolution), `W` (width in pixels) and `H` (height in pixels). When setting your region, ensure the resolution in your
   image editor matches the resolution specified for `r` in this option. If not, it will not line up properly.
+  At `r` DPI, 1 inch = `r` pixels and an A4 page is about `8.27·r × 11.69·r` pixels
+  (≈ `827 × 1169` at `r: 100`). Area extraction is supported by the `pdftotext`,
+  `pdfium` and `tesseract` readers; their text output differs slightly, so tune an
+  area template against the backend it runs with (pin it with `input_module:`).
 - A single regex with one capturing group
 - An array of regexes
 
@@ -479,12 +483,14 @@ options and their defaults are:
 - `remove_accents` (default = `False`): Useful when in France. Saves
   you from putting accents in your regular expressions.
 - `lowercase` (default = `False`): Similar to whitespace removal.
-- `date_formats` (default = `[]`): We use dateparser/dateutil to
-  'guess' the correct date format. Sometimes this doesn't work and you
-  can set one or more additional date formats. These are passed
-  directly to [dateparser](https://github.com/scrapinghub/dateparser).
-- `languages` (default = \[\]): Also passed to `dateparser` to parse
-  names of months.
+- `date_formats` (default = `[]`): one or more explicit date formats. Dates are
+  parsed **fastest-first** — your `date_formats` via stdlib `strptime`, then
+  `dateutil`, then [dateparser](https://github.com/scrapinghub/dateparser).
+  Setting `date_formats` keeps parsing on the fast `strptime` path.
+- `languages` (default = \[\]): passed to `dateparser` to parse localized month
+  names. `dateparser` is an **optional** extra
+  (`pip install invoice2data[dateparser]`); numeric / English dates work without
+  it, so only install it if your invoices use localized month names.
 - `replace` (default = `[]`): Additional search and replace before
   matching. Each replace entry must be a list of two elements.
   The first is the regex pattern to be replaced, the second the string
@@ -545,6 +551,40 @@ Example template:
       line_tax_percent: float
       line_tax_amount: float
 ```
+
+#### Applying a tax rate to invoice lines
+
+Many receipts print a short tax *code* next to each line (e.g. a Dutch receipt's
+"BTW type" column: `1`, `2`) and resolve those codes to rates only in the tax
+summary at the bottom (`1 → 9%`, `2 → 21%`). Capture the code on the line as
+`line_tax_code` and on the matching summary row as `line_tax_code` +
+`line_tax_percent`, and invoice2data joins them automatically: each line's rate
+is filled in from the summary, and `line_tax_amount` is computed from
+`price_subtotal` when both are present. Lines that already carry a
+`line_tax_percent`, and lines without a code, are left untouched.
+
+```yaml
+  lines:
+    parser: lines
+    start: 'Article'
+    end: 'Subtotal'
+    line: '(?P<line_tax_code>\d)\s+(?P<description>.+?)\s+(?P<price_subtotal>[\d.,]+)'
+    types:
+      price_subtotal: float
+  tax_lines:
+    parser: lines
+    start: 'BTW'
+    end: '\Z'
+    line: '(?P<line_tax_code>\d)\s+(?P<line_tax_percent>[\d.,]+)%'
+    types:
+      line_tax_percent: float
+```
+
+When the lines carry no code but the summary has only **one** active (non-zero)
+tax rate, that rate is applied to every line automatically — no code column is
+needed. Summaries with several active rates are left untouched (which line is at
+which rate is ambiguous): return the whole breakdown in `tax_lines` and let the
+accounting software post a single global tax-adjustment line.
 
 ## Example of template using most options
 ```yaml

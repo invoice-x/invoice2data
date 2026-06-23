@@ -11,6 +11,12 @@ end-before: <!-- github-only -->
 [contributor guide]: contributing
 [command-line reference]: usage
 [tutorial]: tutorial
+[installation]: installation
+[how-it-works]: how-it-works
+[usage]: usage
+[fields]: recommended-template-fields
+[ai]: ai
+[faq]: faq
 
 ```{toctree}
 ---
@@ -23,7 +29,10 @@ usage
 reference
 Template Creation <tutorial>
 Recommeneded Template Fields <recommended-template-fields>
+AI features <ai>
+Backend Benchmark <backend-benchmark>
 Frequently asked Questions <faq>
+Migrating to 1.0 <migration-1.0>
 contributing
 Code of Conduct <codeofconduct>
 License <license>
