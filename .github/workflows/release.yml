@@ -128,21 +128,19 @@ jobs:
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4
         with:
           subject-path: "dist/*.whl, dist/*.tar.gz"
-      - name: Sign the dists with Sigstore
+      - name: Sign the dists with Sigstore + attach to GitHub Release
+        # `release-signing-artifacts: true` (default in v3) uploads both the
+        # signed inputs (.whl, .tar.gz) and their .sigstore.json sidecars to
+        # the GitHub Release that triggered the run. A previous `gh release
+        # upload ./dist/*` step that ran after this one was therefore
+        # redundant and failed with "asset under the same name already exists"
+        # -- removed.
         uses: sigstore/gh-action-sigstore-python@04cffa1d795717b140764e8b640de88853c92acc # v3.3.0
         with:
           inputs: >-
             ./dist/*.tar.gz
             ./dist/*.whl
-      - name: Upload artifact signatures to GitHub Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ github.event.release.tag_name }}
-        run: >-
-          gh release upload
-          "$TAG_NAME" ./dist/*
-          --repo "$GITHUB_REPOSITORY"
       - name: Remove sigstore files before publishing to PyPI
-        run: rm -f dist/*.sigstore
+        run: rm -f dist/*.sigstore dist/*.sigstore.json
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
