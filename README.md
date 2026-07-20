@@ -52,7 +52,7 @@
 | src/invoice2data/input/pdfoxide.py                    |       12 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/input/pdfplumber.py                  |       18 |        3 |        2 |        0 |     85% |     36-38 |
 | src/invoice2data/input/pdftotext.py                   |       67 |        3 |       20 |        1 |     95% |54-55, 165 |
-| src/invoice2data/input/tesseract.py                   |       87 |        0 |       16 |        0 |    100% |           |
+| src/invoice2data/input/tesseract.py                   |       94 |        0 |       20 |        0 |    100% |           |
 | src/invoice2data/input/text.py                        |        4 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/output/\_\_init\_\_.py               |       17 |        0 |        4 |        0 |    100% |           |
 | src/invoice2data/output/to\_csv.py                    |       45 |        0 |       22 |        0 |    100% |           |
@@ -105,11 +105,11 @@
 | tests/test\_tax\_lines.py                             |       13 |        0 |        0 |        0 |    100% |           |
 | tests/test\_template\_builder.py                      |       40 |        0 |        0 |        0 |    100% |           |
 | tests/test\_template\_generator.py                    |       42 |        1 |        0 |        0 |     98% |        63 |
-| tests/test\_tesseract.py                              |       81 |        0 |        0 |        0 |    100% |           |
+| tests/test\_tesseract.py                              |       97 |        0 |        0 |        0 |    100% |           |
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4286** |  **174** |  **916** |  **107** | **94%** |           |
+| **TOTAL**                                             | **4309** |  **174** |  **920** |  **107** | **94%** |           |
 
 
 ## Setup coverage badge
