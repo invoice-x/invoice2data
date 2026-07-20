@@ -29,6 +29,57 @@ def test_is_available_false_when_convert_missing(
     assert tesseract.is_available() is False
 
 
+def test_imagemagick_cmd_prefers_magick_over_convert(
+    mocker: "pytest_mock.MockerFixture",  # type: ignore[name-defined]  # noqa
+) -> None:
+    """ImageMagick 7's ``magick`` is preferred (cross-platform, works on Windows)."""
+    mocker.patch(
+        "invoice2data.input.tesseract.shutil.which",
+        side_effect=lambda name: f"/usr/bin/{name}",  # both are available
+    )
+    assert tesseract._imagemagick_cmd() == ["magick"]
+
+
+def test_imagemagick_cmd_falls_back_to_convert(
+    mocker: "pytest_mock.MockerFixture",  # type: ignore[name-defined]  # noqa
+) -> None:
+    """IM 6 boxes only ship ``convert``; the fallback keeps them working."""
+    mocker.patch(
+        "invoice2data.input.tesseract.shutil.which",
+        side_effect=lambda name: "/usr/bin/convert" if name == "convert" else None,
+    )
+    assert tesseract._imagemagick_cmd() == ["convert"]
+
+
+def test_imagemagick_cmd_returns_none_when_neither_present(
+    mocker: "pytest_mock.MockerFixture",  # type: ignore[name-defined]  # noqa
+) -> None:
+    mocker.patch("invoice2data.input.tesseract.shutil.which", return_value=None)
+    assert tesseract._imagemagick_cmd() is None
+
+
+def test_to_text_uses_magick_when_available(
+    tmp_path: Path,
+    mocker: "pytest_mock.MockerFixture",  # type: ignore[name-defined]  # noqa
+) -> None:
+    """Regression: on Windows IM 7 ships as ``magick``.
+
+    ``convert`` clashes with Windows' built-in convert.exe on that platform,
+    so the pre-conversion pipeline must invoke ``magick`` when it's available
+    instead of the legacy ``convert`` name.
+    """
+    pdf = tmp_path / "invoice.pdf"
+    pdf.write_bytes(b"%PDF-1.4")
+    popen = _mock_pipeline(mocker)  # `which` returns "/usr/bin/x" for every lookup
+    tesseract.to_text(str(pdf))
+    im_cmd = next(
+        call.args[0]
+        for call in popen.call_args_list
+        if call.args and call.args[0][0] in {"magick", "convert"}
+    )
+    assert im_cmd[0] == "magick"
+
+
 def test_to_text_missing_file_raises(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError):
         tesseract.to_text(str(tmp_path / "nope.pdf"))
