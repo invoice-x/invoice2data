@@ -28,7 +28,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-to-testpypi:
-    if: github.event_name == 'push'
+    # Temporarily disabled: pypa/gh-action-pypi-publish release/v1 now defaults
+    # to Trusted Publishing (OIDC) and ignores the deprecated `password` input,
+    # so every push fails with "OpenID Connect token retrieval failed" because
+    # this job has no `id-token: write` permission. Re-enable once TestPyPI
+    # Trusted Publishing is wired (mirrors the PyPI setup below).
+    if: false
     name: Build and Publish to TestPyPI
     runs-on: ubuntu-latest
     steps:
