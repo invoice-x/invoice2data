@@ -21,14 +21,19 @@ jobs:
       pull-requests: write
     steps:
       - name: Draft Release
-        uses: release-drafter/release-drafter@4d75298e00d9e34c483e5ff8c68d0ea1c1940c1e # v7.5.1
+        uses: release-drafter/release-drafter@eada3c96a64734dd381cfbda23511034e328ddb0 # v7.6.0
         with:
           publish: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-to-testpypi:
-    if: github.event_name == 'push'
+    # Temporarily disabled: pypa/gh-action-pypi-publish release/v1 now defaults
+    # to Trusted Publishing (OIDC) and ignores the deprecated `password` input,
+    # so every push fails with "OpenID Connect token retrieval failed" because
+    # this job has no `id-token: write` permission. Re-enable once TestPyPI
+    # Trusted Publishing is wired (mirrors the PyPI setup below).
+    if: false
     name: Build and Publish to TestPyPI
     runs-on: ubuntu-latest
     # OIDC for Trusted Publishing (now set up on TestPyPI too); the previous
@@ -48,7 +53,7 @@ jobs:
       - name: Build package (pure Python)
         run: uv build --sdist --wheel
       - name: Publish to TestPyPI
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
+        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 # release/v1
         with:
           repository_url: https://test.pypi.org/legacy/
           skip-existing: true
@@ -146,4 +151,4 @@ jobs:
       - name: Remove sigstore files before publishing to PyPI
         run: rm -f dist/*.sigstore dist/*.sigstore.json
       - name: Publish package to PyPI
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
+        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 # release/v1

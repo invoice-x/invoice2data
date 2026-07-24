@@ -19,13 +19,33 @@ logger = getLogger(__name__)
 SUPPORTS_AREA = True
 
 
+def _imagemagick_cmd() -> list[str] | None:
+    """Return the ImageMagick invocation prefix, or ``None`` when absent.
+
+    Prefers ``magick`` (ImageMagick 7+, cross-platform, and the only working
+    variant on Windows where ``convert`` clashes with the built-in
+    ``convert.exe``). Falls back to the legacy ``convert`` binary
+    (ImageMagick 6) elsewhere.
+
+    Returns:
+        list[str] | None: A prefix list ready to concatenate with the
+            operation arguments, or ``None`` if ImageMagick isn't installed.
+    """
+    if shutil.which("magick"):
+        return ["magick"]
+    if shutil.which("convert"):
+        return ["convert"]
+    return None
+
+
 def is_available() -> bool:
     """Return whether the ``tesseract`` and ImageMagick binaries are present.
 
     Returns:
-        bool: True if both ``tesseract`` and ``convert`` are on the PATH.
+        bool: True if both ``tesseract`` and an ImageMagick invocation
+            (``magick`` or the legacy ``convert``) are on the PATH.
     """
-    return shutil.which("tesseract") is not None and shutil.which("convert") is not None
+    return shutil.which("tesseract") is not None and _imagemagick_cmd() is not None
 
 
 def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
@@ -49,16 +69,20 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
     # Check for dependencies. Needs Tesseract and Imagemagick installed.
     if not shutil.which("tesseract"):
         raise OSError("tesseract not installed.")
-    if not shutil.which("convert"):
+    im_cmd = _imagemagick_cmd()
+    if im_cmd is None:
         raise OSError("imagemagick not installed.")
 
     language = get_languages()
     logger.debug("tesseract language arg is, %s", language)
     timeout = 180
 
-    # convert the (multi-page) pdf file to a 300dpi png
+    # convert the (multi-page) pdf file to a 300dpi png. ImageMagick 7+ takes
+    # the operation arguments directly after ``magick``; the legacy
+    # ``convert`` binary (IM 6) takes the same argument list, so the prefix
+    # returned by ``_imagemagick_cmd`` slots in cleanly here.
     convert = [
-        "convert",
+        *im_cmd,
         "-units",
         "PixelsPerInch",
         "-density",
