@@ -47,3 +47,35 @@ def test_csv_explode_mode_one_row_per_line(tmp_path: Path) -> None:
     assert rows[1][header.index("line_name")] == "Widget"
     assert rows[2][header.index("line_name")] == "Gadget"
     assert rows[1][header.index("invoice_number")] == "INV1"  # repeated per line
+
+
+def test_csv_single_header_when_fields_missing(tmp_path: Path) -> None:
+    """A missing field must not restart the CSV with a new header row (#599)."""
+    data = [
+        {"invoice_number": "INV1", "amount": 1.0, "vat": "NL1"},
+        {"invoice_number": "INV2", "amount": 2.0},
+        {"invoice_number": "INV3", "amount": 3.0, "vat": "NL3"},
+    ]
+    out = str(tmp_path / "out.csv")
+    to_csv.write_to_file(data, out)
+    rows = _read_csv(out)
+    header = rows[0]
+    assert header == ["invoice_number", "amount", "vat"]
+    assert len(rows) == 4  # one header + one row per invoice
+    assert all(len(row) == len(header) for row in rows)
+    assert rows[2] == ["INV2", "2.0", ""]  # missing field is an empty cell
+
+
+def test_csv_explode_single_header_when_fields_missing(tmp_path: Path) -> None:
+    """Explode mode must also emit exactly one header row (#599)."""
+    data = [
+        {"invoice_number": "INV1", "lines": [{"name": "Widget", "qty": 2.0}]},
+        {"invoice_number": "INV2", "lines": [{"name": "Gadget"}]},
+    ]
+    out = str(tmp_path / "out.csv")
+    to_csv.write_to_file(data, out, lines_mode="explode")
+    rows = _read_csv(out)
+    header = rows[0]
+    assert header == ["invoice_number", "line_name", "line_qty"]
+    assert len(rows) == 3  # one header + one row per line item
+    assert rows[2] == ["INV2", "Gadget", ""]
