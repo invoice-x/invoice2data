@@ -31,6 +31,23 @@ def _cell(value: Any, date_format: str) -> Any:
     return value
 
 
+def _merge_keys(key_lists: Any) -> list[str]:
+    """Return the ordered union of several key sequences, without duplicates.
+
+    Args:
+        key_lists (Any): An iterable of key sequences.
+
+    Returns:
+        list[str]: Every key seen, in first-seen order.
+    """
+    merged: list[str] = []
+    for keys in key_lists:
+        for key in keys:
+            if key not in merged:
+                merged.append(key)
+    return merged
+
+
 def _write_flat(writer: Any, data: list[dict[str, Any]], date_format: str) -> None:
     """Write one row per invoice; list/dict fields are JSON-encoded.
 
@@ -39,13 +56,12 @@ def _write_flat(writer: Any, data: list[dict[str, Any]], date_format: str) -> No
         data (list[dict[str, Any]]): The extracted invoices.
         date_format (str): strftime format used for dates.
     """
-    last_header = None
+    header = _merge_keys(invoice.keys() for invoice in data)
+    if not header:
+        return
+    writer.writerow(header)
     for invoice in data:
-        header = list(invoice.keys())
-        if header != last_header:
-            writer.writerow(header)
-            last_header = header
-        writer.writerow([_cell(value, date_format) for value in invoice.values()])
+        writer.writerow([_cell(invoice.get(key, ""), date_format) for key in header])
 
 
 def _write_exploded(writer: Any, data: list[dict[str, Any]], date_format: str) -> None:
@@ -59,21 +75,20 @@ def _write_exploded(writer: Any, data: list[dict[str, Any]], date_format: str) -
         data (list[dict[str, Any]]): The extracted invoices.
         date_format (str): strftime format used for dates.
     """
-    last_header = None
+    scalar_keys = _merge_keys(
+        [key for key in invoice if key != "lines"] for invoice in data
+    )
+    line_keys = _merge_keys(
+        item.keys() for invoice in data for item in (invoice.get("lines") or [])
+    )
+    header = scalar_keys + [f"line_{key}" for key in line_keys]
+    if not header:
+        return
+    writer.writerow(header)
     for invoice in data:
-        scalars = {key: value for key, value in invoice.items() if key != "lines"}
         line_items = invoice.get("lines") or [{}]
-        line_keys: list[str] = []
         for item in line_items:
-            for key in item:
-                if key not in line_keys:
-                    line_keys.append(key)
-        header = list(scalars.keys()) + [f"line_{key}" for key in line_keys]
-        for item in line_items:
-            if header != last_header:
-                writer.writerow(header)
-                last_header = header
-            row = [_cell(value, date_format) for value in scalars.values()]
+            row = [_cell(invoice.get(key, ""), date_format) for key in scalar_keys]
             row += [_cell(item.get(key, ""), date_format) for key in line_keys]
             writer.writerow(row)
 
