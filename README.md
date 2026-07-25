@@ -55,7 +55,7 @@
 | src/invoice2data/input/tesseract.py                   |       94 |        0 |       20 |        0 |    100% |           |
 | src/invoice2data/input/text.py                        |        4 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/output/\_\_init\_\_.py               |       17 |        0 |        4 |        0 |    100% |           |
-| src/invoice2data/output/to\_csv.py                    |       45 |        0 |       22 |        0 |    100% |           |
+| src/invoice2data/output/to\_csv.py                    |       46 |        1 |       22 |        1 |     97% |        86 |
 | src/invoice2data/output/to\_json.py                   |       18 |        0 |       10 |        0 |    100% |           |
 | src/invoice2data/output/to\_xml.py                    |       39 |        1 |       18 |        2 |     95% |30, 77-\>exit |
 | tests/\_\_init\_\_.py                                 |        0 |        0 |        0 |        0 |    100% |           |
@@ -68,7 +68,7 @@
 | tests/test\_cli.py                                    |      231 |       33 |       64 |        6 |     83% |23, 60-\>59, 154, 183, 210, 383, 393-416, 424-455, 459 |
 | tests/test\_cli\_logging.py                           |       32 |        0 |        0 |        0 |    100% |           |
 | tests/test\_cross\_page\_lines.py                     |       37 |        0 |        0 |        0 |    100% |           |
-| tests/test\_csv\_output.py                            |       28 |        0 |        0 |        0 |    100% |           |
+| tests/test\_csv\_output.py                            |       47 |        0 |        0 |        0 |    100% |           |
 | tests/test\_dates.py                                  |       23 |        0 |        0 |        0 |    100% |           |
 | tests/test\_deprecations.py                           |       11 |        0 |        0 |        0 |    100% |           |
 | tests/test\_doctr.py                                  |       46 |        0 |        0 |        0 |    100% |           |
@@ -109,7 +109,7 @@
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4309** |  **174** |  **920** |  **107** | **94%** |           |
+| **TOTAL**                                             | **4329** |  **175** |  **920** |  **108** | **94%** |           |
 
 
 ## Setup coverage badge
