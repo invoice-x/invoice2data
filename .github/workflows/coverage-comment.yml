@@ -13,7 +13,13 @@ jobs:
   comment:
     name: Post coverage comment
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    # Only fork-PR runs need this workflow -- same-repo PRs and master pushes
+    # are already handled by the coverage job inside tests.yml (which runs with
+    # write permissions). Skipping push events here avoids the noisy failure
+    # where the action can't find a PR with head `invoice-x:master`.
+    if: >
+      github.event.workflow_run.conclusion == 'success'
+      && github.event.workflow_run.event == 'pull_request'
     permissions:
       pull-requests: write
       contents: write
