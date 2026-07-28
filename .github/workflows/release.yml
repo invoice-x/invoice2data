@@ -86,7 +86,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Build wheels
-        uses: pypa/cibuildwheel@294735312765b09d24a2fbec22660ce817587d55 # v4.1.0
+        uses: pypa/cibuildwheel@4726cd35bb13f7bde50cf2761f2499ac7b3aa32c # v4.1.1
         env:
           INVOICE2DATA_COMPILE_MYPYC: "1"
           CIBW_ARCHS: ${{ matrix.arch }}
