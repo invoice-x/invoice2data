@@ -1333,9 +1333,6 @@ pdfoxide = [
 pdfplumber = [
     { name = "pdfplumber" },
 ]
-pyyaml = [
-    { name = "pyyaml" },
-]
 
 [package.dev-dependencies]
 dev = [
@@ -1382,10 +1379,10 @@ requires-dist = [
     { name = "camelot-py", marker = "extra == 'camelot'", specifier = ">=1.0" },
     { name = "click", specifier = ">=8.0.1" },
     { name = "dateparser", marker = "extra == 'dateparser'", specifier = ">=1.2.0" },
-    { name = "defusedxml", marker = "extra == 'defusedxml'", specifier = "==0.7.1" },
-    { name = "ghostscript", marker = "extra == 'ocr'", specifier = "==0.7" },
-    { name = "google-cloud-storage", marker = "extra == 'googlevision'", specifier = "==2.18.2" },
-    { name = "google-cloud-vision", marker = "extra == 'googlevision'", specifier = "==3.8.1" },
+    { name = "defusedxml", marker = "extra == 'defusedxml'", specifier = ">=0.7.1" },
+    { name = "ghostscript", marker = "extra == 'ocr'", specifier = ">=0.7" },
+    { name = "google-cloud-storage", marker = "extra == 'googlevision'", specifier = ">=2.18" },
+    { name = "google-cloud-vision", marker = "extra == 'googlevision'", specifier = ">=3.8" },
     { name = "hotpdf", marker = "extra == 'hotpdf'", specifier = ">=0.1.0" },
     { name = "httpx", marker = "extra == 'ai'", specifier = ">=0.27" },
     { name = "ocrmypdf", marker = "extra == 'ocrmypdf'", specifier = ">=14.4.0" },
@@ -1393,17 +1390,16 @@ requires-dist = [
     { name = "paddlepaddle", marker = "extra == 'paddleocr'", specifier = ">=2.5" },
     { name = "pdf-oxide", marker = "extra == 'pdfoxide'", specifier = ">=0.3" },
     { name = "pdfminer-six", marker = "extra == 'pdfminer-six'", specifier = "==20231228" },
-    { name = "pdfplumber", marker = "extra == 'pdfplumber'", specifier = "==0.11.4" },
+    { name = "pdfplumber", marker = "extra == 'pdfplumber'", specifier = ">=0.11.4,<0.12" },
     { name = "pypdfium2", marker = "extra == 'paddleocr'", specifier = ">=4" },
     { name = "pypdfium2", marker = "extra == 'pdfium'", specifier = ">=4" },
     { name = "python-dateutil", specifier = ">=2.8" },
     { name = "python-doctr", extras = ["torch"], marker = "extra == 'doctr'", specifier = ">=0.8" },
     { name = "pyyaml", specifier = ">=6.0" },
-    { name = "pyyaml", marker = "extra == 'pyyaml'", specifier = "==6.0.2" },
     { name = "regex", marker = "python_full_version < '3.12'", specifier = ">=2024.4.16" },
     { name = "regex", marker = "python_full_version >= '3.12'", specifier = ">=2025.2.10" },
 ]
-provides-extras = ["ai", "camelot", "dateparser", "defusedxml", "doctr", "paddleocr", "googlevision", "hotpdf", "ocr", "ocrmypdf", "pdfium", "pdfminer-six", "pdfoxide", "pdfplumber", "pyyaml"]
+provides-extras = ["ai", "camelot", "dateparser", "defusedxml", "doctr", "paddleocr", "googlevision", "hotpdf", "ocr", "ocrmypdf", "pdfium", "pdfminer-six", "pdfoxide", "pdfplumber"]
 
 [package.metadata.requires-dev]
 dev = [

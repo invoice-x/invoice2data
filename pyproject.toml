@@ -85,21 +85,22 @@ xdoctest = ["xdoctest[colors] >= 1.2"]
 ai = ["httpx >= 0.27"]
 camelot = ["camelot-py >= 1.0"]
 dateparser = ["dateparser >= 1.2.0"]
-defusedxml = ["defusedxml == 0.7.1"]
+defusedxml = ["defusedxml >= 0.7.1"]
 doctr = ["python-doctr[torch] >= 0.8"]
 paddleocr = ["paddleocr >= 2.7", "paddlepaddle >= 2.5", "pypdfium2 >= 4"]
 googlevision = [
-    "google-cloud-storage == 2.18.2",
-    "google-cloud-vision == 3.8.1",
+    "google-cloud-storage >= 2.18",
+    "google-cloud-vision >= 3.8",
 ]
 hotpdf = ["hotpdf >= 0.1.0"]
-ocr = ["ghostscript == 0.7"]
+ocr = ["ghostscript >= 0.7"]
 ocrmypdf = ["ocrmypdf >= 14.4.0"]
 pdfium = ["pypdfium2 >= 4"]
+# pdfminer-six deliberately pinned: pdfplumber 0.11.x is only tested against
+# this build; camelot needs a newer build (see [tool.uv].conflicts below).
 pdfminer-six = ["pdfminer-six == 20231228"]
 pdfoxide = ["pdf-oxide >= 0.3"]
-pdfplumber = ["pdfplumber == 0.11.4"]
-pyyaml = ["pyyaml == 6.0.2"]
+pdfplumber = ["pdfplumber >= 0.11.4, < 0.12"]
 
 [tool.uv]
 package = true
