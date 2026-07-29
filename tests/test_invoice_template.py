@@ -143,5 +143,64 @@ class TestInvoiceTemplateMethods(unittest.TestCase):
         self.assertEqual(optimized_str, "abcd", "Lowercase test failed")
 
 
+def _currency_template(fields: dict[str, Any], name: str) -> InvoiceTemplate:
+    """Build an InvoiceTemplate with the four required fields stubbed in."""
+    base_fields: dict[str, Any] = {
+        "issuer": "Any Vendor Ltd",
+        "date": {"parser": "regex", "regex": r"Date:\s+(\S+)", "type": "date"},
+        "amount": {"parser": "regex", "regex": r"Total:\s+([\d.]+)", "type": "float"},
+        "invoice_number": {"parser": "regex", "regex": r"Invoice #(\d+)"},
+        **fields,
+    }
+    tpl: dict[str, Any] = {
+        "keywords": ["Any Vendor Ltd"],
+        "exclude_keywords": [],
+        "options": {
+            "currency": "EUR",
+            "date_formats": [],
+            "languages": ["en"],
+            "decimal_separator": ".",
+            "replace": [],
+        },
+        "template_name": name,
+        "fields": base_fields,
+    }
+    return InvoiceTemplate(tpl)
+
+
+def test_extracted_currency_survives_extract() -> None:
+    """Regression: dynamic currency extraction must not be clobbered.
+
+    ``output["currency"] = self.options["currency"]`` used to unconditionally
+    overwrite any currency captured by a template field with the template's
+    static option (default "EUR"), silently defeating dynamic currency
+    extraction. ``setdefault`` now preserves the extracted value.
+    """
+    tpl = _currency_template(
+        {"currency": {"parser": "regex", "regex": r"Currency:\s+(\w{3})"}},
+        "currency_capture.yml",
+    )
+    extracted = tpl.extract(
+        "Any Vendor Ltd\nInvoice #42\nDate: 2026-01-01\nTotal: 12.50\nCurrency: USD",
+        invoice_file="/dev/null",
+        input_module=None,
+    )
+    assert extracted["currency"] == "USD", (
+        f"template's static currency={tpl.options['currency']!r} clobbered "
+        f"the extracted value; got {extracted['currency']!r}"
+    )
+
+
+def test_missing_currency_falls_back_to_option() -> None:
+    """No `currency` field extracted -> the option's default is emitted."""
+    tpl = _currency_template({}, "currency_default.yml")
+    extracted = tpl.extract(
+        "Any Vendor Ltd\nInvoice #42\nDate: 2026-01-01\nTotal: 12.50",
+        invoice_file="/dev/null",
+        input_module=None,
+    )
+    assert extracted["currency"] == "EUR"
+
+
 if __name__ == "__main__":
     unittest.main()

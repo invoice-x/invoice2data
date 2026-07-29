@@ -262,7 +262,11 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
             else:
                 _handle_legacy_syntax(self, k, v, optimized_str, output)
-        output["currency"] = self.options["currency"]
+        # Fall back to the template's `options.currency` only when no field
+        # extracted a currency. Prior versions unconditionally overwrote the
+        # captured value with the option (default "EUR"), silently defeating
+        # dynamic currency extraction; use setdefault to preserve it.
+        output.setdefault("currency", self.options["currency"])
 
         # Run plugins (invoice_file is needed by path-based plugins like camelot):
         for plugin_keyword, plugin_func in PLUGIN_MAPPING.items():
