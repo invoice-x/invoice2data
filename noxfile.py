@@ -225,8 +225,6 @@ def tests(session: nox.Session) -> None:
         "--extra",
         "pdfplumber",
         "--extra",
-        "pyyaml",
-        "--extra",
         "ai",
         "--extra",
         "dateparser",
