@@ -11,6 +11,7 @@ from pprint import pformat
 from typing import Any
 
 from ..exceptions import RequiredFieldsMissingError
+from ..exceptions import TemplateSyntaxError
 from ..input import extract_text
 from ..input import supports_area
 from . import _dates
@@ -117,10 +118,12 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
         # Specific replace
         for replace in self.options.get("replace", []):
-            assert len(replace) == 2, (
-                "Error in Template %s A replace should be a list of exactly 2 elements."
-                % self["template_name"]
-            )
+            if len(replace) != 2:
+                raise TemplateSyntaxError(
+                    "A `replace` entry must be a [pattern, repl] pair "
+                    f"(got {len(replace)} elements)",
+                    self.get("template_name"),
+                )
             optimized_str = _regex.sub(replace[0], replace[1], optimized_str)
 
         return optimized_str
@@ -169,18 +172,31 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
         Returns:
             float: The parsed numerical value.
+
+        Raises:
+            TypeError: If ``value`` is not a string (internal invariant).
+            TemplateSyntaxError: If ``options.decimal_separator`` is not a
+                string, or the decimal separator appears more than once in
+                ``value``.
         """
-        assert isinstance(value, str)
+        if not isinstance(value, str):
+            # Internal invariant: parsers upstream always hand us a string;
+            # keep as a runtime TypeError (not asserting on hot path).
+            raise TypeError(f"parse_number expected str, got {type(value).__name__}")
         # Early exit if no thousands separator or custom decimal separator is present
         if not any(char in value for char in r",.'\s"):
             return float(value)
 
-        # Ensure decimal_separator is a string before calling count()
-        assert isinstance(self.options["decimal_separator"], str)
-        assert value.count(self.options["decimal_separator"]) < 2, (
-            f"Error in Template {self['template_name']}: "
-            "Decimal separator cannot be present several times"
-        )
+        if not isinstance(self.options["decimal_separator"], str):
+            raise TemplateSyntaxError(
+                "`options.decimal_separator` must be a string",
+                self.get("template_name"),
+            )
+        if value.count(self.options["decimal_separator"]) >= 2:
+            raise TemplateSyntaxError(
+                "Decimal separator cannot appear more than once in a value",
+                self.get("template_name"),
+            )
 
         # Determine the thousands separator based on the decimal separator
         thousands_separator = "," if self.options["decimal_separator"] == "." else "."
@@ -217,7 +233,8 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             Any: The coerced value.
 
         Raises:
-            AssertionError: If the target_type is unknown.
+            TemplateSyntaxError: If ``target_type`` is not one of the supported
+                values.
         """
         if target_type == "int":
             if not value:
@@ -229,7 +246,10 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             return float(self.parse_number(value))
         if target_type == "date" or target_type == "datetime":
             return self.parse_date(value)
-        raise AssertionError("Unknown type")
+        raise TemplateSyntaxError(
+            f"Unknown field type {target_type!r}; expected int/float/date/datetime",
+            self.get("template_name"),
+        )
 
     def extract(
         self, optimized_str: str, invoice_file: str, input_module: Any

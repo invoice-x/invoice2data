@@ -4,6 +4,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 from typing import Any
 
+from ...exceptions import TemplateSyntaxError
 from .. import _regex
 from ..utils import _apply_grouping
 
@@ -86,9 +87,11 @@ def _extract_and_validate_settings(
     table = plugin_settings
 
     for key in ("start", "end", "body"):
-        assert key in table, (
-            f"Error in Template {self['template_name']} Table {key} regex missing"
-        )
+        if key not in table:
+            raise TemplateSyntaxError(
+                f"`tables` plugin: missing required `{key}` regex",
+                self.get("template_name"),
+            )
     return table
 
 

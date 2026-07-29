@@ -46,12 +46,14 @@ class RequiredFieldsMissingError(InvoiceProcessingError, ValueError):
 class TemplateSyntaxError(InvoiceProcessingError, ValueError):
     """A template's configuration is malformed (author-side error).
 
-    Raised when a template's ``area`` block is missing required keys.
-    Replaces the ``AssertionError`` raised by pre-1.x versions -- asserts
-    silently vanish under ``python -O`` and expose an internal invariant
-    class to library callers. Subclasses :class:`ValueError` so the
-    input-backend cascade's existing ``except ValueError`` retry handling
-    continues to skip a broken template gracefully.
+    Raised when a template's ``replace`` block, ``lines`` settings, ``tables``
+    keys, a numeric field's decimal-separator setting, or an input backend's
+    ``area`` block are missing or ill-formed. Replaces the ``AssertionError``
+    raised by pre-1.x versions -- asserts silently vanish under ``python -O``
+    and expose an internal invariant class to library callers. Subclasses
+    :class:`ValueError` so the input-backend cascade's existing
+    ``except ValueError`` retry handling continues to skip a broken template
+    gracefully.
 
     Args:
         message (str): Human-readable description of what is wrong.

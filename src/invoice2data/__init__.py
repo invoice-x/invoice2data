@@ -1,10 +1,11 @@
 """Invoice2Data."""
 
-from .__main__ import Invoice2Data
-from .__main__ import extract_data
+from .api import Invoice2Data
+from .api import extract_data
 from .exceptions import InvoiceProcessingError
 from .exceptions import NoTemplateFoundError
 from .exceptions import RequiredFieldsMissingError
+from .exceptions import TemplateSyntaxError
 
 
 __all__ = [
@@ -12,5 +13,6 @@ __all__ = [
     "InvoiceProcessingError",
     "NoTemplateFoundError",
     "RequiredFieldsMissingError",
+    "TemplateSyntaxError",
     "extract_data",
 ]

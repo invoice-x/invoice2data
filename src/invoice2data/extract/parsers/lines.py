@@ -8,6 +8,7 @@ from re import Match
 from typing import TYPE_CHECKING
 from typing import Any
 
+from ...exceptions import TemplateSyntaxError
 from .. import _regex
 from .regex import _normalize_replacements
 from .regex import _replace_value
@@ -66,11 +67,17 @@ def parse_block(  # noqa: RUF100 C901
     Returns:
         list[dict[str, Any]]: A list of dictionaries, where each dictionary
                                 represents an extracted row with field-value pairs.
+
+    Raises:
+        TemplateSyntaxError: If ``settings`` is missing the required
+            ``line`` regex.
     """
     # Validate settings
-    assert "line" in settings, (
-        "Error in Template %s Line regex missing" % template["template_name"]
-    )
+    if "line" not in settings:
+        raise TemplateSyntaxError(
+            "`lines` parser: missing required `line` regex",
+            template.get("template_name"),
+        )
 
     logger.debug("START lines block content ========================\n%s", content)
     logger.debug("END lines block content ==========================")
@@ -225,18 +232,26 @@ def parse_by_rule(
 
     Returns:
         list[dict[str, Any]]: The parsed lines.
+
+    Raises:
+        TemplateSyntaxError: If ``rule`` is missing the required ``start``
+            or ``end`` regex.
     """
     # First apply default options.
     settings = DEFAULT_OPTIONS.copy()
     settings.update(rule)
 
     # Validate settings
-    assert "start" in settings, (
-        "Error in Template %s Lines start regex missing" % template["template_name"]
-    )
-    assert "end" in settings, (
-        "Error in Template %s Lines end regex missing" % template["template_name"]
-    )
+    if "start" not in settings:
+        raise TemplateSyntaxError(
+            "`lines` parser: missing required `start` regex",
+            template.get("template_name"),
+        )
+    if "end" not in settings:
+        raise TemplateSyntaxError(
+            "`lines` parser: missing required `end` regex",
+            template.get("template_name"),
+        )
 
     blocks_count = 0
     lines = []
