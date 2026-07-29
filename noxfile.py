@@ -252,6 +252,37 @@ def tests(session: nox.Session) -> None:
             session.notify("coverage", posargs=[])
 
 
+@nox.session(python=python_versions)
+def windows_strict(session: nox.Session) -> None:
+    """Portable unit-test subset -- what MUST pass on every OS.
+
+    Runs ``pytest -m windows_strict``: the tests that don't need poppler,
+    tesseract, ghostscript or ImageMagick binaries (template loading,
+    schema, exceptions, log formatters, mocked tesseract/AI, etc.). This
+    session backs the strict Windows CI job -- the existing full-matrix
+    ``tests`` session stays best-effort on Windows for visibility.
+    """
+    session.run(
+        "uv",
+        "sync",
+        "--group",
+        "dev",
+        "--extra",
+        "ai",
+        "--extra",
+        "dateparser",
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
+    )
+    session.env["PYTHONPATH"] = "src"
+    session.run(
+        "pytest",
+        "-m",
+        "windows_strict",
+        *session.posargs,
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
+    )
+
+
 @nox.session(python=python_versions[0])
 def coverage(session: nox.Session) -> None:
     """Produce the coverage report."""

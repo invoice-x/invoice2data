@@ -1,6 +1,11 @@
 """Tests for the canonical field schema + validation (A3)."""
 
+import pytest
+
 from invoice2data.extract import schema
+
+
+pytestmark = pytest.mark.windows_strict
 
 
 def test_canonical_fields_pass() -> None:

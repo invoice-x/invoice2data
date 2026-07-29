@@ -141,6 +141,16 @@ environment = { INVOICE2DATA_COMPILE_MYPYC = "1" }
 # Smoke-test that the compiled extensions import on every target platform.
 test-command = "python -c \"import invoice2data.extract.parsers.regex, invoice2data.extract.parsers.lines, invoice2data.extract.plugins.tables, invoice2data.extract._regex, invoice2data.extract.utils; print('mypyc import OK')\""
 
+[tool.pytest.ini_options]
+markers = [
+    # Tests that must pass on every OS, including Windows -- no external
+    # binaries (poppler, tesseract, ghostscript, ImageMagick), no compare/
+    # golden fixtures. The `windows_strict` CI job runs `pytest -m
+    # windows_strict` without `continue-on-error`. Everything else stays
+    # under the existing best-effort Windows job.
+    "windows_strict: portable unit tests -- no external binaries required",
+]
+
 [tool.coverage.paths]
 source = ["src", "*\\src", "*/site-packages"]
 tests = ["tests", "*/tests"]

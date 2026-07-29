@@ -14,6 +14,9 @@ import pytest
 from invoice2data.input import tesseract
 
 
+pytestmark = pytest.mark.windows_strict
+
+
 def test_is_available_true(mocker: "pytest_mock.MockerFixture") -> None:  # type: ignore[name-defined]  # noqa
     mocker.patch("invoice2data.input.tesseract.shutil.which", return_value="/usr/bin/x")
     assert tesseract.is_available() is True

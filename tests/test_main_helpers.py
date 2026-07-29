@@ -15,6 +15,9 @@ from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.input import pdftotext
 
 
+pytestmark = pytest.mark.windows_strict
+
+
 def _record(msg: str, level: int = logging.INFO) -> logging.LogRecord:
     return logging.LogRecord("invoice2data", level, __file__, 1, msg, None, None)
 

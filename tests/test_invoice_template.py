@@ -1,7 +1,12 @@
 import unittest
 from typing import Any
 
+import pytest
+
 from invoice2data.extract.invoice_template import InvoiceTemplate
+
+
+pytestmark = pytest.mark.windows_strict
 
 
 def test_template_with_exclude_keyword_is_not_matched() -> None:

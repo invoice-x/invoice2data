@@ -13,6 +13,7 @@ from invoice2data.extract.loader import read_templates
 from invoice2data.input import text
 
 
+pytestmark = pytest.mark.windows_strict
 TEMPLATE = (
     "issuer: ACME\n"
     "keywords:\n  - ACME\n"
