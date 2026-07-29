@@ -122,6 +122,23 @@ def test_template_with_missing_keywords_is_not_loaded(
     assert templates == []
 
 
+def test_empty_template_is_skipped(
+    templatedirectory: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Issue #721: an empty template file used to crash with
+    ``TypeError: 'NoneType' object does not support item assignment``.
+    """
+    (templatedirectory / "empty.yaml").write_text("", encoding="utf-8")
+    (templatedirectory / "null.json").write_text("null", encoding="utf-8")
+
+    with caplog.at_level("WARNING"):
+        templates = read_templates(str(templatedirectory))
+
+    assert templates == []
+    assert "Skipping empty template: empty.yaml" in caplog.text
+    assert "Skipping empty template: null.json" in caplog.text
+
+
 def test_template_name_is_yaml_filename(templatedirectory: Path) -> None:
     yamlfile = templatedirectory / "thisnameisimportant.yml"
     yamlfile.write_text(template_with_single_special_char, encoding="utf-8")

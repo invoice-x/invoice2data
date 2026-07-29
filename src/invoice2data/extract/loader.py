@@ -110,6 +110,9 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
                         continue
                 else:
                     continue
+            if tpl is None:
+                logger.warning("Skipping empty template: %s", name)
+                continue
             tpl["template_name"] = name
             tpl = prepare_template(tpl)
 
