@@ -122,21 +122,40 @@ def test_template_with_missing_keywords_is_not_loaded(
     assert templates == []
 
 
-def test_empty_template_is_skipped(
+def test_empty_yaml_template_is_skipped(
     templatedirectory: Path, caplog: pytest.LogCaptureFixture
 ) -> None:
-    """Issue #721: an empty template file used to crash with
-    ``TypeError: 'NoneType' object does not support item assignment``.
+    """Issue #721: an empty YAML template must not crash the loader.
+
+    ``yaml.safe_load('')`` returns ``None`` and the loader then did
+    ``tpl["template_name"] = name`` -> ``TypeError: 'NoneType' object does
+    not support item assignment``. Now guarded with a None-check + warning.
     """
     (templatedirectory / "empty.yaml").write_text("", encoding="utf-8")
-    (templatedirectory / "null.json").write_text("null", encoding="utf-8")
 
     with caplog.at_level("WARNING"):
         templates = read_templates(str(templatedirectory))
 
     assert templates == []
     assert "Skipping empty template: empty.yaml" in caplog.text
-    assert "Skipping empty template: null.json" in caplog.text
+
+
+def test_empty_json_template_is_skipped(
+    templatedirectory: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """An empty ``.json`` file goes through a different path than empty YAML.
+
+    ``json.loads('')`` raises ``ValueError``, which the loader already caught
+    and warned about pre-#721. Kept as a separate test so a future JSON-loader
+    refactor can't quietly regress the empty-file case there either.
+    """
+    (templatedirectory / "empty.json").write_text("", encoding="utf-8")
+
+    with caplog.at_level("WARNING"):
+        templates = read_templates(str(templatedirectory))
+
+    assert templates == []
+    assert "empty.json" in caplog.text
 
 
 def test_template_name_is_yaml_filename(templatedirectory: Path) -> None:
