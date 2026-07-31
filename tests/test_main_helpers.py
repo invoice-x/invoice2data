@@ -49,9 +49,12 @@ def test_preferred_module_unknown_is_ignored(
 def test_preferred_module_unavailable_is_ignored(
     monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
 ) -> None:
-    import invoice2data.__main__ as main_module
+    # `is_available` is looked up on `invoice2data.api` now that the backend
+    # cascade helpers live there (`__main__` re-exports `_preferred_module`
+    # itself but the symbols it closes over resolve inside `api`).
+    import invoice2data.api as api_module
 
-    monkeypatch.setattr(main_module, "is_available", lambda module: False)
+    monkeypatch.setattr(api_module, "is_available", lambda module: False)
     with caplog.at_level(logging.WARNING):
         assert _preferred_module(_template("pdfium"), used=pdftotext) is None
     assert "unavailable" in caplog.text
