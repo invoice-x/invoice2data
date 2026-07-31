@@ -62,3 +62,23 @@ def test_pdfium_area_extraction() -> None:
     assert "PAYMENT RECEIPT" in top  # header inside the band
     assert "31/12/2017" in top
     assert "OYO" not in top  # excluded by the top-band crop
+
+
+def test_pdftotext_missing_area_key_raises_template_syntax_error() -> None:
+    """Bad area block used to `AssertionError`; now raises `TemplateSyntaxError`."""
+    from invoice2data.exceptions import TemplateSyntaxError
+
+    incomplete_area = {"f": 1, "l": 1, "r": 300}  # missing x, y, W, H
+    with pytest.raises(TemplateSyntaxError, match="missing required key"):
+        pdftotext.to_text(OYO, incomplete_area)
+
+
+def test_pdfium_missing_area_key_raises_template_syntax_error() -> None:
+    """Bad area block used to `AssertionError`; now raises `TemplateSyntaxError`."""
+    pytest.importorskip("pypdfium2")
+    from invoice2data.exceptions import TemplateSyntaxError
+    from invoice2data.input import pdfium
+
+    incomplete_area = {"f": 1, "l": 1, "r": 300}  # missing x, y, W, H
+    with pytest.raises(TemplateSyntaxError, match="missing required key"):
+        pdfium.to_text(OYO, incomplete_area)

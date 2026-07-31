@@ -13,6 +13,8 @@ from subprocess import TimeoutExpired
 from subprocess import run
 from typing import Any
 
+from ..exceptions import TemplateSyntaxError
+
 
 logger = getLogger(__name__)
 
@@ -46,6 +48,23 @@ def is_available() -> bool:
             (``magick`` or the legacy ``convert``) are on the PATH.
     """
     return shutil.which("tesseract") is not None and _imagemagick_cmd() is not None
+
+
+def _validate_area_details(area_details: dict[str, Any]) -> None:
+    """Raise ``TemplateSyntaxError`` if a required area key is missing.
+
+    Args:
+        area_details (dict[str, Any]): The template's ``area`` block.
+
+    Raises:
+        TemplateSyntaxError: If any of ``f, l, r, x, y, W, H`` is absent.
+    """
+    for key in ("f", "l", "r", "x", "y", "W", "H"):
+        if key not in area_details:
+            raise TemplateSyntaxError(
+                f"template `area` block missing required key `{key}` "
+                "(need f, l, r, x, y, W, H)"
+            )
 
 
 def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
@@ -149,15 +168,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
         "UTF-8",
     ]
     if area_details is not None:
-        # An area was specified
-        # Validate the required keys were provided
-        assert "f" in area_details, "Area r details missing"
-        assert "l" in area_details, "Area r details missing"
-        assert "r" in area_details, "Area r details missing"
-        assert "x" in area_details, "Area x details missing"
-        assert "y" in area_details, "Area y details missing"
-        assert "W" in area_details, "Area W details missing"
-        assert "H" in area_details, "Area H details missing"
+        _validate_area_details(area_details)
         # Convert all of the values to strings
         for key in area_details:
             area_details[key] = str(area_details[key])

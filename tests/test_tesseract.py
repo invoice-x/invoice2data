@@ -165,6 +165,22 @@ def test_to_text_with_area_details(
     assert "600" in pdftotext_cmd  # area values are stringified into the command
 
 
+def test_to_text_missing_area_key_raises_template_syntax_error(
+    tmp_path: Path,
+    mocker: "pytest_mock.MockerFixture",  # type: ignore[name-defined]  # noqa
+) -> None:
+    """Bad area block used to `AssertionError`; now raises `TemplateSyntaxError`."""
+    from invoice2data.exceptions import TemplateSyntaxError
+
+    pdf = tmp_path / "invoice.pdf"
+    pdf.write_bytes(b"%PDF-1.4")
+    _mock_pipeline(mocker)
+    incomplete_area = {"f": 1, "l": 1, "r": 100}  # missing x, y, W, H
+
+    with pytest.raises(TemplateSyntaxError, match="missing required key"):
+        tesseract.to_text(str(pdf), incomplete_area)
+
+
 def test_to_text_tesseract_timeout_still_returns(
     tmp_path: Path,
     mocker: "pytest_mock.MockerFixture",  # type: ignore[name-defined]  # noqa

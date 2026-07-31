@@ -11,6 +11,8 @@ so an area template targets one backend's text, not both.
 from logging import getLogger
 from typing import Any
 
+from ..exceptions import TemplateSyntaxError
+
 
 logger = getLogger(__name__)
 
@@ -75,9 +77,16 @@ def _crop_pages(document: Any, area: dict[str, Any]) -> list[str]:
 
     Returns:
         list[str]: The cropped text, one entry per page in the range.
+
+    Raises:
+        TemplateSyntaxError: If ``area`` is missing any of the required keys.
     """
     for key in ("f", "l", "r", "x", "y", "W", "H"):
-        assert key in area, f"Area {key} details missing"
+        if key not in area:
+            raise TemplateSyntaxError(
+                f"template `area` block missing required key `{key}` "
+                "(need f, l, r, x, y, W, H)"
+            )
     first, last = int(area["f"]), int(area["l"])
     factor = 72.0 / float(area["r"])
     x, y = float(area["x"]), float(area["y"])
