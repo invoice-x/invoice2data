@@ -4,8 +4,8 @@
 
 | Name                                                  |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |------------------------------------------------------ | -------: | -------: | -------: | -------: | ------: | --------: |
-| src/invoice2data/\_\_init\_\_.py                      |        6 |        0 |        0 |        0 |    100% |           |
-| src/invoice2data/\_\_main\_\_.py                      |      337 |       27 |      132 |       21 |     89% |97-\>102, 102-\>107, 137, 146, 245-\>250, 272, 351-352, 488-\>490, 508-516, 532-\>exit, 541, 569-\>567, 571, 621, 655-657, 672, 680-\>exit, 821, 823, 826, 854-855, 918-\>921, 922-923 |
+| src/invoice2data/\_\_init\_\_.py                      |        7 |        0 |        0 |        0 |    100% |           |
+| src/invoice2data/\_\_main\_\_.py                      |      206 |       13 |       70 |       13 |     91% |108-\>113, 113-\>118, 148, 157, 207, 241-243, 258, 266-\>exit, 407, 409, 412, 440-441, 504-\>507, 508-509 |
 | src/invoice2data/ai/\_\_init\_\_.py                   |        6 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/ai/\_\_interface\_\_.py              |       18 |        2 |        2 |        0 |     90% |    33, 52 |
 | src/invoice2data/ai/config.py                         |       11 |        0 |        0 |        0 |    100% |           |
@@ -15,25 +15,26 @@
 | src/invoice2data/ai/providers/openai\_compatible.py   |       28 |        1 |        4 |        2 |     91% |75, 93-\>95 |
 | src/invoice2data/ai/schema\_json.py                   |       13 |        0 |        2 |        0 |    100% |           |
 | src/invoice2data/ai/template\_generator.py            |       42 |        3 |       16 |        3 |     90% |76, 83, 134 |
-| src/invoice2data/exceptions.py                        |       17 |        1 |        4 |        2 |     86% |41-\>43, 67 |
+| src/invoice2data/api.py                               |      149 |       14 |       62 |        8 |     88% |152-\>157, 179, 258-259, 395-\>397, 415-423, 438-\>436, 440, 456-\>exit, 465 |
+| src/invoice2data/exceptions.py                        |       17 |        1 |        4 |        2 |     86% |41-\>43, 69 |
 | src/invoice2data/extract/\_\_init\_\_.py              |        0 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/\_dates.py                   |       41 |        3 |       10 |        1 |     92% |34-35, 115 |
 | src/invoice2data/extract/\_regex.py                   |       24 |        0 |        2 |        0 |    100% |           |
 | src/invoice2data/extract/candidates.py                |       58 |        4 |       20 |        3 |     91% |77-78, 112-\>110, 146, 148 |
 | src/invoice2data/extract/excalibur.py                 |       35 |        0 |       10 |        0 |    100% |           |
-| src/invoice2data/extract/invoice\_template.py         |      241 |       15 |      120 |       14 |     91% |84, 116, 224, 232, 256-\>250, 349, 358-359, 405-\>exit, 408-\>exit, 477-\>472, 484-\>483, 504, 513-514, 531-537, 564-565 |
+| src/invoice2data/extract/invoice\_template.py         |      246 |       19 |      128 |       18 |     90% |85, 117, 122, 185, 191, 196, 241, 249, 276-\>270, 369, 378-379, 425-\>exit, 428-\>exit, 497-\>492, 504-\>503, 524, 533-534, 551-557, 584-585 |
 | src/invoice2data/extract/labels.py                    |       33 |        0 |        6 |        0 |    100% |           |
 | src/invoice2data/extract/loader.py                    |       65 |        1 |       22 |        3 |     95% |63-\>61, 112, 119-\>95 |
 | src/invoice2data/extract/parsers/\_\_init\_\_.py      |        3 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/parsers/\_\_interface\_\_.py |        0 |        0 |        0 |        0 |    100% |           |
-| src/invoice2data/extract/parsers/lines.py             |      132 |        0 |       74 |        5 |     98% |113-\>130, 140-\>142, 208-\>207, 325-\>322, 343-\>350 |
+| src/invoice2data/extract/parsers/lines.py             |      136 |        3 |       80 |        8 |     95% |77, 120-\>137, 147-\>149, 215-\>214, 246, 251, 340-\>337, 358-\>365 |
 | src/invoice2data/extract/parsers/regex.py             |       73 |        6 |       36 |        4 |     91% |45-46, 52, 99-102, 121 |
 | src/invoice2data/extract/parsers/static.py            |        9 |        0 |        2 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/\_\_init\_\_.py      |        0 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/\_\_interface\_\_.py |        0 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/camelot.py           |       47 |        0 |       16 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/lines.py             |        9 |        0 |        2 |        1 |     91% | 46-\>exit |
-| src/invoice2data/extract/plugins/tables.py            |       85 |        8 |       48 |        8 |     88% |46, 56, 60-\>59, 62-\>59, 114-115, 148, 198-199, 210 |
+| src/invoice2data/extract/plugins/tables.py            |       87 |        9 |       50 |        9 |     87% |47, 57, 61-\>60, 63-\>60, 91, 117-118, 151, 201-202, 213 |
 | src/invoice2data/extract/schema.py                    |       39 |        1 |       24 |        3 |     94% |136, 185-\>184, 188-\>187 |
 | src/invoice2data/extract/suggestions.py               |       19 |        0 |       10 |        0 |    100% |           |
 | src/invoice2data/extract/template\_builder.py         |       59 |        3 |       20 |        4 |     91% |49, 129, 164-\>162, 166 |
@@ -109,7 +110,7 @@
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4385** |  **176** |  **932** |  **109** | **94%** |           |
+| **TOTAL**                                             | **4415** |  **184** |  **948** |  **117** | **94%** |           |
 
 
 ## Setup coverage badge
