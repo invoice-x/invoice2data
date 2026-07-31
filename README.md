@@ -67,19 +67,19 @@
 | tests/test\_camelot.py                                |       78 |        6 |        2 |        1 |     91% |   157-165 |
 | tests/test\_candidates.py                             |       37 |        0 |        0 |        0 |    100% |           |
 | tests/test\_cli.py                                    |      231 |       33 |       64 |        6 |     83% |23, 60-\>59, 154, 183, 210, 383, 393-416, 424-455, 459 |
-| tests/test\_cli\_logging.py                           |       32 |        0 |        0 |        0 |    100% |           |
+| tests/test\_cli\_logging.py                           |       33 |        0 |        0 |        0 |    100% |           |
 | tests/test\_cross\_page\_lines.py                     |       37 |        0 |        0 |        0 |    100% |           |
 | tests/test\_csv\_output.py                            |       47 |        0 |        0 |        0 |    100% |           |
 | tests/test\_dates.py                                  |       23 |        0 |        0 |        0 |    100% |           |
 | tests/test\_deprecations.py                           |       11 |        0 |        0 |        0 |    100% |           |
 | tests/test\_doctr.py                                  |       46 |        0 |        0 |        0 |    100% |           |
 | tests/test\_excalibur.py                              |       55 |        0 |        2 |        0 |    100% |           |
-| tests/test\_exceptions.py                             |       35 |        0 |        0 |        0 |    100% |           |
+| tests/test\_exceptions.py                             |       36 |        0 |        0 |        0 |    100% |           |
 | tests/test\_extraction.py                             |       43 |        5 |       20 |        4 |     83% |30-32, 37, 57-\>49, 73 |
 | tests/test\_gvision.py                                |       40 |        0 |        0 |        0 |    100% |           |
 | tests/test\_input\_interface.py                       |       22 |        0 |        2 |        0 |    100% |           |
 | tests/test\_interactive\_template.py                  |       41 |        0 |        0 |        0 |    100% |           |
-| tests/test\_invoice\_template.py                      |       91 |        2 |        2 |        1 |     97% |   43, 206 |
+| tests/test\_invoice\_template.py                      |       93 |        2 |        2 |        1 |     97% |   48, 211 |
 | tests/test\_issue\_497.py                             |       17 |        0 |        0 |        0 |    100% |           |
 | tests/test\_issue\_535.py                             |       49 |        0 |        0 |        0 |    100% |           |
 | tests/test\_issue\_544.py                             |       18 |        0 |        0 |        0 |    100% |           |
@@ -89,10 +89,10 @@
 | tests/test\_labels.py                                 |       42 |        0 |        2 |        0 |    100% |           |
 | tests/test\_lib.py                                    |      217 |       18 |       36 |        6 |     91% |37-38, 52, 74-76, 113-115, 147, 239, 254, 288-296, 340 |
 | tests/test\_lines\_replace.py                         |       20 |        1 |        0 |        0 |     95% |        12 |
-| tests/test\_loader.py                                 |      102 |        0 |        0 |        0 |    100% |           |
+| tests/test\_loader.py                                 |      103 |        0 |        0 |        0 |    100% |           |
 | tests/test\_loader\_errors.py                         |       19 |        0 |        0 |        0 |    100% |           |
 | tests/test\_main.py                                   |        9 |        0 |        0 |        0 |    100% |           |
-| tests/test\_main\_helpers.py                          |       46 |        0 |        0 |        0 |    100% |           |
+| tests/test\_main\_helpers.py                          |       47 |        0 |        0 |        0 |    100% |           |
 | tests/test\_ocrmypdf.py                               |       30 |        0 |        0 |        0 |    100% |           |
 | tests/test\_output\_stdout.py                         |       20 |        0 |        0 |        0 |    100% |           |
 | tests/test\_output\_xml.py                            |       25 |        0 |        0 |        0 |    100% |           |
@@ -100,17 +100,18 @@
 | tests/test\_pdf\_backends.py                          |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_regex\_cache.py                           |       16 |        0 |        0 |        0 |    100% |           |
 | tests/test\_regex\_engine.py                          |       16 |        0 |        0 |        0 |    100% |           |
-| tests/test\_schema.py                                 |       16 |        0 |        0 |        0 |    100% |           |
-| tests/test\_static.py                                 |       10 |        0 |        0 |        0 |    100% |           |
+| tests/test\_schema.py                                 |       18 |        0 |        0 |        0 |    100% |           |
+| tests/test\_static.py                                 |       11 |        0 |        0 |        0 |    100% |           |
 | tests/test\_suggestions.py                            |       15 |        0 |        0 |        0 |    100% |           |
 | tests/test\_tax\_lines.py                             |       13 |        0 |        0 |        0 |    100% |           |
 | tests/test\_template\_builder.py                      |       40 |        0 |        0 |        0 |    100% |           |
 | tests/test\_template\_generator.py                    |       42 |        1 |        0 |        0 |     98% |        63 |
-| tests/test\_tesseract.py                              |      105 |        0 |        0 |        0 |    100% |           |
+| tests/test\_template\_rot.py                          |       63 |        3 |       24 |        2 |     94% |80-\>exit, 97, 121-122 |
+| tests/test\_tesseract.py                              |      106 |        0 |        0 |        0 |    100% |           |
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4415** |  **184** |  **948** |  **117** | **94%** |           |
+| **TOTAL**                                             | **4488** |  **187** |  **972** |  **119** | **94%** |           |
 
 
 ## Setup coverage badge
