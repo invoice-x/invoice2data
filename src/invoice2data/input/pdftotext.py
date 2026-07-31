@@ -13,6 +13,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+from ..exceptions import TemplateSyntaxError
+
 
 SUPPORTS_AREA = True
 
@@ -169,7 +171,11 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
 
     if area_details is not None:
         for key in ("f", "l", "r", "x", "y", "W", "H"):
-            assert key in area_details, f"Area {key} details missing"
+            if key not in area_details:
+                raise TemplateSyntaxError(
+                    f"template `area` block missing required key `{key}` "
+                    "(need f, l, r, x, y, W, H)"
+                )
         # Crop from the cached word positions -- one parse per file regardless of
         # how many area fields a template defines.
         return _crop(_words(path, _mtime(path)), area_details)

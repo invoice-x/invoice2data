@@ -41,3 +41,28 @@ class RequiredFieldsMissingError(InvoiceProcessingError, ValueError):
         if template_name:
             message += f" (template {template_name})"
         super().__init__(message)
+
+
+class TemplateSyntaxError(InvoiceProcessingError, ValueError):
+    """A template's configuration is malformed (author-side error).
+
+    Raised when a template's ``area`` block is missing required keys.
+    Replaces the ``AssertionError`` raised by pre-1.x versions -- asserts
+    silently vanish under ``python -O`` and expose an internal invariant
+    class to library callers. Subclasses :class:`ValueError` so the
+    input-backend cascade's existing ``except ValueError`` retry handling
+    continues to skip a broken template gracefully.
+
+    Args:
+        message (str): Human-readable description of what is wrong.
+        template_name (str | None): The offending template's name, when known.
+
+    Attributes:
+        template_name (str | None): The offending template, when known.
+    """
+
+    def __init__(self, message: str, template_name: str | None = None) -> None:
+        self.template_name = template_name
+        if template_name:
+            message = f"{message} (template {template_name})"
+        super().__init__(message)
