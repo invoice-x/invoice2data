@@ -12,6 +12,9 @@ from invoice2data.extract.loader import ordered_load
 from invoice2data.extract.loader import read_templates
 
 
+pytestmark = pytest.mark.windows_strict
+
+
 @pytest.fixture
 def templatedirectory() -> Generator[Path, None, None]:
     templatedirectory = Path("tests/templatedirectory/")

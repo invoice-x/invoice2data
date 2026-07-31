@@ -7,6 +7,9 @@ import pytest
 from invoice2data.extract.parsers import static
 
 
+pytestmark = pytest.mark.windows_strict
+
+
 def test_static_returns_configured_value() -> None:
     assert static.parse(None, "currency", {"value": "EUR"}, "") == "EUR"
 

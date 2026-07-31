@@ -12,6 +12,9 @@ from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.loader import prepare_template
 
 
+pytestmark = pytest.mark.windows_strict
+
+
 def test_plain_log_formatter_strips_ansi() -> None:
     record = logging.LogRecord(
         name="invoice2data",
