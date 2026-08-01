@@ -5,7 +5,7 @@
 | Name                                                  |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |------------------------------------------------------ | -------: | -------: | -------: | -------: | ------: | --------: |
 | src/invoice2data/\_\_init\_\_.py                      |        7 |        0 |        0 |        0 |    100% |           |
-| src/invoice2data/\_\_main\_\_.py                      |      206 |       13 |       70 |       13 |     91% |108-\>113, 113-\>118, 148, 157, 207, 241-243, 258, 266-\>exit, 407, 409, 412, 440-441, 504-\>507, 508-509 |
+| src/invoice2data/\_\_main\_\_.py                      |      238 |       14 |       86 |       14 |     91% |108-\>113, 113-\>118, 148, 157, 207, 241-243, 258, 266-\>exit, 422, 424, 427, 459-460, 540, 584-\>587, 588-589 |
 | src/invoice2data/ai/\_\_init\_\_.py                   |        6 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/ai/\_\_interface\_\_.py              |       18 |        2 |        2 |        0 |     90% |    33, 52 |
 | src/invoice2data/ai/config.py                         |       11 |        0 |        0 |        0 |    100% |           |
@@ -66,7 +66,7 @@
 | tests/test\_area\_extraction.py                       |       44 |        0 |        0 |        0 |    100% |           |
 | tests/test\_camelot.py                                |       78 |        6 |        2 |        1 |     91% |   157-165 |
 | tests/test\_candidates.py                             |       37 |        0 |        0 |        0 |    100% |           |
-| tests/test\_cli.py                                    |      231 |       33 |       64 |        6 |     83% |23, 60-\>59, 154, 183, 210, 383, 393-416, 424-455, 459 |
+| tests/test\_cli.py                                    |      254 |       33 |       66 |        6 |     85% |23, 60-\>59, 154, 183, 210, 383, 393-416, 424-455, 493 |
 | tests/test\_cli\_logging.py                           |       33 |        0 |        0 |        0 |    100% |           |
 | tests/test\_cross\_page\_lines.py                     |       37 |        0 |        0 |        0 |    100% |           |
 | tests/test\_csv\_output.py                            |       47 |        0 |        0 |        0 |    100% |           |
@@ -112,7 +112,7 @@
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4571** |  **188** |  **980** |  **117** | **94%** |           |
+| **TOTAL**                                             | **4626** |  **189** |  **998** |  **118** | **94%** |           |
 
 
 ## Setup coverage badge
