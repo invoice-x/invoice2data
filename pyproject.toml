@@ -60,6 +60,7 @@ Changelog = "https://github.com/invoice-x/invoice2data/releases"
 [dependency-groups]
 dev = [
     "coverage[toml] >= 6.0",
+    "hypothesis >= 6.0",
     "pre-commit >=2.16.0",
     "pre-commit-hooks >=4.1.0",
     "pytest >=8.2.2",

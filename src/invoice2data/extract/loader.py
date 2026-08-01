@@ -56,14 +56,77 @@ def ordered_load(
         logger.warning("Failed to load template stream\n%s", error)
         return []
 
+    # Guard against payloads that parse successfully but are not a list of
+    # templates (e.g. `json.loads("0")` returns an int, `yaml.safe_load("~")`
+    # returns None). Without this, `for raw_tpl in tpl_stream` blew up with
+    # a TypeError before reaching `prepare_template`.
+    if not isinstance(tpl_stream, list):
+        logger.warning(
+            "Template stream must be a list of mappings, got %s; ignoring",
+            type(tpl_stream).__name__,
+        )
+        return []
+
     output = []
     # Always pre-process templates to remain backwards compatible.
     for raw_tpl in tpl_stream:
+        if not isinstance(raw_tpl, dict):
+            logger.warning(
+                "Template stream entry must be a mapping, got %s; skipping",
+                type(raw_tpl).__name__,
+            )
+            continue
         tpl = prepare_template(raw_tpl)
         if tpl:
             output.append(InvoiceTemplate(tpl))
 
     return output
+
+
+def _load_template_file(path: Path) -> Any:
+    """Read + parse a single template file, or return ``None`` on any issue.
+
+    Extracted from :func:`read_templates` to keep it under ruff's C901
+    complexity ceiling. Handles the three ways a template file can be
+    unusable -- unknown extension, parser error, empty/non-mapping content --
+    with a warning per case so template authors can see what got dropped.
+
+    Args:
+        path (Path): Full path to the template file.
+
+    Returns:
+        Any: The parsed mapping, or ``None`` if the file was skipped.
+    """
+    name = path.name
+    if name.endswith((".yaml", ".yml")):
+        try:
+            with path.open(encoding="utf-8") as f:
+                tpl = load(f.read(), Loader=SafeLoader)
+        except YAMLError as error:
+            logger.warning("Failed to load %s template:\n%s", name, error)
+            return None
+    elif name.endswith(".json"):
+        try:
+            with path.open(encoding="utf-8") as f:
+                tpl = json.loads(f.read())
+        except ValueError as error:
+            logger.warning("json Loader Failed to load %s template:\n%s", name, error)
+            return None
+    else:
+        return None
+    if tpl is None:
+        logger.warning("Skipping empty template: %s", name)
+        return None
+    if not isinstance(tpl, dict):
+        # `yaml.safe_load("0")` returns int, `yaml.safe_load("[]")` returns a
+        # list, etc. Only mappings are valid templates.
+        logger.warning(
+            "Skipping %s: template must be a mapping, got %s",
+            name,
+            type(tpl).__name__,
+        )
+        return None
+    return tpl
 
 
 def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
@@ -93,25 +156,15 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
 
     for path, _subdirs, files in os.walk(folder):
         for name in sorted(files):
-            with (Path(path) / name).open(encoding="utf-8") as template_file:
-                if name.endswith((".yaml", ".yml")):
-                    try:
-                        tpl = load(template_file.read(), Loader=SafeLoader)
-                    except YAMLError as error:
-                        logger.warning("Failed to load %s template:\n%s", name, error)
-                        continue
-                elif name.endswith(".json"):
-                    try:
-                        tpl = json.loads(template_file.read())
-                    except ValueError as error:
-                        logger.warning(
-                            "json Loader Failed to load %s template:\n%s", name, error
-                        )
-                        continue
-                else:
-                    continue
-            if tpl is None:
-                logger.warning("Skipping empty template: %s", name)
+            tpl = _load_template_file(Path(path) / name)
+            if not isinstance(tpl, dict):
+                # `_load_template_file` returned None for parse errors, empty
+                # files, or non-mapping content -- all logged there.
+                logger.debug(
+                    "Skipping %s: template must be a mapping, got %s",
+                    name,
+                    type(tpl).__name__,
+                )
                 continue
             tpl["template_name"] = name
             tpl = prepare_template(tpl)
