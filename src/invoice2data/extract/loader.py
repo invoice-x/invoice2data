@@ -3,9 +3,11 @@
 Templates are initially read from .yml or .json files and then kept as class.
 """
 
+import contextlib
 import json
 import os
 from collections.abc import Callable
+from functools import lru_cache
 from logging import getLogger
 from pathlib import Path
 from typing import Any
@@ -129,10 +131,70 @@ def _load_template_file(path: Path) -> Any:
     return tpl
 
 
+def _folder_signature(folder: str) -> tuple[tuple[str, int], ...]:
+    """Cheap fingerprint of a template folder: sorted ``(path, mtime_ns)`` pairs.
+
+    Cheap enough (stat-only, no file reads) to compute on every call, sensitive
+    enough that any file add/remove/rewrite busts the memoization cache below.
+
+    Args:
+        folder (str): Absolute path to the template folder.
+
+    Returns:
+        tuple[tuple[str, int], ...]: Immutable, hashable signature.
+    """
+    entries: list[tuple[str, int]] = []
+    for path, _subdirs, files in os.walk(folder):
+        for name in files:
+            full = Path(path) / name
+            with contextlib.suppress(OSError):
+                # File vanished between walk() and stat() -- skip; signature
+                # will differ on the next call and cache re-populates.
+                entries.append((str(full), full.stat().st_mtime_ns))
+    entries.sort()
+    return tuple(entries)
+
+
+@lru_cache(maxsize=8)
+def _read_templates_cached(
+    folder: str, _signature: tuple[tuple[str, int], ...]
+) -> tuple[InvoiceTemplate, ...]:
+    """Actual template-loading work; keyed by folder + folder-signature.
+
+    Returns an immutable tuple so a caller mutating the sequence can't corrupt
+    a peer's cached view; :func:`read_templates` converts to a fresh ``list``
+    on the way out.
+    """
+    output: list[InvoiceTemplate] = []
+    for path, _subdirs, files in os.walk(folder):
+        for name in sorted(files):
+            tpl = _load_template_file(Path(path) / name)
+            if not isinstance(tpl, dict):
+                # `_load_template_file` returned None for parse errors, empty
+                # files, or non-mapping content -- all logged there.
+                logger.debug(
+                    "Skipping %s: template must be a mapping, got %s",
+                    name,
+                    type(tpl).__name__,
+                )
+                continue
+            tpl["template_name"] = name
+            tpl = prepare_template(tpl)
+            if tpl:
+                output.append(InvoiceTemplate(tpl))
+    logger.info("Loaded %d templates from %s", len(output), folder)
+    return tuple(output)
+
+
 def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
     """Load YAML templates from template folder. Return list of dicts.
 
     Use built-in templates if no folder is set.
+
+    Memoized: repeat calls for an unchanged folder skip the disk read and
+    YAML parse. The cache is keyed by folder path + a cheap ``(path, mtime)``
+    signature, so any file add/remove/rewrite invalidates it automatically.
+    Callers get a fresh list so mutating the returned sequence is safe.
 
     Args:
         folder (str | None): User-defined folder where templates are stored.
@@ -148,32 +210,11 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
         >>> templates[0]['template_name']  # Check the name of the first template
                 'au.com.opal.yml'
     """
-    output = []
     if folder is None:
         folder = str(Path(__file__).parent / "templates")
     else:
         folder = str(Path(folder).resolve())
-
-    for path, _subdirs, files in os.walk(folder):
-        for name in sorted(files):
-            tpl = _load_template_file(Path(path) / name)
-            if not isinstance(tpl, dict):
-                # `_load_template_file` returned None for parse errors, empty
-                # files, or non-mapping content -- all logged there.
-                logger.debug(
-                    "Skipping %s: template must be a mapping, got %s",
-                    name,
-                    type(tpl).__name__,
-                )
-                continue
-            tpl["template_name"] = name
-            tpl = prepare_template(tpl)
-
-            if tpl:
-                output.append(InvoiceTemplate(tpl))
-
-    logger.info("Loaded %d templates from %s", len(output), folder)
-    return output
+    return list(_read_templates_cached(folder, _folder_signature(folder)))
 
 
 def prepare_template(tpl: dict[str, Any]) -> dict[str, Any] | None:
