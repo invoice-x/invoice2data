@@ -342,6 +342,19 @@ def _run_new_template(
     help="Ignore built-in templates.",
 )
 @click.option(
+    "--template",
+    "template_filter",
+    default=None,
+    help="Force a specific template by name (case-insensitive substring match). "
+    "Useful for debugging why a template doesn't match a document.",
+)
+@click.option(
+    "--explain",
+    is_flag=True,
+    help="After extraction, print a per-field summary (matched template, "
+    "captured values, and any required fields that could not be parsed).",
+)
+@click.option(
     "--new-template",
     type=click.Path(exists=True, dir_okay=False),
     help="Draft a new template from a sample document, then exit.",
@@ -390,6 +403,8 @@ def main(  # noqa: C901
     filename_format: str,
     template_folder: str | None,
     exclude_built_in_templates: bool,
+    template_filter: str | None,
+    explain: bool,
     new_template: str | None,
     use_ai: bool,
     template_out: str | None,
@@ -419,6 +434,8 @@ def main(  # noqa: C901
     output_module = output_mapping[output_format]
 
     templates = _load_templates(template_folder, exclude_built_in_templates)
+    if template_filter:
+        templates = _filter_templates(templates, template_filter)
 
     output = []
     for f in input_files:
@@ -437,6 +454,8 @@ def main(  # noqa: C901
                     _process_and_move_copy(
                         f.name, res, copy, move, filename_format
                     )  # Extract file processing and copy/move
+            if explain:
+                _explain(f.name, res)
         except Exception as e:  # noqa: PERF203
             logger.critical(
                 "Invoice2data failed to process %s. \nError message: %s", f.name, e
@@ -462,6 +481,67 @@ def _load_templates(
     if not exclude_built_in_templates:
         templates.extend(read_templates())
     return templates
+
+
+def _filter_templates(templates: list[Any], name: str) -> list[Any]:
+    """Restrict to templates whose name contains ``name`` (case-insensitive).
+
+    Args:
+        templates (list[Any]): Loaded templates.
+        name (str): Substring to match against ``template_name``.
+
+    Returns:
+        list[Any]: Matching templates.
+
+    Raises:
+        click.UsageError: If no template matches ``name`` -- so
+            ``--template acme`` fails loudly rather than silently proceeding
+            with zero templates (which would just report "No template for X"
+            for every input).
+    """
+    needle = name.lower()
+    matches = [t for t in templates if needle in t.get("template_name", "").lower()]
+    if not matches:
+        available = sorted(t.get("template_name", "") for t in templates)
+        raise click.UsageError(
+            f"--template {name!r} matched no template. "
+            f"Available: {len(available)} templates; try one of "
+            f"{available[:5]}{'...' if len(available) > 5 else ''}"
+        )
+    logger.debug("--template %s -> %d template(s)", name, len(matches))
+    return matches
+
+
+def _explain(invoice_file: str, result: dict[str, Any]) -> None:
+    """Print a per-file summary for ``--explain``.
+
+    Deliberately writes to stdout (not the logger) so it renders cleanly even
+    with ``--in-automation`` or ``--no-color`` set. Intended for template
+    authoring / debugging, not for machine consumption.
+
+    Args:
+        invoice_file (str): Path shown at the top of the block.
+        result (dict[str, Any]): The ``extract_data`` return value (may be ``{}``).
+    """
+    click.echo(f"\n=== {invoice_file} ===")
+    if not result:
+        click.echo("  no template matched (or every match was missing required fields)")
+        return
+    template_name = result.get("template_name", "<unknown>")
+    click.echo(f"  matched: {template_name}")
+    # Group fields: required-first, then everything else. Skip internal keys.
+    required = ["issuer", "date", "amount", "invoice_number"]
+    printed: set[str] = set()
+    for key in required:
+        if key in result:
+            click.echo(f"    {key:20s} = {result[key]!r}")
+            printed.add(key)
+        else:
+            click.echo(f"    {key:20s} MISSING")
+    for key, value in result.items():
+        if key in printed or key == "template_name":
+            continue
+        click.echo(f"    {key:20s} = {value!r}")
 
 
 #: Characters not allowed in filenames on common filesystems (the Windows set is
