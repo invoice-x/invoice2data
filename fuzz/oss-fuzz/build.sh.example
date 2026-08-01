@@ -1,0 +1,18 @@
+#!/bin/bash -eu
+# Submit this (renamed to `build.sh`) inside
+# `google/oss-fuzz/projects/invoice2data/` alongside `project.yaml` and
+# `Dockerfile`. Runs inside the OSS-Fuzz base-builder-python container.
+#
+# See https://google.github.io/oss-fuzz/getting-started/new-project-guide/python-lang/#buildsh
+
+# Install invoice2data + the extras a couple of harnesses touch.
+# `--no-deps` after so mypyc compilation of the wheel isn't triggered inside
+# the sanitizer build; the fuzzer runs pure-Python.
+pip3 install --upgrade pip
+pip3 install "$SRC/invoice2data"
+pip3 install atheris pyyaml regex
+
+# Build each harness. OSS-Fuzz's `compile_python_fuzzer` wraps Atheris.
+for fuzzer in "$SRC/invoice2data/fuzz/fuzz_"*.py; do
+  compile_python_fuzzer "$fuzzer"
+done
