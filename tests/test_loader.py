@@ -242,3 +242,60 @@ exclude_keywords Exclude_this
 options:
   language: EN
 """
+
+
+def test_read_templates_memoizes_across_calls() -> None:
+    """Repeat `read_templates()` calls skip the disk read (memoized by folder+mtime)."""
+    from invoice2data.extract.loader import _read_templates_cached
+
+    _read_templates_cached.cache_clear()
+
+    # First call populates the cache.
+    read_templates()
+    hits_before = _read_templates_cached.cache_info().hits
+    read_templates()
+    hits_after = _read_templates_cached.cache_info().hits
+    assert hits_after == hits_before + 1, (
+        "read_templates() should hit the cache on the second identical call; "
+        f"cache_info(): {_read_templates_cached.cache_info()}"
+    )
+
+
+def test_read_templates_returned_list_is_a_defensive_copy() -> None:
+    """Mutating the returned list must not corrupt other callers' cached view."""
+    from invoice2data.extract.loader import _read_templates_cached
+
+    _read_templates_cached.cache_clear()
+    first = read_templates()
+    original_len = len(first)
+    first.pop()  # mutate the returned list
+
+    second = read_templates()
+    assert len(second) == original_len, (
+        "Mutating the returned list must not shrink the cached view"
+    )
+
+
+def test_read_templates_mtime_change_busts_cache(templatedirectory: Path) -> None:
+    """A file mtime change (rewrite) invalidates the memoization signature."""
+    import time
+
+    from invoice2data.extract.loader import _read_templates_cached
+
+    _read_templates_cached.cache_clear()
+    (templatedirectory / "t.yml").write_text(
+        "issuer: A\nkeywords: [x]\n", encoding="utf-8"
+    )
+    tpls_first = read_templates(str(templatedirectory))
+    assert len(tpls_first) == 1
+    assert tpls_first[0]["issuer"] == "A"
+
+    # Rewrite with a different issuer; sleep 10 ms so mtime_ns differs.
+    time.sleep(0.01)
+    (templatedirectory / "t.yml").write_text(
+        "issuer: B\nkeywords: [x]\n", encoding="utf-8"
+    )
+    tpls_second = read_templates(str(templatedirectory))
+    assert tpls_second[0]["issuer"] == "B", (
+        "Cache should have been invalidated when the file was rewritten"
+    )
