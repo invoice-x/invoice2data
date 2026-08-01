@@ -454,6 +454,40 @@ class TestCLI(unittest.TestCase):
             else:
                 self.fail("No data extracted from the file")
 
+    def test_template_filter_selects_named_template(self) -> None:
+        """`--template <substring>` restricts extraction to matching templates."""
+        oyo = os.path.join("tests", "compare", "oyo.pdf")
+        # Substring 'oyo' matches com.oyo.invoice.yml and nothing else -- extraction
+        # succeeds using just that one template.
+        with self.assertRaises(SystemExit) as cm:
+            main(["--template", "oyo", oyo])
+        self.assertEqual(cm.exception.code, 0)
+
+    def test_template_filter_no_match_fails_loudly(self) -> None:
+        """`--template <no match>` errors out rather than silently proceeding."""
+        oyo = os.path.join("tests", "compare", "oyo.pdf")
+        with self.assertRaises(SystemExit) as cm:
+            main(["--template", "definitelynotarealtemplate", oyo])
+        # click.UsageError -> exit code 2
+        self.assertEqual(cm.exception.code, 2)
+
+    def test_explain_prints_field_summary(self) -> None:
+        """`--explain` prints the matched template + captured fields to stdout."""
+        import contextlib
+        import io
+
+        oyo = os.path.join("tests", "compare", "oyo.pdf")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf), self.assertRaises(SystemExit) as cm:
+            main(["--explain", oyo])
+        self.assertEqual(cm.exception.code, 0)
+        out = buf.getvalue()
+        self.assertIn("=== tests/compare/oyo.pdf ===", out)
+        self.assertIn("matched: com.oyo.invoice.yml", out)
+        # Required fields section is present + populated.
+        for field in ("issuer", "date", "amount", "invoice_number"):
+            self.assertIn(field, out)
+
 
 if __name__ == "__main__":
     unittest.main()
