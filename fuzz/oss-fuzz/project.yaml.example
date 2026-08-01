@@ -1,0 +1,19 @@
+# Submit this (renamed to `project.yaml`) inside
+# `google/oss-fuzz/projects/invoice2data/` via a PR to google/oss-fuzz.
+# See https://google.github.io/oss-fuzz/getting-started/new-project-guide/
+# and https://google.github.io/oss-fuzz/getting-started/new-project-guide/python-lang/
+
+homepage: "https://github.com/invoice-x/invoice2data"
+language: python
+primary_contact: "REPLACE_WITH_YOUR_EMAIL@example.com"
+auto_ccs:
+  - "REPLACE_WITH_ADDITIONAL_MAINTAINER@example.com"
+main_repo: "https://github.com/invoice-x/invoice2data"
+sanitizers:
+  - address
+  - undefined
+fuzzing_engines:
+  - libfuzzer
+architectures:
+  - x86_64
+file_github_issue: true

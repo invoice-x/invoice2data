@@ -293,5 +293,5 @@ convention = "google"
 
 [tool.pydoclint]
 style = 'google'
-exclude = '\.git|\.nox|tests*|noxfile.py|tables.py'
+exclude = '\.git|\.nox|tests*|noxfile.py|tables.py|fuzz/'
 arg-type-hints-in-docstring = true

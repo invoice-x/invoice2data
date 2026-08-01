@@ -1,0 +1,8 @@
+# Submit this (renamed to `Dockerfile`) inside
+# `google/oss-fuzz/projects/invoice2data/` alongside `project.yaml`.
+# See https://google.github.io/oss-fuzz/getting-started/new-project-guide/python-lang/#dockerfile
+
+FROM gcr.io/oss-fuzz-base/base-builder-python
+RUN git clone --depth 1 https://github.com/invoice-x/invoice2data $SRC/invoice2data
+WORKDIR $SRC/invoice2data
+COPY build.sh $SRC/
