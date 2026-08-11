@@ -230,7 +230,7 @@ If the first regexp for `VAT 10%` catches **1.5** and the second regexp for
 As you can see, the sum_ prefix is removed from the amount_tax field name.
 
 
-### Lines
+#### Lines
 
 The `lines` key allows you to extract line item data from invoices, such as product descriptions, quantities, and prices.
 
