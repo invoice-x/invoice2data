@@ -232,6 +232,8 @@ As you can see, the sum_ prefix is removed from the amount_tax field name.
 
 ### Lines
 
+**Deprecated.** Use [`parser: lines`](#parser-lines) instead. This top-level `lines` key is kept for backwards compatibility and will be removed in a future release.
+
 The `lines` key allows you to extract line item data from invoices, such as product descriptions, quantities, and prices.
 
 **Required Properties**
