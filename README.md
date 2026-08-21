@@ -15,14 +15,14 @@
 | src/invoice2data/ai/providers/openai\_compatible.py   |       28 |        1 |        4 |        2 |     91% |75, 93-\>95 |
 | src/invoice2data/ai/schema\_json.py                   |       13 |        0 |        2 |        0 |    100% |           |
 | src/invoice2data/ai/template\_generator.py            |       42 |        3 |       16 |        3 |     90% |76, 83, 134 |
-| src/invoice2data/api.py                               |      149 |       14 |       62 |        8 |     88% |152-\>157, 179, 258-259, 395-\>397, 415-423, 438-\>436, 440, 456-\>exit, 465 |
+| src/invoice2data/api.py                               |      162 |       15 |       68 |       10 |     87% |154-\>159, 181, 260-261, 280-\>279, 282, 421-\>423, 441-449, 464-\>462, 466, 482-\>exit, 491 |
 | src/invoice2data/exceptions.py                        |       17 |        0 |        4 |        1 |     95% |   41-\>43 |
 | src/invoice2data/extract/\_\_init\_\_.py              |        0 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/\_dates.py                   |       41 |        2 |       10 |        0 |     96% |     34-35 |
 | src/invoice2data/extract/\_regex.py                   |       24 |        0 |        2 |        0 |    100% |           |
 | src/invoice2data/extract/candidates.py                |       58 |        4 |       20 |        3 |     91% |77-78, 112-\>110, 146, 148 |
 | src/invoice2data/extract/excalibur.py                 |       35 |        0 |       10 |        0 |    100% |           |
-| src/invoice2data/extract/invoice\_template.py         |      246 |       18 |      128 |       17 |     90% |85, 117, 122, 185, 191, 241, 249, 276-\>270, 369, 378-379, 425-\>exit, 428-\>exit, 497-\>492, 504-\>503, 524, 533-534, 551-557, 584-585 |
+| src/invoice2data/extract/invoice\_template.py         |      246 |       18 |      128 |       17 |     90% |85, 117, 122, 185, 191, 241, 249, 281-\>270, 377, 386-387, 433-\>exit, 436-\>exit, 505-\>500, 512-\>511, 532, 541-542, 559-565, 592-593 |
 | src/invoice2data/extract/labels.py                    |       33 |        0 |        6 |        0 |    100% |           |
 | src/invoice2data/extract/loader.py                    |      101 |        3 |       40 |        4 |     95% |76-80, 82-\>74, 118, 183-\>170 |
 | src/invoice2data/extract/parsers/\_\_init\_\_.py      |        3 |        0 |        0 |        0 |    100% |           |
@@ -42,18 +42,18 @@
 | src/invoice2data/extract/unece\_uom.py                |       24 |        0 |       16 |        0 |    100% |           |
 | src/invoice2data/extract/utils.py                     |       23 |        2 |       16 |        2 |     90% |14-\>31, 29-30 |
 | src/invoice2data/extract/validators.py                |       24 |        0 |        6 |        0 |    100% |           |
-| src/invoice2data/input/\_\_init\_\_.py                |       36 |        0 |        2 |        0 |    100% |           |
+| src/invoice2data/input/\_\_init\_\_.py                |       77 |        2 |       22 |        2 |     96% |  103, 128 |
 | src/invoice2data/input/\_\_interface\_\_.py           |        0 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/input/doctr.py                       |       32 |        0 |        6 |        0 |    100% |           |
 | src/invoice2data/input/gvision.py                     |       55 |        7 |       12 |        4 |     84% |28-29, 62-66, 70, 73, 124 |
 | src/invoice2data/input/hotpdf.py                      |       12 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/input/ocrmypdf.py                    |       54 |        7 |       14 |        5 |     79% |74-\>77, 81-87, 117-\>119, 121-\>132, 145-146 |
 | src/invoice2data/input/paddleocr.py                   |       38 |        6 |        6 |        0 |     86% | 32, 66-72 |
-| src/invoice2data/input/pdfium.py                      |       39 |        0 |        8 |        0 |    100% |           |
+| src/invoice2data/input/pdfium.py                      |       41 |        0 |        8 |        0 |    100% |           |
 | src/invoice2data/input/pdfminer\_wrapper.py           |       30 |        0 |        2 |        0 |    100% |           |
 | src/invoice2data/input/pdfoxide.py                    |       12 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/input/pdfplumber.py                  |       18 |        3 |        2 |        0 |     85% |     36-38 |
-| src/invoice2data/input/pdftotext.py                   |       69 |        3 |       22 |        1 |     96% |56-57, 167 |
+| src/invoice2data/input/pdftotext.py                   |       73 |        4 |       24 |        2 |     94% |57-58, 173, 193 |
 | src/invoice2data/input/tesseract.py                   |       93 |        0 |       24 |        0 |    100% |           |
 | src/invoice2data/input/text.py                        |        4 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/output/\_\_init\_\_.py               |       17 |        0 |        4 |        0 |    100% |           |
@@ -98,6 +98,7 @@
 | tests/test\_output\_stdout.py                         |       20 |        0 |        0 |        0 |    100% |           |
 | tests/test\_output\_xml.py                            |       25 |        0 |        0 |        0 |    100% |           |
 | tests/test\_paddleocr.py                              |       32 |        0 |        0 |        0 |    100% |           |
+| tests/test\_page\_ranges.py                           |       62 |        0 |        0 |        0 |    100% |           |
 | tests/test\_pdf\_backends.py                          |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_property.py                               |       66 |        2 |        0 |        0 |     97% |   111-112 |
 | tests/test\_record\_values.py                         |       24 |        1 |        0 |        0 |     96% |        11 |
@@ -114,7 +115,7 @@
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4740** |  **190** | **1020** |  **119** | **94%** |           |
+| **TOTAL**                                             | **4862** |  **194** | **1048** |  **124** | **94%** |           |
 
 
 ## Setup coverage badge
