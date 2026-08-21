@@ -26,6 +26,11 @@ if os.environ.get("INVOICE2DATA_REGEX_ENGINE", "re").lower() == "regex":
 #: Name of the active regex engine ("re" or "regex").
 ENGINE: str = _engine.__name__
 
+#: The active engine's ``PatternError``/``error`` type, re-exported so callers
+#: can ``except _regex.error`` without caring which engine is active. Both
+#: engines expose the same attribute name.
+error = _engine.error
+
 
 @lru_cache(maxsize=4096)
 def compile(pattern: str, flags: int = 0) -> "re.Pattern[str]":

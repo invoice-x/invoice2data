@@ -207,5 +207,57 @@ def test_missing_currency_falls_back_to_option() -> None:
     assert extracted["currency"] == "EUR"
 
 
+def _keyword_template(keywords: list[str], excludes: list[str] | None = None) -> InvoiceTemplate:
+    """Build a minimal template with the given keywords / exclude_keywords."""
+    return InvoiceTemplate(
+        {
+            "template_name": "kw.yml",
+            "keywords": keywords,
+            "exclude_keywords": excludes or [],
+        }
+    )
+
+
+class TestMatchesInputRegex:
+    """Issue #742: keywords / exclude_keywords are regex, not plain substrings."""
+
+    def test_plain_string_keyword_still_matches(self) -> None:
+        assert _keyword_template(["Acme Corp"]).matches_input("Hello Acme Corp inv#1")
+
+    def test_regex_whitespace_metachar_matches_multiple_spaces(self) -> None:
+        """`Company\\s+US` should match `Company    US` (multi-space)."""
+        assert _keyword_template([r"Company\s+US"]).matches_input(
+            "Invoice from Company    US"
+        )
+
+    def test_regex_alternation_matches_either_branch(self) -> None:
+        """`Company\\s+(US|UK)` should match either branch."""
+        tpl = _keyword_template([r"Company\s+(US|UK)"])
+        assert tpl.matches_input("Company US invoice")
+        assert tpl.matches_input("Company UK invoice")
+        assert not tpl.matches_input("Company CA invoice")
+
+    def test_case_insensitive_flag_prefix_matches(self) -> None:
+        """`(?i)Accor` should match `accor`, `ACCOR`, `Accor`."""
+        tpl = _keyword_template(["(?i)Accor"])
+        assert tpl.matches_input("hotel accor invoice")
+        assert tpl.matches_input("HOTEL ACCOR invoice")
+
+    def test_exclude_keyword_is_also_regex(self) -> None:
+        """`exclude_keywords: (?i)draft` blocks the template on `DRAFT`/`draft`."""
+        tpl = _keyword_template(["Acme"], ["(?i)draft"])
+        assert not tpl.matches_input("Acme DRAFT invoice")
+        assert tpl.matches_input("Acme final invoice")
+
+    def test_invalid_regex_falls_back_to_substring(self) -> None:
+        """A stray `[` isn't valid regex but should still match literally."""
+        # `Company [Ltd]` is invalid regex (unclosed character class after group),
+        # but plenty of legacy templates might include unescaped brackets/parens.
+        # Fallback: literal substring.
+        tpl = _keyword_template(["Company [Ltd"])
+        assert tpl.matches_input("Payment to Company [Ltd for services")
+        assert not tpl.matches_input("Payment to Company Ltd for services")
+
+
 if __name__ == "__main__":
     unittest.main()
