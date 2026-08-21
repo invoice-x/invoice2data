@@ -27,12 +27,13 @@
 | src/invoice2data/extract/loader.py                    |      101 |        3 |       40 |        4 |     95% |76-80, 82-\>74, 118, 183-\>170 |
 | src/invoice2data/extract/parsers/\_\_init\_\_.py      |        3 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/parsers/\_\_interface\_\_.py |        0 |        0 |        0 |        0 |    100% |           |
-| src/invoice2data/extract/parsers/lines.py             |      136 |        3 |       80 |        8 |     95% |77, 120-\>137, 147-\>149, 215-\>214, 246, 251, 340-\>337, 358-\>365 |
+| src/invoice2data/extract/parsers/lines.py             |      144 |        3 |       84 |        9 |     95% |78, 121-\>138, 150-\>152, 165-\>167, 225-\>224, 256, 261, 367-\>364, 390-\>398 |
+| src/invoice2data/extract/parsers/records.py           |       13 |        0 |        8 |        0 |    100% |           |
 | src/invoice2data/extract/parsers/regex.py             |       73 |        6 |       36 |        4 |     91% |45-46, 52, 99-102, 121 |
 | src/invoice2data/extract/parsers/static.py            |        9 |        0 |        2 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/\_\_init\_\_.py      |        0 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/\_\_interface\_\_.py |        0 |        0 |        0 |        0 |    100% |           |
-| src/invoice2data/extract/plugins/camelot.py           |       47 |        0 |       16 |        0 |    100% |           |
+| src/invoice2data/extract/plugins/camelot.py           |       50 |        0 |       16 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/lines.py             |        9 |        0 |        2 |        1 |     91% | 46-\>exit |
 | src/invoice2data/extract/plugins/tables.py            |       87 |        9 |       50 |        9 |     87% |47, 57, 61-\>60, 63-\>60, 91, 117-118, 151, 201-202, 213 |
 | src/invoice2data/extract/schema.py                    |       39 |        1 |       24 |        3 |     94% |136, 185-\>184, 188-\>187 |
@@ -64,7 +65,7 @@
 | tests/test\_ai.py                                     |       56 |        0 |        4 |        0 |    100% |           |
 | tests/test\_ai\_fallback.py                           |       34 |        1 |        0 |        0 |     97% |        41 |
 | tests/test\_area\_extraction.py                       |       44 |        0 |        0 |        0 |    100% |           |
-| tests/test\_camelot.py                                |       78 |        6 |        2 |        1 |     91% |   157-165 |
+| tests/test\_camelot.py                                |       83 |        6 |        2 |        1 |     92% |   180-188 |
 | tests/test\_candidates.py                             |       37 |        0 |        0 |        0 |    100% |           |
 | tests/test\_cli.py                                    |      254 |       33 |       66 |        6 |     85% |23, 60-\>59, 154, 183, 210, 383, 393-416, 424-455, 493 |
 | tests/test\_cli\_logging.py                           |       33 |        0 |        0 |        0 |    100% |           |
@@ -99,6 +100,7 @@
 | tests/test\_paddleocr.py                              |       32 |        0 |        0 |        0 |    100% |           |
 | tests/test\_pdf\_backends.py                          |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_property.py                               |       66 |        2 |        0 |        0 |     97% |   111-112 |
+| tests/test\_record\_values.py                         |       24 |        1 |        0 |        0 |     96% |        11 |
 | tests/test\_regex\_cache.py                           |       16 |        0 |        0 |        0 |    100% |           |
 | tests/test\_regex\_engine.py                          |       16 |        0 |        0 |        0 |    100% |           |
 | tests/test\_schema.py                                 |       18 |        0 |        0 |        0 |    100% |           |
@@ -112,7 +114,7 @@
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4687** |  **189** | **1008** |  **118** | **94%** |           |
+| **TOTAL**                                             | **4740** |  **190** | **1020** |  **119** | **94%** |           |
 
 
 ## Setup coverage badge
