@@ -299,3 +299,48 @@ def test_read_templates_mtime_change_busts_cache(templatedirectory: Path) -> Non
     assert tpls_second[0]["issuer"] == "B", (
         "Cache should have been invalidated when the file was rewritten"
     )
+
+
+def test_non_string_keyword_is_rejected_with_yaml_quoting_hint(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Issue #743: a keyword that isn't a string crashes ``matches_input``.
+
+    PhilippFeO's crash was reached via ``exclude_keywords: [invoice id:]``
+    which the (older) PyYAML he was using parsed as
+    ``[{'invoice id': None}]``. Newer / CSafe-loader PyYAML rejects that
+    YAML as a plain-scalar error, so we test the loader defence directly
+    (the same shape can reach the loader via ``ordered_load`` from a DB
+    column or JSON payload, both of which allow inline mappings).
+    """
+    from invoice2data.extract.loader import prepare_template
+
+    result = prepare_template(
+        {
+            "template_name": "trap.yml",
+            "keywords": ["Acme"],
+            "exclude_keywords": [{"invoice id": None}],
+        }
+    )
+    assert result is None, "non-string keyword must be rejected"
+
+    # The warning identifies the file, the field, the observed type and the
+    # YAML-quoting hint so a template author can fix it without spelunking.
+    log = caplog.text
+    assert "trap.yml" in log
+    assert "exclude_keywords" in log
+    assert "dict" in log
+    assert "quoted" in log
+
+
+def test_quoted_yaml_keyword_ending_in_colon_loads_normally(
+    templatedirectory: Path,
+) -> None:
+    """The properly-quoted form (`- 'invoice id:'`) works as expected."""
+    (templatedirectory / "ok.yml").write_text(
+        "issuer: t\nkeywords: [Acme]\nexclude_keywords:\n  - 'invoice id:'\n",
+        encoding="utf-8",
+    )
+    templates = read_templates(str(templatedirectory))
+    assert len(templates) == 1
+    assert templates[0]["exclude_keywords"] == ["invoice id:"]

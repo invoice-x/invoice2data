@@ -249,6 +249,26 @@ def prepare_template(tpl: dict[str, Any]) -> dict[str, Any] | None:
     else:
         tpl["exclude_keywords"] = []  # Set to empty list if not present
 
+    # Issue #743: catch the YAML-quoting trap where a keyword ending in ``:``
+    # is parsed as an inline mapping ({'invoice id': None}) instead of a
+    # string. Left unchecked, ``matches_input`` later crashes with
+    # ``TypeError: 'in <string>' requires string as left operand, not dict``.
+    # Drop the offending template and log a hint that the value must be
+    # quoted in YAML.
+    for key in ("keywords", "exclude_keywords"):
+        for value in tpl[key]:
+            if not isinstance(value, str):
+                logger.warning(
+                    "Failed to load template %s. `%s` entry must be a string, "
+                    "got %s (%r). Hint: a YAML keyword ending in `:` needs to "
+                    "be quoted, e.g. `- 'invoice id:'`.",
+                    tpl.get("template_name", "<stream>"),
+                    key,
+                    type(value).__name__,
+                    value,
+                )
+                return None
+
     # Set priority if not provided
     tpl.setdefault("priority", 5)
 
