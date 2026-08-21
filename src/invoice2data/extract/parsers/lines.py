@@ -10,9 +10,9 @@ from typing import Any
 
 from ...exceptions import TemplateSyntaxError
 from .. import _regex
+from .records import apply_static_and_defaults
 from .regex import _normalize_replacements
 from .regex import _replace_value
-from .records import apply_static_and_defaults
 
 
 if TYPE_CHECKING:
@@ -375,11 +375,14 @@ def parse_current_row(
     current_row: dict[str, Any],
     no_newline_fields: tuple[str, ...] | list[str] = (),
 ) -> dict[str, Any]:
-    """Parse the current row data.
+    r"""Parse the current row data.
 
     Args:
         match (Match[str] | None): The match object.
         current_row (dict[str, Any]): The current row dictionary.
+        no_newline_fields (tuple[str, ...] | list[str]): Field names whose
+            continuation captures should be concatenated without the default
+            ``\n`` separator. Defaults to ``()``.
 
     Returns:
         dict[str, Any]: The updated current row dictionary.

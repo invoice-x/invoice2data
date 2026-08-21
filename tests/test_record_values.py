@@ -96,3 +96,15 @@ def test_no_newline_fields_concatenates_selected_continuations() -> None:
         "ITEM One\nMORE Extra\nQTY 1\n",
     )
     assert rows == [{"name": "OneExtra", "qty": "1"}]
+
+
+def test_bare_static_and_defaults_do_not_crash() -> None:
+    """`static:` / `defaults:` with no value parse to `None` in YAML.
+
+    The helper should treat that as an empty mapping, not raise ``TypeError``
+    from ``dict.update(None)``.
+    """
+    records = [{"name": "Widget"}]
+    assert apply_static_and_defaults(records, {"static": None, "defaults": None}) == [
+        {"name": "Widget"}
+    ]

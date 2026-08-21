@@ -19,14 +19,17 @@ def apply_static_and_defaults(
         for key, value in settings.items()
         if key.startswith("static_")
     }
-    static.update(settings.get("static", {}))
+    # `settings.get("static") or {}` (not `.get("static", {})`) so a bare
+    # `static:` in YAML (parses to `None`) doesn't raise `TypeError` on the
+    # `.update(None)` below. Same for `defaults`.
+    static.update(settings.get("static") or {})
 
     defaults = {
         key.removesuffix("_default"): value
         for key, value in settings.items()
         if key.endswith("_default")
     }
-    defaults.update(settings.get("defaults", {}))
+    defaults.update(settings.get("defaults") or {})
 
     for record in records:
         for key, value in static.items():
