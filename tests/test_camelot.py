@@ -147,6 +147,29 @@ def test_extract_skips_when_no_body_rows(
     assert output == {}
 
 
+def test_extract_applies_record_static_and_defaults(
+    mocker: "pytest_mock.MockerFixture",  # type: ignore[name-defined]  # noqa
+) -> None:
+    _fake_camelot(mocker, [_table([["name", "qty"], ["Widget", ""]])])
+    output: dict[str, Any] = {}
+    camelot.extract(
+        {
+            "template_name": "t",
+            "camelot": {
+                "field": "lines",
+                "static": {"taxes": [{"amount": 21.0}]},
+                "defaults": {"qty": 1},
+            },
+        },
+        "",
+        output,
+        "x.pdf",
+    )
+    assert output["lines"] == [
+        {"name": "Widget", "qty": 1, "taxes": [{"amount": 21.0}]}
+    ]
+
+
 def test_rows_to_records_empty() -> None:
     assert camelot._rows_to_records([], header=True) == []
 

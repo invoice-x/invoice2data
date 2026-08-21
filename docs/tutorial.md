@@ -300,6 +300,35 @@ If a line matches `first_line`, it starts a new item. If it matches `last_line`,
 When using `first_line` and `last_line`, make sure that `first_line` is the most specific regex and `line` is the least specific.
 ````
 
+#### Static values and defaults per record
+
+The `lines` parser produces a list of records. Use `static` for values that
+belong on every extracted record, and `defaults` to fill a missing or empty
+capture. This avoids adding artificial capture groups for values that are known
+from the template:
+
+```yaml
+fields:
+  lines:
+    parser: lines
+    start: 'Item'
+    end: 'Total'
+    line: '(?P<name>.+)\s+(?P<price_subtotal>\d+[.,]\d{2})'
+    static:
+      taxes:
+        - amount: 21.0
+    defaults:
+      qty: 1
+```
+
+For templates migrated from the legacy top-level `lines:` plugin,
+`static_<field>` and `<field>_default` remain accepted inside the modern
+`lines` field. `no_newline_fields: [name]` suppresses the newline normally
+inserted when continuation captures are combined. `append_on_line: true` is an
+explicit compatibility mode for layouts where every `line` match completes the
+current item; it is off by default because multi-line descriptions normally
+need to be combined.
+
 #### Recipes & troubleshooting
 
 Most line-parsing problems come down to one of two things: the text

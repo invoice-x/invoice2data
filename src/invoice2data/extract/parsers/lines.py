@@ -12,6 +12,7 @@ from ...exceptions import TemplateSyntaxError
 from .. import _regex
 from .regex import _normalize_replacements
 from .regex import _replace_value
+from .records import apply_static_and_defaults
 
 
 if TYPE_CHECKING:
@@ -143,7 +144,9 @@ def parse_block(  # noqa: RUF100 C901
                     # This is the last_line, so parse all lines thus far,
                     # append to output,
                     # and reset current_row
-                    current_row = parse_current_row(match, current_row)
+                    current_row = parse_current_row(
+                        match, current_row, settings.get("no_newline_fields", ())
+                    )
                     if current_row:
                         lines.append(current_row)
                     current_row = {}
@@ -155,7 +158,14 @@ def parse_block(  # noqa: RUF100 C901
             if match:
                 # This is one of the lines between first_line and last_line
                 # Parse the data and add it to the current_row
-                current_row = parse_current_row(match, current_row)
+                current_row = parse_current_row(
+                    match, current_row, settings.get("no_newline_fields", ())
+                )
+                if settings.get("append_on_line"):
+                    if current_row:
+                        lines.append(current_row)
+                    current_row = {}
+                    first_line_found = False
                 continue
         # If the line doesn't match anything, log and continue to next line
         logger.debug("The following line doesn't match anything:\n*%s*", line)
@@ -170,7 +180,7 @@ def parse_block(  # noqa: RUF100 C901
         for name in row:
             if name in types:
                 row[name] = template.coerce_type(row[name], types[name])
-    return lines
+    return apply_static_and_defaults(lines, settings)
 
 
 def _normalize_line_replace(spec: Any) -> dict[str, list[tuple[str, str]]]:
@@ -318,7 +328,12 @@ def parse(
     """
     if "rules" in settings:
         # One field can have multiple sets of line-parsing rules
-        rules = settings["rules"]
+        common = {
+            key: value
+            for key, value in settings.items()
+            if key not in {"parser", "rules"}
+        }
+        rules = [{**common, **rule} for rule in settings["rules"]]
     else:
         # Original syntax stored line-parsing rules in top field YAML object
         keys = (
@@ -330,8 +345,20 @@ def parse(
             "last_line",
             "skip_line",
             "types",
+            "line_separator",
+            "replace",
+            "static",
+            "defaults",
+            "no_newline_fields",
+            "append_on_line",
         )
-        rules = [{k: v for k, v in settings.items() if k in keys}]
+        rules = [
+            {
+                k: v
+                for k, v in settings.items()
+                if k in keys or k.startswith("static_") or k.endswith("_default")
+            }
+        ]
 
     lines = []
     for i, rule in enumerate(rules):
@@ -344,7 +371,9 @@ def parse(
 
 
 def parse_current_row(
-    match: Match[str] | None, current_row: dict[str, Any]
+    match: Match[str] | None,
+    current_row: dict[str, Any],
+    no_newline_fields: tuple[str, ...] | list[str] = (),
 ) -> dict[str, Any]:
     """Parse the current row data.
 
@@ -357,9 +386,10 @@ def parse_current_row(
     """
     if match:
         for field, value in match.groupdict().items():
+            separator = "" if field in no_newline_fields else "\n"
             current_row[field] = "%s%s%s" % (
                 current_row.get(field, ""),
-                (current_row.get(field, "") and "\n") or "",
+                (current_row.get(field, "") and separator) or "",
                 value.strip() if value else "",
             )
     return current_row
