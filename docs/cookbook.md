@@ -204,3 +204,23 @@ Backends that support area: `pdftotext` (native, uses `-x/-y/-W/-H`) and
 `pdfium` (in-process crop). For area-critical templates pin the backend with
 `input_module: pdftotext` at the top level (bundled area templates already do
 this).
+
+## "Only certain PDF pages are the invoice"
+
+Use a top-level inclusive `pages:` range. Unlike a field `area:`, this limits
+template keywords, document fields and line extraction together:
+
+```yaml
+issuer: Example supplier
+input_module: pdftotext
+pages: "2-3"
+keywords:
+  - Example supplier
+fields:
+  invoice_number: 'Invoice number\\s+(\\S+)'
+```
+
+The range is one-based and inclusive. It is supported by `pdftotext` and
+`pdfium`; pin one of those readers when using it. Do not use `pages:` merely to
+hide a bad field regex: it is intended for real non-invoice pages such as a
+cover or envelope.

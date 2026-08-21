@@ -13,6 +13,11 @@ False):
 
     SUPPORTS_AREA = True
 
+Likewise, a backend may support a template-wide inclusive page range supplied
+as ``pages=(first, last)``. It declares that capability explicitly:
+
+    SUPPORTS_PAGES = True
+
 A backend may declare an availability check, used so it self-excludes when a
 runtime dependency (a Python package or a system binary) is missing:
 

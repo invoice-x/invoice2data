@@ -45,6 +45,11 @@ options:
   This also allows some flexibility as 'Company\s+(US|UK)' will match on both
   Company US and Company UK.
 - `exclude_keywords`: Optional. Regex patterns that, if matched, prevent the template from being used.
+- `pages`: Optional inclusive page range, such as `2-3`. It limits keyword
+  matching and all normal field extraction to that part of the PDF. Use it for
+  documents with cover, envelope or terms pages that must not influence the
+  invoice match. A page-scoped template needs a reader that supports it;
+  `pdftotext` and `pdfium` do.
 
 ## Fields & Parsers
 

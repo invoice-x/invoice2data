@@ -134,7 +134,9 @@ def extract_data(  # noqa: C901
         )
         logger.debug("END %s result =============================", reader.__name__)
 
-        template = _match_template(extracted_str, templates)
+        template, extracted_str = _match_template_for_reader(
+            extracted_str, templates, invoicefile, reader
+        )
         if template is None:
             continue
 
@@ -146,8 +148,8 @@ def extract_data(  # noqa: C901
         preferred = _preferred_module(template, used=reader) if auto else None
         if preferred is not None:
             preferred_str = _safe_to_text(preferred, invoicefile)
-            preferred_template = (
-                _match_template(preferred_str, templates) if preferred_str else None
+            preferred_template, preferred_str = _match_template_for_reader(
+                preferred_str, templates, invoicefile, preferred
             )
             if preferred_template is not None:
                 reader = preferred
@@ -278,6 +280,27 @@ def _match_template(
         if template.matches_input(extracted_str):
             return template
     return None
+
+
+def _match_template_for_reader(
+    extracted_str: str, templates: list[InvoiceTemplate], invoicefile: str, reader: Any
+) -> tuple[InvoiceTemplate | None, str]:
+    """Match templates, applying a template's optional page scope first."""
+    for template in templates:
+        scoped_text = extracted_str
+        pages = template.get("pages")
+        if pages is not None:
+            try:
+                scoped_text = extract_text(reader, invoicefile, pages=pages)
+            except (OSError, ValueError) as exc:
+                logger.warning(
+                    "Template %s cannot use pages %r with %s: %s",
+                    template["template_name"], pages, reader.__name__, exc,
+                )
+                continue
+        if template.matches_input(scoped_text):
+            return template, scoped_text
+    return None, extracted_str
 
 
 def _by_priority(templates: list[InvoiceTemplate]) -> list[InvoiceTemplate]:
