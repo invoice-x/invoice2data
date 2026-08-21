@@ -13,6 +13,8 @@ plugin-specific keys are:
     field   output key to populate (default: ``lines``)
     header  use the table's first row as the column names (default: ``true``)
     tables  which detected table to use: an index, or ``all`` (default: ``all``)
+    static  mapping of values to add to every extracted record
+    defaults mapping of values to fill when a record column is empty or absent
 
 Example::
 
@@ -24,6 +26,8 @@ Example::
 
 from logging import getLogger
 from typing import Any
+
+from ..parsers.records import apply_static_and_defaults
 
 
 logger = getLogger(__name__)
@@ -108,7 +112,8 @@ def extract(
         header = rule.pop("header", True)
         which = rule.pop("tables", "all")
         read_kwargs = {key: rule[key] for key in rule if key in _READ_PDF_KEYS}
-        unknown = set(rule) - _READ_PDF_KEYS
+        record_options = {"static", "defaults"}
+        unknown = set(rule) - _READ_PDF_KEYS - record_options
         if unknown:
             logger.warning("camelot: ignoring unknown option(s) %s", sorted(unknown))
 
@@ -122,6 +127,7 @@ def extract(
         records: list[dict[str, Any]] = []
         for table in selected:
             records.extend(_rows_to_records(table.data, header))
+        apply_static_and_defaults(records, rule)
         logger.debug("camelot extracted %d row(s) into '%s'", len(records), field)
         if records:
             output[field] = records
