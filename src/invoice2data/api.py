@@ -292,10 +292,13 @@ def _match_template_for_reader(
         if pages is not None:
             try:
                 scoped_text = extract_text(reader, invoicefile, pages=pages)
-            except (OSError, ValueError) as exc:
-                logger.warning(
+            except (OSError, TypeError, ValueError) as exc:
+                logger.debug(
                     "Template %s cannot use pages %r with %s: %s",
-                    template["template_name"], pages, reader.__name__, exc,
+                    template["template_name"],
+                    pages,
+                    reader.__name__,
+                    exc,
                 )
                 continue
         if template.matches_input(scoped_text):

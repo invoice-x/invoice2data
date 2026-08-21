@@ -270,7 +270,12 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
         for k, v in self["fields"].items():
             if isinstance(v, dict):
                 optimized_str_for_parser = _handle_area(
-                    self, v, input_module, invoice_file, optimized_str
+                    self,
+                    v,
+                    input_module,
+                    invoice_file,
+                    optimized_str,
+                    self.get("pages"),
                 )
 
                 if "parser" in v:
@@ -336,11 +341,14 @@ def _handle_area(
     input_module: Any,
     invoice_file: str,
     optimized_str: str,
+    pages: Any = None,
 ) -> str:
     """Handle area-specific extraction."""
     if "area" in v and supports_area(input_module):
         logger.debug(f"Area was specified with parameters {v['area']}")
-        optimized_str_area: str = extract_text(input_module, invoice_file, v["area"])
+        optimized_str_area: str = extract_text(
+            input_module, invoice_file, v["area"], pages=pages
+        )
         logger.debug(
             "START pdftotext area result ===========================\n%s",
             optimized_str_area,

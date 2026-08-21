@@ -8,6 +8,7 @@ from functools import lru_cache
 from pathlib import Path
 from types import ModuleType
 from typing import Any
+from typing import TypeAlias
 
 from . import doctr
 from . import gvision
@@ -21,6 +22,10 @@ from . import pdfplumber
 from . import pdftotext
 from . import tesseract
 from . import text
+
+
+PageRange: TypeAlias = tuple[int, int]
+PageSpec: TypeAlias = int | str | PageRange
 
 
 #: Registry: backend name (the ``--input-reader`` value) -> backend module.
@@ -77,7 +82,7 @@ def _cached_to_text(
     invoicefile: str,
     mtime: float | None,
     area_key: tuple[tuple[str, Any], ...] | None,
-    pages: tuple[int, int] | None,
+    pages: PageRange | None,
 ) -> str:
     """Memoized backend call (key includes file mtime + area for correctness)."""
     # Keep the established positional ``area`` call compatible with third-party
@@ -92,9 +97,11 @@ def _cached_to_text(
     return str(module.to_text(invoicefile, **kwargs))
 
 
-def parse_pages(value: Any) -> tuple[int, int]:
+def parse_pages(value: PageSpec) -> PageRange:
     """Parse a template's inclusive ``pages`` value (for example ``"2-3"``)."""
-    if isinstance(value, int):
+    if isinstance(value, tuple) and len(value) == 2:
+        first, last = value
+    elif isinstance(value, int):
         first = last = value
     elif isinstance(value, str):
         parts = value.split("-", maxsplit=1)
@@ -102,19 +109,34 @@ def parse_pages(value: Any) -> tuple[int, int]:
             first = int(parts[0].strip())
             last = int(parts[-1].strip())
         except ValueError as exc:
-            raise ValueError("pages must be a page number or an inclusive range such as '2-3'") from exc
+            message = "pages must be a page number or an inclusive range such as '2-3'"
+            raise ValueError(message) from exc
     else:
-        raise TypeError("pages must be a page number or an inclusive range such as '2-3'")
+        raise TypeError(
+            "pages must be a page number or an inclusive range such as '2-3'"
+        )
     if first < 1 or last < first:
         raise ValueError("pages must be positive and ordered, for example '2-3'")
     return first, last
+
+
+def _scope_area_to_pages(
+    area: dict[str, Any], pages: PageRange
+) -> dict[str, Any] | None:
+    """Intersect an area's declared pages with a template page range."""
+    if "f" not in area or "l" not in area:
+        return area
+    scoped = dict(area)
+    scoped["f"] = max(int(area["f"]), pages[0])
+    scoped["l"] = min(int(area["l"]), pages[1])
+    return scoped if scoped["f"] <= scoped["l"] else None
 
 
 def extract_text(
     module: ModuleType,
     invoicefile: str,
     area: dict[str, Any] | None = None,
-    pages: Any = None,
+    pages: PageSpec | None = None,
 ) -> str:
     """Extract text with a backend, memoized per (backend, file, mtime, area).
 
@@ -126,20 +148,31 @@ def extract_text(
         module (ModuleType): An input backend exposing ``to_text``.
         invoicefile (str): Path to the document.
         area (dict[str, Any] | None): Optional area-restriction passed through.
-        pages (int | str | None): Optional inclusive page or page range, such as
+        pages (PageSpec | None): Optional inclusive page or page range, such as
             ``2`` or ``"2-3"``. The backend must support page ranges.
 
     Returns:
         str: The extracted text.
+
+    Raises:
+        TypeError: If ``pages`` has an unsupported type.
+        ValueError: If ``pages`` is malformed or the backend lacks page-range
+            support.
     """
     try:
         mtime: float | None = Path(invoicefile).stat().st_mtime
     except OSError:
         mtime = None
-    area_key = tuple(sorted(area.items())) if area else None
     page_range = parse_pages(pages) if pages is not None else None
     if page_range is not None and not supports_pages(module):
-        raise ValueError(f"Input backend {module.__name__} does not support page ranges")
+        raise ValueError(
+            f"Input backend {module.__name__} does not support page ranges"
+        )
+    if area is not None and page_range is not None:
+        area = _scope_area_to_pages(area, page_range)
+        if area is None:
+            return ""
+    area_key = tuple(sorted(area.items())) if area else None
     return _cached_to_text(module, invoicefile, mtime, area_key, page_range)
 
 
