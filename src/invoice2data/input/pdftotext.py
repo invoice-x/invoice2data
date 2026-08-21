@@ -17,6 +17,7 @@ from ..exceptions import TemplateSyntaxError
 
 
 SUPPORTS_AREA = True
+SUPPORTS_PAGES = True
 
 #: A parsed word: ``(page, xMin, yMin, xMax, yMax, text)`` with coords in points.
 _Word = tuple[int, float, float, float, float, str]
@@ -144,7 +145,11 @@ def _crop(words: tuple[_Word, ...], area: dict[str, Any]) -> str:
     )
 
 
-def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
+def to_text(
+    path: str,
+    area_details: dict[str, Any] | None = None,
+    pages: tuple[int, int] | None = None,
+) -> str:
     """Extract text from a PDF file using pdftotext.
 
     Args:
@@ -153,6 +158,7 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
             region. Keys (pixels at ``r`` dpi): ``f``/``l`` (first/last page),
             ``x``/``y`` (top-left), ``W``/``H`` (size), ``r`` (resolution dpi).
             Defaults to None (whole document).
+        pages (tuple[int, int] | None): Optional inclusive page range.
 
     Returns:
         str: The extracted text.
@@ -182,6 +188,9 @@ def to_text(path: str, area_details: dict[str, Any] | None = None) -> str:
 
     import subprocess
 
-    cmd = ["pdftotext", "-layout", "-q", "-enc", "UTF-8", path, "-"]
+    cmd = ["pdftotext", "-layout", "-q", "-enc", "UTF-8"]
+    if pages is not None:
+        cmd.extend(["-f", str(pages[0]), "-l", str(pages[1])])
+    cmd.extend([path, "-"])
     out, _ = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()
     return out.decode("utf-8")

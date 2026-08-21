@@ -18,6 +18,7 @@ logger = getLogger(__name__)
 
 #: PDFium can extract a bounded region in-process (see _crop_pages).
 SUPPORTS_AREA = True
+SUPPORTS_PAGES = True
 
 
 def is_available() -> bool:
@@ -32,7 +33,10 @@ def is_available() -> bool:
 
 
 def to_text(
-    path: str, area_details: dict[str, Any] | None = None, **kwargs: Any
+    path: str,
+    area_details: dict[str, Any] | None = None,
+    pages: tuple[int, int] | None = None,
+    **kwargs: Any,
 ) -> str:
     """Extract text from a PDF using pypdfium2.
 
@@ -42,6 +46,7 @@ def to_text(
             Keys (pixels at ``r`` dpi, top-left origin): ``f``/``l`` (first/last
             page), ``x``/``y`` (top-left), ``W``/``H`` (size), ``r`` (dpi).
             Defaults to None (whole document).
+        pages (tuple[int, int] | None): Optional inclusive page range.
         **kwargs (Any): Ignored; accepted for backend compatibility.
 
     Returns:
@@ -52,16 +57,17 @@ def to_text(
     document = pypdfium2.PdfDocument(path)
     try:
         if area_details is not None:
-            pages = _crop_pages(document, area_details)
+            extracted_pages = _crop_pages(document, area_details)
         else:
-            pages = [
+            first, last = pages or (1, len(document))
+            extracted_pages = [
                 document[index].get_textpage().get_text_bounded()
-                for index in range(len(document))
+                for index in range(first - 1, min(last, len(document)))
             ]
     finally:
         document.close()
     logger.debug("Text extraction made with pypdfium2")
-    return _post_process("\n".join(pages))
+    return _post_process("\n".join(extracted_pages))
 
 
 def _crop_pages(document: Any, area: dict[str, Any]) -> list[str]:
