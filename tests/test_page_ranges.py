@@ -1,7 +1,9 @@
 """Template-wide page ranges apply before keyword matching and extraction."""
 
 import types
+from logging import DEBUG
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -13,8 +15,14 @@ def _page_reader() -> types.ModuleType:
     """Return a backend whose text makes its selected range observable."""
     module = types.ModuleType("page_reader")
     module.SUPPORTS_PAGES = True  # type: ignore[attr-defined]
+    module.SUPPORTS_AREA = True  # type: ignore[attr-defined]
 
-    def to_text(_path: str, _area=None, pages=None) -> str:
+    def to_text(
+        _path: str,
+        area_details: dict[str, Any] | None = None,
+        pages: tuple[int, int] | None = None,
+    ) -> str:
+        _ = area_details
         return f"page {pages[0]}-{pages[1]}" if pages else "all pages"
 
     module.to_text = to_text  # type: ignore[attr-defined]
@@ -42,16 +50,96 @@ def test_scoped_template_matches_only_its_selected_pages(tmp_path: Path) -> None
     assert selected_text == "page 2-3"
 
 
-@pytest.mark.parametrize("value, expected", [(2, (2, 2)), ("2", (2, 2)), ("2-3", (2, 3))])
-def test_page_syntax_is_accepted(value, expected) -> None:
+@pytest.mark.parametrize(
+    "value, expected", [(2, (2, 2)), ("2", (2, 2)), ("2-3", (2, 3))]
+)
+def test_page_syntax_is_accepted(value: Any, expected: tuple[int, int]) -> None:
     from invoice2data.input import parse_pages
 
     assert parse_pages(value) == expected
 
 
-@pytest.mark.parametrize("value", ["0", "3-2", "two", [2, 3]])
-def test_invalid_page_syntax_is_rejected(value) -> None:
+@pytest.mark.parametrize("value", ["0", "2-", "3-2", "two", [2, 3]])
+def test_invalid_page_syntax_is_rejected(value: Any) -> None:
     from invoice2data.input import parse_pages
 
     with pytest.raises((TypeError, ValueError), match="pages must"):
         parse_pages(value)
+
+
+def test_area_is_limited_to_the_template_page_range(tmp_path: Path) -> None:
+    """A field area cannot escape a template-wide page restriction."""
+    from invoice2data.input import extract_text
+
+    pdf = tmp_path / "document.pdf"
+    pdf.write_bytes(b"%PDF-1.4")
+    calls: list[tuple[dict[str, Any] | None, tuple[int, int] | None]] = []
+    reader = _page_reader()
+
+    def to_text(
+        _path: str,
+        area_details: dict[str, Any] | None = None,
+        pages: tuple[int, int] | None = None,
+    ) -> str:
+        calls.append((area_details, pages))
+        return "area"
+
+    reader.to_text = to_text  # type: ignore[attr-defined]
+    assert extract_text(reader, str(pdf), {"f": 1, "l": 3}, pages="2-3") == "area"
+    assert calls == [({"f": 2, "l": 3}, (2, 3))]
+    assert extract_text(reader, str(pdf), {"f": 1, "l": 1}, pages="2-3") == ""
+
+
+def test_template_area_receives_the_template_page_range(tmp_path: Path) -> None:
+    """The template passes its page scope through to a field area."""
+    from invoice2data.extract.invoice_template import _handle_area
+
+    pdf = tmp_path / "document.pdf"
+    pdf.write_bytes(b"%PDF-1.4")
+    reader = _page_reader()
+    template = InvoiceTemplate(
+        {
+            "template_name": "page-two.yml",
+            "keywords": ["page 2-3"],
+            "exclude_keywords": [],
+            "pages": "2-3",
+        }
+    )
+
+    assert (
+        _handle_area(
+            template,
+            {"area": {"f": 1, "l": 3}},
+            reader,
+            str(pdf),
+            "all pages",
+            template["pages"],
+        )
+        == "page 2-3"
+    )
+
+
+def test_page_scoped_template_skips_unsupported_reader(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Cascade matching skips, rather than warns for, an unsuitable reader."""
+    pdf = tmp_path / "document.pdf"
+    pdf.write_bytes(b"%PDF-1.4")
+    reader = _page_reader()
+    reader.SUPPORTS_PAGES = False  # type: ignore[attr-defined]
+    template = InvoiceTemplate(
+        {
+            "template_name": "page-two.yml",
+            "keywords": ["page 2-3"],
+            "exclude_keywords": [],
+            "pages": "2-3",
+        }
+    )
+    caplog.set_level(DEBUG)
+
+    selected, _text = _match_template_for_reader(
+        "all pages", [template], str(pdf), reader
+    )
+
+    assert selected is None
+    assert "cannot use pages" in caplog.text

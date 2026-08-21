@@ -208,7 +208,7 @@ this).
 ## "Only certain PDF pages are the invoice"
 
 Use a top-level inclusive `pages:` range. Unlike a field `area:`, this limits
-template keywords, document fields and line extraction together:
+template keywords, document fields, field areas and line extraction together:
 
 ```yaml
 issuer: Example supplier
@@ -220,7 +220,8 @@ fields:
   invoice_number: 'Invoice number\\s+(\\S+)'
 ```
 
-The range is one-based and inclusive. It is supported by `pdftotext` and
-`pdfium`; pin one of those readers when using it. Do not use `pages:` merely to
-hide a bad field regex: it is intended for real non-invoice pages such as a
-cover or envelope.
+The range is one-based and inclusive; use `pages: 2` when only page two is the
+invoice. All template keywords must occur within the selected pages. It is
+supported by `pdftotext` and `pdfium`; pin one of those readers when using it.
+Do not use `pages:` merely to hide a bad field regex: it is intended for real
+non-invoice pages such as a cover or envelope.
