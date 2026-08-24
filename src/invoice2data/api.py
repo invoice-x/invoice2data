@@ -285,10 +285,14 @@ def _match_template(
 def _match_template_for_reader(
     extracted_str: str, templates: list[InvoiceTemplate], invoicefile: str, reader: Any
 ) -> tuple[InvoiceTemplate | None, str]:
-    """Match templates, applying a template's optional page scope first."""
+    """Match templates, applying the match selector's optional page scope."""
     for template in templates:
         scoped_text = extracted_str
-        pages = template.get("pages")
+        match = template.get("match")
+        # ``pages`` at the template root is the pre-1.1 compatibility form.
+        # New templates make the matching scope explicit in ``match.pages``;
+        # their fields select their own text independently.
+        pages = match.get("pages") if isinstance(match, dict) else template.get("pages")
         if pages is not None:
             try:
                 scoped_text = extract_text(reader, invoicefile, pages=pages)
@@ -302,7 +306,10 @@ def _match_template_for_reader(
                 )
                 continue
         if template.matches_input(scoped_text):
-            return template, scoped_text
+            # A selector-based template may match an envelope while extracting
+            # its invoice fields from later pages. Do not leak its match scope
+            # into those fields; each field owns its own optional ``pages``.
+            return template, extracted_str if isinstance(match, dict) else scoped_text
     return None, extracted_str
 
 

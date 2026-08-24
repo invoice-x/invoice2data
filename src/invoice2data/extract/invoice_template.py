@@ -269,17 +269,24 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
 
         for k, v in self["fields"].items():
             if isinstance(v, dict):
+                parser_settings = dict(v)
+                # A modern field is a text selector in its own right. Keep
+                # ``pages`` out of parser settings: it controls input text,
+                # rather than the regex/lines parser's behaviour.
+                pages = parser_settings.pop("pages", self.get("pages"))
                 optimized_str_for_parser = _handle_area(
                     self,
-                    v,
+                    parser_settings,
                     input_module,
                     invoice_file,
                     optimized_str,
-                    self.get("pages"),
+                    pages,
                 )
 
-                if "parser" in v:
-                    _handle_parser(self, k, v, optimized_str_for_parser, output)
+                if "parser" in parser_settings:
+                    _handle_parser(
+                        self, k, parser_settings, optimized_str_for_parser, output
+                    )
 
             elif k.startswith("static_"):
                 logger.debug("field=%s | static value=%s", k, v)
@@ -343,7 +350,7 @@ def _handle_area(
     optimized_str: str,
     pages: Any = None,
 ) -> str:
-    """Handle area-specific extraction."""
+    """Select a field's optional page range and/or physical area."""
     if "area" in v and supports_area(input_module):
         logger.debug(f"Area was specified with parameters {v['area']}")
         optimized_str_area: str = extract_text(
@@ -355,6 +362,8 @@ def _handle_area(
         )
         logger.debug("END pdftotext area result =============================")
         return optimized_str_area
+    if pages is not None:
+        return extract_text(input_module, invoice_file, pages=pages)
     return optimized_str
 
 
