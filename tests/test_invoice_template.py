@@ -207,7 +207,9 @@ def test_missing_currency_falls_back_to_option() -> None:
     assert extracted["currency"] == "EUR"
 
 
-def _keyword_template(keywords: list[str], excludes: list[str] | None = None) -> InvoiceTemplate:
+def _keyword_template(
+    keywords: list[str], excludes: list[str] | None = None
+) -> InvoiceTemplate:
     """Build a minimal template with the given keywords / exclude_keywords."""
     return InvoiceTemplate(
         {
@@ -225,13 +227,13 @@ class TestMatchesInputRegex:
         assert _keyword_template(["Acme Corp"]).matches_input("Hello Acme Corp inv#1")
 
     def test_regex_whitespace_metachar_matches_multiple_spaces(self) -> None:
-        """`Company\\s+US` should match `Company    US` (multi-space)."""
+        r"""`Company\s+US` should match `Company    US` (multi-space)."""
         assert _keyword_template([r"Company\s+US"]).matches_input(
             "Invoice from Company    US"
         )
 
     def test_regex_alternation_matches_either_branch(self) -> None:
-        """`Company\\s+(US|UK)` should match either branch."""
+        r"""`Company\s+(US|UK)` should match either branch."""
         tpl = _keyword_template([r"Company\s+(US|UK)"])
         assert tpl.matches_input("Company US invoice")
         assert tpl.matches_input("Company UK invoice")

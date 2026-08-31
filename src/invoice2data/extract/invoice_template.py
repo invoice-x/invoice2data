@@ -32,10 +32,10 @@ optimized_str_logger = getLogger("invoice2data.optimized_str")
 
 
 def _keyword_matches(keyword: str, text: str) -> bool:
-    """Return whether ``keyword`` matches ``text`` as a regex (issue #742).
+    r"""Return whether ``keyword`` matches ``text`` as a regex (issue #742).
 
     The tutorial has always documented ``keywords`` / ``exclude_keywords`` as
-    regex patterns (e.g. ``Company\\s+(US|UK)``, ``(?i)Accor``), but the code
+    regex patterns (e.g. ``Company\s+(US|UK)``, ``(?i)Accor``), but the code
     was doing a plain ``in`` substring test -- so ~16 bundled templates that
     already used regex syntax silently under-matched. Use :func:`regex.search`
     to honour the documented contract.
