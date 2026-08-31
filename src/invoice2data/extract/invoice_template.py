@@ -31,6 +31,32 @@ logger = getLogger(__name__)
 optimized_str_logger = getLogger("invoice2data.optimized_str")
 
 
+def _keyword_matches(keyword: str, text: str) -> bool:
+    r"""Return whether ``keyword`` matches ``text`` as a regex (issue #742).
+
+    The tutorial has always documented ``keywords`` / ``exclude_keywords`` as
+    regex patterns (e.g. ``Company\s+(US|UK)``, ``(?i)Accor``), but the code
+    was doing a plain ``in`` substring test -- so ~16 bundled templates that
+    already used regex syntax silently under-matched. Use :func:`regex.search`
+    to honour the documented contract.
+
+    Falls back to a plain substring check when the pattern does not compile
+    as valid regex, so an existing simple-string keyword containing a stray
+    metacharacter (``Company (Ltd)``) keeps matching literally instead of
+    breaking. The fallback is DEBUG-logged so a template author can spot it
+    when investigating why their pattern didn't match.
+    """
+    try:
+        return _regex.search(keyword, text) is not None
+    except _regex.error as exc:
+        logger.debug(
+            "keyword %r is not a valid regex (%s); falling back to substring match",
+            keyword,
+            exc,
+        )
+        return keyword in text
+
+
 OPTIONS_DEFAULT = {
     "remove_whitespace": False,
     "remove_accents": False,
@@ -131,6 +157,13 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
     def matches_input(self, extracted_str: str) -> bool:
         """Check if the extracted string matches the template keywords.
 
+        ``keywords`` and ``exclude_keywords`` are matched as **regex patterns**
+        (the documented long-standing contract in the tutorial). A keyword is
+        considered found when :func:`regex.search` returns a match anywhere in
+        the extracted text. Any keyword that does not compile as a valid regex
+        falls back to a plain substring check, so simple string keywords like
+        ``"ACME"`` continue to work unchanged.
+
         Args:
             extracted_str (str): The extracted text from the invoice.
 
@@ -138,11 +171,10 @@ class InvoiceTemplate(OrderedDictType[str, Any]):
             bool: True if the extracted string matches the template keywords,
                 False otherwise.
         """
-        if all(keyword in extracted_str for keyword in self["keywords"]):
+        if all(_keyword_matches(k, extracted_str) for k in self["keywords"]):
             # All keywords found
             if self["exclude_keywords"] and any(
-                exclude_keyword in extracted_str
-                for exclude_keyword in self["exclude_keywords"]
+                _keyword_matches(k, extracted_str) for k in self["exclude_keywords"]
             ):
                 # At least one exclude_keyword found
                 logger.debug(
