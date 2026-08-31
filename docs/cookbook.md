@@ -205,10 +205,45 @@ Backends that support area: `pdftotext` (native, uses `-x/-y/-W/-H`) and
 `input_module: pdftotext` at the top level (bundled area templates already do
 this).
 
+## "An envelope identifies the supplier; the invoice is on later pages"
+
+Scope every text selector independently. This is the preferred form for a
+multi-page document whose envelope, payment reference, invoice header and
+line items live on different pages:
+
+```yaml
+issuer: Example supplier
+input_module: pdftotext
+match:
+  pages: 1
+  keywords:
+    - Example supplier
+fields:
+  invoice_number:
+    parser: regex
+    pages: "2-3"
+    regex: 'Invoice number\\s+(\\S+)'
+  payment_reference:
+    parser: regex
+    pages: 1
+    regex: 'Reference\\s+(\\S+)'
+  lines:
+    parser: lines
+    pages: "2-3"
+    line: '...'
+```
+
+`match.pages` only gates template selection. A field's `pages` limits only
+that field, and combines with its `area` when both are set. This applies to
+modern `fields:` parsers, including `fields.lines`. Camelot is already
+page-aware through its own table setting. It is intentionally not attached to
+static values or other settings that do not read document text.
+
 ## "Only certain PDF pages are the invoice"
 
-Use a top-level inclusive `pages:` range. Unlike a field `area:`, this limits
-template keywords, document fields, field areas and line extraction together:
+For an existing homogeneous template, the top-level inclusive `pages:` range
+remains available as a compatibility shortcut. It limits template keywords,
+document fields, field areas and line extraction together:
 
 ```yaml
 issuer: Example supplier

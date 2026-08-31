@@ -217,6 +217,39 @@ def read_templates(folder: str | None = None) -> list[InvoiceTemplate]:
     return list(_read_templates_cached(folder, _folder_signature(folder)))
 
 
+def _prepare_match_selector(tpl: dict[str, Any]) -> bool:
+    """Normalize an explicit ``match`` selector into legacy internal keys."""
+    match = tpl.get("match")
+    if match is None:
+        return True
+    if not isinstance(match, dict):
+        logger.warning(
+            "Failed to load template %s. 'match' must be a mapping.",
+            tpl.get("template_name", "<stream>"),
+        )
+        return False
+    if any(key in tpl for key in ("keywords", "exclude_keywords", "pages")):
+        logger.warning(
+            "Failed to load template %s. Put keywords, exclude_keywords and "
+            "pages inside 'match', not alongside it.",
+            tpl.get("template_name", "<stream>"),
+        )
+        return False
+    if "keywords" not in match:
+        logger.warning(
+            "Failed to load template %s. 'match' is missing mandatory 'keywords'.",
+            tpl.get("template_name", "<stream>"),
+        )
+        return False
+    # Keep the established internal representation. The nested selector is
+    # retained for its page scope while InvoiceTemplate continues to expose
+    # keywords at the top level to existing callers and plugins.
+    tpl["keywords"] = match["keywords"]
+    if "exclude_keywords" in match:
+        tpl["exclude_keywords"] = match["exclude_keywords"]
+    return True
+
+
 def prepare_template(tpl: dict[str, Any]) -> dict[str, Any] | None:
     """Prepare a template for use.
 
@@ -226,6 +259,9 @@ def prepare_template(tpl: dict[str, Any]) -> dict[str, Any] | None:
     Returns:
         dict[str, Any] | None: Processed template dictionary.
     """
+    if not _prepare_match_selector(tpl):
+        return None
+
     # Test if all required fields are in template
     if "keywords" not in tpl:
         logger.warning(
