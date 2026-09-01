@@ -23,10 +23,10 @@ fields:
   partner_street:
     parser: static
     value: East Washington Street 305
-    partner_email:
+  partner_email:
     parser: static
-    value:  support@namecheap.com
-country_code:
+    value: support@namecheap.com
+  country_code:
     parser: static
     value: US
 keywords:
