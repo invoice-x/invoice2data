@@ -101,11 +101,36 @@ If you are interested in improving this project, have a look at our
 
 ## Roadmap and open tasks
 
-- integrate with online OCR?
-- try to 'guess' parameters for new invoice formats.
-- apply machine learning to guess new parameters / template creation
-- Data cleanup per field
-- advanced table parsing with [pypdf_table_extraction](https://github.com/py-pdf/pypdf_table_extraction)
+Everything that used to live here has shipped:
+
+- online OCR — Google [Cloud Vision][gvision], plus local DL backends [docTR][doctr] and [PaddleOCR][paddleocr]
+- guess parameters for new invoice formats — `invoice2data --new-template SAMPLE` (deterministic, no AI needed)
+- ML-assisted template creation — `invoice2data --new-template SAMPLE --ai` (AI-1) and runtime `--ai-fallback` (AI-2); see the [AI features][ai] page
+- per-field data cleanup — the `replace:` key on each field
+- advanced table parsing — opt-in [Camelot][camelot] plugin (`pip install invoice2data[camelot]`), plus an [Excalibur → template converter][usage-excalibur]
+
+Currently open on the tracker:
+
+- **Non-invoice document schemas** (waybills, delivery notes, purchase orders): the
+  per-template `required_fields:` override lets a template opt out of the
+  invoice-shaped default today, but canonical schemas for other document
+  types are still deferred.
+- **Visual template builder in Odoo** — community-driven via [OCA/edi][odoo-oca-edi]
+  (`account_invoice_import_invoice2data_db_templates`, in review). Wraps the
+  authoring APIs listed above in a click-to-suggest UI on top of the disk
+  templates.
+- Tighter identifier validators via [python-stdnum][python-stdnum] — deferred
+  pending Odoo core's stdnum version alignment.
+
+Issues and pull requests welcome on any of these.
+
+[gvision]: https://cloud.google.com/vision
+[doctr]: https://github.com/mindee/doctr
+[paddleocr]: https://github.com/PaddlePaddle/PaddleOCR
+[camelot]: https://github.com/camelot-dev/camelot
+[usage-excalibur]: https://invoice2data.readthedocs.io/en/latest/usage.html
+[odoo-oca-edi]: https://github.com/OCA/edi
+[python-stdnum]: https://arthurdejong.org/python-stdnum/
 
 ## Maintainers
 
