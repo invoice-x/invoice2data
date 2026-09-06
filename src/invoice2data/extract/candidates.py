@@ -39,10 +39,23 @@ class Candidate:
     parsed: Any
 
 
+# Month-name alternation, case-insensitive. English full names + English/Dutch/
+# German/French/Spanish/Italian common short forms. Deliberately narrow: a
+# generic ``[A-Za-z]{3,9}`` alt would match labels like "Date" or "Due" as
+# months and swallow adjacent digits, producing spurious "date" candidates.
+_MONTH = (
+    r"(?i:"
+    r"jan(?:uary)?|feb(?:ruary)?|mar(?:ch|z)?|mrt|apr(?:il)?|may|"
+    r"mai|mei|jun[ei]?|jul[yi]?|aug(?:ust)?|sep(?:t(?:ember)?)?|"
+    r"oct(?:ober)?|okt|nov(?:ember)?|dec(?:ember)?|dez|dic"
+    r")"
+)
 _DATE_RE = re.compile(
-    r"\b\d{1,4}[/.\-]\d{1,2}[/.\-]\d{1,4}\b"  # 2024-05-12, 12/05/2024
-    r"|\b\d{1,2}\s+[A-Za-z]{3,9}\.?\s+\d{2,4}\b"  # 12 May 2024
-    r"|\b[A-Za-z]{3,9}\.?\s+\d{1,2},?\s+\d{2,4}\b"  # May 12, 2024
+    r"\b\d{1,4}[/.\-]\d{1,2}[/.\-]\d{1,4}\b"  # 2024-05-12, 12/05/2024, 06/09/26
+    # dd-mon-yyyy / dd mon yyyy / dd.mon.yyyy — separator can be dash, dot,
+    # slash or whitespace so "6-sept-2026", "6.sep.2026", "6 Sept 2026" all hit.
+    rf"|\b\d{{1,2}}[\s.\-/]+{_MONTH}\.?[\s,.\-/]+\d{{2,4}}\b"
+    rf"|\b{_MONTH}\.?[\s.\-/]+\d{{1,2}},?[\s.\-/]+\d{{2,4}}\b"  # May 12, 2024
 )
 _AMOUNT_RE = re.compile(
     r"(?<![\d.,])\d{1,3}(?:[.,\s]\d{3})+[.,]\d{2}(?!\d)"  # grouped: 1.234,56

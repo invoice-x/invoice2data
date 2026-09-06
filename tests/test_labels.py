@@ -73,3 +73,25 @@ def test_coc_cleanup_keeps_only_digits() -> None:
     assert preview_field(
         template["fields"]["partner_coc"], "KvK 12345678 Amsterdam"
     ) == ("12345678")
+
+
+def test_date_label_does_not_grab_zip_and_partial_date() -> None:
+    r"""Date label must not span a ZIP + partial date.
+
+    Regression: `\d[\d /.\-]{6,12}\d` was loose enough to match a run
+    like '18503 04/04' as one 'date', so a nearby ``Date`` label captured
+    a span starting inside an address block. Require a real separator
+    between date parts.
+    """
+    text = "Vendor Ltd\nFremont CA 94538\n18503 United States\nDate: 03/20/2023\n"
+    found = find_labeled_fields(text)
+    # The label match must capture ONLY the actual date, not the ZIP.
+    assert found["date"].value == "03/20/2023", found["date"].value
+
+
+def test_date_label_accepts_month_name_with_dashes() -> None:
+    """Real-world formats like `6-sept-2026` and `6.9.2026` must match."""
+    for value in ("6-sept-2026", "6 Sept 2026", "6.sep.2026", "06/09/26"):
+        found = find_labeled_fields("Invoice Date: %s\n" % value)
+        assert found.get("date") is not None, value
+        assert found["date"].value == value, (value, found["date"].value)
