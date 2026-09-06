@@ -49,7 +49,15 @@ _COC = (
 _DOCNO = r"(?=[A-Za-z0-9.\-/]*\d)[A-Za-z0-9][A-Za-z0-9.\-/]{2,20}"
 _IBAN = r"[A-Z]{2}\d{2}[A-Z0-9 ]{10,30}"
 _BIC = r"[A-Z0-9]{8,11}"
-_DATE = r"\d[\d /.\-]{6,12}\d"
+# Date-shape alternatives. The prior ``\d[\d /.\-]{6,12}\d`` was too loose:
+# it happily spanned across a ZIP + trailing text (e.g. "18503 04/04" matched
+# as one "date"), so a nearby ``Date`` label captured a run starting inside
+# an address block. Enforce a real separator between parts.
+_DATE = (
+    r"\d{1,4}[-/.]\d{1,2}[-/.]\d{1,4}"  # 2024-05-12, 12/05/2024, 06/09/26
+    r"|\d{1,2}[-/. ]+[A-Za-z]{3,9}\.?,?[-/. ]+\d{2,4}"  # 6 sept 2026, 6-Sept-2026
+    r"|[A-Za-z]{3,9}\.?[-/. ]+\d{1,2},?[-/. ]+\d{2,4}"  # Sept 6, 2026
+)
 _AMOUNT = r"[\d., ]{2,15}\d"
 
 #: Ordered so more specific fields claim their span first (e.g. ``Due Date``

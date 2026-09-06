@@ -50,3 +50,20 @@ def test_find_candidates_sorted_by_position() -> None:
     cands = find_candidates("Total 10.00 on 2024-01-02 ref DEUTDEFF")
     assert cands == sorted(cands, key=lambda c: c.start)
     assert all(isinstance(c, Candidate) for c in cands)
+
+
+def test_find_dates_recognises_month_name_with_dash() -> None:
+    """Real-world dash-separated month-name dates: `6-sept-2026`, `6-Sep-26`."""
+    for value in ("6-sept-2026", "6-Sep-26", "6.sep.2026"):
+        cands = find_candidates("Invoice date %s here" % value)
+        dates = [c for c in cands if c.kind == "date"]
+        assert dates, "no date candidate for %r" % value
+        assert dates[0].value == value, (value, dates[0].value)
+
+
+def test_find_dates_recognises_short_year_slash() -> None:
+    """`06/09/26` (dd/mm/yy) must be picked up as a date candidate."""
+    cands = find_candidates("Invoice date 06/09/26")
+    dates = [c for c in cands if c.kind == "date"]
+    assert dates
+    assert dates[0].value == "06/09/26"
