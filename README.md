@@ -5,7 +5,7 @@
 | Name                                                  |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |------------------------------------------------------ | -------: | -------: | -------: | -------: | ------: | --------: |
 | src/invoice2data/\_\_init\_\_.py                      |        7 |        0 |        0 |        0 |    100% |           |
-| src/invoice2data/\_\_main\_\_.py                      |      238 |       14 |       86 |       14 |     91% |108-\>113, 113-\>118, 148, 157, 207, 241-243, 258, 266-\>exit, 422, 424, 427, 459-460, 540, 584-\>587, 588-589 |
+| src/invoice2data/\_\_main\_\_.py                      |      238 |       16 |       86 |       15 |     90% |108-\>113, 113-\>118, 148, 157, 207, 241-243, 258, 266-\>exit, 422, 424, 427, 459-460, 528-529, 540, 584-\>587, 588-589 |
 | src/invoice2data/ai/\_\_init\_\_.py                   |        6 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/ai/\_\_interface\_\_.py              |       18 |        2 |        2 |        0 |     90% |    33, 52 |
 | src/invoice2data/ai/config.py                         |       11 |        0 |        0 |        0 |    100% |           |
@@ -35,7 +35,7 @@
 | src/invoice2data/extract/plugins/\_\_interface\_\_.py |        0 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/camelot.py           |       50 |        0 |       16 |        0 |    100% |           |
 | src/invoice2data/extract/plugins/lines.py             |        9 |        0 |        2 |        1 |     91% | 46-\>exit |
-| src/invoice2data/extract/plugins/tables.py            |       87 |        9 |       50 |        9 |     87% |47, 57, 61-\>60, 63-\>60, 91, 117-118, 151, 201-202, 213 |
+| src/invoice2data/extract/plugins/tables.py            |       87 |       10 |       50 |       10 |     85% |47, 57, 61-\>60, 63-\>60, 91, 117-118, 151, 157, 201-202, 213 |
 | src/invoice2data/extract/schema.py                    |       39 |        1 |       24 |        3 |     94% |136, 185-\>184, 188-\>187 |
 | src/invoice2data/extract/suggestions.py               |       19 |        0 |       10 |        0 |    100% |           |
 | src/invoice2data/extract/template\_builder.py         |       59 |        3 |       20 |        4 |     91% |49, 129, 164-\>162, 166 |
@@ -53,11 +53,11 @@
 | src/invoice2data/input/pdfminer\_wrapper.py           |       30 |        0 |        2 |        0 |    100% |           |
 | src/invoice2data/input/pdfoxide.py                    |       12 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/input/pdfplumber.py                  |       18 |        3 |        2 |        0 |     85% |     36-38 |
-| src/invoice2data/input/pdftotext.py                   |       73 |        4 |       24 |        2 |     94% |57-58, 173, 193 |
+| src/invoice2data/input/pdftotext.py                   |       73 |        4 |       24 |        3 |     93% |57-58, 140-\>143, 173, 193 |
 | src/invoice2data/input/tesseract.py                   |       93 |        0 |       24 |        0 |    100% |           |
 | src/invoice2data/input/text.py                        |        4 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/output/\_\_init\_\_.py               |       17 |        0 |        4 |        0 |    100% |           |
-| src/invoice2data/output/to\_csv.py                    |       46 |        1 |       22 |        1 |     97% |        86 |
+| src/invoice2data/output/to\_csv.py                    |       46 |        2 |       22 |        2 |     94% |    61, 86 |
 | src/invoice2data/output/to\_json.py                   |       18 |        0 |       10 |        0 |    100% |           |
 | src/invoice2data/output/to\_xml.py                    |       39 |        1 |       18 |        2 |     95% |30, 77-\>exit |
 | tests/\_\_init\_\_.py                                 |        0 |        0 |        0 |        0 |    100% |           |
@@ -115,7 +115,7 @@
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4939** |  **199** | **1062** |  **127** | **94%** |           |
+| **TOTAL**                                             | **4939** |  **203** | **1062** |  **131** | **94%** |           |
 
 
 ## Setup coverage badge
