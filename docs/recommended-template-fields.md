@@ -134,6 +134,38 @@ lines:
 
 A single pattern can be given as a string; multiple as a list.
 
+### Layout alternatives (`alternatives:`)
+
+Some vendors mail out invoices in two structurally different layouts (an old
+one and a new one, an itemised version and a summary version, etc.). Instead
+of maintaining two full templates or stuffing two `lines` blocks into one
+mapping (which YAML would collapse), list each candidate layout under
+`alternatives:`. Each entry is a full lines-block; the parser tries them in
+order and returns the rows of the **first** entry that yields any rows.
+Later alternatives are not consulted once one succeeds.
+
+```yaml
+fields:
+  lines:
+    parser: lines
+    alternatives:
+      - start: BEGIN NEW LAYOUT
+        end: END
+        line: (?P<code>C\d+)\s+(?P<qty>\d+)\s+(?P<price_unit>\d+\.\d+)
+      - start: Order                       # legacy layout, fires only if
+        end: Total                         # the new one matched nothing
+        line: (?P<sku>SKU\d+)\s+(?P<qty>\d+)\s+(?P<price_unit>\d+\.\d+)
+```
+
+Keys set outside `alternatives:` (e.g. `line_separator`, `types`, `replace`)
+apply to whichever alternative wins; a per-alternative key overrides the
+shared one.
+
+`alternatives:` differs from `rules:` — `rules:` runs every entry and
+**concatenates** the results (good for two structurally different regions of
+the same invoice); `alternatives:` picks the first non-empty one (good for
+"one of these layouts, not both"). An alternative may itself use `rules:`.
+
 ### Extracting numbers from text (`extract_number`)
 
 For regex fields whose capture contains units or currency mixed with the
