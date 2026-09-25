@@ -19,12 +19,22 @@ from .suggestions import suggest_fields
 
 
 #: Capture pattern per candidate kind, used to build a field's value group.
+#: These are TIGHT patterns applied at *extraction* time -- when the suggested
+#: template is later run against a fresh PDF the label alone isn't enough to
+#: anchor a value, so an overly loose pattern (``[A-Z0-9]+`` for BIC/VAT)
+#: would grab any adjacent alphanumeric blob. The shapes here mirror the
+#: strict validators in ``validators.py`` so a suggestion produces a regex
+#: that will only re-match a properly shaped identifier.
 _VALUE_PATTERNS = {
     "date": r"\d[\d/.\-]+\d",
     "amount": r"[\d.,]+",
-    "iban": r"[A-Z0-9 ]+",
-    "vat": r"[A-Z0-9]+",
-    "bic": r"[A-Z0-9]+",
+    # Contiguous or space-grouped IBAN body -- capture then strip in-app.
+    "iban": r"[A-Z]{2}\d{2}(?:[ \-]?[A-Z0-9]){11,30}",
+    # VAT: 2-letter country + 8-14 alphanumerics. Country slot MUST be alpha.
+    "vat": r"[A-Z]{2}[A-Z0-9]{8,14}",
+    # BIC / SWIFT (ISO 9362): 8 or 11 chars, first 6 letters, then 2 alnum,
+    # optionally 3 more (branch).
+    "bic": r"[A-Z]{6}[A-Z0-9]{2}(?:[A-Z0-9]{3})?",
 }
 
 
