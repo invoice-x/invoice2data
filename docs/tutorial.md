@@ -505,6 +505,27 @@ This is usefull when one wants to sum the numbers in a column, Example:
             type: float
 ```
 
+### Required fields
+
+By default, extraction requires `date`, `amount`, `invoice_number` and
+`issuer` in the output. Set `required_fields` at the template's top level,
+alongside `fields` and `options`, to replace this list. Extraction fails
+if any listed field is missing.
+
+For example, this template requires only an invoice number:
+
+```yaml
+issuer: Example Company
+keywords:
+  - Example Company
+fields:
+  invoice_number: 'Invoice no: (\d+)'
+required_fields:
+  - invoice_number
+options:
+  currency: AUD
+```
+
 ### Options
 
 Everything under `options` is optional. We expect to add more options in
@@ -532,10 +553,6 @@ options and their defaults are:
   matching. Each replace entry must be a list of two elements.
   The first is the regex pattern to be replaced, the second the string
   to replace any matches with. Replacing is not typically needed.
-- `required_fields`: By default the template should have regex for
-  date, amount, invoice_number and issuer. If you wish to extract
-  different fields, you can supply a list here. The extraction will
-  fail if not all fields are matched.
 
 ### Priority
 
