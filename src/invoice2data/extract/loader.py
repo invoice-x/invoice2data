@@ -12,13 +12,17 @@ from logging import getLogger
 from pathlib import Path
 from typing import Any
 
+from yaml import safe_load  # type: ignore[import-untyped]
+from yaml.nodes import MappingNode  # type: ignore[import-untyped]
+from yaml.nodes import ScalarNode
+
 
 try:
     from yaml import CSafeLoader as SafeLoader
     from yaml import YAMLError
     from yaml import load
 except ImportError:  # pragma: no cover
-    from yaml import SafeLoader  # type: ignore[import-untyped]
+    from yaml import SafeLoader
     from yaml import YAMLError
     from yaml import load
 
@@ -30,6 +34,45 @@ from .invoice_template import InvoiceTemplate  # type: ignore[unused-ignore]
 __all__ = ["ordered_load", "prepare_template", "read_templates"]
 
 logger = getLogger(__name__)
+
+
+class _DuplicateKeySafeLoader(SafeLoader):  # type: ignore[misc]  # ty: ignore[unsupported-base]
+    """Warn about repeated keys before YAML merge keys are expanded."""
+
+    def __init__(self, stream: Any) -> None:
+        super().__init__(stream)
+        self._checked_mappings: set[MappingNode] = set()
+
+    def flatten_mapping(self, node: MappingNode) -> None:
+        """Check each original mapping once, including mappings used by aliases."""
+        if node not in self._checked_mappings:
+            self._checked_mappings.add(node)
+            seen = set()
+            for key_node, _value_node in node.value:
+                # Merge overrides are intentional; non-scalar keys are left to
+                # the safe constructor's normal validation.
+                if (
+                    not isinstance(key_node, ScalarNode)
+                    or key_node.tag == "tag:yaml.org,2002:merge"
+                ):
+                    continue
+                key = (
+                    key_node.value
+                    if key_node.tag == "tag:yaml.org,2002:value"
+                    else self.construct_object(key_node)
+                )
+                if key in seen:
+                    mark = key_node.start_mark
+                    logger.warning(
+                        "%s:%d:%d: duplicate key %r; YAML keeps only the last value. "
+                        "Use a list for alternative patterns.",
+                        mark.name,
+                        mark.line + 1,
+                        mark.column + 1,
+                        key,
+                    )
+                seen.add(key)
+        super().flatten_mapping(node)
 
 
 def ordered_load(
@@ -53,7 +96,11 @@ def ordered_load(
             error, which is logged).
     """
     try:
-        tpl_stream = loader(stream)
+        tpl_stream = (
+            load(stream, Loader=_DuplicateKeySafeLoader)  # noqa: S506 - SafeLoader subclass
+            if loader is safe_load
+            else loader(stream)
+        )
     except (ValueError, YAMLError) as error:
         logger.warning("Failed to load template stream\n%s", error)
         return []
@@ -103,7 +150,7 @@ def _load_template_file(path: Path) -> Any:
     if name.endswith((".yaml", ".yml")):
         try:
             with path.open(encoding="utf-8") as f:
-                tpl = load(f.read(), Loader=SafeLoader)
+                tpl = load(f, Loader=_DuplicateKeySafeLoader)  # noqa: S506 - SafeLoader subclass
         except YAMLError as error:
             logger.warning("Failed to load %s template:\n%s", name, error)
             return None

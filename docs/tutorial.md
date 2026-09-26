@@ -56,6 +56,25 @@ options:
 
 This section defines the data to extract and how.
 
+Use each key only once within a YAML mapping. Repeating a field such as
+`amount` discards its earlier value; it does not provide a fallback pattern.
+The template loader warns about repeated keys and keeps the last value for
+compatibility. The warning includes the source, line, column and key. This
+also applies to `ordered_load(..., loader=yaml.safe_load)`; custom loader
+callbacks retain their own parsing behaviour. Overrides inherited through
+YAML merge keys do not produce duplicate-key warnings.
+
+To provide alternative patterns, use a list under `regex`:
+
+```yaml
+fields:
+  amount:
+    parser: regex
+    regex:
+      - 'TOTAL\s+([\d.]+)'
+      - 'BEDRAG\s+([\d.]+)'
+```
+
 Each field can be:
 
 - An **associative array** with
