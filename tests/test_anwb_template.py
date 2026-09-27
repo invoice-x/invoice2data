@@ -19,7 +19,9 @@ pytestmark = pytest.mark.windows_strict
         "NL00-TEST-0000-0000-00",
     ],
 )
-@pytest.mark.parametrize("following_text", ["\n", "\nFooter text\n", "\r\nFooter text\r\n"])
+@pytest.mark.parametrize(
+    "following_text", ["\n", "\nFooter text\n", "\r\nFooter text\r\n"]
+)
 def test_anwb_extracts_complete_iban(iban: str, following_text: str) -> None:
     loaded = next(t for t in read_templates() if t["template_name"] == "nl.anwb.yml")
     template = InvoiceTemplate(deepcopy(dict(loaded)))
