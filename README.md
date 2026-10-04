@@ -20,7 +20,7 @@
 | src/invoice2data/extract/\_\_init\_\_.py              |        0 |        0 |        0 |        0 |    100% |           |
 | src/invoice2data/extract/\_dates.py                   |       41 |        2 |       10 |        0 |     96% |     34-35 |
 | src/invoice2data/extract/\_regex.py                   |       25 |        0 |        2 |        0 |    100% |           |
-| src/invoice2data/extract/candidates.py                |       58 |        4 |       20 |        3 |     91% |77-78, 112-\>110, 146, 148 |
+| src/invoice2data/extract/candidates.py                |       59 |        4 |       20 |        3 |     91% |90-91, 125-\>123, 159, 161 |
 | src/invoice2data/extract/excalibur.py                 |       35 |        0 |       10 |        0 |    100% |           |
 | src/invoice2data/extract/invoice\_template.py         |      256 |       18 |      130 |       17 |     90% |111, 143, 148, 217, 223, 273, 281, 318-\>302, 418, 427-428, 474-\>exit, 477-\>exit, 546-\>541, 553-\>552, 573, 582-583, 600-606, 633-634 |
 | src/invoice2data/extract/labels.py                    |       33 |        0 |        6 |        0 |    100% |           |
@@ -66,7 +66,7 @@
 | tests/test\_ai\_fallback.py                           |       34 |        1 |        0 |        0 |     97% |        41 |
 | tests/test\_area\_extraction.py                       |       44 |        0 |        0 |        0 |    100% |           |
 | tests/test\_camelot.py                                |       83 |        6 |        2 |        1 |     92% |   180-188 |
-| tests/test\_candidates.py                             |       37 |        0 |        0 |        0 |    100% |           |
+| tests/test\_candidates.py                             |       48 |        0 |        2 |        0 |    100% |           |
 | tests/test\_cli.py                                    |      254 |       33 |       66 |        6 |     85% |23, 60-\>59, 154, 183, 210, 383, 393-416, 424-455, 493 |
 | tests/test\_cli\_logging.py                           |       33 |        0 |        0 |        0 |    100% |           |
 | tests/test\_cross\_page\_lines.py                     |       37 |        0 |        0 |        0 |    100% |           |
@@ -87,7 +87,7 @@
 | tests/test\_issue\_608.py                             |       34 |        0 |        0 |        0 |    100% |           |
 | tests/test\_issue\_618.py                             |       11 |        0 |        0 |        0 |    100% |           |
 | tests/test\_issue\_652.py                             |       66 |        1 |        2 |        0 |     99% |       135 |
-| tests/test\_labels.py                                 |       42 |        0 |        2 |        0 |    100% |           |
+| tests/test\_labels.py                                 |       51 |        0 |        4 |        0 |    100% |           |
 | tests/test\_lib.py                                    |      217 |       18 |       36 |        6 |     91% |37-38, 52, 74-76, 113-115, 147, 239, 254, 288-296, 340 |
 | tests/test\_lines\_replace.py                         |       20 |        1 |        0 |        0 |     95% |        12 |
 | tests/test\_loader.py                                 |      145 |        0 |        0 |        0 |    100% |           |
@@ -115,7 +115,7 @@
 | tests/test\_text\_cache.py                            |       39 |        0 |        0 |        0 |    100% |           |
 | tests/test\_unece\_uom.py                             |       45 |        0 |        0 |        0 |    100% |           |
 | tests/test\_validators.py                             |       28 |        0 |        0 |        0 |    100% |           |
-| **TOTAL**                                             | **4939** |  **203** | **1062** |  **131** | **94%** |           |
+| **TOTAL**                                             | **4960** |  **203** | **1066** |  **131** | **94%** |           |
 
 
 ## Setup coverage badge

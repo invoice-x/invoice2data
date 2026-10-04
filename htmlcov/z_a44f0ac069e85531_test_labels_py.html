@@ -55,8 +55,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">42 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">42<span class="text"> run</span></button>
+            <span class="text">51 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">51<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
             <button type="button" class="par run show_par button_toggle_par" value="par" data-shortcut="p" title="Toggle lines partially run">0<span class="text"> partial</span></button>
@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_a44f0ac069e85531_test_lib_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.16.1">coverage.py v7.16.1</a>,
-            created at 2026-09-29 10:41 +0000
+            created at 2026-10-04 22:31 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -157,6 +157,28 @@
     <p class="run"><span class="n"><a id="t73" href="#t73">73</a></span><span class="t">    <span class="key">assert</span> <span class="nam">preview_field</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t74" href="#t74">74</a></span><span class="t">        <span class="nam">template</span><span class="op">[</span><span class="str">&quot;fields&quot;</span><span class="op">]</span><span class="op">[</span><span class="str">&quot;partner_coc&quot;</span><span class="op">]</span><span class="op">,</span> <span class="str">&quot;KvK 12345678 Amsterdam&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t75" href="#t75">75</a></span><span class="t">    <span class="op">)</span> <span class="op">==</span> <span class="op">(</span><span class="str">&quot;12345678&quot;</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t76" href="#t76">76</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t78" href="#t78">78</a></span><span class="t"><span class="key">def</span> <span class="nam">test_date_label_does_not_grab_zip_and_partial_date</span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t79" href="#t79">79</a></span><span class="t">    <span class="str">r&quot;&quot;&quot;Date label must not span a ZIP + partial date.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t80" href="#t80">80</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t81" href="#t81">81</a></span><span class="t"><span class="str">    Regression: `\d[\d /.\-]{6,12}\d` was loose enough to match a run</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t82" href="#t82">82</a></span><span class="t"><span class="str">    like &#x27;18503 04/04&#x27; as one &#x27;date&#x27;, so a nearby ``Date`` label captured</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t83" href="#t83">83</a></span><span class="t"><span class="str">    a span starting inside an address block. Require a real separator</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t84" href="#t84">84</a></span><span class="t"><span class="str">    between date parts.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t85" href="#t85">85</a></span><span class="t"><span class="str">    &quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t86" href="#t86">86</a></span><span class="t">    <span class="nam">text</span> <span class="op">=</span> <span class="str">&quot;Vendor Ltd\nFremont CA 94538\n18503 United States\nDate: 03/20/2023\n&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t87" href="#t87">87</a></span><span class="t">    <span class="nam">found</span> <span class="op">=</span> <span class="nam">find_labeled_fields</span><span class="op">(</span><span class="nam">text</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t88" href="#t88">88</a></span><span class="t">    <span class="com"># The label match must capture ONLY the actual date, not the ZIP.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t89" href="#t89">89</a></span><span class="t">    <span class="key">assert</span> <span class="nam">found</span><span class="op">[</span><span class="str">&quot;date&quot;</span><span class="op">]</span><span class="op">.</span><span class="nam">value</span> <span class="op">==</span> <span class="str">&quot;03/20/2023&quot;</span><span class="op">,</span> <span class="nam">found</span><span class="op">[</span><span class="str">&quot;date&quot;</span><span class="op">]</span><span class="op">.</span><span class="nam">value</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t"><span class="key">def</span> <span class="nam">test_date_label_accepts_month_name_with_dashes</span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">    <span class="str">&quot;&quot;&quot;Real-world formats like `6-sept-2026` and `6.9.2026` must match.&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t">    <span class="key">for</span> <span class="nam">value</span> <span class="key">in</span> <span class="op">(</span><span class="str">&quot;6-sept-2026&quot;</span><span class="op">,</span> <span class="str">&quot;6 Sept 2026&quot;</span><span class="op">,</span> <span class="str">&quot;6.sep.2026&quot;</span><span class="op">,</span> <span class="str">&quot;06/09/26&quot;</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">        <span class="nam">found</span> <span class="op">=</span> <span class="nam">find_labeled_fields</span><span class="op">(</span><span class="str">&quot;Invoice Date: %s\n&quot;</span> <span class="op">%</span> <span class="nam">value</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">        <span class="key">assert</span> <span class="nam">found</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="str">&quot;date&quot;</span><span class="op">)</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">,</span> <span class="nam">value</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">        <span class="key">assert</span> <span class="nam">found</span><span class="op">[</span><span class="str">&quot;date&quot;</span><span class="op">]</span><span class="op">.</span><span class="nam">value</span> <span class="op">==</span> <span class="nam">value</span><span class="op">,</span> <span class="op">(</span><span class="nam">value</span><span class="op">,</span> <span class="nam">found</span><span class="op">[</span><span class="str">&quot;date&quot;</span><span class="op">]</span><span class="op">.</span><span class="nam">value</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -166,7 +188,7 @@
             <a class="nav" href="z_a44f0ac069e85531_test_lib_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.16.1">coverage.py v7.16.1</a>,
-            created at 2026-09-29 10:41 +0000
+            created at 2026-10-04 22:31 +0000
         </p>
     </div>
 </footer>

@@ -55,8 +55,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">37 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">37<span class="text"> run</span></button>
+            <span class="text">48 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">48<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
             <button type="button" class="par run show_par button_toggle_par" value="par" data-shortcut="p" title="Toggle lines partially run">0<span class="text"> partial</span></button>
@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_a44f0ac069e85531_test_cli_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.16.1">coverage.py v7.16.1</a>,
-            created at 2026-09-29 10:41 +0000
+            created at 2026-10-04 22:31 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -134,6 +134,23 @@
     <p class="run"><span class="n"><a id="t50" href="#t50">50</a></span><span class="t">    <span class="nam">cands</span> <span class="op">=</span> <span class="nam">find_candidates</span><span class="op">(</span><span class="str">&quot;Total 10.00 on 2024-01-02 ref DEUTDEFF&quot;</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t51" href="#t51">51</a></span><span class="t">    <span class="key">assert</span> <span class="nam">cands</span> <span class="op">==</span> <span class="nam">sorted</span><span class="op">(</span><span class="nam">cands</span><span class="op">,</span> <span class="nam">key</span><span class="op">=</span><span class="key">lambda</span> <span class="nam">c</span><span class="op">:</span> <span class="nam">c</span><span class="op">.</span><span class="nam">start</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t52" href="#t52">52</a></span><span class="t">    <span class="key">assert</span> <span class="nam">all</span><span class="op">(</span><span class="nam">isinstance</span><span class="op">(</span><span class="nam">c</span><span class="op">,</span> <span class="nam">Candidate</span><span class="op">)</span> <span class="key">for</span> <span class="nam">c</span> <span class="key">in</span> <span class="nam">cands</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t53" href="#t53">53</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t54" href="#t54">54</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t55" href="#t55">55</a></span><span class="t"><span class="key">def</span> <span class="nam">test_find_dates_recognises_month_name_with_dash</span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t56" href="#t56">56</a></span><span class="t">    <span class="str">&quot;&quot;&quot;Real-world dash-separated month-name dates: `6-sept-2026`, `6-Sep-26`.&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t57" href="#t57">57</a></span><span class="t">    <span class="key">for</span> <span class="nam">value</span> <span class="key">in</span> <span class="op">(</span><span class="str">&quot;6-sept-2026&quot;</span><span class="op">,</span> <span class="str">&quot;6-Sep-26&quot;</span><span class="op">,</span> <span class="str">&quot;6.sep.2026&quot;</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t58" href="#t58">58</a></span><span class="t">        <span class="nam">cands</span> <span class="op">=</span> <span class="nam">find_candidates</span><span class="op">(</span><span class="str">&quot;Invoice date %s here&quot;</span> <span class="op">%</span> <span class="nam">value</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t59" href="#t59">59</a></span><span class="t">        <span class="nam">dates</span> <span class="op">=</span> <span class="op">[</span><span class="nam">c</span> <span class="key">for</span> <span class="nam">c</span> <span class="key">in</span> <span class="nam">cands</span> <span class="key">if</span> <span class="nam">c</span><span class="op">.</span><span class="nam">kind</span> <span class="op">==</span> <span class="str">&quot;date&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t60" href="#t60">60</a></span><span class="t">        <span class="key">assert</span> <span class="nam">dates</span><span class="op">,</span> <span class="str">&quot;no date candidate for %r&quot;</span> <span class="op">%</span> <span class="nam">value</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t61" href="#t61">61</a></span><span class="t">        <span class="key">assert</span> <span class="nam">dates</span><span class="op">[</span><span class="num">0</span><span class="op">]</span><span class="op">.</span><span class="nam">value</span> <span class="op">==</span> <span class="nam">value</span><span class="op">,</span> <span class="op">(</span><span class="nam">value</span><span class="op">,</span> <span class="nam">dates</span><span class="op">[</span><span class="num">0</span><span class="op">]</span><span class="op">.</span><span class="nam">value</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t"><span class="key">def</span> <span class="nam">test_find_dates_recognises_short_year_slash</span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">    <span class="str">&quot;&quot;&quot;`06/09/26` (dd/mm/yy) must be picked up as a date candidate.&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t">    <span class="nam">cands</span> <span class="op">=</span> <span class="nam">find_candidates</span><span class="op">(</span><span class="str">&quot;Invoice date 06/09/26&quot;</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">    <span class="nam">dates</span> <span class="op">=</span> <span class="op">[</span><span class="nam">c</span> <span class="key">for</span> <span class="nam">c</span> <span class="key">in</span> <span class="nam">cands</span> <span class="key">if</span> <span class="nam">c</span><span class="op">.</span><span class="nam">kind</span> <span class="op">==</span> <span class="str">&quot;date&quot;</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">    <span class="key">assert</span> <span class="nam">dates</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">    <span class="key">assert</span> <span class="nam">dates</span><span class="op">[</span><span class="num">0</span><span class="op">]</span><span class="op">.</span><span class="nam">value</span> <span class="op">==</span> <span class="str">&quot;06/09/26&quot;</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -143,7 +160,7 @@
             <a class="nav" href="z_a44f0ac069e85531_test_cli_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.16.1">coverage.py v7.16.1</a>,
-            created at 2026-09-29 10:41 +0000
+            created at 2026-10-04 22:31 +0000
         </p>
     </div>
 </footer>
