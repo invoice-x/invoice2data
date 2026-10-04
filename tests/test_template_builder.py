@@ -37,6 +37,31 @@ def test_field_regex_anchors_on_label() -> None:
     assert match.group(1) == "121.00"
 
 
+def test_bic_value_pattern_only_captures_bic_shape() -> None:
+    """A suggested BIC regex must not slurp arbitrary alphanumeric blobs.
+
+    Regression: the value pattern used to be ``[A-Z0-9]+`` which, when the
+    suggestion was later applied to a fresh PDF, gobbled adjacent uppercase
+    tokens (order codes, postal codes, single letters). Now the ISO-9362
+    shape is enforced at extraction time.
+    """
+    text = "ACME Corp\nInvoice #ORDER12345\nBank: DEUTDEFFXXX\n"
+    template = suggested_template(text)
+    bic_pattern = template["fields"].get("bic")
+    assert bic_pattern, "expected a bic suggestion"
+    matches = re.findall(bic_pattern, text)
+    assert matches == ["DEUTDEFFXXX"], (
+        f"tight pattern should only capture the actual BIC; got {matches!r}"
+    )
+    # Explicitly: an 8-char order code alone should NOT match the bic pattern
+    # even without any surrounding label anchor.
+    from invoice2data.extract.template_builder import _VALUE_PATTERNS
+
+    assert re.fullmatch(_VALUE_PATTERNS["bic"], "ORDER123") is None
+    assert re.fullmatch(_VALUE_PATTERNS["bic"], "DEUTDEFF") is not None
+    assert re.fullmatch(_VALUE_PATTERNS["bic"], "DEUTDEFFXXX") is not None
+
+
 def test_to_yaml_roundtrips() -> None:
     template = {
         "issuer": "ACME",
