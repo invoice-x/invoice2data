@@ -317,6 +317,20 @@ def parse(
 ) -> list[dict[str, Any]]:
     """Parse lines from the content based on the given settings.
 
+    Supports three shapes:
+
+    - Single mapping (original syntax): one block, one line pattern.
+    - ``rules:`` list: multiple blocks, results are **concatenated**.
+    - ``alternatives:`` list: multiple blocks, **first non-empty wins**
+      (issue #759). Each alternative is a full settings mapping; keys at
+      the top level (outside ``alternatives``) merge in as shared defaults
+      that a specific alternative can override.
+
+    ``alternatives`` and ``rules`` may be nested (an alternative can
+    itself use ``rules`` to concatenate several sub-blocks), but at a
+    single level they are mutually exclusive; if both appear together
+    ``alternatives`` wins and a warning is logged.
+
     Args:
         template (InvoiceTemplate): The template dictionary.
         field (str): The field name.
@@ -326,6 +340,45 @@ def parse(
     Returns:
         list[dict[str, Any]]: The parsed lines.
     """
+    if "alternatives" in settings:
+        if "rules" in settings:
+            logger.warning(
+                "Template %s: field '%s' has both 'alternatives' and 'rules'; "
+                "'alternatives' takes precedence and 'rules' is ignored at "
+                "this level (a single alternative may still use 'rules' "
+                "internally).",
+                template.get("template_name"),
+                field,
+            )
+        common = {
+            k: v
+            for k, v in settings.items()
+            if k not in {"parser", "alternatives", "rules"}
+        }
+        for i, alt in enumerate(settings["alternatives"]):
+            logger.debug("Testing alternative #%s for field '%s'", i, field)
+            merged = {**common, **alt}
+            rows = _parse_single(template, field, merged, content)
+            if rows:
+                logger.debug(
+                    "Alternative #%s matched %d row(s) for '%s'; stopping.",
+                    i,
+                    len(rows),
+                    field,
+                )
+                return rows
+        logger.debug("No alternative matched for field '%s'", field)
+        return []
+    return _parse_single(template, field, settings, content)
+
+
+def _parse_single(
+    template: "InvoiceTemplate",
+    field: str,
+    settings: dict[str, Any],
+    content: str,
+) -> list[dict[str, Any]]:
+    """Dispatch one settings mapping through the rules/single-block logic."""
     if "rules" in settings:
         # One field can have multiple sets of line-parsing rules
         common = {
