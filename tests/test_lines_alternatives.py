@@ -10,6 +10,8 @@ mapping and losing the first to YAML key-collision.
 
 import logging
 
+import pytest
+
 from invoice2data.extract.invoice_template import InvoiceTemplate
 from invoice2data.extract.parsers import lines as lines_parser
 
@@ -112,7 +114,7 @@ def test_per_alternative_override_beats_shared_top_level() -> None:
 
 
 def test_alternatives_and_rules_together_warns_and_prefers_alternatives(
-    caplog: "logging.LogCaptureFixture",
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     """`alternatives:` wins over `rules:` at the same level; log a warning."""
     settings = {
