@@ -13,7 +13,6 @@
 import os
 import shutil
 import unittest
-from io import StringIO  # noqa: F401
 from typing import Any
 from unittest import mock
 
