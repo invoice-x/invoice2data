@@ -14,16 +14,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { python: "3.13", os: "ubuntu-24.04", session: "pre-commit" }
+          - { python: "3.13", os: "ubuntu-latest", session: "pre-commit" }
           # `safety` retired (its CLI moved behind auth) -> pypa/pip-audit instead.
-          - { python: "3.13", os: "ubuntu-24.04", session: "pip-audit" }
-          - { python: "3.13", os: "ubuntu-24.04", session: "mypy" }
-          - { python: "3.10", os: "ubuntu-24.04", session: "mypy" }
-          - { python: "3.13", os: "ubuntu-24.04", session: "ty" }
-          - { python: "3.13", os: "ubuntu-24.04", session: "tests" }
-          - { python: "3.12", os: "ubuntu-24.04", session: "tests" }
-          - { python: "3.11", os: "ubuntu-24.04", session: "tests" }
-          - { python: "3.10", os: "ubuntu-24.04", session: "tests" }
+          - { python: "3.13", os: "ubuntu-latest", session: "pip-audit" }
+          - { python: "3.13", os: "ubuntu-latest", session: "mypy" }
+          - { python: "3.10", os: "ubuntu-latest", session: "mypy" }
+          - { python: "3.13", os: "ubuntu-latest", session: "ty" }
+          - { python: "3.13", os: "ubuntu-latest", session: "tests" }
+          - { python: "3.12", os: "ubuntu-latest", session: "tests" }
+          - { python: "3.11", os: "ubuntu-latest", session: "tests" }
+          - { python: "3.10", os: "ubuntu-latest", session: "tests" }
           - { python: "3.12", os: "windows-latest", session: "tests" }
           # Strict Windows job: runs only the portable subset
           # (`pytest -m windows_strict` -- no poppler/tesseract/ImageMagick
@@ -32,9 +32,9 @@ jobs:
           # session above stays green-washed for full-matrix visibility.
           - { python: "3.12", os: "windows-latest", session: "windows_strict" }
           - { python: "3.12", os: "macos-latest", session: "tests" }
-          # - { python: "3.12", os: "ubuntu-24.04", session: "typeguard" }
-          - { python: "3.13", os: "ubuntu-24.04", session: "xdoctest" }
-          - { python: "3.13", os: "ubuntu-24.04", session: "docs-build" }
+          # - { python: "3.12", os: "ubuntu-latest", session: "typeguard" }
+          - { python: "3.13", os: "ubuntu-latest", session: "xdoctest" }
+          - { python: "3.13", os: "ubuntu-latest", session: "docs-build" }
 
     env:
       NOXSESSION: ${{ matrix.session }}
@@ -44,8 +44,6 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v7
-        with:
-          persist-credentials: false
 
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v7
@@ -63,7 +61,7 @@ jobs:
         # extract — skip the apt install on lint/type-check/docs jobs to shave
         # ~20s off most matrix runs. xdoctest runs the extract_data doctest, so
         # it needs them; mypy/ty/pre-commit/pip-audit/docs-build do not.
-        if: matrix.os == 'ubuntu-24.04' && (matrix.session == 'tests' || matrix.session == 'xdoctest' || matrix.session == 'typeguard')
+        if: matrix.os == 'ubuntu-latest' && (matrix.session == 'tests' || matrix.session == 'xdoctest' || matrix.session == 'typeguard')
         run: |
           sudo apt update
           sudo apt install tesseract-ocr poppler-utils imagemagick ghostscript
@@ -110,7 +108,6 @@ jobs:
         shell: python
         run: |
           import hashlib
-          import os
           import sys
 
           python = "py{}.{}".format(*sys.version_info[:2])
@@ -118,8 +115,7 @@ jobs:
           digest = hashlib.sha256(payload).hexdigest()
           result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
 
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write("result={}\n".format(result))
+          print("::set-output name=result::{}".format(result))
 
       - name: Restore pre-commit cache
         uses: actions/cache@v6
@@ -159,7 +155,7 @@ jobs:
           path: docs/_build
 
   coverage:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: tests
     permissions:
       # Needed by python-coverage-comment-action to post the PR comment and to
@@ -169,8 +165,6 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v7
-        with:
-          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v7
