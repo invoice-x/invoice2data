@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.15' and sys_platform == 'darwin'",
@@ -98,9 +98,10 @@ name = "anyio"
 version = "4.14.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
     { name = "idna" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' and python_full_version < '3.13'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/61/cc/a381afa6efea9f496eff839d4a6a1aed3bfafc7b3ab4b0d1b243a12573dd/anyio-4.14.2.tar.gz", hash = "sha256:cfa139f3ed1a23ee8f88a145ddb5ac7605b8bbfd8592baacd7ce3d8bb4313c7f", size = 260176, upload-time = "2026-07-12T20:29:07.082Z" }
 wheels = [
@@ -197,7 +198,7 @@ dependencies = [
     { name = "playa-pdf" },
     { name = "pypdfium2" },
     { name = "tabulate" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4d/6c/3b6057077feb802ce6ef4e2ebd11a50c12b7065aeb946cc0d9296d195246/camelot_py-2.0.0.tar.gz", hash = "sha256:e96891d30707b3e2f1c08cb7ae15eea67abe72485ca92c7025b6308ba37bd3cd", size = 140937, upload-time = "2026-06-04T16:31:28.8Z" }
 wheels = [
@@ -218,7 +219,7 @@ name = "cffi"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pycparser", marker = "implementation_name != 'PyPy' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "pycparser", marker = "implementation_name != 'PyPy'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/eb/56/b1ba7935a17738ae8453301356628e8147c79dbb825bcbc73dc7401f9846/cffi-2.0.0.tar.gz", hash = "sha256:44d1b5909021139fe36001ae048dbdde8214afa20200eda0f64c068cac5d5529", size = 523588, upload-time = "2025-09-08T23:24:04.541Z" }
 wheels = [
@@ -387,7 +388,7 @@ name = "click"
 version = "8.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9b/98/518d8e5081007684232226f475082b30087d0f585e8457db087298259f49/click-8.4.1.tar.gz", hash = "sha256:918b5633eddf6b41c32d4f454bf0de810065c74e3f7dbf8ee5452f8be88d3e96", size = 353007, upload-time = "2026-05-22T04:08:37.769Z" }
 wheels = [
@@ -408,7 +409,7 @@ name = "colorlog"
 version = "6.10.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a2/61/f083b5ac52e505dfc1c624eafbf8c7589a0d7f32daa398d2e7590efa5fda/colorlog-6.10.1.tar.gz", hash = "sha256:eb4ae5cb65fe7fec7773c2306061a8e63e02efc2c72eba9d27b0fa23c94f1321", size = 17162, upload-time = "2025-10-16T16:14:11.978Z" }
 wheels = [
@@ -476,7 +477,7 @@ wheels = [
 
 [package.optional-dependencies]
 toml = [
-    { name = "tomli", marker = "python_full_version <= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "tomli", marker = "python_full_version <= '3.11'" },
 ]
 
 [[package]]
@@ -560,8 +561,8 @@ name = "cryptography"
 version = "50.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "platform_python_implementation != 'PyPy' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "cffi", marker = "platform_python_implementation != 'PyPy'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/de/41/6cbdcf9142d00fe82836fbb51e503e58088575cf7a0fe1dbff6695bf0840/cryptography-50.0.0.tar.gz", hash = "sha256:eeac2acb5a20ed25e0ad6d1df9891a520b78b404266b6d11778f25d5d691a6c9", size = 880201, upload-time = "2026-07-31T14:25:10.11Z" }
 wheels = [
@@ -617,27 +618,21 @@ name = "cuda-bindings"
 version = "13.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cuda-pathfinder", marker = "(python_full_version < '3.11' and sys_platform == 'emscripten') or (python_full_version < '3.11' and sys_platform == 'win32') or (python_full_version < '3.15' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version >= '3.15' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.15' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "cuda-pathfinder" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a9/21/8464d133752951c154feafb3b65c297e7d80f301183d220bec4c830f1441/cuda_bindings-13.3.1-cp310-cp310-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:120fcc53d57903df529c3486962c56528cba5b7d6c57c99537320ed9922c8b86", size = 6073403, upload-time = "2026-05-29T23:11:36.22Z" },
     { url = "https://files.pythonhosted.org/packages/a8/1f/5ef51f5fbaa5d4d3201bb3d7555af028ec1aa4416275ccbf73c9e34e3d2d/cuda_bindings-13.3.1-cp310-cp310-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:9851b0caa8bfd3bc6fa054eaf57bea7c8e9c3a62db2d2621224677f49f3c53d0", size = 6675244, upload-time = "2026-05-29T23:11:38.664Z" },
-    { url = "https://files.pythonhosted.org/packages/fc/64/bb17e4d168569ef7be05c44474fe3dc19278d60a69ba228e45a431c86444/cuda_bindings-13.3.1-cp310-cp310-win_amd64.whl", hash = "sha256:c0c4b1a995098c46695c24257a342dc97d6e6d3f3050b944c9f43bd26d734051", size = 5625597, upload-time = "2026-05-29T23:11:40.808Z" },
     { url = "https://files.pythonhosted.org/packages/51/6b/457ca12dad3ee9bfcc9a545cfd6b64b359ba49de40f776f6e028e678f262/cuda_bindings-13.3.1-cp311-cp311-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c5879712accf6e14bb01aa5e67440eb84998b8d104b509cc7a6dc0b8f656a474", size = 6053539, upload-time = "2026-05-29T23:11:43.19Z" },
     { url = "https://files.pythonhosted.org/packages/95/7a/c5e3c34a409b148f5c0f5a4ea374158f95d488862c1dffedf9aa5c639df9/cuda_bindings-13.3.1-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:04436a9364059c84b8f9636f359eccda1cf814341f5b670c71d80d2f79dbc708", size = 6674166, upload-time = "2026-05-29T23:11:45.478Z" },
-    { url = "https://files.pythonhosted.org/packages/93/f7/0e35987a21914f84068061dcf4b61466ccbce1c62ddc9727596d5ed0c26f/cuda_bindings-13.3.1-cp311-cp311-win_amd64.whl", hash = "sha256:507b0e19e7f934c5e30f30f0244ad70a75812619a7d3a0d742543caae1bd50f1", size = 5664286, upload-time = "2026-05-29T23:11:47.719Z" },
     { url = "https://files.pythonhosted.org/packages/ce/67/5e7dba1ba576dd73da5dee894ca076ca5e959450dfff66d6d510a255d1f7/cuda_bindings-13.3.1-cp312-cp312-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c7855c4868aabc0cfae28abbe83d56734bdfbd08f08fc234ac1912a12858bf49", size = 6025351, upload-time = "2026-05-29T23:11:49.685Z" },
     { url = "https://files.pythonhosted.org/packages/39/2a/6d2e9047d1fb243dbaa364b01e0297534b9ed7fd27dba1c9f361519cf69b/cuda_bindings-13.3.1-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:e32d08f71ebcdf00f0f41eab2eb37e8da94c8ed411cc9f7f7a019ce6b34abe3a", size = 6657965, upload-time = "2026-05-29T23:11:52.227Z" },
-    { url = "https://files.pythonhosted.org/packages/7c/95/872a0392122f1fb43fcb06869790ef3171f37beee9f7db8f441739113570/cuda_bindings-13.3.1-cp312-cp312-win_amd64.whl", hash = "sha256:b134dd8c5c66ae4c4ad814f7aee88fd215353c077010cbc47e3b55ed35ec9eff", size = 5875099, upload-time = "2026-05-29T23:11:54.635Z" },
     { url = "https://files.pythonhosted.org/packages/cc/6e/2394f8163360f8391f8f1b7e72d300a82724edb81a7b7084c799fbd4c91f/cuda_bindings-13.3.1-cp313-cp313-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9efb21c1ee64981e184b9e0ba5eb3179e5ba3d4b51665a6cb52b8ef3d01a7cbf", size = 5920504, upload-time = "2026-05-29T23:11:56.883Z" },
     { url = "https://files.pythonhosted.org/packages/34/c2/ef9b6a63f7dc432712a462c816662e662e00d38caa9b861c8c2588195d03/cuda_bindings-13.3.1-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:2732904099e0a4d4db774a5fc6d91ee95fae065b4d2ecabb4968c5fe2406c9d7", size = 6476660, upload-time = "2026-05-29T23:11:59.188Z" },
-    { url = "https://files.pythonhosted.org/packages/0c/2f/6a0dd496550c6fafbf6aeb1bf40242eeabb2fd138a43892aabb4be8224c2/cuda_bindings-13.3.1-cp313-cp313-win_amd64.whl", hash = "sha256:18c8c167c8907b8f02531ca810534315c458dabef31f7965095619bf647b9202", size = 5830027, upload-time = "2026-05-29T23:12:01.205Z" },
     { url = "https://files.pythonhosted.org/packages/b1/81/bff68ce829999c1e4209c761bbf903b1c06ec570416ddb25020864ad5907/cuda_bindings-13.3.1-cp314-cp314-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:1ab2f74ed65bfef4163ba07a8db16f1085e0729291db12a2423aff84ee8278b8", size = 6013639, upload-time = "2026-05-29T23:12:03.509Z" },
     { url = "https://files.pythonhosted.org/packages/d4/e0/c8a1f0c8f9ffdea4f5fe6dbab89b326cef4d85caf489dad39e209da89416/cuda_bindings-13.3.1-cp314-cp314-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:efd4c814d311ec08c981f6dded1dbe7d4b371067ee4f6c14cccec4bde9590f80", size = 6534419, upload-time = "2026-05-29T23:12:05.633Z" },
-    { url = "https://files.pythonhosted.org/packages/48/45/2734be44dbc80ac082ec23a86b41c8294992dcb90033645ed1bc50aafe4c/cuda_bindings-13.3.1-cp314-cp314-win_amd64.whl", hash = "sha256:8de12ef60bf40756852cb62bbb40460609269f6ece522903d1cc93d73a3ececb", size = 5961055, upload-time = "2026-05-29T23:12:07.971Z" },
     { url = "https://files.pythonhosted.org/packages/52/b8/83b1f563925b290f2d11a01a77a84013ba56052fe3653a5bef3ccfbb43d6/cuda_bindings-13.3.1-cp314-cp314t-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c3c772dfff49681541d59630c90f858e173ac926b9c593a2b7123f2a1043cc76", size = 5809771, upload-time = "2026-05-29T23:12:10.422Z" },
     { url = "https://files.pythonhosted.org/packages/12/20/e79b4bfe98f075195afb6343d41c498f9dbd2d161d7021d4d28bceb83581/cuda_bindings-13.3.1-cp314-cp314t-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:36febb7c1079d68a981dbbd8d5a67235b399802b82075c9388624719607e52b9", size = 6358584, upload-time = "2026-05-29T23:12:12.767Z" },
-    { url = "https://files.pythonhosted.org/packages/27/2a/b59bcac016ab9985d6b48a5d05b0d698461a159ca03ee11c4abd54da2ac4/cuda_bindings-13.3.1-cp314-cp314t-win_amd64.whl", hash = "sha256:61120b5e4f4a63f67efd7e7396914cb9ef871bb1f0021e990fb70277be240a4d", size = 6740329, upload-time = "2026-05-29T23:12:15.153Z" },
 ]
 
 [[package]]
@@ -658,43 +653,43 @@ wheels = [
 
 [package.optional-dependencies]
 cublas = [
-    { name = "nvidia-cublas", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-cuda-nvrtc", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cublas", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
+    { name = "nvidia-cuda-nvrtc", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 cudart = [
-    { name = "nvidia-cuda-runtime", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cuda-runtime", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 cufft = [
-    { name = "nvidia-cufft", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-nvjitlink", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cufft", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
+    { name = "nvidia-nvjitlink", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 cufile = [
-    { name = "nvidia-cufile", marker = "(platform_machine != 'aarch64' and platform_machine != 'x86_64' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'aarch64' and platform_machine != 'x86_64' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (sys_platform != 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cufile", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 cupti = [
-    { name = "nvidia-cuda-cupti", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cuda-cupti", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 curand = [
-    { name = "nvidia-curand", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-curand", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 cusolver = [
-    { name = "nvidia-cublas", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-cusolver", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-cusparse", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-nvjitlink", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cublas", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
+    { name = "nvidia-cusolver", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
+    { name = "nvidia-cusparse", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
+    { name = "nvidia-nvjitlink", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 cusparse = [
-    { name = "nvidia-cusparse", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-nvjitlink", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cusparse", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
+    { name = "nvidia-nvjitlink", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 nvjitlink = [
-    { name = "nvidia-nvjitlink", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-nvjitlink", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 nvrtc = [
-    { name = "nvidia-cuda-nvrtc", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cuda-nvrtc", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 nvtx = [
-    { name = "nvidia-nvtx", marker = "(python_full_version < '3.11' and platform_machine == 'AMD64' and sys_platform == 'win32') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine != 'AMD64' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-nvtx", marker = "platform_machine == 'aarch64' or platform_machine == 'x86_64'" },
 ]
 
 [[package]]
@@ -704,8 +699,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "python-dateutil" },
     { name = "pytz" },
-    { name = "regex", version = "2024.11.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "regex", version = "2025.9.18", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "regex", version = "2024.11.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "regex", version = "2025.9.18", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "tzlocal" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1a/b2/f6b29ab17d7959eb1a0a5c64f5011dc85051ad4e25e401cbddcc515db00f/dateparser-1.2.0.tar.gz", hash = "sha256:7975b43a4222283e0ae15be7b4999d08c9a70e2d378ac87385b1ccf2cffbbb30", size = 307260, upload-time = "2023-11-17T10:47:58.151Z" }
@@ -748,11 +743,11 @@ wheels = [
 
 [[package]]
 name = "distlib"
-version = "0.3.9"
+version = "0.4.4"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/0d/dd/1bec4c5ddb504ca60fc29472f3d27e8d4da1257a854e1d96742f15c1d02d/distlib-0.3.9.tar.gz", hash = "sha256:a60f20dea646b8a33f3e7772f74dc0b2d0772d2837ee1342a00645c81edf9403", size = 613923, upload-time = "2024-10-09T18:35:47.551Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/68/bc/d36966de7304047a1001a7559fbf266c464bb5d8cc85464536ef8c9bcc32/distlib-0.4.4.tar.gz", hash = "sha256:ca4175b4ac7f71223cc30ed7248c45d2b38c2439d8ee6e498ab67ed63cf3508d", size = 621304, upload-time = "2026-10-16T13:56:34.203Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/91/a1/cf2472db20f7ce4a6be1253a81cfdf85ad9c7885ffbed7047fb72c24cf87/distlib-0.3.9-py2.py3-none-any.whl", hash = "sha256:47f8c22fd27c27e25a65601af709b38e4f0a45ea4fc2e710f65755fa8caaaf87", size = 468973, upload-time = "2024-10-09T18:35:44.272Z" },
+    { url = "https://files.pythonhosted.org/packages/c1/2b/238f02a4927fa2e27aa995371d240a468b52e42eae44a678434aff736b38/distlib-0.4.4-py2.py3-none-any.whl", hash = "sha256:cf09d55b1e85a89576b036aeb71550bfd68320f3f21761ca329eadadad918638", size = 472099, upload-time = "2026-10-16T13:56:32.053Z" },
 ]
 
 [[package]]
@@ -1078,9 +1073,9 @@ name = "h5py"
 version = "3.16.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/db/33/acd0ce6863b6c0d7735007df01815403f5589a21ff8c2e1ee2587a38f548/h5py-3.16.0.tar.gz", hash = "sha256:a0dbaad796840ccaa67a4c144a0d0c8080073c34c76d5a6941d6818678ef2738", size = 446526, upload-time = "2026-03-06T13:49:08.07Z" }
 wheels = [
@@ -1213,13 +1208,14 @@ dependencies = [
     { name = "click" },
     { name = "filelock" },
     { name = "fsspec" },
-    { name = "hf-xet", marker = "platform_machine == 'AMD64' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "hf-xet", marker = "platform_machine == 'AMD64' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64'" },
     { name = "httpx" },
     { name = "packaging" },
     { name = "pyyaml" },
     { name = "tqdm" },
     { name = "typer" },
-    { name = "typing-extensions" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e6/7e/fad82ad491b226e832d2da90a1a59f36acd4526cda8c726f639834754aa4/huggingface_hub-1.20.1.tar.gz", hash = "sha256:9f6d63bfbeab2d2a8357200a9bc4f18cd2c8bfac9579f792f5922e77bf6471d0", size = 859910, upload-time = "2026-06-18T22:06:53.348Z" }
 wheels = [
@@ -1231,7 +1227,7 @@ name = "hypothesis"
 version = "6.164.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
     { name = "sortedcontainers" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7a/ac/7b76103bd74d8457e4de0c6a6c3a26ac6327016438bde125e0a3de83a5b8/hypothesis-6.164.0.tar.gz", hash = "sha256:5d63d263d8c71b571638c18d9591f6e34b836c60a12469e9d9105c1c785f00f1", size = 492022, upload-time = "2026-07-30T12:39:49.085Z" }
@@ -1353,8 +1349,8 @@ dependencies = [
     { name = "click" },
     { name = "python-dateutil" },
     { name = "pyyaml" },
-    { name = "regex", version = "2024.11.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "regex", version = "2025.9.18", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "regex", version = "2024.11.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "regex", version = "2025.9.18", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 
 [package.optional-dependencies]
@@ -1415,14 +1411,14 @@ dev = [
     { name = "pytest-mock" },
 ]
 docs = [
-    { name = "myst-parser", version = "4.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "myst-parser", version = "5.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "myst-parser", version = "4.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "myst-parser", version = "5.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "shibuya" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx-autobuild", version = "2024.10.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx-autobuild", version = "2025.8.25", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "sphinx-autobuild", version = "2024.10.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx-autobuild", version = "2025.8.25", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "sphinx-click" },
     { name = "sphinx-mermaid" },
     { name = "sphinxcontrib-svg2pdfconverter" },
@@ -1438,8 +1434,8 @@ ty = [
     { name = "ty" },
 ]
 typeguard = [
-    { name = "typeguard", version = "4.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typeguard", version = "4.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typeguard", version = "4.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "typeguard", version = "4.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
 xdoctest = [
     { name = "xdoctest", extra = ["colors"] },
@@ -1736,7 +1732,7 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "mdurl", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "mdurl" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/38/71/3b932df36c1a044d397a1f92d1cf91ee0a503d91e470cbd670aa66b07ed0/markdown-it-py-3.0.0.tar.gz", hash = "sha256:e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb", size = 74596, upload-time = "2023-06-03T06:41:14.443Z" }
 wheels = [
@@ -1775,7 +1771,7 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "mdurl", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "mdurl" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/06/ff/7841249c247aa650a76b9ee4bbaeae59370dc8bfd2f6c01f3630c35eb134/markdown_it_py-4.2.0.tar.gz", hash = "sha256:04a21681d6fbb623de53f6f364d352309d4094dd4194040a10fd51833e418d49", size = 82454, upload-time = "2026-05-07T12:08:28.36Z" }
 wheels = [
@@ -1832,7 +1828,7 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "markdown-it-py", version = "3.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "markdown-it-py", version = "3.0.0", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/19/03/a2ecab526543b152300717cf232bb4bb8605b6edb946c845016fa9c9c9fd/mdit_py_plugins-0.4.2.tar.gz", hash = "sha256:5f2cd1fdb606ddf152d37ec30e46101a60512bc0e5fa1a7002c36647b09e26b5", size = 43542, upload-time = "2024-09-09T20:27:49.564Z" }
 wheels = [
@@ -1871,7 +1867,7 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "markdown-it-py", version = "4.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "markdown-it-py", version = "4.2.0", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/59/fc/f8d0863f8862f25602c0404d75568e89fb6b4109804645e5cdfb1be5cf56/mdit_py_plugins-0.6.1.tar.gz", hash = "sha256:a2bca0f039f39dbd35fb74ae1b5f998608c437463371f0ff7f49a19a17a114d0", size = 56114, upload-time = "2026-05-13T09:03:38.91Z" }
 wheels = [
@@ -1892,9 +1888,9 @@ name = "ml-dtypes"
 version = "0.5.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0e/4a/c27b42ed9b1c7d13d9ba8b6905dece787d6259152f2309338aed29b2447b/ml_dtypes-0.5.4.tar.gz", hash = "sha256:8ab06a50fb9bf9666dd0fe5dfb4676fa2b0ac0f31ecff72a6c3af8e22c063453", size = 692314, upload-time = "2025-11-17T22:32:31.031Z" }
 wheels = [
@@ -1966,11 +1962,12 @@ version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ast-serialize" },
-    { name = "librt", marker = "platform_python_implementation != 'PyPy' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "librt", marker = "platform_python_implementation != 'PyPy'" },
     { name = "mypy-extensions" },
     { name = "pathspec" },
-    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typing-extensions" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/82/15/cca9d88503549ed6fedeaa1d448cdddd542ee8a490232d732e278036fbf2/mypy-2.1.0.tar.gz", hash = "sha256:81e76ad12c2d804512e9b13240d1588316531bfba07558286078bfbce9613633", size = 3898359, upload-time = "2026-05-11T18:37:36.237Z" }
 wheels = [
@@ -2040,12 +2037,12 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "jinja2", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "markdown-it-py", version = "3.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "mdit-py-plugins", version = "0.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pyyaml", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" } },
+    { name = "jinja2" },
+    { name = "markdown-it-py", version = "3.0.0", source = { registry = "https://pypi.org/simple" } },
+    { name = "mdit-py-plugins", version = "0.4.2", source = { registry = "https://pypi.org/simple" } },
+    { name = "pyyaml" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/66/a5/9626ba4f73555b3735ad86247a8077d4603aa8628537687c839ab08bfe44/myst_parser-4.0.1.tar.gz", hash = "sha256:5cfea715e4f3574138aecbf7d54132296bfd72bb614d31168f48c477a830a7c4", size = 93985, upload-time = "2025-02-12T10:53:03.833Z" }
 wheels = [
@@ -2084,14 +2081,14 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "jinja2", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "markdown-it-py", version = "4.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "mdit-py-plugins", version = "0.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pyyaml", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "jinja2" },
+    { name = "markdown-it-py", version = "4.2.0", source = { registry = "https://pypi.org/simple" } },
+    { name = "mdit-py-plugins", version = "0.6.1", source = { registry = "https://pypi.org/simple" } },
+    { name = "pyyaml" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/21/dc/603751677fff302f34396e206b610f556a59d7fe58b9a2145f54e96b48e8/myst_parser-5.1.0.tar.gz", hash = "sha256:ab69322dc6719dcc7f296479dbb70181b66df6ed315064f92dbc85c0e1bf2f02", size = 101182, upload-time = "2026-05-13T09:38:19.361Z" }
 wheels = [
@@ -2392,12 +2389,11 @@ name = "nvidia-cublas"
 version = "13.1.1.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cuda-nvrtc", marker = "(python_full_version < '3.11' and sys_platform == 'emscripten') or (python_full_version < '3.11' and sys_platform == 'win32') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cuda-nvrtc" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a7/a1/0bd24ee8c8d03adac032fd2909426a00c88f8c57961b1277ded97f91119f/nvidia_cublas-13.1.1.3-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:b7a210458267ac818974c53038fbec2e969d5c99f305ab15c72522fa9f001dd5", size = 542848918, upload-time = "2026-04-08T18:46:22.985Z" },
     { url = "https://files.pythonhosted.org/packages/3b/cd/154ca20c38269e05eff77c1464e6c1da89f50a6390b565e9d82e06bc11e1/nvidia_cublas-13.1.1.3-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:37936a16db8fe4ac1f065c2139360608a543a09275cb1a1af612e08cfa065436", size = 423138758, upload-time = "2026-04-08T18:46:58.655Z" },
-    { url = "https://files.pythonhosted.org/packages/45/9e/2f562daf80eb8f7a685fb7bea4fda71f6048e4f359d6fdd1b6e70206cb2f/nvidia_cublas-13.1.1.3-py3-none-win_amd64.whl", hash = "sha256:b6cdce694e47ff6aadf0a69df1cab6628d696f5ff56e8d16af50309d855fa20f", size = 404358158, upload-time = "2026-04-08T18:47:26.987Z" },
 ]
 
 [[package]]
@@ -2407,7 +2403,6 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2a/2a/80353b103fc20ce05ef51e928daed4b6015db4aaa9162ed0997090fe2250/nvidia_cuda_cupti-13.0.85-py3-none-manylinux_2_25_aarch64.whl", hash = "sha256:796bd679890ee55fb14a94629b698b6db54bcfd833d391d5e94017dd9d7d3151", size = 10310827, upload-time = "2025-09-04T08:26:42.012Z" },
     { url = "https://files.pythonhosted.org/packages/33/6d/737d164b4837a9bbd202f5ae3078975f0525a55730fe871d8ed4e3b952b0/nvidia_cuda_cupti-13.0.85-py3-none-manylinux_2_25_x86_64.whl", hash = "sha256:4eb01c08e859bf924d222250d2e8f8b8ff6d3db4721288cf35d14252a4d933c8", size = 10715597, upload-time = "2025-09-04T08:26:51.312Z" },
-    { url = "https://files.pythonhosted.org/packages/ad/df/b74b10025c1205695c5676373f2edd3e87a7202cc62ead0dfbc373b0f6ea/nvidia_cuda_cupti-13.0.85-py3-none-win_amd64.whl", hash = "sha256:683f58d301548deeefcb8f6fac1b8d907691b9d8b18eccab417f51e362102f00", size = 7736776, upload-time = "2025-09-04T08:38:08.38Z" },
 ]
 
 [[package]]
@@ -2417,7 +2412,6 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c3/68/483a78f5e8f31b08fb1bb671559968c0ca3a065ac7acabfc7cee55214fd6/nvidia_cuda_nvrtc-13.0.88-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl", hash = "sha256:ad9b6d2ead2435f11cbb6868809d2adeeee302e9bb94bcf0539c7a40d80e8575", size = 90215200, upload-time = "2025-09-04T08:28:44.204Z" },
     { url = "https://files.pythonhosted.org/packages/b7/dc/6bb80850e0b7edd6588d560758f17e0550893a1feaf436807d64d2da040f/nvidia_cuda_nvrtc-13.0.88-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:d27f20a0ca67a4bb34268a5e951033496c5b74870b868bacd046b1b8e0c3267b", size = 43015449, upload-time = "2025-09-04T08:28:20.239Z" },
-    { url = "https://files.pythonhosted.org/packages/4a/af/345fedb9f4c76c84ab4fa445b36bd4048a4d9db60e6bc76b4f913ff4b852/nvidia_cuda_nvrtc-13.0.88-py3-none-win_amd64.whl", hash = "sha256:6bcd4e7f8e205cbe644f5a98f2f799bef9556fefc89dd786e79a16312ce49872", size = 76807835, upload-time = "2025-09-04T08:39:15.274Z" },
 ]
 
 [[package]]
@@ -2427,7 +2421,6 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/87/4f/17d7b9b8e285199c58ce28e31b5c5bbaa4d8271af06a89b6405258245de2/nvidia_cuda_runtime-13.0.96-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:ef9bcbe90493a2b9d810e43d249adb3d02e98dd30200d86607d8d02687c43f55", size = 2261060, upload-time = "2025-10-09T08:55:15.78Z" },
     { url = "https://files.pythonhosted.org/packages/2e/24/d1558f3b68b1d26e706813b1d10aa1d785e4698c425af8db8edc3dced472/nvidia_cuda_runtime-13.0.96-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:7f82250d7782aa23b6cfe765ecc7db554bd3c2870c43f3d1821f1d18aebf0548", size = 2243632, upload-time = "2025-10-09T08:55:36.117Z" },
-    { url = "https://files.pythonhosted.org/packages/b7/94/6b867483bec07da24ffa32736c79fabb94ef3a7af4d787a9d4a974868576/nvidia_cuda_runtime-13.0.96-py3-none-win_amd64.whl", hash = "sha256:f79298c8a098cec150a597c8eba58ecdab96e3bdc4b9bc4f9983635031740492", size = 2927037, upload-time = "2025-10-09T09:04:23.782Z" },
 ]
 
 [[package]]
@@ -2435,12 +2428,11 @@ name = "nvidia-cudnn-cu13"
 version = "9.20.0.48"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas", marker = "(python_full_version < '3.11' and sys_platform == 'emscripten') or (python_full_version < '3.11' and sys_platform == 'win32') or (sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cublas" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/56/c5/83384d846b2fd17c44bd499b36c75a45ed4f095fbbb2252294e89cea5c5c/nvidia_cudnn_cu13-9.20.0.48-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:e31454ae00094b0c55319d9d15b6fa2fc50a9e1c0f5c8c80fb75258234e731e1", size = 444574296, upload-time = "2026-03-09T19:28:27.751Z" },
     { url = "https://files.pythonhosted.org/packages/6e/5e/edb9c0ae051602c3ccaffe424256463636d639e27d7f302dde9975ef9e7a/nvidia_cudnn_cu13-9.20.0.48-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:0c45dd8eeb50b603f07995b1b300c62ffe6a1980482b82b3bcf94a4ca9d49304", size = 366173588, upload-time = "2026-03-09T19:29:34.474Z" },
-    { url = "https://files.pythonhosted.org/packages/78/39/21507455b1bca8b5702a9e9fc6ce73735f216f558dac2c9ede58e4d456b8/nvidia_cudnn_cu13-9.20.0.48-py3-none-win_amd64.whl", hash = "sha256:af8139732b99c0118be65ea5aac97f0d46018f8c552889e49d2fb0c6261a4a24", size = 350712614, upload-time = "2026-03-09T19:31:11.398Z" },
 ]
 
 [[package]]
@@ -2448,12 +2440,11 @@ name = "nvidia-cufft"
 version = "12.0.0.61"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-nvjitlink" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8b/ae/f417a75c0259e85c1d2f83ca4e960289a5f814ed0cea74d18c353d3e989d/nvidia_cufft-12.0.0.61-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:2708c852ef8cd89d1d2068bdbece0aa188813a0c934db3779b9b1faa8442e5f5", size = 214053554, upload-time = "2025-09-04T08:31:38.196Z" },
     { url = "https://files.pythonhosted.org/packages/a8/2f/7b57e29836ea8714f81e9898409196f47d772d5ddedddf1592eadb8ab743/nvidia_cufft-12.0.0.61-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:6c44f692dce8fd5ffd3e3df134b6cdb9c2f72d99cf40b62c32dde45eea9ddad3", size = 214085489, upload-time = "2025-09-04T08:31:56.044Z" },
-    { url = "https://files.pythonhosted.org/packages/85/b2/f8af21a2ed1beed337a6a02c5a28aeb85441f4d578ec3d529543c775ea4b/nvidia_cufft-12.0.0.61-py3-none-win_amd64.whl", hash = "sha256:2abce5b39d2f5ae12730fb7e5db6696533e36c26e2d3e8fd1750bdd2853364eb", size = 213342123, upload-time = "2025-09-04T08:40:51.145Z" },
 ]
 
 [[package]]
@@ -2472,7 +2463,6 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1e/72/7c2ae24fb6b63a32e6ae5d241cc65263ea18d08802aaae087d9f013335a2/nvidia_curand-10.4.0.35-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:133df5a7509c3e292aaa2b477afd0194f06ce4ea24d714d616ff36439cee349a", size = 61962106, upload-time = "2025-08-04T10:21:41.128Z" },
     { url = "https://files.pythonhosted.org/packages/a5/9f/be0a41ca4a4917abf5cb9ae0daff1a6060cc5de950aec0396de9f3b52bc5/nvidia_curand-10.4.0.35-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:1aee33a5da6e1db083fe2b90082def8915f30f3248d5896bcec36a579d941bfc", size = 59544258, upload-time = "2025-08-04T10:22:03.992Z" },
-    { url = "https://files.pythonhosted.org/packages/99/27/72103153b1ffc00e09fdc40ac970235343dcd1ea8bd762e84d2d73219ffa/nvidia_curand-10.4.0.35-py3-none-win_amd64.whl", hash = "sha256:65b1710aa6961d326b411e314b374290904c5ddf41dc3f766ebc3f1d7d4ca69f", size = 55242481, upload-time = "2025-08-04T10:30:41.831Z" },
 ]
 
 [[package]]
@@ -2480,14 +2470,13 @@ name = "nvidia-cusolver"
 version = "12.0.4.66"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-cusparse", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-nvjitlink", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-cublas" },
+    { name = "nvidia-cusparse" },
+    { name = "nvidia-nvjitlink" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c8/c3/b30c9e935fc01e3da443ec0116ed1b2a009bb867f5324d3f2d7e533e776b/nvidia_cusolver-12.0.4.66-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:02c2457eaa9e39de20f880f4bd8820e6a1cfb9f9a34f820eb12a155aa5bc92d2", size = 223467760, upload-time = "2025-09-04T08:33:04.222Z" },
     { url = "https://files.pythonhosted.org/packages/5f/67/cba3777620cdacb99102da4042883709c41c709f4b6323c10781a9c3aa34/nvidia_cusolver-12.0.4.66-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:0a759da5dea5c0ea10fd307de75cdeb59e7ea4fcb8add0924859b944babf1112", size = 200941980, upload-time = "2025-09-04T08:33:22.767Z" },
-    { url = "https://files.pythonhosted.org/packages/99/ef/332a0101260ca78a1daef046bf0b06199e8ed4dac1d2aa698289c358169c/nvidia_cusolver-12.0.4.66-py3-none-win_amd64.whl", hash = "sha256:16515bd33a8e76bb54d024cfa068fa68d30e80fc34b9e1090813ea9362e0cb65", size = 193551444, upload-time = "2025-09-04T08:41:46.813Z" },
 ]
 
 [[package]]
@@ -2495,12 +2484,11 @@ name = "nvidia-cusparse"
 version = "12.6.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink", marker = "(python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'emscripten') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'win32') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.11' and platform_machine == 's390x' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_machine == 's390x' and sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'darwin' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "nvidia-nvjitlink" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f8/94/5c26f33738ae35276672f12615a64bd008ed5be6d1ebcb23579285d960a9/nvidia_cusparse-12.6.3.3-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:80bcc4662f23f1054ee334a15c72b8940402975e0eab63178fc7e670aa59472c", size = 162155568, upload-time = "2025-09-04T08:33:42.864Z" },
     { url = "https://files.pythonhosted.org/packages/fa/18/623c77619c31d62efd55302939756966f3ecc8d724a14dab2b75f1508850/nvidia_cusparse-12.6.3.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:2b3c89c88d01ee0e477cb7f82ef60a11a4bcd57b6b87c33f789350b59759360b", size = 145942937, upload-time = "2025-09-04T08:33:58.029Z" },
-    { url = "https://files.pythonhosted.org/packages/02/b0/b043d6f3480f102f885cf87fc3ffd3edcb5e23b855025a50e2ef4d059185/nvidia_cusparse-12.6.3.3-py3-none-win_amd64.whl", hash = "sha256:cbcf42feb737bd7ec15b4c0a63e62351886bd3f975027b8815d7f720a2b5ea79", size = 143783033, upload-time = "2025-09-04T08:42:12.391Z" },
 ]
 
 [[package]]
@@ -2510,7 +2498,6 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/46/e1/cdc1797eadf82d3a9a575a19b33fdc871a97edbec42c00b5b5e914f4aff4/nvidia_cusparselt_cu13-0.8.1-py3-none-manylinux2014_aarch64.whl", hash = "sha256:4dca476c50bf4780d46cd0bfbd82e2bc10a08e4fef7950917ce8d7578d22a23f", size = 221051344, upload-time = "2025-09-05T18:49:51.289Z" },
     { url = "https://files.pythonhosted.org/packages/34/7d/2661f2fb3ac4302f3a246f5fc030213ac60c1fe0bce84f9783dbd831dbb7/nvidia_cusparselt_cu13-0.8.1-py3-none-manylinux2014_x86_64.whl", hash = "sha256:786ce87568c303fadb5afcc7102d454cd3040d75f6f8626f5db460d1871f4dd0", size = 170148586, upload-time = "2025-09-05T18:50:50.248Z" },
-    { url = "https://files.pythonhosted.org/packages/31/83/f3647ce26916c94a6ca4ff1810623e2c405cff2dea6e78d29516b2514df9/nvidia_cusparselt_cu13-0.8.1-py3-none-win_amd64.whl", hash = "sha256:dccbd362f91a7b9024d1f55ee9f548ac065027ff15d8c8b0db889ab3a8f31215", size = 156885108, upload-time = "2025-09-05T18:51:35.958Z" },
 ]
 
 [[package]]
@@ -2529,7 +2516,6 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f0/ee/580ca6f29dcab0221db8706badca1bbbb084f1975c4d4e83329c3a7e31f0/nvidia_nvjitlink-13.3.33-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl", hash = "sha256:26a6de7fb4c8fdaa7703d3dad720d6d427ddfea5c48a528fd97c11733ad830e5", size = 40742423, upload-time = "2026-05-26T16:54:51.613Z" },
     { url = "https://files.pythonhosted.org/packages/69/30/45414e35ff2eee7db3da037e5707037ccf9d2b5218ffbdb055ea4d5aa98a/nvidia_nvjitlink-13.3.33-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:ce48b37dfeb3cb1eae4cf85adacb47d7a6539ea2272870c9a3628ce275c2037e", size = 39168635, upload-time = "2026-05-26T16:54:13.906Z" },
-    { url = "https://files.pythonhosted.org/packages/67/f2/ec9c05a108095828dfc58840978c627b3c313fdf2a567c6de9ffbbb46901/nvidia_nvjitlink-13.3.33-py3-none-win_amd64.whl", hash = "sha256:4297ee49639b4f2e07255a1d69b3acc7ab2d011bb892b403e91ac98368962e3b", size = 37766359, upload-time = "2026-05-26T17:11:28.96Z" },
 ]
 
 [[package]]
@@ -2548,7 +2534,6 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c2/f3/d86c845465a2723ad7e1e5c36dcd75ddb82898b3f53be47ebd429fb2fa5d/nvidia_nvtx-13.0.85-py3-none-manylinux1_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:4936d1d6780fbe68db454f5e72a42ff64d1fd6397df9f363ae786930fd5c1cd4", size = 148047, upload-time = "2025-09-04T08:29:01.761Z" },
     { url = "https://files.pythonhosted.org/packages/a8/64/3708a90d1ebe202ffdeb7185f878a3c84d15c2b2c31858da2ce0583e2def/nvidia_nvtx-13.0.85-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:cb7780edb6b14107373c835bf8b72e7a178bac7367e23da7acb108f973f157a6", size = 148878, upload-time = "2025-09-04T08:28:53.627Z" },
-    { url = "https://files.pythonhosted.org/packages/d2/50/0e2220f8620a177de994211186ffc5bfa9f2ce1e1282797f8f90096f9f88/nvidia_nvtx-13.0.85-py3-none-win_amd64.whl", hash = "sha256:d66ea44254dd3c6eacc300047af6e1288d2269dd072b417e0adffbf479e18519", size = 137066, upload-time = "2025-09-04T08:39:25.649Z" },
 ]
 
 [[package]]
@@ -2578,11 +2563,12 @@ version = "1.22.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ml-dtypes" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "protobuf" },
-    { name = "typing-extensions" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/19/8ea73a64b368b75fe339771a20a02bc61ea1f551484c9e3d9d0bfbd0450f/onnx-1.22.0.tar.gz", hash = "sha256:ef40c0aaf0b643857ea9306fc7eddce17eaf9fb0407e4801f1fc5758443a38e0", size = 12024721, upload-time = "2026-06-15T12:50:05.354Z" }
 wheels = [
@@ -2616,9 +2602,9 @@ name = "opencv-contrib-python"
 version = "4.10.0.84"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1d/33/7b8ec6c4d45e678b26297e4a5e76464a93033a9adcc8c17eac01097065f6/opencv-contrib-python-4.10.0.84.tar.gz", hash = "sha256:4a3eae0ed9cadf1abe9293a6938a25a540e2fd6d7fc308595caa5896c8b36a0c", size = 150433857, upload-time = "2024-06-17T18:30:50.217Z" }
 wheels = [
@@ -2635,9 +2621,9 @@ name = "opencv-python"
 version = "4.13.0.92"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fc/6f/5a28fef4c4a382be06afe3938c64cc168223016fa520c5abaf37e8862aa5/opencv_python-4.13.0.92-cp37-abi3-macosx_13_0_arm64.whl", hash = "sha256:caf60c071ec391ba51ed00a4a920f996d0b64e3e46068aac1f646b5de0326a19", size = 46247052, upload-time = "2026-02-05T07:01:25.046Z" },
@@ -2687,9 +2673,9 @@ name = "opt-einsum"
 version = "3.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7d/bf/9257e53a0e7715bc1127e15063e831f076723c6cd60985333a1c18878fb8/opt_einsum-3.3.0.tar.gz", hash = "sha256:59f6475f77bbc37dcf7cd748519c0ec60722e91e63ca114e68821c0c54a46549", size = 73951, upload-time = "2020-07-19T22:40:32.141Z" }
 wheels = [
@@ -2698,11 +2684,11 @@ wheels = [
 
 [[package]]
 name = "packaging"
-version = "24.2"
+version = "26.3"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d0/63/68dbb6eb2de9cb10ee4c9c14a0148804425e13c4fb20d61cce69f53106da/packaging-24.2.tar.gz", hash = "sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f", size = 163950, upload-time = "2024-11-08T09:47:47.202Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/fa/3944b40b07da9ce895c0e6303a5ab7d53da063554f534556b134a54d6093/packaging-26.3.tar.gz", hash = "sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79", size = 313412, upload-time = "2026-08-04T18:15:28.737Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/ef/eb23f262cca3c0c4eb7ab1933c3b1f03d021f2c48f54763065b6f0e321be/packaging-24.2-py3-none-any.whl", hash = "sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759", size = 65451, upload-time = "2024-11-08T09:47:44.722Z" },
+    { url = "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl", hash = "sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c", size = 129956, upload-time = "2026-08-04T18:15:27.159Z" },
 ]
 
 [[package]]
@@ -2713,7 +2699,8 @@ dependencies = [
     { name = "paddlex", extra = ["ocr-core"] },
     { name = "pyyaml" },
     { name = "requests" },
-    { name = "typing-extensions" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/6b/a1/408871ae4316c4c1a0eba3a627f6524008feda6b79f22a2dae4c66553745/paddleocr-3.4.1.tar.gz", hash = "sha256:d8b3e5d0de0edca7141ac826eeb48063bb2a9d4a34d20ffffba22d84cd405800", size = 2504875, upload-time = "2026-04-14T05:48:07.037Z" }
 wheels = [
@@ -2726,17 +2713,18 @@ version = "3.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "opt-einsum" },
     { name = "pillow" },
     { name = "protobuf" },
     { name = "safetensors" },
-    { name = "setuptools", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typing-extensions" },
+    { name = "setuptools", marker = "python_full_version >= '3.12'" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/04/d4/314b31fccbf95cc120eca48b16f5971a7ec3d321367d22461adcd6c73743/paddlepaddle-3.3.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:44e3fd30a9052556569e5dfa1f947a30b78bcd8e9302f1cf47629f9f54ff084e", size = 104483741, upload-time = "2026-03-26T11:17:55.18Z" },
@@ -2764,21 +2752,22 @@ dependencies = [
     { name = "filelock" },
     { name = "huggingface-hub" },
     { name = "modelscope" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "packaging" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pandas", version = "3.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "pandas", version = "3.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pillow" },
     { name = "prettytable" },
     { name = "py-cpuinfo" },
-    { name = "pydantic", version = "2.11.10", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pydantic", version = "2.13.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "pydantic", version = "2.11.10", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "pydantic", version = "2.13.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pyyaml" },
     { name = "requests" },
     { name = "ruamel-yaml" },
-    { name = "typing-extensions" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "ujson" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/73/f6/a1ab1c812ceec3c505806015483b064e1a733c98edcace2aa85aa8186a75/paddlex-3.4.3.tar.gz", hash = "sha256:acecc48f589169607a49b846bfb108817aee47c5e1610aed59cfc3e451b1a825", size = 4173136, upload-time = "2026-03-27T02:31:18.457Z" }
@@ -2808,10 +2797,10 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "python-dateutil", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pytz", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "tzdata", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" } },
+    { name = "python-dateutil" },
+    { name = "pytz" },
+    { name = "tzdata" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/33/01/d40b85317f86cf08d853a4f495195c73815fdf205eef3993821720274518/pandas-2.3.3.tar.gz", hash = "sha256:e05e1af93b977f7eafa636d043f9f94c7ee3ac81af99c13508215942e64c993b", size = 4495223, upload-time = "2025-09-29T23:34:51.853Z" }
 wheels = [
@@ -2896,10 +2885,10 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "python-dateutil", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "tzdata", marker = "(python_full_version >= '3.11' and sys_platform == 'emscripten') or (python_full_version >= '3.11' and sys_platform == 'win32') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'emscripten' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform == 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "python-dateutil" },
+    { name = "tzdata", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f8/87/4341c6252d1c47b08768c3d25ac487362bf403f0313ddae4a2a26c9b1b4c/pandas-3.0.3.tar.gz", hash = "sha256:696a4a00a2a2a35d4e5deb3fc946641b96c944f02230e4f76137fe35d806c4fc", size = 4651414, upload-time = "2026-05-11T18:54:29.21Z" }
 wheels = [
@@ -3142,11 +3131,54 @@ wheels = [
 
 [[package]]
 name = "platformdirs"
-version = "4.3.6"
+version = "4.12.4"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/13/fc/128cc9cb8f03208bdbf93d3aa862e16d376844a14f9a0ce5cf4507372de4/platformdirs-4.3.6.tar.gz", hash = "sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907", size = 21302, upload-time = "2024-09-17T19:06:50.688Z" }
+resolution-markers = [
+    "python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'darwin'",
+    "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version < '3.11' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/90/a1/d5f9002a70298c64a789779077d8dd90c10aa1f47fe40c86802df874f2a6/platformdirs-4.12.4.tar.gz", hash = "sha256:63743c02414e755de4e31b8f68125c1407495b86c5a006e203c01ff8b9924250", size = 60010, upload-time = "2026-10-07T23:30:32.426Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3c/a6/bc1012356d8ece4d66dd75c4b9fc6c1f6650ddd5991e421177d9f8f671be/platformdirs-4.3.6-py3-none-any.whl", hash = "sha256:73e575e1408ab8103900836b97580d5307456908a03e92031bab39e4554cc3fb", size = 18439, upload-time = "2024-09-17T19:06:49.212Z" },
+    { url = "https://files.pythonhosted.org/packages/f4/ba/223e00b885e960edd5d4b4d178c88acce019bd5b83786093681b8c393492/platformdirs-4.12.4-py3-none-any.whl", hash = "sha256:78bfb9db2a8471ed7eebe3c3c932da413911042994e699b384fbb4493fa872d7", size = 32596, upload-time = "2026-10-07T23:30:30.825Z" },
+]
+
+[[package]]
+name = "platformdirs"
+version = "4.13.5"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.15' and sys_platform == 'darwin'",
+    "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and sys_platform == 'emscripten'",
+    "(python_full_version >= '3.15' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.15' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.14.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.14.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.13.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.13.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.13.*' and sys_platform == 'win32'",
+    "python_full_version == '3.13.*' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.13.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.13.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.12.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.12.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.12.*' and sys_platform == 'win32'",
+    "python_full_version == '3.12.*' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.12.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.12.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/58/e6/d0abbb256b44e6a05748c6942511ff67db8dbb068de0c35b24bf1b395b09/platformdirs-4.13.5.tar.gz", hash = "sha256:05831adf87d392760f4b5c3a0a95579ab5a10b18b9b9bd43680dcb47544788a0", size = 62362, upload-time = "2026-10-19T01:02:11.778Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6c/8a/1d8cb3842909dc193a73835adedf412e32e18f8ffd59f43983949622fe6f/platformdirs-4.13.5-py3-none-any.whl", hash = "sha256:53d3ec4280b815c1e0b02edad7f9ee8fda1ba9c0865dd9c2e6e63849ce82fc1e", size = 32779, upload-time = "2026-10-19T01:02:10.17Z" },
 ]
 
 [[package]]
@@ -3221,7 +3253,7 @@ version = "4.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ruamel-yaml" },
-    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/83/0d/b4e97cd99b26c0cd8265c9f19ee7e55248142f0c9955e4d119de96fa4a13/pre_commit_hooks-4.6.0.tar.gz", hash = "sha256:eb1f43ee67869cd41b4c59017fad4a0f9d4d61201d163f2135535aaf65035a2b", size = 29579, upload-time = "2024-04-06T18:25:03.093Z" }
 wheels = [
@@ -3423,10 +3455,10 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "annotated-types", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pydantic-core", version = "2.33.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typing-inspection", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "annotated-types" },
+    { name = "pydantic-core", version = "2.33.2", source = { registry = "https://pypi.org/simple" } },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" } },
+    { name = "typing-inspection" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ae/54/ecab642b3bed45f7d5f59b38443dcb36ef50f85af192e6ece103dbfe9587/pydantic-2.11.10.tar.gz", hash = "sha256:dc280f0982fbda6c38fada4e476dc0a4f3aeaf9c6ad4c28df68a666ec3c61423", size = 788494, upload-time = "2025-10-04T10:40:41.338Z" }
 wheels = [
@@ -3465,10 +3497,10 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "annotated-types", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pydantic-core", version = "2.46.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typing-extensions", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typing-inspection", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "annotated-types" },
+    { name = "pydantic-core", version = "2.46.4", source = { registry = "https://pypi.org/simple" } },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" } },
+    { name = "typing-inspection" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/18/a5/b60d21ac674192f8ab0ba4e9fd860690f9b4a6e51ca5df118733b487d8d6/pydantic-2.13.4.tar.gz", hash = "sha256:c40756b57adaa8b1efeeced5c196f3f3b7c435f90e84ea7f443901bec8099ef6", size = 844775, upload-time = "2026-05-06T13:43:05.343Z" }
 wheels = [
@@ -3487,7 +3519,7 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ad/88/5f2260bdfae97aabf98f1778d43f69574390ad787afb646292a638c923d4/pydantic_core-2.33.2.tar.gz", hash = "sha256:7cb8bc3605c29176e1b105350d2e6474142d7c1bd1d9327c4a9bdb46bf827acc", size = 435195, upload-time = "2025-04-23T18:33:52.104Z" }
 wheels = [
@@ -3601,7 +3633,7 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9d/56/921726b776ace8d8f5db44c4ef961006580d91dc52b803c489fafd1aa249/pydantic_core-2.46.4.tar.gz", hash = "sha256:62f875393d7f270851f20523dd2e29f082bcc82292d66db2b64ea71f64b6e1c1", size = 471464, upload-time = "2026-05-06T13:37:06.98Z" }
 wheels = [
@@ -3719,7 +3751,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "docstring-parser-fork" },
-    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/3a/06/20f0bc26bdebab8b45f6f0be0d308b884dbf8145b1ecd9fe72d09ab722f9/pydoclint-0.4.2.tar.gz", hash = "sha256:559060dc1a91240ac1e28be570b3563ae66f292c7dd7124f4d4eab1483416a41", size = 42615, upload-time = "2024-06-25T07:59:29.354Z" }
 wheels = [
@@ -3772,13 +3804,13 @@ name = "pytest"
 version = "9.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
     { name = "pygments" },
-    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7d/0d/549bd94f1a0a402dc8cf64563a117c0f3765662e2e668477624baeec44d5/pytest-9.0.3.tar.gz", hash = "sha256:b86ada508af81d19edeb213c681b1d48246c1a91d304c6c81a427674c17eb91c", size = 1572165, upload-time = "2026-04-07T17:16:18.027Z" }
 wheels = [
@@ -3949,18 +3981,18 @@ dependencies = [
     { name = "h5py" },
     { name = "huggingface-hub" },
     { name = "langdetect" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "onnx" },
     { name = "opencv-python" },
     { name = "pillow" },
     { name = "pyclipper" },
     { name = "pypdfium2" },
     { name = "rapidfuzz" },
-    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "scipy", version = "1.18.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "scipy", version = "1.18.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "shapely" },
     { name = "torch" },
     { name = "torchvision" },
@@ -4358,10 +4390,10 @@ name = "rich"
 version = "13.9.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "markdown-it-py", version = "3.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "markdown-it-py", version = "4.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "markdown-it-py", version = "3.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "markdown-it-py", version = "4.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pygments" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ab/3a/0316b28d0761c6734d6bc14e770d85506c986c85ffb239e688eeaab2c2bc/rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098", size = 223149, upload-time = "2024-11-01T16:43:57.873Z" }
 wheels = [
@@ -4394,7 +4426,7 @@ name = "ruamel-yaml"
 version = "0.18.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "ruamel-yaml-clib", marker = "(python_full_version < '3.13' and platform_python_implementation == 'CPython') or (python_full_version >= '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.13' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (platform_python_implementation != 'CPython' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (platform_python_implementation != 'CPython' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "ruamel-yaml-clib", marker = "python_full_version < '3.13' and platform_python_implementation == 'CPython'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/29/81/4dfc17eb6ebb1aac314a3eb863c1325b907863a1b8b1382cdffcb6ac0ed9/ruamel.yaml-0.18.6.tar.gz", hash = "sha256:8b27e6a217e786c6fbe5634d8f3f11bc63e0f80f6a5890f28863d9c45aac311b", size = 143362, upload-time = "2024-02-07T06:47:20.283Z" }
 wheels = [
@@ -4494,7 +4526,7 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0f/37/6964b830433e654ec7485e45a00fc9a27cf868d622838f6b6d9c5ec0d532/scipy-1.15.3.tar.gz", hash = "sha256:eae3cf522bc7df64b42cad3925c876e1b0b6c35c1337c93e12c0f366f55b0eaf", size = 59419214, upload-time = "2025-05-08T16:13:05.955Z" }
 wheels = [
@@ -4557,7 +4589,7 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7a/97/5a3609c4f8d58b039179648e62dd220f89864f56f7357f5d4f45c29eb2cc/scipy-1.17.1.tar.gz", hash = "sha256:95d8e012d8cb8816c226aef832200b1d45109ed4464303e997c5b13122b297c0", size = 30573822, upload-time = "2026-02-23T00:26:24.851Z" }
 wheels = [
@@ -4650,7 +4682,7 @@ resolution-markers = [
     "(python_full_version == '3.12.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.12.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a7/25/c2700dfaf6442b4effaa91af24ebce5dc9d31bb4a69706313aae70d72cd0/scipy-1.18.0.tar.gz", hash = "sha256:67b2ad2ad54c72ca6d04975a9b2df8c3638c34ddd5b28738e94fc2b57929d378", size = 30774447, upload-time = "2026-06-19T15:01:43.456Z" }
 wheels = [
@@ -4710,9 +4742,9 @@ name = "shapely"
 version = "2.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4d/bc/0989043118a27cccb4e906a46b7565ce36ca7b57f5a18b78f4f1b0f72d9d/shapely-2.1.2.tar.gz", hash = "sha256:2ed4ecb28320a433db18a5bf029986aa8afcfd740745e78847e330d5d94922a9", size = 315489, upload-time = "2025-09-24T13:51:41.432Z" }
 wheels = [
@@ -4789,9 +4821,9 @@ version = "2026.5.19"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pygments-styles" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/94/eb/9de0c2a5691c96e77823ec0582b34ab1f38830530bcb12103ce8d880c205/shibuya-2026.5.19.tar.gz", hash = "sha256:f39e012e945ecb93f8aeaeab48e7bfaa204d570fe86796034a1f01fe4f1a3709", size = 86198, upload-time = "2026-05-19T11:38:13.443Z" }
 wheels = [
@@ -4837,23 +4869,23 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "alabaster", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "babel", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "colorama", marker = "(python_full_version < '3.11' and sys_platform == 'win32') or (python_full_version >= '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.11' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "imagesize", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "jinja2", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "packaging", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pygments", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "requests", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "snowballstemmer", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-applehelp", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-devhelp", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-htmlhelp", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-jsmath", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-qthelp", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-serializinghtml", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "alabaster" },
+    { name = "babel" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" } },
+    { name = "imagesize" },
+    { name = "jinja2" },
+    { name = "packaging" },
+    { name = "pygments" },
+    { name = "requests" },
+    { name = "snowballstemmer" },
+    { name = "sphinxcontrib-applehelp" },
+    { name = "sphinxcontrib-devhelp" },
+    { name = "sphinxcontrib-htmlhelp" },
+    { name = "sphinxcontrib-jsmath" },
+    { name = "sphinxcontrib-qthelp" },
+    { name = "sphinxcontrib-serializinghtml" },
+    { name = "tomli" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/6f/6d/be0b61178fe2cdcb67e2a92fc9ebb488e3c51c4f74a36a7824c0adf23425/sphinx-8.1.3.tar.gz", hash = "sha256:43c1911eecb0d3e161ad78611bc905d1ad0e523e4ddc202a58a821773dc4c927", size = 8184611, upload-time = "2024-10-13T20:27:13.93Z" }
 wheels = [
@@ -4872,23 +4904,23 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "alabaster", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "babel", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "colorama", marker = "(python_full_version == '3.11.*' and sys_platform == 'win32') or (python_full_version != '3.11.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version != '3.11.*' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "imagesize", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "jinja2", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "packaging", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pygments", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "requests", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "roman-numerals", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "snowballstemmer", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-applehelp", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-devhelp", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-htmlhelp", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-jsmath", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-qthelp", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-serializinghtml", marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "alabaster" },
+    { name = "babel" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" } },
+    { name = "imagesize" },
+    { name = "jinja2" },
+    { name = "packaging" },
+    { name = "pygments" },
+    { name = "requests" },
+    { name = "roman-numerals" },
+    { name = "snowballstemmer" },
+    { name = "sphinxcontrib-applehelp" },
+    { name = "sphinxcontrib-devhelp" },
+    { name = "sphinxcontrib-htmlhelp" },
+    { name = "sphinxcontrib-jsmath" },
+    { name = "sphinxcontrib-qthelp" },
+    { name = "sphinxcontrib-serializinghtml" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/42/50/a8c6ccc36d5eacdfd7913ddccd15a9cee03ecafc5ee2bc40e1f168d85022/sphinx-9.0.4.tar.gz", hash = "sha256:594ef59d042972abbc581d8baa577404abe4e6c3b04ef61bd7fc2acbd51f3fa3", size = 8710502, upload-time = "2025-12-04T07:45:27.343Z" }
 wheels = [
@@ -4922,23 +4954,23 @@ resolution-markers = [
     "(python_full_version == '3.12.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.12.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "alabaster", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "babel", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "colorama", marker = "(python_full_version >= '3.12' and sys_platform == 'win32') or (python_full_version < '3.12' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version < '3.12' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'win32' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "imagesize", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "jinja2", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "packaging", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "pygments", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "requests", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "roman-numerals", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "snowballstemmer", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-applehelp", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-devhelp", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-htmlhelp", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-jsmath", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-qthelp", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinxcontrib-serializinghtml", marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "alabaster" },
+    { name = "babel" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" } },
+    { name = "imagesize" },
+    { name = "jinja2" },
+    { name = "packaging" },
+    { name = "pygments" },
+    { name = "requests" },
+    { name = "roman-numerals" },
+    { name = "snowballstemmer" },
+    { name = "sphinxcontrib-applehelp" },
+    { name = "sphinxcontrib-devhelp" },
+    { name = "sphinxcontrib-htmlhelp" },
+    { name = "sphinxcontrib-jsmath" },
+    { name = "sphinxcontrib-qthelp" },
+    { name = "sphinxcontrib-serializinghtml" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/cd/bd/f08eb0f4eed5c83f1ba2a3bd18f7745a2b1525fad70660a1c00224ec468a/sphinx-9.1.0.tar.gz", hash = "sha256:7741722357dd75f8190766926071fed3bdc211c74dd2d7d4df5404da95930ddb", size = 8718324, upload-time = "2025-12-31T15:09:27.646Z" }
 wheels = [
@@ -4957,12 +4989,12 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "colorama", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "starlette", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "uvicorn", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "watchfiles", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "websockets", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "colorama" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" } },
+    { name = "starlette" },
+    { name = "uvicorn" },
+    { name = "watchfiles" },
+    { name = "websockets" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a5/2c/155e1de2c1ba96a72e5dba152c509a8b41e047ee5c2def9e9f0d812f8be7/sphinx_autobuild-2024.10.3.tar.gz", hash = "sha256:248150f8f333e825107b6d4b86113ab28fa51750e5f9ae63b59dc339be951fb1", size = 14023, upload-time = "2024-10-02T23:15:30.172Z" }
 wheels = [
@@ -5001,13 +5033,13 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "colorama", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "starlette", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "uvicorn", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "watchfiles", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "websockets", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "colorama" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "starlette" },
+    { name = "uvicorn" },
+    { name = "watchfiles" },
+    { name = "websockets" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e0/3c/a59a3a453d4133777f7ed2e83c80b7dc817d43c74b74298ca0af869662ad/sphinx_autobuild-2025.8.25.tar.gz", hash = "sha256:9cf5aab32853c8c31af572e4fecdc09c997e2b8be5a07daf2a389e270e85b213", size = 15200, upload-time = "2025-08-25T18:44:55.436Z" }
 wheels = [
@@ -5020,11 +5052,11 @@ version = "6.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "docutils", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/db/0a/5b1e8d0579dbb4ca8114e456ca4a68020bfe8e15c7001f3856be4929ab83/sphinx_click-6.0.0.tar.gz", hash = "sha256:f5d664321dc0c6622ff019f1e1c84e58ce0cecfddeb510e004cf60c2a3ab465b", size = 29574, upload-time = "2024-05-15T14:49:17.044Z" }
 wheels = [
@@ -5036,9 +5068,9 @@ name = "sphinx-mermaid"
 version = "0.0.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bd/65/96cb3a4117ea2a4ead808377259659885ea0fe5e539a9f29fc1c8a723ed1/sphinx_mermaid-0.0.8-py2.py3-none-any.whl", hash = "sha256:03cbad30c04130e5644c5112b4b2da7850d142f897876ac5aea83c8b5965bf76", size = 3336, upload-time = "2023-01-02T13:06:34.564Z" },
@@ -5103,9 +5135,9 @@ name = "sphinxcontrib-svg2pdfconverter"
 version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b9/05/11b12853b6a0398bd19d5464b68cb97dde21c354265ff2c1929f92ae03a9/sphinxcontrib_svg2pdfconverter-2.1.0.tar.gz", hash = "sha256:9756e82d5f3bf11629ffcbafb1f8a1092d3bb4789e33494032cdce9a9c8459d3", size = 6805, upload-time = "2026-03-05T18:23:44.74Z" }
 wheels = [
@@ -5118,7 +5150,8 @@ version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' and python_full_version < '3.13'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/eb/e3/7c1dc7381d9f8ab7d854328ebfa884e62cb3f3d8549ddfd37c7814f42afa/starlette-1.3.1.tar.gz", hash = "sha256:05d0213193f2fbaae60e2ecb593b4add4262ad4e46536b54abe36f11a71724e0", size = 2703240, upload-time = "2026-06-12T09:23:11.602Z" }
 wheels = [
@@ -5160,21 +5193,22 @@ name = "torch"
 version = "2.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cuda-bindings", marker = "(python_full_version < '3.15' and sys_platform == 'linux') or (python_full_version >= '3.15' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.15' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "cuda-toolkit", extra = ["cublas", "cudart", "cufft", "cufile", "cupti", "curand", "cusolver", "cusparse", "nvjitlink", "nvrtc", "nvtx"], marker = "sys_platform == 'linux' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "cuda-bindings", marker = "python_full_version < '3.15' and sys_platform == 'linux'" },
+    { name = "cuda-toolkit", extra = ["cublas", "cudart", "cufft", "cufile", "cupti", "curand", "cusolver", "cusparse", "nvjitlink", "nvrtc", "nvtx"], marker = "sys_platform == 'linux'" },
     { name = "filelock" },
     { name = "fsspec" },
     { name = "jinja2" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-cudnn-cu13", marker = "sys_platform == 'linux' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-cusparselt-cu13", marker = "sys_platform == 'linux' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-nccl-cu13", marker = "sys_platform == 'linux' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "nvidia-nvshmem-cu13", marker = "sys_platform == 'linux' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "nvidia-cudnn-cu13", marker = "sys_platform == 'linux'" },
+    { name = "nvidia-cusparselt-cu13", marker = "sys_platform == 'linux'" },
+    { name = "nvidia-nccl-cu13", marker = "sys_platform == 'linux'" },
+    { name = "nvidia-nvshmem-cu13", marker = "sys_platform == 'linux'" },
     { name = "setuptools" },
     { name = "sympy" },
-    { name = "triton", marker = "(python_full_version < '3.15' and sys_platform == 'linux') or (python_full_version >= '3.15' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (python_full_version >= '3.15' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber') or (sys_platform != 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (sys_platform != 'linux' and extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "typing-extensions" },
+    { name = "triton", marker = "python_full_version < '3.15' and sys_platform == 'linux'" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7f/e7/19894fdb51c7dbaf94f5a79bb0871da0992e8e4241e579cb006da46d2e58/torch-2.13.0-cp310-cp310-macosx_14_0_arm64.whl", hash = "sha256:94f0de129916f77b8dc2c7a8eff644cfeddfe59e39c9f55e9f6e17543410281d", size = 111178962, upload-time = "2026-07-08T16:05:49.855Z" },
@@ -5208,9 +5242,9 @@ name = "torchvision"
 version = "0.28.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
-    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "pillow" },
     { name = "torch" },
 ]
@@ -5246,7 +5280,7 @@ name = "tqdm"
 version = "4.67.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e8/4f/0153c21dc5779a49a0598c445b1978126b1344bab9ee71e53e44877e14e0/tqdm-4.67.0.tar.gz", hash = "sha256:fe5a6f95e6fe0b9755e9469b77b9c3cf850048224ecaa8293d7d2d31f97d869a", size = 169739, upload-time = "2024-11-06T16:35:37.677Z" }
 wheels = [
@@ -5309,7 +5343,7 @@ resolution-markers = [
     "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
 ]
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/70/60/8cd6a3d78d00ceeb2193c02b7ed08f063d5341ccdfb24df88e61f383048e/typeguard-4.4.2.tar.gz", hash = "sha256:a6f1065813e32ef365bc3b3f503af8a96f9dd4e0033a02c28c4a4983de8c6c49", size = 75746, upload-time = "2025-02-16T16:28:26.205Z" }
 wheels = [
@@ -5348,7 +5382,7 @@ resolution-markers = [
     "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
 ]
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version >= '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" } },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/67/1c/dfba5c4633cafc4c701f237d2ba63b416805047fd6d96aab4cfc40969f98/typeguard-4.5.2.tar.gz", hash = "sha256:5a16dcac23502039299c97c8941651bc33d7ea8cc4b2f7d6bbb1b528f6eea423", size = 80240, upload-time = "2026-05-14T12:59:40.857Z" }
 wheels = [
@@ -5374,9 +5408,52 @@ wheels = [
 name = "typing-extensions"
 version = "4.15.0"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.15' and sys_platform == 'darwin'",
+    "python_full_version >= '3.15' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.15' and sys_platform == 'win32'",
+    "python_full_version >= '3.15' and sys_platform == 'emscripten'",
+    "(python_full_version >= '3.15' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.15' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.14.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.14.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.14.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.14.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.13.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.13.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.13.*' and sys_platform == 'win32'",
+    "python_full_version == '3.13.*' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.13.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.13.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.12.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.12.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.12.*' and sys_platform == 'win32'",
+    "python_full_version == '3.12.*' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.12.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.12.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
+]
 sdist = { url = "https://files.pythonhosted.org/packages/72/94/1a15dd82efb362ac84269196e94cf00f187f7ed21c242792a923cdb1c61f/typing_extensions-4.15.0.tar.gz", hash = "sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466", size = 109391, upload-time = "2025-08-25T13:49:26.313Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/18/67/36e9267722cc04a6b9f15c7f3441c2363321a3ea07da7ae0c0707beb2a9c/typing_extensions-4.15.0-py3-none-any.whl", hash = "sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548", size = 44614, upload-time = "2025-08-25T13:49:24.86Z" },
+]
+
+[[package]]
+name = "typing-extensions"
+version = "4.16.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.11' and platform_machine != 's390x' and sys_platform == 'darwin'",
+    "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform == 'darwin'",
+    "python_full_version < '3.11' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and platform_machine != 's390x' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_machine != 's390x' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version < '3.11' and platform_machine == 's390x' and sys_platform != 'darwin'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f6/cc/6253133b5bb138fc3306cebfbda2c520f545d36b5be2c7255cc528bb45d6/typing_extensions-4.16.0.tar.gz", hash = "sha256:dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5", size = 113555, upload-time = "2026-07-02T08:40:05.92Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl", hash = "sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8", size = 45571, upload-time = "2026-07-02T08:40:04.659Z" },
 ]
 
 [[package]]
@@ -5384,7 +5461,8 @@ name = "typing-inspection"
 version = "0.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions" },
+    { name = "typing-extensions", version = "4.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/55/e3/70399cb7dd41c10ac53367ae42139cf4b1ca5f36bb3dc6c9d33acdb43655/typing_inspection-0.4.2.tar.gz", hash = "sha256:ba561c48a67c5958007083d386c3295464928b01faa735ab8547c5692e87f464", size = 75949, upload-time = "2025-10-01T02:14:41.687Z" }
 wheels = [
@@ -5405,7 +5483,7 @@ name = "tzlocal"
 version = "5.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "tzdata", marker = "sys_platform == 'win32' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/d3/c19d65ae67636fe63953b20c2e4a8ced4497ea232c43ff8d01db16de8dc0/tzlocal-5.2.tar.gz", hash = "sha256:8d399205578f1a9342816409cc1e46a93ebd5755e39ea2d85334bea911bf0e6e", size = 30201, upload-time = "2023-10-22T17:41:38.449Z" }
 wheels = [
@@ -5528,7 +5606,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "h11" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/c4/1f/fa18009dea8469069cca78a4e877a008ab78f08b064bfc9ab891579077ff/uvicorn-0.49.0.tar.gz", hash = "sha256:ebf4271aa580d9de97f93192d4595176df6e91f9aae919ca73e4fc07df1e66a3", size = 91284, upload-time = "2026-06-03T22:01:30.448Z" }
 wheels = [
@@ -5546,18 +5624,20 @@ wheels = [
 
 [[package]]
 name = "virtualenv"
-version = "21.7.13"
+version = "21.14.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "distlib" },
     { name = "filelock" },
-    { name = "platformdirs" },
+    { name = "packaging" },
+    { name = "platformdirs", version = "4.12.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "platformdirs", version = "4.13.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "python-discovery" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "typing-extensions", version = "4.16.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/13/50/c9b84eb106d0db420b9878dac0a386c5791726f127ce20b06897f6e3a1e9/virtualenv-21.7.13.tar.gz", hash = "sha256:0355558b6f33619aab31347e43643b0ebc97f61ea3acf617b2b69e1f8a843d11", size = 5360306, upload-time = "2026-09-18T04:35:49.354Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/70/aa/bff50daee0488e16d611258a9b6c5a1d0c9e128f8ca424e9f4e1c0444ef2/virtualenv-21.14.13.tar.gz", hash = "sha256:de5307ba4b9a0001d9c8ea02832d38f63ca432880f416c1bface61c4323fd905", size = 5570301, upload-time = "2026-10-22T20:10:16.952Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9a/ce/e74453531b0c49a58d0e8a4f9bab4495705859fee4a4f7de27d58f4a791a/virtualenv-21.7.13-py3-none-any.whl", hash = "sha256:1bea5af7463f59c4719db48fe739579a2a4f569c96f26c086edda85c96da9f59", size = 5328680, upload-time = "2026-09-18T04:35:47.194Z" },
+    { url = "https://files.pythonhosted.org/packages/bb/a9/c10d8a44a29fb94a18b43fdf11f38caca53ae7c9406f11a72b1cb8f624f1/virtualenv-21.14.13-py3-none-any.whl", hash = "sha256:5fbb04138a4861580b78ba9110d529a26bc48fcc93c8ec36bc0202eeed96a788", size = 5557094, upload-time = "2026-10-22T20:10:15.096Z" },
 ]
 
 [[package]]
@@ -5819,6 +5899,6 @@ wheels = [
 
 [package.optional-dependencies]
 colors = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfminer-six') or (extra == 'extra-12-invoice2data-camelot' and extra == 'extra-12-invoice2data-pdfplumber')" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "pygments" },
 ]
