@@ -79,7 +79,7 @@ Each field can be:
 - `invoice_number`: Unique number assigned to invoice by an issuer.
 - `amount`: Total amount (with taxes).
 - `vat`: [VAT identification number](https://en.wikipedia.org/wiki/VAT_identification_number)
-- `tax_lines`: [structure](#Tax-lines) containing detailed tax information
+- `tax_lines`: [structure](#tax-lines) containing detailed tax information
 
 
 ## Template Structure
