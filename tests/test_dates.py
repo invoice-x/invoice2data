@@ -18,6 +18,13 @@ def test_dateutil_tier_parses_iso_without_a_format() -> None:
     assert parse_date("2017-12-31") == datetime.datetime(2017, 12, 31)
 
 
+def test_numeric_date_is_day_first_for_non_english_languages() -> None:
+    parse_date.cache_clear()
+    assert parse_date("05/03/2026", (), ("fr",)) == datetime.datetime(2026, 3, 5)
+    assert parse_date("2026-03-05", (), ("fr",)) == datetime.datetime(2026, 3, 5)
+    assert parse_date("05/03/2026") == datetime.datetime(2026, 5, 3)
+
+
 def test_dateparser_tier_handles_localized_month() -> None:
     pytest.importorskip("dateparser")
     parse_date.cache_clear()
