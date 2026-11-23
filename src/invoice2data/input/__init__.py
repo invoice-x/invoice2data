@@ -20,6 +20,7 @@ from . import pdfminer_wrapper
 from . import pdfoxide
 from . import pdfplumber
 from . import pdftotext
+from . import pennyocr
 from . import tesseract
 from . import text
 
@@ -40,6 +41,7 @@ INPUT_MODULES: dict[str, ModuleType] = {
     "gvision": gvision,
     "doctr": doctr,
     "paddleocr": paddleocr,
+    "pennyocr": pennyocr,
     "text": text,
     "ocrmypdf": ocrmypdf,
 }

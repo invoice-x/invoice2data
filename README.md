@@ -38,7 +38,7 @@ volume of invoices, saving time and reducing manual-entry errors. It:
 1. extracts text from PDF files with a pluggable, cascading backend —
    `pdfium` (default, no system deps), `pdftotext`, `text`, `pdfminer`,
    `pdfplumber`, or OCR (`tesseract`, `ocrmypdf`, `docTR`, `paddleocr`,
-   `gvision`).
+   `gvision`, `pennyocr`).
 2. searches for regex in the result using a YAML or JSON-based template system
    (with an optional [AI fallback](https://invoice2data.readthedocs.io/en/latest/ai.html)).
 3. saves results as CSV, JSON or XML, or renames PDF files to match the content.
