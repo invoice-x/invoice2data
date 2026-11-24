@@ -54,11 +54,12 @@ def _try_strptime(
     return None
 
 
-def _try_dateutil(value: str) -> datetime.datetime | None:
+def _try_dateutil(value: str, dayfirst: bool = False) -> datetime.datetime | None:
     """Parse with ``dateutil`` (fuzzy, English-centric).
 
     Args:
         value (str): The date string.
+        dayfirst (bool): Read ``05/03/2026`` as 5 March instead of May 3.
 
     Returns:
         datetime.datetime | None: The parsed datetime, or None on failure.
@@ -66,7 +67,7 @@ def _try_dateutil(value: str) -> datetime.datetime | None:
     from dateutil import parser as dateutil_parser
 
     try:
-        parsed: datetime.datetime = dateutil_parser.parse(value)
+        parsed: datetime.datetime = dateutil_parser.parse(value, dayfirst=dayfirst)
     except (ValueError, OverflowError, TypeError):
         return None
     return parsed
@@ -117,7 +118,10 @@ def parse_date(
     result = _try_strptime(cleaned, date_formats)
     if result is not None:
         return result
-    result = _try_dateutil(cleaned)
+    # Outside English, numeric dates are day-first. ISO dates (year first) are
+    # excluded: dateutil reads 2026-03-05 as 3 May with dayfirst.
+    dayfirst = bool(languages) and "en" not in languages and not cleaned[:4].isdigit()
+    result = _try_dateutil(cleaned, dayfirst)
     if result is not None:
         return result
     return _try_dateparser(value, date_formats, languages)
